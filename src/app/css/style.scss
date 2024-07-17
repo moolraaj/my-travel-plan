@@ -7,6 +7,7 @@ h1{
     color: $black;
     @include flex-property(flex,20px);
     @extend %heading;
+    font-family: 'Poppins';
 }
 
 
@@ -75,3 +76,111 @@ h1{
   
 
  
+//   Poppins Jost
+
+@font-face {
+    font-family: 'Jost';
+    src: url('../Fonts/Jost/Jost-VariableFont_wght.ttf') format('truetype');
+  }
+
+
+//   Poppins font
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 900;
+    src: url('../Fonts/Poppins/Poppins-Black.ttf') format('truetype');  
+  }
+
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 100;
+    src: url('../Fonts/Poppins/Poppins-Thin.ttf') format('truetype');
+}
+
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 700;
+    src: url('../Fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+}
+
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 800;
+    src: url('../Fonts/Poppins/Poppins-ExtraBold.ttf') format('truetype');
+}
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 200;
+    src: url('../Fonts/Poppins/Poppins-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 300;
+    src: url('../Fonts/Poppins/Poppins-Light.ttf') format('truetype');
+}
+ 
+ 
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 600;
+    src: url('../Fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+}
+ 
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 500;
+    src: url('../Fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+}
+ 
+ @font-face {
+    font-family: 'Poppins';
+    font-weight: 400;
+    src: url('../Fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+}
+ 
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    position: relative;
+    width: 300px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  
+  .image {
+    border-radius: 8px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .label {
+    font-size: 14px;
+  }
+  
+  .text {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
