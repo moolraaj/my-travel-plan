@@ -2,9 +2,16 @@
 @import 'mixin';
 @import 'extends';
 
+body{
+    margin:0px;
+    padding: 0px;
+}
+
+
+
 
 h1{
-    color: $black;
+    color: $primaryred;
     @include flex-property(flex,20px);
     @extend %heading;
 }
@@ -13,10 +20,77 @@ h1{
 
 
 /* styles/Navbar.css */
-.navbar {
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.contact-us-container {
+    display: flex;
+    align-items: center;
+    column-gap: 30px;
+}
+
+button.contact-button {
+    padding: 13px 20px;
+    background:#CF0C2A;
+    border:none;
+    color:white;
+    border-radius:10px;
+    font-size:16px;
+}
+
+a.navbar-item {
+    column-gap: 12px;
+}
+
+
+.icon-container {
+    background: #E8E4FF;
+    width: 43px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 31px;
+}
+
+
+.navbar-menu.active {
+    display: flex; /* Show the menu when active */
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    left: 0;
+    padding-left: 27px;
   }
+  
+
+
+.outer_header {
+    box-shadow: 2px 2px 9px #0000002b;
+    position: sticky;
+    top: 0px;
+}
+
+
+
+
+
+
+
+
+
+  .top_header {
+    background-color: white;
+    @include main_container;
+    padding: 8px 20px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
+  .navbar-container a {
+    color: black;
+    font-size: 18px;
+}
   
   .navbar-container {
     display: flex;
@@ -58,6 +132,19 @@ h1{
   
   .navbar-item .icon {
     margin-right: 0.5rem;
+  }
+  .navbar-logo {
+    display: none;
+}
+
+
+  @media only screen and (max-width:1024px) {
+    .navbar-menu {
+        display: none;
+    }
+    .navbar-logo {
+        display: block;
+    }
   }
   
   @media (min-width: 768px) {
