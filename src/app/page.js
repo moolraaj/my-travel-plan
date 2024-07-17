@@ -1,9 +1,11 @@
 import './css/style.scss'
+import World_section from '@/Components/worldSection';
 
 export default function Home() {
   return (
-     <>
-     <h1>this is ahome page</h1>
-     </>
+
+     <div className='outer_section'>
+      <World_section/>
+     </div>
   );
 }
