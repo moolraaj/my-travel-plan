@@ -1,4 +1,4 @@
-
+import './css/style.scss'
 
 export default function Home() {
   return (

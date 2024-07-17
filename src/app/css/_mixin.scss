@@ -1,0 +1,4 @@
+@mixin flex-property($flex,$gap:10px){
+    display: $flex;
+    column-gap: $gap;
+}

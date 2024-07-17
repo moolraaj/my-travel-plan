@@ -1,0 +1,13 @@
+@import 'variables';
+@import 'mixin';
+@import 'extends';
+
+
+h1{
+    color: $black;
+    @include flex-property(flex,20px);
+    @extend %heading;
+}
+
+
+ 
