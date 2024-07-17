@@ -19,6 +19,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
+            <div></div>
         <FontAwesomeIcon icon="fa-solid fa-bars" />
           <button
             onClick={() => setIsOpen(!isOpen)}
