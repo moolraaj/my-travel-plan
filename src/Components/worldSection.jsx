@@ -12,6 +12,7 @@ const countriesData = [
   { name: 'South America', countries: 8, imgSrc: '/images/europe_img_1.png' },
 ];
 
+
 const World_section = () => {
   return (  
     <div className="grid-container">
