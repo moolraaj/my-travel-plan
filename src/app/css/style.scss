@@ -234,6 +234,8 @@ ul.destinations-list {
   object-fit: cover;
   border-radius: 5px;
 }
+
+
 .destination-info {
   position: absolute;
   top: 50%;
@@ -479,6 +481,52 @@ a.navbar-item {
 
 // Davinder css
 
+.outer_section .overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: poppins;
+  font-size: 16px;
+}
+
+.grid-container {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 1410px;
+  padding: 0px 20px;
+  width: 100%;
+  margin: auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 80px;
+}
+
+.outer_section {
+padding: 40px 0px;
+}
+
+.outer_section .text {
+position: absolute;
+bottom: 16px;
+left: 12px;
+color: white;
+font-size: 30px;
+font-family: "Jost";
+}
+
+.label {
+font-size: 14px;
+}
+
+
+
+
 
 .grid-container {
     display: flex;
@@ -489,7 +537,6 @@ a.navbar-item {
   
   .card {
     position: relative;
-    width: 300px;
     cursor: pointer;
     transition: transform 0.2s;
   
