@@ -1,4 +1,3 @@
-import './css/style.scss'
 import World_section from '@/Components/worldSection';
 import ExplorationsFarAway from '@/Components/countrySection';
 export default function Home() {

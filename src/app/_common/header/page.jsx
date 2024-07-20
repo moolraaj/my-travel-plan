@@ -3,6 +3,7 @@ import React from 'react'
 import Navbar from './components/navbar'
 import logo from '../../assets/home_images/logo.png'
 import ContactUs from './components/profile'
+import Link from 'next/link'
 
 
 
@@ -13,7 +14,9 @@ function Header() {
      <div className='top_header'>
 
       <div className='header_logo'>
-        <img src={logo.src}/>
+        <Link href={'/'}>
+          <img src={logo.src}/>
+        </Link>
       </div>
       <Navbar/>
          <ContactUs/>
