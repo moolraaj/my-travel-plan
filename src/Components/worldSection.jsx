@@ -12,8 +12,10 @@ const countriesData = [
   { name: 'South America', countries: 8, imgSrc: '/images/europe_img_1.png' },
 ];
 
+
 const World_section = () => {
   return (  
+    <div>
     <div className="grid-container">
       {countriesData.map((country, index) => (
         <Link class="card_outer" href={`/${country.name.toLowerCase().replace(' ', '-')}`} key={index}>
@@ -33,8 +35,10 @@ const World_section = () => {
 
             <div className="text">{country.name}</div>
           </div>
+          
         </Link>
       ))}
+    </div>
     </div>
   );
 };
