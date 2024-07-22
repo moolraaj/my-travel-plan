@@ -487,164 +487,167 @@ a.navbar-item {
 
 // top activity css start
 
-.top-act-container {
-  .top-act-title {
-    font-size:30px;
-    font-weight:500;
-    line-height:43.35px;
-  }
-}
-
-
-.top-act-icon {
-  background-color: red;
-}
-.top-act-duration {
-  position: absolute;
-  top: 10px;
-  right: 17px;
-  color: white !important;
-  font-size: 25px;
-  font-weight: 500;
-}
-
 .top-act-container{
+
+  .top-act-duration {
+    font-weight: bold;
+    color: #555;
+  }
+   
+  .top-act-icon {
+      .card-icon {
+        background-color: red;
+        padding: 10px;
+        border-radius: 50%;
+        overflow: visible;
+        position: absolute;
+        top: 224px;
+        left: 133px;
+    }
+  }
   .top-act-subtitle {
     font-size:16px;
     font-weight:300;
     line-height:24px;
   }
-} 
+  .top-act-title {
+    font-size:30px;
+    font-weight:500;
+    line-height:43.35px;
+  }
 
-.top-act-gridContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 20px;
+  .top-act-duration {
+    position: absolute;
+    top: 10px;
+    right: 17px;
+    color: white !important;
+    font-size: 25px;
+    font-weight: 500;
+  }
+  .top-act-gridContainer {
+    display: flex; 
+    justify-content: space-between;
+  }
+
+  .top-act-Details {
+    padding: 10px;
+    color:#000;
+    text-align: center;
+  }
+
+  .top-act-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .top-act-card {
+    position: relative;
+    width: 320px;
+    max-height: 450px;
+    height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .top-act-cardOuter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .top-act-Details {
+    .top-act-country {
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 36.13px;
+    }
+    .top-act-description {
+      font-size: 16px;
+      color: #000;
+      font-weight: 300;
+      line-height: 26px;
+    }
+  }
 }
 
-.top-act-cardOuter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-}
 
-.top-act-card {
-  position: relative;
-  width: 100%;
-  // max-width: 300px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.top-act-card:hover {
-  transform: scale(1.05);
-}
-
-.top-act-image {
-  width: 100%;
-  height: auto;
-}
-
-.top-act-Details {
-  padding: 10px;
-  background: white;
-  text-align: left;
-}
-
-.top-act-duration {
-  font-weight: bold;
-  color: #555;
-}
-
-.top-act-country {
-  font-size: 1.5rem;
-  margin: 10px 0;
-}
-
-.top-act-description {
-  font-size: 1rem;
-  color: #777;
-}
 // top activity css end
 
  // top  discounted activity css start
  .top-discounted-container {
-  padding: 20px;
-  text-align: center;
-}
 
-.top-discounted-title {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
+  .top-discounted-title {
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 43.35px;
+    }
 
-.top-discounted-subtitle {
-  font-size: 1.2rem;
-  color: #777;
-  margin-bottom: 20px;
-}
+    .top-discounted-subtitle {
+      font-size: 16PX;
+      font-weight: 300;
+    }
 
-.top-discounted-gridContainer {
-  display: flex;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 20px;
-}
+    .top-discounted-gridContainer {
+      display: flex;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 20px;
+    }
 
-.top-discounted-cardOuter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-}
+    .top-discounted-cardOuter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
 
-.top-discounted-card {
-  position: relative;
-  width: 100%;
-  max-width: 300px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
+    .top-discounted-card {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
 
-.top-discounted-card:hover {
-  transform: scale(1.05);
-}
+    .top-discounted-card:hover {
+      transform: scale(1.05);
+    }
 
-.top-discounted-overlay {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(255, 0, 0, 0.7);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
+    .top-discounted-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 0, 0, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
 
-.top-discounted-image {
-  width: 100%;
-  height: auto;
-}
+    .top-discounted-image {
+      width: 100%;
+      height: auto;
+    }
 
-.top-discounted-Details {
-  padding: 10px;
-  background: white;
-  text-align: left;
-}
+    .top-discounted-Details {
+      padding: 10px;
+      background: white;
+      text-align: left;
+    }
 
-.top-discounted-country {
-  font-size: 1.5rem;
-  margin: 10px 0;
-}
+    .top-discounted-country {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
 
-.top-discounted-description {
-  font-size: 1rem;
-  color: #777;
+    .top-discounted-description {
+      font-size: 1rem;
+      color: #777;
+    }
 }
-
  // top  discounted activity css end
 
 

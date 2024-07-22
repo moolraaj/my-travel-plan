@@ -44,6 +44,7 @@ const TopActivities = () => {
         {activities.map((activity, index) => (
           <Link className="top-act-cardOuter" href={`/${activity.country.toLowerCase().replace(' ', '-')}`} key={index}>
             <div className="top-act-card">
+            <div className='image-container-act'>
               <Image
                 src={activity.imgSrc}
                 alt={activity.country}
@@ -51,6 +52,7 @@ const TopActivities = () => {
                 height={1000}
                 className="top-act-image"
               />
+              </div>
               <div className="top-act-Details">
                 <div className="top-act-duration">{activity.duration}</div>
                 <div className='top-act-icon'>
