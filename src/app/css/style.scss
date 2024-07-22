@@ -5,6 +5,7 @@
 body{
     margin:0px;
     padding: 0px;
+    font-family: 'Poppins';
 }
 
 
@@ -14,9 +15,11 @@ h1{
     color: $primaryred;
     @include flex-property(flex,20px);
     @extend %heading;
-    font-family: 'Poppins';
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Jost';  
+}
 
 
 .footer_section {
@@ -483,25 +486,39 @@ a.navbar-item {
 // Davinder activity page css
 
 // top activity css start
+
 .top-act-container {
-  padding: 20px;
-  text-align: center;
+  .top-act-title {
+    font-size:30px;
+    font-weight:500;
+    line-height:43.35px;
+  }
 }
 
-.top-act-title {
-  font-size: 2rem;
-  margin-bottom: 10px;
+
+.top-act-icon {
+  background-color: red;
+}
+.top-act-duration {
+  position: absolute;
+  top: 10px;
+  right: 17px;
+  color: white !important;
+  font-size: 25px;
+  font-weight: 500;
 }
 
-.top-act-subtitle {
-  font-size: 1.2rem;
-  color: #777;
-  margin-bottom: 20px;
-}
+.top-act-container{
+  .top-act-subtitle {
+    font-size:16px;
+    font-weight:300;
+    line-height:24px;
+  }
+} 
 
 .top-act-gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 20px;
 }
 
@@ -515,7 +532,7 @@ a.navbar-item {
 .top-act-card {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  // max-width: 300px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

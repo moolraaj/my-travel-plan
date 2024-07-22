@@ -8,25 +8,29 @@ const activities = [
     country: 'Austria',
     description: 'Zurich City Tour With Ferry and Cable Car',
     duration: '4 hrs',
-    imgSrc: '/images/europe_img_1.png',
+    imgSrc: '/images/Destination1.png',
+    iconSrc: '/images/Vector.png',
   },
   {
     country: 'Belgium',
     description: 'Parachute Jumping in Spa',
     duration: '6 hrs',
-    imgSrc: '/images/europe_img_1.png',
+    imgSrc: '/images/Destination1.png',
+    iconSrc: '/images/Vector.png',
   },
   {
     country: 'Germany',
     description: 'Glacier Hiking and Ice Climbing',
     duration: '8 hrs',
-    imgSrc: '/images/europe_img_1.png',
+    imgSrc: '/images/Destination1.png',
+    iconSrc: '/images/Vector.png',
   },
   {
     country: 'Greece',
     description: 'Greek Adventure Rafting Base',
     duration: '5 hrs',
-    imgSrc: '/images/europe_img_1.png',
+    imgSrc: '/images/Destination1.png',
+    iconSrc: '/images/Vector.png',
   },
 ];
 
@@ -44,11 +48,21 @@ const TopActivities = () => {
                 src={activity.imgSrc}
                 alt={activity.country}
                 width={1000}
-                height={300}
+                height={1000}
                 className="top-act-image"
               />
               <div className="top-act-Details">
                 <div className="top-act-duration">{activity.duration}</div>
+                <div className='top-act-icon'>
+                <Image
+                  src={activity.iconSrc}
+                  alt={activity.iconSrc}
+                  width={30}
+                  height={30}
+                  className='card-icon'
+                />
+
+                </div>
                 <h3 className="top-act-country">{activity.country}</h3>
                 <p className="top-act-description">{activity.description}</p>
               </div>
