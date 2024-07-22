@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
-import Image1 from '../../src/app/assets/home_images/cont1.png';
-import Image2 from '../../src/app/assets/home_images/cont2.png';
-import Image3 from '../../src/app/assets/home_images/cont3.png';
-import Image4 from '../../src/app/assets/home_images/cont4.png';
-import Image5 from '../../src/app/assets/home_images/cont5.png';
-import Image6 from '../../src/app/assets/home_images/cont6.png';
+import Image1 from '../../src/app/assets/home_images/contone.png';
+import Image2 from '../../src/app/assets/home_images/conttwo.png';
+import Image3 from '../../src/app/assets/home_images/contthree.png';
+import Image4 from '../../src/app/assets/home_images/contfour.png';
+import Image5 from '../../src/app/assets/home_images/contfive.png';
+import Image6 from '../../src/app/assets/home_images/contsix.png';
 
 const destinations = [
   { name: 'Greece', price: 'From ₹ 37,500', imageUrl: Image1 },

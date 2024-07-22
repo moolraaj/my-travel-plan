@@ -1,6 +1,9 @@
 import World_section from '@/Components/worldSection';
 import ExplorationsFarAway from '@/Components/countrySection';
 import Slider from '@/Components/mainSlider';
+import Destinations from '@/Components/topcoutrypackages';
+import BestSellingPackages from '@/Components/packagecards';
+
 export default function Home() {
   return (
 
@@ -13,7 +16,12 @@ export default function Home() {
      <div className='outer_section'>
    
       <World_section/>
-      <ExplorationsFarAway/>
+      <Destinations/>
+        <ExplorationsFarAway/>
+
+      <BestSellingPackages/>
+     
+
      </div>
 
      </div>  

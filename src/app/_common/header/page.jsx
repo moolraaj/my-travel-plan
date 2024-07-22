@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 function Header() {
   return (
-    <div>
+    <div className='header'>
      <div className='outer_header'>
      <div className='top_header'>
 
