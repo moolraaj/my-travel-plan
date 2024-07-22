@@ -1,5 +1,3 @@
-'use client'
-import './css/style.scss'
 import World_section from '@/Components/worldSection';
 import ExplorationsFarAway from '@/Components/countrySection';
 import Slider from '@/Components/mainSlider';

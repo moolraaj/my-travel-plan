@@ -15,6 +15,7 @@ const countriesData = [
 
 const World_section = () => {
   return (  
+    <div className=''>
     <div className="grid-container">
       {countriesData.map((country, index) => (
         <Link class="card_outer" href={`/${country.name.toLowerCase().replace(' ', '-')}`} key={index}>
@@ -36,6 +37,7 @@ const World_section = () => {
           </div>
         </Link>
       ))}
+    </div>
     </div>
   );
 };

@@ -1,5 +1,7 @@
 // import { Jost } from "next/font/google";
 import "./globals.css";
+import './css/style.scss'
+
 import Layout from "./_common/layout/layout";
 import css from "../app/css/style.scss"
 

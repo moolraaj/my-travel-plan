@@ -1,0 +1,64 @@
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+// import styles from './TopActivities.module.css';
+
+const activities = [
+  {
+    country: 'Austria',
+    description: 'Zurich City Tour With Ferry and Cable Car',
+    duration: '4 hrs',
+    imgSrc: '/images/europe_img_1.png',
+  },
+  {
+    country: 'Belgium',
+    description: 'Parachute Jumping in Spa',
+    duration: '6 hrs',
+    imgSrc: '/images/europe_img_1.png',
+  },
+  {
+    country: 'Germany',
+    description: 'Glacier Hiking and Ice Climbing',
+    duration: '8 hrs',
+    imgSrc: '/images/europe_img_1.png',
+  },
+  {
+    country: 'Greece',
+    description: 'Greek Adventure Rafting Base',
+    duration: '5 hrs',
+    imgSrc: '/images/europe_img_1.png',
+  },
+];
+
+const TopActivities = () => {
+  return (
+    <div className="top-act-container">
+    <div className="inner-w-container">
+      <h2 className="top-act-title">Top Activities</h2>
+      <p className="top-act-subtitle">Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
+      <div className="top-act-gridContainer">
+        {activities.map((activity, index) => (
+          <Link className="top-act-cardOuter" href={`/${activity.country.toLowerCase().replace(' ', '-')}`} key={index}>
+            <div className="top-act-card">
+              <Image
+                src={activity.imgSrc}
+                alt={activity.country}
+                width={1000}
+                height={300}
+                className="top-act-image"
+              />
+              <div className="top-act-Details">
+                <div className="top-act-duration">{activity.duration}</div>
+                <h3 className="top-act-country">{activity.country}</h3>
+                <p className="top-act-description">{activity.description}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+    </div>
+  );
+};
+
+export default TopActivities;
