@@ -18,7 +18,7 @@ const countriesData = [
 const Destinations = () => {
   return (
     <div className="topdestination container inner-w-container">
-      <h1>Top Destination By Our Travel Experts</h1>
+      <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
       <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
       <div className="destinations">
         {countriesData.map((country, index) => (

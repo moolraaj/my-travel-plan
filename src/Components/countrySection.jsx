@@ -19,7 +19,7 @@ const destinations = [
 const ExplorationsFarAway = () => {
   return (
     <div className="explorations-container">
-      <h2>Explorations Far Away</h2>
+      <h2 className='same_heading'>Explorations Far Away</h2>
       <p>Ideal for 5-14 days trip</p>
       <div className="destinations-grid">
         {destinations.map((destination, index) => (

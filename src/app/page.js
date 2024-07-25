@@ -1,8 +1,11 @@
+'use client'
 import World_section from '@/Components/worldSection';
 import ExplorationsFarAway from '@/Components/countrySection';
 import Slider from '@/Components/mainSlider';
 import Destinations from '@/Components/topcoutrypackages';
 import BestSellingPackages from '@/Components/packagecards';
+import ExploreDestinations from '@/Components/exploredestinations';
+import LatestBlog from '@/Components/blogs';
 
 export default function Home() {
   return (
@@ -20,7 +23,10 @@ export default function Home() {
         <ExplorationsFarAway/>
 
       <BestSellingPackages/>
-     
+
+      <ExploreDestinations/> 
+
+      <LatestBlog/>    
 
      </div>
 

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
+import discountc from '../app/assets/home_images/discountcards.png';
 
 const packagesData = [
   { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherland.png' },
@@ -12,8 +12,8 @@ const packagesData = [
 const BestSellingPackages = () => {
   return (
     <div className="container card_main_section">
-      <div className="header">
-        <h1>Explore Best Selling Packages</h1>
+      <div className="header_best_selling">
+        <h2 className='same_heading'>Explore Best Selling Packages</h2>
         <div className='link_heading'>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <Link href="#"><span className="view-all">View All Packages</span></Link>
@@ -43,7 +43,11 @@ const BestSellingPackages = () => {
 
 
 
-      <div className='discount_section'>
+      <div className='discount_section' style={{
+                  backgroundImage: `url(${discountc.src})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                                 }} >
        <span>Up to 40% Discount!</span>
       <button>Discover More</button>
     </div>
