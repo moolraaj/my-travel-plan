@@ -26,7 +26,8 @@ export default function Home() {
 
       <ExploreDestinations/> 
 
-      <LatestBlog/>    
+      <LatestBlog/>  
+      <h1></h1>  
 
      </div>
 
