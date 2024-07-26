@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 DbConnect()
 export async function GET(){
-    let result=await CitiesModel.find()
+    let results=await CitiesModel.find()
     let totalResults=await CitiesModel.countDocuments()
-    return NextResponse.json({success:true,totalResults,result})
+    return NextResponse.json({success:true,totalResults,results})
 }
