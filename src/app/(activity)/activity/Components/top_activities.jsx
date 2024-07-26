@@ -52,9 +52,16 @@ const TopActivities = () => {
                 height={1000}
                 className="top-act-image"
               />
+                              <div className="top-act-duration">{activity.duration}</div>
+
               </div>
-              <div className="top-act-Details">
-                <div className="top-act-duration">{activity.duration}</div>
+              <div className="top-act-Details"
+     style={{
+       backgroundImage: `url('/images/bacrounded.png')`,
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat'
+     }}>
+
                 <div className='top-act-icon'>
                 <Image
                   src={activity.iconSrc}
