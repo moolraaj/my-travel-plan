@@ -7,6 +7,7 @@ import BestSellingPackages from '@/Components/packagecards';
 import ExploreDestinations from '@/Components/exploredestinations';
 import LatestBlog from '@/Components/blogs';
 import { useEffect, useState } from 'react';
+import Layout from './_common/layout/layout';
 
 export default function Home() {
   let[ss,setSs]=useState([])
@@ -23,6 +24,7 @@ export default function Home() {
   console.log(ss)
   return (
  <>
+ <Layout>
    <div className='main_slider'>
    <div className='main_slider_inner'>
    <Slider/>
@@ -57,6 +59,7 @@ export default function Home() {
     </div>
   })
  }
+ </Layout>
  </>
 
 

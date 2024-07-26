@@ -39,11 +39,11 @@ const Navbar = () => {
           </button>
         </div>
         <div className={`navbar-menu ${isOpen ? 'active' : ''}`}>
-          <Link href={"/"} className="navbar-item">
+          <Link href={"/holidays"} className="navbar-item">
             <img src={holiday.src} alt="Holidays" />
             Holidays
           </Link>
-          <Link href="/" className="navbar-item">
+          <Link href="/flights" className="navbar-item">
             <img src={flight.src} alt="Flights" />
             Flights
           </Link>
@@ -51,11 +51,11 @@ const Navbar = () => {
             <img src={ballon.src} alt="Activity" />
             Activity
           </Link>
-          <Link href="/" className="navbar-item">
+          <Link href="/destinations" className="navbar-item">
             <img src={destination.src} alt="Destinations" />
             Destinations
           </Link>
-          <Link href="/" className="navbar-item">
+          <Link href="/transfers" className="navbar-item">
             <img src={car.src} alt="Transfers" />
             Transfers
           </Link>
