@@ -13,11 +13,11 @@ export async function DELETE(req,{params}){
         let isIdExist=await continentModel.findOne(productId)
 
         if(!isIdExist){
-            return NextResponse.json({success:false,message:'credentials is required'})   
+            return NextResponse.json({success:false,message:'continent not found try again'})   
         }
      
         let product=await continentModel.deleteOne(productId)
-        
+
         if(!product){
             return NextResponse.json({success:false,message:'product not found'})
 
