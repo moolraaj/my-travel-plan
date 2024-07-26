@@ -1,12 +1,14 @@
+
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+
 const UpdateContinent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const continentId = searchParams.get('id');
-  
+  const id = searchParams.get('id');
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -20,29 +22,26 @@ const UpdateContinent = () => {
   useEffect(() => {
     async function fetchContinent() {
       try {
-        const res = await fetch(`/api/v1/continent/${continentId}`);
-        const data = await res.json();
-        
+        const response = await fetch(`/api/v1/continent/get/${id}`);
+        const data = await response.json();
         if (data.success) {
           setFormData({
-            title: data.continent.title,
-            description: data.continent.description,
-            slug: data.continent.slug,
+            title: data.result.title,
+            description: data.result.description,
+            slug: data.result.slug,
             file: null,
-            existingImage: data.continent.images[0].path,
+            existingImage: data.result.images[0].name,
           });
-        } else {
-          setError('Failed to fetch continent data.');
         }
       } catch (error) {
-        setError('An error occurred while fetching the continent data.');
+        console.error('Error fetching continent:', error);
       }
     }
 
-    if (continentId) {
+    if (id) {
       fetchContinent();
     }
-  }, [continentId]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -56,9 +55,7 @@ const UpdateContinent = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { title, description, slug, file } = formData;
-
-    if (!title || !description || !slug) {
+    if (!formData.title || !formData.description || !formData.slug) {
       setError('Please fill in all fields.');
       setIsLoading(false);
       return;
@@ -66,15 +63,15 @@ const UpdateContinent = () => {
 
     try {
       const submissionData = new FormData();
-      submissionData.append('title', title);
-      submissionData.append('description', description);
-      submissionData.append('slug', slug);
-      if (file) {
-        submissionData.append('file', file);
+      submissionData.append('title', formData.title);
+      submissionData.append('description', formData.description);
+      submissionData.append('slug', formData.slug);
+      if (formData.file) {
+        submissionData.append('file', formData.file);
       }
 
-      const res = await fetch(`/api/v1/continent/update/${continentId}`, {
-        method: 'PUT',
+      const res = await fetch(`/api/v1/continent/update/${id}`, {
+        method: 'POST',
         body: submissionData,
       });
 
@@ -132,20 +129,19 @@ const UpdateContinent = () => {
         <div className="form-group">
           <label htmlFor="file">Image</label>
           <input type="file" id="file" name="file" onChange={handleChange} />
-          {formData.file ? (
+          {formData.existingImage && !formData.file && (
             <div className="image-preview">
-              <img src={URL.createObjectURL(formData.file)} alt="Preview" />
+              <img src={`/uploads/${formData.existingImage}`} alt="Existing Preview" />
             </div>
-          ) : (
-            formData.existingImage && (
-              <div className="image-preview">
-                <img src={`/uploads/${formData.existingImage}`} alt="Preview" />
-              </div>
-            )
+          )}
+          {formData.file && (
+            <div className="image-preview">
+              <img src={URL.createObjectURL(formData.file)} alt="New Preview" />
+            </div>
           )}
         </div>
-        <button type="submit" className="button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Update Continent'}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Updating...' : 'Update Continent'}
         </button>
       </form>
     </div>
