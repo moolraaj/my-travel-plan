@@ -42,7 +42,7 @@ const TopActivities = () => {
       <p className="top-act-subtitle">Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
       <div className="top-act-gridContainer">
         {activities.map((activity, index) => (
-          <Link className="top-act-cardOuter" href={`/${activity.country.toLowerCase().replace(' ', '-')}`} key={index}>
+          <Link className="top-act-cardOuter" href={`/activity/${activity.country.toLowerCase().replace(' ', '-')}`} key={index}>
             <div className="top-act-card">
             <div className='image-container-act'>
               <Image

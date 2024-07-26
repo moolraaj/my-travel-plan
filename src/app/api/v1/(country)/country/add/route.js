@@ -45,12 +45,13 @@ export async function POST(req) {
             title: title,
             description: description,
             slug: slug,
+            all_cities:[]
         });
 
         // get total result of the continents
-        const countries = await response.save();
+        const country = await response.save();
 
-        return NextResponse.json({ success: true, countries });
+        return NextResponse.json({ success: true, country });
 
     } catch (error) {
         console.error('Error in POST handler:', error);

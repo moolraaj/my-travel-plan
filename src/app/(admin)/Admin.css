@@ -1,0 +1,416 @@
+.admin_layout {
+  max-width: 1520px;
+  margin: 100px auto 50px auto;
+  padding: 20px 0px;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+
+
+
+/* Admin Dashboard Styles */
+
+/* Overview Component */
+.overview {
+  background-color: #E8E4FF;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.overview h2 {
+  color: #1802A0;
+}
+
+.overview-cards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.overview-card {
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #CF0C2A;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  margin: 10px;
+  text-align: center;
+}
+
+.icon_wrap svg {
+  width: 60px;
+  height: 60px;
+}
+
+.data_wrap p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Stats Component */
+.stats {
+  background-color: #E8E4FF;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.stats h2 {
+  color: #1802A0;
+}
+
+.stats-graphs {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-graph {
+  background-color: #FFFFFF;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  margin: 10px 0;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Recent Bookings Component */
+.recent-bookings {
+  background-color: #E8E4FF;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.recent-bookings h2 {
+  color: #1802A0;
+}
+
+.recent-bookings table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recent-bookings th,
+.recent-bookings td {
+  border: 1px solid #1802A0;
+  padding: 10px;
+  text-align: left;
+}
+
+.recent-bookings th {
+  background-color: #CF0C2A;
+  color: white;
+}
+
+.recent-bookings td {
+  background-color: white;
+}
+
+
+
+/* Packages Page Styles */
+
+.packages {
+  padding: 20px;
+  background-color: #E8E4FF;
+  border-radius: 8px;
+  overflow-x: auto;
+  /* Enables horizontal scrolling */
+}
+
+.packages h2 {
+  color: #1802A0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+.packages-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  min-width: 600px;
+  /* Minimum width to prevent breaking */
+}
+
+.packages-table th,
+.packages-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.packages-table th {
+  background-color: #1802A0;
+  color: white;
+}
+
+.package-image {
+  width: 100px;
+  height: auto;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.action-icon.view {
+  color: #1802A0;
+}
+
+.action-icon.edit {
+  color: #FFD700;
+}
+
+.action-icon.delete {
+  color: #CF0C2A;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #1802A0;
+  padding: 20px 0;
+}
+
+/* Floating Plus Icon Styles */
+.floating-plus {
+  position: fixed;
+  bottom: 70px;
+  right: 40px;
+  background-color: #1802A0;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 1000;
+  transition: background-color 0.3s;
+}
+
+.floating-plus:hover {
+  background-color: #3b1a7d;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.floating-plus:hover .tooltip {
+  opacity: 1;
+}
+
+
+/* Add Continent Page Styles */
+
+.add-continent {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-continent h2 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group input[type="file"] {
+  padding: 3px;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.image-preview {
+  margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 200px;
+  height: 200px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: #ff0000;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .admin_layout {
+    padding: 10px 20px;
+  }
+
+  .overview-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .overview-card {
+    margin: 10px 0;
+  }
+
+
+  /* add continent page  style start*******************************/
+  
+  .add-continent {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 8px;
+  }
+
+  .button {
+    padding: 8px;
+    font-size: 14px;
+  }
+  /* add continent page  style end*******************************/
+
+  /* package page style starts ****************************** */
+  .packages-table th,
+  .packages-table td {
+    font-size: 0.875rem;
+    /* Adjust font size */
+    padding: 8px;
+    /* Adjust padding */
+  }
+
+  .package-image {
+    width: 80px;
+    /* Smaller image size for small screens */
+  }
+
+  .actions {
+    flex-direction: column;
+    /* Stack actions vertically on small screens */
+  }
+
+  .action-icon {
+    font-size: 1rem;
+    /* Smaller action icon size */
+    margin-bottom: 5px;
+    /* Space between action icons */
+  }
+
+  /* package page style end ****************************** */
+
+}
+
+
+
+@media (max-width: 480px) {
+  .packages-table-container {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .packages-table {
+    min-width: 480px;
+    /* Set a smaller minimum width */
+  }
+
+
+  /* add continent page  style start*******************************/
+  .add-continent {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 6px;
+  }
+
+  .button {
+    padding: 6px;
+    font-size: 12px;
+  }
+  /* add continent page style end*******************************/
+}

@@ -5,6 +5,7 @@
 'use client';
 import React from 'react';
 import './sidebar.css'; // Import the global CSS
+import Link from 'next/link';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   return (
@@ -15,10 +16,11 @@ function Sidebar({ isOpen, toggleSidebar }) {
       <div className="sidebar-content">
         <h2>Admin Sidebar</h2>
         <ul>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Users</a></li>
-          <li><a href="#">Settings</a></li>
-          <li><a href="#">Reports</a></li>
+          <li><Link href="/admin/dashboard" onClick={toggleSidebar}>Dashboard</Link></li>
+          <li><Link href="/admin/packages" onClick={toggleSidebar}>Packages</Link></li>
+          <li><Link href="/admin/users" onClick={toggleSidebar}>Users</Link></li>
+          <li><Link href="/admin/settings" onClick={toggleSidebar}>Settings</Link></li>
+          <li><Link href="/admin/reports" onClick={toggleSidebar}>Reports</Link></li>
           {/* Add more sidebar items as needed */}
         </ul>
       </div>

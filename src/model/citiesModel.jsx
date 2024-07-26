@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import countriestModel from "./countryModel";
+
 
 
 
@@ -20,7 +20,7 @@ let imageSchema = new mongoose.Schema({
 });
 
 // Define the continent schema with references to countries
-const continentSchema = new mongoose.Schema({
+const CitiesSchema = new mongoose.Schema({
     images: [imageSchema],
     title: {
         type: String,
@@ -34,17 +34,11 @@ const continentSchema = new mongoose.Schema({
         type:String,
         required:true
         
-    },
-    all_countries: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'countries',
-        },
-      ],
+    }
+     
      
 });
 
 // Create the continent model
-let continentModel = mongoose.models.continents || mongoose.model('continents', continentSchema);
-
-export default continentModel;
+let CitiesModel = mongoose.models.cities || mongoose.model('cities', CitiesSchema);
+export default CitiesModel;
