@@ -7,7 +7,6 @@ DbConnect();
 
 export async function PUT(req, { params }) {
     let { id } = params;
-
     try {
         // Extract data from formdata
         const payload = await req.formData();
@@ -16,11 +15,18 @@ export async function PUT(req, { params }) {
         const description = payload.get('description');
         const slug = payload.get('slug');
 
+
+        if(!file||!title||!description||!slug){
+            return NextResponse.json({ success: false, message: 'at least one more field is required' });  
+        }
         // Check if continent exists
         let existingContinent = await continentModel.findById(id);
         if (!existingContinent) {
             return NextResponse.json({ success: false, message: 'Continent not found' });
         }
+
+        console.log(`existingContinent`)
+        console.log(existingContinent)
 
         // Update the fields
         existingContinent.title = title || existingContinent.title;
