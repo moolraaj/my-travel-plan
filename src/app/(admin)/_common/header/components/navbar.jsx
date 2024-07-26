@@ -20,6 +20,7 @@ function AdminNavbar() {
     <div>
       
       <div className="navbar">
+        <div className="navbar_inner">
         <div className="navbar-left">
           <button className="toggle-button" onClick={toggleSidebar}>
             <FaBars />
@@ -42,6 +43,7 @@ function AdminNavbar() {
             alt="Profile"
             className="profile-photo"
           />
+        </div>
         </div>
       </div>
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
