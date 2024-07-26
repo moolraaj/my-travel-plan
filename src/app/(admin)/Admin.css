@@ -1,6 +1,6 @@
 .admin_layout{
     max-width: 1520px;
-    margin: 0 auto;
+    margin: 100px auto 50px auto;
     padding: 20px 0px;
 }
 
@@ -8,8 +8,121 @@
 
 
 
+/* Admin Dashboard Styles */
 
-
+/* Overview Component */
+.overview {
+    background-color: #E8E4FF;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .overview h2 {
+    color: #1802A0;
+  }
+  
+  .overview-cards {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .overview-card {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    row-gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: #CF0C2A;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .icon_wrap svg{
+    width: 60px;
+    height: 60px;
+  }
+  .data_wrap p{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  /* Stats Component */
+  .stats {
+    background-color: #E8E4FF;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .stats h2 {
+    color: #1802A0;
+  }
+  
+  .stats-graphs {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .stats-graph {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    margin: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Recent Bookings Component */
+  .recent-bookings {
+    background-color: #E8E4FF;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .recent-bookings h2 {
+    color: #1802A0;
+  }
+  
+  .recent-bookings table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .recent-bookings th, .recent-bookings td {
+    border: 1px solid #1802A0;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .recent-bookings th {
+    background-color: #CF0C2A;
+    color: white;
+  }
+  
+  .recent-bookings td {
+    background-color: white;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .overview-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .overview-card {
+      margin: 10px 0;
+    }
+  }
+  
+  
 
 
 

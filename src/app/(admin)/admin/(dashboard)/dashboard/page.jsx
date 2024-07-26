@@ -1,9 +1,14 @@
 import React from 'react'
+import Overview from '../components/Overview'
+import Stats from '../components/Stats'
+import RecentBookings from '../components/RecentBookings'
 
 function page() {
   return (
-    <div>
-      <h1>Welcome to Admin Dashboard</h1>
+    <div className="dashboard-page">
+      <Overview />
+      <Stats />
+      <RecentBookings />
     </div>
   )
 }
