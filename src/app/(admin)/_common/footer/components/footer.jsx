@@ -12,7 +12,9 @@ function AdminFooter() {
     <div className="footer">
       <div className="footer-content">
         <div className="footer-left">
+        <Link href={`/admin/dashboard`}>
           <img src={logo.src} alt="Logo" className="footer-logo" />
+          </Link>
           <p>© 2024 Admin Dashboard. All Rights Reserved.</p>
         </div>
         <div className="footer-center">
