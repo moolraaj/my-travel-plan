@@ -42,6 +42,99 @@ ul.destinations-list li {
     line-height: 32px;
 }
 
+
+
+.top_banner_destination {
+  display: flex;
+  align-items: center;
+}
+
+.heading_two h2 {
+  color: white;
+  font-size: 50px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.country_inner_cards {
+  padding-top: 80px;
+}
+.country_inner_cards .destination {
+  margin:0px;
+}
+
+
+.explorations {
+  @include main_container;
+  margin: auto;
+  padding-top: 70px;
+  padding-bottom: 60px;
+}
+.heading_two span {
+  color: white;
+}
+
+
+.exploration-item img {
+  width: 100%;
+}
+
+.exploration-details .heading_two span {
+  color: white;
+}
+
+.exploration-details .icon_custom {
+  width: 18px;
+  height: 18px;
+  padding: 16px;
+  border-radius: 50px;
+  background: #CA1E2A;
+}
+
+
+.exploration-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+
+  .exploration-item .explore_l p {
+    font-family: 'Jost';
+    color: $primaryred;
+    margin: 0px !important;
+}
+
+
+
+
+.exploration-item .explore_l p {
+  font-family: 'Jost';
+  color: $primaryred;
+  margin: 0px !important;
+}
+
+.exploration-item .explore_l h3 {
+  margin: 0px;
+  padding-top: 20px;
+  font-family: 'Jost';
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.heading_two {
+  @include main_container;
+  margin: auto;
+}
+
+
+.explorations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 25px;
+  row-gap: 40px;
+}
+
 .paymentmethods h3 {
   color: $primrywhite;
 }
@@ -586,7 +679,10 @@ a.navbar-item {
 
 
 
-
+.country_inner_cards {
+  padding-top: 70px !important;
+  padding-bottom: 100px !important;
+}
 
 
 
@@ -729,6 +825,7 @@ a.navbar-item {
     font-size:30px;
     font-weight:500;
     line-height:43.35px;
+    font-weight: 600 !important;
   }
 }
 
@@ -750,6 +847,10 @@ a.navbar-item {
   font-weight: 500;
 }
 
+
+
+
+
 .top-act-container{
 
   .top-act-duration {
@@ -759,13 +860,16 @@ a.navbar-item {
    
   .top-act-icon {
       .card-icon {
-        background-color: red;
+        background-color:$primaryred;
         padding: 10px;
         border-radius: 50%;
         overflow: visible;
         position: absolute;
-        top: 224px;
-        left: 133px;
+        top: 0px;
+        left: 120px;
+        width: 30px;
+        height: 30px;
+        padding: 18px;
     }
   }
   .top-act-subtitle {
@@ -777,6 +881,7 @@ a.navbar-item {
     font-size:30px;
     font-weight:500;
     line-height:43.35px;
+    margin-bottom: 0px;
   }
 
   .top-act-duration {
@@ -794,20 +899,24 @@ a.navbar-item {
 
   .top-act-Details {
     padding: 10px;
-    color:#000;
+    color: #000;
     text-align: center;
+    height: 200px;
+    margin-top: -105px;
+    position: relative;
+    background-size: cover !important;
+    background-position: center;
   }
 
   .top-act-image {
     width: 100%;
-    height: 250px;
+    height: 310px;
     object-fit: cover;
   }
 
   .top-act-card {
     position: relative;
     width: 320px;
-    max-height: 450px;
     height: 100%;
     border-radius: 5px;
     overflow: hidden;
@@ -821,11 +930,18 @@ a.navbar-item {
     text-decoration: none;
   }
 
+  .image-container-act {
+    height: 370px;
+}
+
+
   .top-act-Details {
     .top-act-country {
       font-size: 25px;
       font-weight: 500;
       line-height: 36.13px;
+      padding-top: 46px;
+      margin-bottom: 10px;
     }
     .top-act-description {
       font-size: 16px;
