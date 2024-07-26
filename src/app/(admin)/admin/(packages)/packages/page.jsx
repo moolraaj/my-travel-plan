@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 function Packages() {
   const [continents, setContinents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -33,9 +34,30 @@ function Packages() {
     router.push('/admin/packages/add-continent');
   };
 
+  const handleUpdateClick = (id) => {
+    router.push(`/admin/packages/update-continent?id=${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this package?')) {
+      try {
+        const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          setContinents(continents.filter(continent => continent._id !== id));
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        setError('Failed to delete package, please try again.');
+      }
+    }
+  };
+
   return (
     <div className="packages">
       <h2>Continents</h2>
+      {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -67,8 +89,8 @@ function Packages() {
                   <td data-label="Countries Count">{continent.countriesCount}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
-                    <FaTrashAlt className="action-icon delete" title="Delete" />
+                    <FaEdit className="action-icon edit" title="Edit" onClick={() => handleUpdateClick(continent._id)} />
+                    <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(continent._id)} />
                   </td>
                 </tr>
               ))
@@ -85,4 +107,5 @@ function Packages() {
 }
 
 export default Packages;
+
 

@@ -7,6 +7,7 @@ import { FaBars, FaBell, FaGlobe, FaSearch } from 'react-icons/fa';
 import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
 import Sidebar from '../../sidebar/components/sidebar';
+import Link from 'next/link';
 
 
 function AdminNavbar() {
@@ -25,7 +26,7 @@ function AdminNavbar() {
           <button className="toggle-button" onClick={toggleSidebar}>
             <FaBars />
           </button>
-          <div className="logo"><img src={logo.src} alt="Logo" /></div>
+          <div className="logo"><Link href={`/admin/dashboard`}><img src={logo.src} alt="Logo" /></Link></div>
         </div>
         <div className="navbar-center">
           <FaSearch className="icon" />
