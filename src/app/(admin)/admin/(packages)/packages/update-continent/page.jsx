@@ -1,20 +1,48 @@
-// /app/(admin)/admin/(packages)/packages/add-continent/page.jsx
-
-
 'use client'
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const AddContinent = () => {
+const UpdateContinent = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const continentId = searchParams.get('id');
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     slug: '',
     file: null,
+    existingImage: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchContinent() {
+      try {
+        const res = await fetch(`/api/v1/continent/${continentId}`);
+        const data = await res.json();
+        
+        if (data.success) {
+          setFormData({
+            title: data.continent.title,
+            description: data.continent.description,
+            slug: data.continent.slug,
+            file: null,
+            existingImage: data.continent.images[0].path,
+          });
+        } else {
+          setError('Failed to fetch continent data.');
+        }
+      } catch (error) {
+        setError('An error occurred while fetching the continent data.');
+      }
+    }
+
+    if (continentId) {
+      fetchContinent();
+    }
+  }, [continentId]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -30,8 +58,8 @@ const AddContinent = () => {
 
     const { title, description, slug, file } = formData;
 
-    if (!title || !description || !slug || !file) {
-      setError('Please fill in all fields and upload an image.');
+    if (!title || !description || !slug) {
+      setError('Please fill in all fields.');
       setIsLoading(false);
       return;
     }
@@ -41,10 +69,12 @@ const AddContinent = () => {
       submissionData.append('title', title);
       submissionData.append('description', description);
       submissionData.append('slug', slug);
-      submissionData.append('file', file);
+      if (file) {
+        submissionData.append('file', file);
+      }
 
-      const res = await fetch('/api/v1/continent/add', {
-        method: 'POST',
+      const res = await fetch(`/api/v1/continent/update/${continentId}`, {
+        method: 'PUT',
         body: submissionData,
       });
 
@@ -63,8 +93,8 @@ const AddContinent = () => {
   };
 
   return (
-    <div className="add-continent">
-      <h2>Add Continent</h2>
+    <div className="update-continent">
+      <h2>Update Continent</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -102,18 +132,24 @@ const AddContinent = () => {
         <div className="form-group">
           <label htmlFor="file">Image</label>
           <input type="file" id="file" name="file" onChange={handleChange} />
-          {formData.file && (
+          {formData.file ? (
             <div className="image-preview">
               <img src={URL.createObjectURL(formData.file)} alt="Preview" />
             </div>
+          ) : (
+            formData.existingImage && (
+              <div className="image-preview">
+                <img src={`/uploads/${formData.existingImage}`} alt="Preview" />
+              </div>
+            )
           )}
         </div>
         <button type="submit" className="button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Add Continent'}
+          {isLoading ? 'Loading...' : 'Update Continent'}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddContinent;
+export default UpdateContinent;
