@@ -2,10 +2,11 @@ import TopActivities from '../activity/Components/top_activities';
 import TopDiscountedActivities from '../activity/Components/top_discounted_activities';
 import TopDestinations from '../activity/Components/Top_destination';
 import LatestNews from '../activity/Components/latest_news_blog';
+import Layout from '@/app/_common/layout/layout';
 
 export default function Home() {
   return (
-
+<Layout>
      <div className='outer_section'>
      <div className='breadcrumbs_section'  style={{ backgroundImage: 'url(/images/europe_img_1.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className='inner-w-container'>
@@ -23,6 +24,7 @@ export default function Home() {
       <TopDiscountedActivities/>
       <TopDestinations/>
       <LatestNews/>
-     </div>      
+     </div>  
+     </Layout>    
   );
 }
