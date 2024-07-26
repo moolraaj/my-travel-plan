@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import CitiesModel from "./citiesModel";
 
 
 // Define the image schema
@@ -32,7 +33,8 @@ const countrySchema = new mongoose.Schema({
         type:String,
         required: [true,'slug is required']  
         
-    },all_cities: [
+    },
+    all_cities: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'cities',

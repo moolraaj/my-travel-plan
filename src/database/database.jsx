@@ -14,7 +14,7 @@ export const DbConnect = async () => {
     }
     
     try {
-        await mongoose.connect('mongodb://0.0.0.0:27017/', {
+        await mongoose.connect(process.env.MONGO_BD_URL, {
             dbName: 'trip-plan',
         });
         console.log('Database connected');
