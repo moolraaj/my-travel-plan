@@ -46,7 +46,7 @@ export async function POST(req) {
             title: title,
             description: description,
             slug: slug,
-            all_cities:[]
+           
         });
 
         // get total result of the continents
