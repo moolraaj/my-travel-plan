@@ -17,29 +17,25 @@ let imageSchema = new mongoose.Schema({
 });
 
 // Define the continent schema with references to countries
-const continentSchema = new mongoose.Schema({
+const countrySchema = new mongoose.Schema({
     images: [imageSchema],
     title: {
         type: String,
-        required: true  
+        required: [true,'title is required']  
     },
     description: {
         type: String,
-        required: true  
+        required: [true,'description is required']   
     },
     slug:{
         type:String,
-        required:true
+        required: [true,'slug is required']  
         
-    },
-    countries: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'countries'
-    }]
+    }
      
 });
 
 // Create the continent model
-let continentModel = mongoose.models.continent || mongoose.model('continent', continentSchema);
+let countriestModel = mongoose.models.countries || mongoose.model('countries', countrySchema);
 
-export default continentModel;
+export default countriestModel;

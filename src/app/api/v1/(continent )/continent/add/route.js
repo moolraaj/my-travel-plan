@@ -1,47 +1,50 @@
 import { DbConnect } from "@/database/database";
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import ContinentModel from "@/model/continentModel"; // Ensure correct import path
 
+import continentModel from "@/model/continentModel";
+import { HandleFileUpload } from "@/helpers/uploadFiles";
+ 
 DbConnect();
+
+
 
 export async function POST(req) {
     try {
-        // Retrieve form data
+        
+        //extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
         const title = payload.get('title');
         const description = payload.get('description');
+        const slug = payload.get('slug');
 
-        // Validate required fields
-        if (!file || !title || !description) {
-            return NextResponse.json({ success: false, message: 'Missing required fields' });
+        // check if slug is already exist
+        let existingSlug=await continentModel.findOne({slug})
+
+        if(existingSlug){
+            return NextResponse.json({ success: false, message: 'slug is already exist' }); 
         }
+       
+        // upload single image
+        const uploadedFile = await HandleFileUpload(file);
 
-        // Process file
-        const bufferData = await file.arrayBuffer();
-        const bufferObject = Buffer.from(bufferData);
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-        await mkdir(uploadsDir, { recursive: true });
-        const filePath = path.join(uploadsDir, file.name);
-        await writeFile(filePath, bufferObject);
-
-        // Create image object
         const imageObject = {
-            name: file.name,
-            ContentType: file.type,
+            name: uploadedFile.name,
+            path: uploadedFile.path,
+            contentType: uploadedFile.contentType,
         };
-
         
-
-        // Create and save new document
-        const continentDocument = new ContinentModel({
+        const continentDocument = new continentModel({
             images: [imageObject],
             title: title,
             description: description,
+            slug: slug,
+            countries:[]
         });
+
+        // get total result of the continents
         const savedDocument = await continentDocument.save();
+
         return NextResponse.json({ success: true, response: savedDocument });
 
     } catch (error) {
