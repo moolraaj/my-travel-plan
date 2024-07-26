@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 // Define the image schema
 let imageSchema = new mongoose.Schema({
     name: {
@@ -31,7 +32,12 @@ const countrySchema = new mongoose.Schema({
         type:String,
         required: [true,'slug is required']  
         
-    }
+    },all_cities: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'cities',
+        },
+      ],
      
 });
 
