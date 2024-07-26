@@ -10,7 +10,7 @@
   overflow-x: hidden;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
-  z-index: 1000;
+  z-index: 99999;
 }
 
 .sidebar.open {
