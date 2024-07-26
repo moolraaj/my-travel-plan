@@ -41,7 +41,7 @@ export async function POST(req) {
             title: title,
             description: description,
         });
-        const savedDocument = await continentDocument.save();+
+        const savedDocument = await continentDocument.save();
         return NextResponse.json({ success: true, response: savedDocument });
 
     } catch (error) {
