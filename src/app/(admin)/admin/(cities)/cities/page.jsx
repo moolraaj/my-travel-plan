@@ -129,7 +129,7 @@ function CityPage() {
         const response = await fetch('/api/v1/cities/get');
         const data = await response.json();
         if (data.success) {
-          setCities(data.results);
+          setCities(data.result);
         }
       } catch (error) {
         console.error('Error fetching cities:', error);
@@ -235,7 +235,7 @@ function CityPage() {
                   </td>
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
-                  <td data-label="Package Count">{city.all_packages ? city.all_packages.length : 0}</td>
+                  <td data-label="Package Count">{city.packagesCount || 0}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />

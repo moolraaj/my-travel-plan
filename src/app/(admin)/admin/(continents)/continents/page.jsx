@@ -121,6 +121,7 @@ function ContinentPage() {
   const [error, setError] = useState('');
   const [selectedContinents, setSelectedContinents] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [validationMessage, setValidationMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -149,13 +150,19 @@ function ContinentPage() {
     if (window.confirm('Are you sure you want to delete the selected continents?')) {
       try {
         for (const id of selectedContinents) {
-          await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+          const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+          const data = await response.json();
+          if (!data.success) {
+            setValidationMessage(data.message);
+            throw new Error(data.message);
+          }
         }
         setContinents(continents.filter(continent => !selectedContinents.includes(continent._id)));
         setSelectedContinents([]);
         setSelectAll(false);
+        setValidationMessage('');
       } catch (error) {
-        setError('Failed to delete continents, please try again.');
+        
       }
     }
   };
@@ -191,6 +198,7 @@ function ContinentPage() {
           <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
         </div>
       )}
+      {validationMessage && <div className="validation-message">{validationMessage}</div>}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <div></div>
@@ -255,3 +263,4 @@ function ContinentPage() {
 }
 
 export default ContinentPage;
+
