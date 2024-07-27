@@ -142,6 +142,15 @@ function ContinentPage() {
     fetchContinents();
   }, []);
 
+  useEffect(() => {
+    if (validationMessage) {
+      const timer = setTimeout(() => {
+        setValidationMessage('');
+      }, 3000);
+      return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
+    }
+  }, [validationMessage]);
+
   const handleAddClick = () => {
     router.push('/admin/continents/add-continent');
   };
@@ -162,7 +171,7 @@ function ContinentPage() {
         setSelectAll(false);
         setValidationMessage('');
       } catch (error) {
-        
+        setError('');
       }
     }
   };
@@ -263,4 +272,5 @@ function ContinentPage() {
 }
 
 export default ContinentPage;
+
 
