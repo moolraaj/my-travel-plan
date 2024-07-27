@@ -30,21 +30,34 @@
 }
 
 .overview-card {
+  position: relative;
   display: flex;
   justify-content: center;
-  column-gap: 20px;
-  row-gap: 10px;
-  flex-wrap: wrap;
   align-items: center;
   background-color: #CF0C2A;
-  color: white;
   padding: 20px;
   border-radius: 8px;
   flex: 1;
   margin: 10px;
   text-align: center;
 }
-
+.overview-card .toggle-btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+}
+.overview-card a{
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  column-gap: 20px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: white;
+}
 .icon_wrap svg {
   width: 60px;
   height: 60px;
@@ -54,6 +67,55 @@
   font-size: 20px;
   font-weight: bold;
 }
+
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-content a{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 10px;
+}
+.toggle-btn {
+  cursor: pointer;
+}
+.toggle-btn svg{
+  width: 20px;
+  height: 20px;
+}
+.popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+.popup ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.popup li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.popup li:hover {
+  background-color: #cf0c2a;
+  color: white;
+}
+
+
+
+
+
+
 
 /* Stats Component */
 .stats {
@@ -124,7 +186,6 @@
   background-color: #E8E4FF;
   border-radius: 8px;
   overflow-x: auto;
-  /* Enables horizontal scrolling */
 }
 
 .packages h2 {
@@ -133,13 +194,36 @@
   margin-bottom: 20px;
 }
 
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.select-all-checkbox {
+  margin-right: 10px;
+}
+.action-bar input[type="checkbox"],
+.packages-table input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.action-bar-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #CF0C2A;
+}
 
 .packages-table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
   min-width: 600px;
-  /* Minimum width to prevent breaking */
 }
 
 .packages-table th,
@@ -175,10 +259,6 @@
 
 .action-icon.edit {
   color: #FFD700;
-}
-
-.action-icon.delete {
-  color: #CF0C2A;
 }
 
 .loading {
@@ -229,6 +309,7 @@
 .floating-plus:hover .tooltip {
   opacity: 1;
 }
+
 
 
 /* Add Continent Page Styles */
@@ -289,7 +370,7 @@
   padding: 5px;
 }
 
-.button {
+.add-continent .button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -302,7 +383,7 @@
   transition: background-color 0.3s;
 }
 
-.button:hover {
+.add-continent .button:hover {
   background-color: #0056b3;
 }
 
@@ -386,6 +467,7 @@
 
 
 @media (max-width: 480px) {
+
   .packages-table-container {
     display: block;
     overflow-x: auto;
@@ -395,7 +477,11 @@
     min-width: 480px;
     /* Set a smaller minimum width */
   }
-
+  .action-bar input[type="checkbox"],
+  .packages-table input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+  }
 
   /* add continent page  style start*******************************/
   .add-continent {

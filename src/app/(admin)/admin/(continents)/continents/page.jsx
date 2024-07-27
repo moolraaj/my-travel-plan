@@ -1,37 +1,37 @@
 
-// // /app/(admin)/admin/(packages)/packages/page.jsx
+// // /app/(admin)/admin/(continents)/continent/page.jsx
 
 // 'use client';
 // import React, { useEffect, useState } from 'react';
 // import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 // import { useRouter } from 'next/navigation';
 
-// function Packages() {
-//   const [packages, setPackages] = useState([]);
+// function ContinentPage() {
+//   const [continents, setContinents] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState('');
 //   const router = useRouter();
 
 //   useEffect(() => {
-//     async function fetchPackages() {
+//     async function fetchContinents() {
 //       try {
-//         const response = await fetch('/api/v1/packages/get');
+//         const response = await fetch('/api/v1/continents/get');
 //         const data = await response.json();
 //         if (data.success) {
-//           setPackages(data.result);
+//           setContinents(data.result);
 //         }
 //       } catch (error) {
-//         console.error('Error fetching Packages:', error);
+//         console.error('Error fetching continents:', error);
 //       } finally {
 //         setLoading(false);
 //       }
 //     }
 
-//     fetchPackages();
+//     fetchContinents();
 //   }, []);
 
 //   const handleAddClick = () => {
-//     router.push('/admin/packages/add-packages');
+//     router.push('/admin/continents/add-continent');
 //   };
 
 
@@ -39,10 +39,10 @@
 //   const handleDelete = async (id) => {
 //     if (window.confirm('Are you sure you want to delete this package?')) {
 //       try {
-//         const response = await fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' });
+//         const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
 //         const data = await response.json();
 //         if (data.success) {
-//           setPackages(packages.filter(packages => packages._id !== id));
+//           setContinents(continents.filter(continent => continent._id !== id));
 //         } else {
 //           throw new Error(data.message);
 //         }
@@ -54,7 +54,7 @@
 
 //   return (
 //     <div className="packages">
-//       <h2>Packages</h2>
+//       <h2>Continents</h2>
 //       {error && <div className="error">{error}</div>}
 //       <div className="packages-table-container">
 //         <div></div>
@@ -74,22 +74,22 @@
 //                 <td colSpan="5" className="loading">Loading...</td>
 //               </tr>
 //             ) : (
-//                 packages.map(packages => (
-//                 <tr key={packages._id}>
+//               continents.map(continent => (
+//                 <tr key={continent._id}>
 //                   <td data-label="Image">
 //                     <img 
-//                       src={`/uploads/${packages.images[0].name}`} 
-//                       alt={packages.title} 
+//                       src={`/uploads/${continent.images[0].name}`} 
+//                       alt={continent.title} 
 //                       className="package-image" 
 //                     />
 //                   </td>
-//                   <td data-label="Title">{packages.title}</td>
-//                   <td data-label="Description">{packages.description}</td>
-//                   <td data-label="Countries Count">{packages.totalPackages}</td>
+//                   <td data-label="Title">{continent.title}</td>
+//                   <td data-label="Description">{continent.description}</td>
+//                   <td data-label="Countries Count">{continent.countriesCount}</td>
 //                   <td data-label="Actions" className="actions">
 //                     <FaEye className="action-icon view" title="View" />
 //                     <FaEdit className="action-icon edit" title="Edit"  />
-//                     <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(packages._id)} />
+//                     <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(continent._id)} />
 //                   </td>
 //                 </tr>
 //               ))
@@ -99,13 +99,14 @@
 //       </div>
 //       <div className="floating-plus" onClick={handleAddClick}>
 //         <FaPlus />
-//         <div className="tooltip">Add package</div>
+//         <div className="tooltip">Add Continent</div>
 //       </div>
 //     </div>
 //   );
 // }
 
-// export default Packages;
+// export default ContinentPage;
+
 
 
 
@@ -114,47 +115,63 @@ import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
-function Packages() {
-  const [packages, setPackages] = useState([]);
+function ContinentPage() {
+  const [continents, setContinents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedPackages, setSelectedPackages] = useState([]);
+  const [selectedContinents, setSelectedContinents] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [validationMessage, setValidationMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchPackages() {
+    async function fetchContinents() {
       try {
-        const response = await fetch('/api/v1/packages/get');
+        const response = await fetch('/api/v1/continents/get');
         const data = await response.json();
         if (data.success) {
-          setPackages(data.result);
+          setContinents(data.result);
         }
       } catch (error) {
-        console.error('Error fetching Packages:', error);
+        console.error('Error fetching continents:', error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchPackages();
+    fetchContinents();
   }, []);
 
+  useEffect(() => {
+    if (validationMessage) {
+      const timer = setTimeout(() => {
+        setValidationMessage('');
+      }, 3000);
+      return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
+    }
+  }, [validationMessage]);
+
   const handleAddClick = () => {
-    router.push('/admin/packages/add-packages');
+    router.push('/admin/continents/add-continent');
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete the selected packages?')) {
+    if (window.confirm('Are you sure you want to delete the selected continents?')) {
       try {
-        for (const id of selectedPackages) {
-          await fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' });
+        for (const id of selectedContinents) {
+          const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+          const data = await response.json();
+          if (!data.success) {
+            setValidationMessage(data.message);
+            throw new Error(data.message);
+          }
         }
-        setPackages(packages.filter(pkg => !selectedPackages.includes(pkg._id)));
-        setSelectedPackages([]);
+        setContinents(continents.filter(continent => !selectedContinents.includes(continent._id)));
+        setSelectedContinents([]);
         setSelectAll(false);
+        setValidationMessage('');
       } catch (error) {
-        setError('Failed to delete packages, please try again.');
+        setError('');
       }
     }
   };
@@ -162,24 +179,24 @@ function Packages() {
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     if (!selectAll) {
-      setSelectedPackages(packages.map(pkg => pkg._id));
+      setSelectedContinents(continents.map(continent => continent._id));
     } else {
-      setSelectedPackages([]);
+      setSelectedContinents([]);
     }
   };
 
   const handleSelect = (id) => {
-    if (selectedPackages.includes(id)) {
-      setSelectedPackages(selectedPackages.filter(pkgId => pkgId !== id));
+    if (selectedContinents.includes(id)) {
+      setSelectedContinents(selectedContinents.filter(continentId => continentId !== id));
     } else {
-      setSelectedPackages([...selectedPackages, id]);
+      setSelectedContinents([...selectedContinents, id]);
     }
   };
 
   return (
     <div className="packages">
-      <h2>Packages</h2>
-      {selectedPackages.length > 0 && (
+      <h2>Continents</h2>
+      {selectedContinents.length > 0 && (
         <div className="action-bar">
           <input
             type="checkbox"
@@ -190,6 +207,7 @@ function Packages() {
           <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
         </div>
       )}
+      {validationMessage && <div className="validation-message">{validationMessage}</div>}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <div></div>
@@ -216,25 +234,25 @@ function Packages() {
                 <td colSpan="6" className="loading">Loading...</td>
               </tr>
             ) : (
-              packages.map(pkg => (
-                <tr key={pkg._id}>
+              continents.map(continent => (
+                <tr key={continent._id}>
                   <td data-label="Select">
                     <input
                       type="checkbox"
-                      checked={selectedPackages.includes(pkg._id)}
-                      onChange={() => handleSelect(pkg._id)}
+                      checked={selectedContinents.includes(continent._id)}
+                      onChange={() => handleSelect(continent._id)}
                     />
                   </td>
                   <td data-label="Image">
                     <img 
-                      src={`/uploads/${pkg.images[0].name}`} 
-                      alt={pkg.title} 
+                      src={`/uploads/${continent.images[0].name}`} 
+                      alt={continent.title} 
                       className="package-image" 
                     />
                   </td>
-                  <td data-label="Title">{pkg.title}</td>
-                  <td data-label="Description">{pkg.description}</td>
-                  <td data-label="Countries Count">{pkg.totalPackages}</td>
+                  <td data-label="Title">{continent.title}</td>
+                  <td data-label="Description">{continent.description}</td>
+                  <td data-label="Countries Count">{continent.countriesCount}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />
@@ -247,10 +265,12 @@ function Packages() {
       </div>
       <div className="floating-plus" onClick={handleAddClick}>
         <FaPlus />
-        <div className="tooltip">Add package</div>
+        <div className="tooltip">Add Continent</div>
       </div>
     </div>
   );
 }
 
-export default Packages;
+export default ContinentPage;
+
+

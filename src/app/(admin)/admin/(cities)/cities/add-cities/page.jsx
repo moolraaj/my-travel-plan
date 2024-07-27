@@ -1,47 +1,20 @@
+// /app/(admin)/admin/(cities)/cities/add-cities/page.jsx
+
 
 'use client'
-import React, { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-
-const UpdateContinent = () => {
+const AddCity = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id');
-
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     slug: '',
     file: null,
-    existingImage: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    async function fetchContinent() {
-      try {
-        const response = await fetch(`/api/v1/continent/get/${id}`);
-        const data = await response.json();
-        if (data.success) {
-          setFormData({
-            title: data.result.title,
-            description: data.result.description,
-            slug: data.result.slug,
-            file: null,
-            existingImage: data.result.images[0].name,
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching continent:', error);
-      }
-    }
-
-    if (id) {
-      fetchContinent();
-    }
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -55,22 +28,22 @@ const UpdateContinent = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!formData.title || !formData.description || !formData.slug) {
-      setError('Please fill in all fields.');
+    const { title, description, slug, file } = formData;
+
+    if (!title || !description || !slug || !file) {
+      setError('Please fill in all fields and upload an image.');
       setIsLoading(false);
       return;
     }
 
     try {
       const submissionData = new FormData();
-      submissionData.append('title', formData.title);
-      submissionData.append('description', formData.description);
-      submissionData.append('slug', formData.slug);
-      if (formData.file) {
-        submissionData.append('file', formData.file);
-      }
+      submissionData.append('title', title);
+      submissionData.append('description', description);
+      submissionData.append('slug', slug);
+      submissionData.append('file', file);
 
-      const res = await fetch(`/api/v1/continent/update/${id}`, {
+      const res = await fetch('/api/v1/city/add', {
         method: 'POST',
         body: submissionData,
       });
@@ -78,7 +51,7 @@ const UpdateContinent = () => {
       const data = await res.json();
 
       if (data.success) {
-        router.push('/admin/packages');
+        router.push('/admin/cities');
       } else {
         setError(data.message || 'An error occurred.');
       }
@@ -90,8 +63,8 @@ const UpdateContinent = () => {
   };
 
   return (
-    <div className="update-continent">
-      <h2>Update Continent</h2>
+    <div className="add-continent">
+      <h2>Add City</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -129,23 +102,18 @@ const UpdateContinent = () => {
         <div className="form-group">
           <label htmlFor="file">Image</label>
           <input type="file" id="file" name="file" onChange={handleChange} />
-          {formData.existingImage && !formData.file && (
-            <div className="image-preview">
-              <img src={`/uploads/${formData.existingImage}`} alt="Existing Preview" />
-            </div>
-          )}
           {formData.file && (
             <div className="image-preview">
-              <img src={URL.createObjectURL(formData.file)} alt="New Preview" />
+              <img src={URL.createObjectURL(formData.file)} alt="Preview" />
             </div>
           )}
         </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Updating...' : 'Update Continent'}
+        <button type="submit" className="button" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Add City'}
         </button>
       </form>
     </div>
   );
 };
 
-export default UpdateContinent;
+export default AddCity;

@@ -1,5 +1,7 @@
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { NextResponse } from 'next/server';
+
 export async function HandleFileUpload(file) {
     const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
     const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
@@ -14,9 +16,14 @@ export async function HandleFileUpload(file) {
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
         return NextResponse.json({ success: false, message: 'Unsupported file type' });
     }
+
+    // Construct the public URL of the uploaded file
+    // const publicUrl = `$/uploads/${sanitizedFileName}`;
+
     return {
         name: sanitizedFileName,
         path: filePath,
         contentType: file.type,
+        // url: publicUrl, // Add the URL of the uploaded file
     };
 }
