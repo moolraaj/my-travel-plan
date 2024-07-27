@@ -185,7 +185,6 @@
   background-color: #E8E4FF;
   border-radius: 8px;
   overflow-x: auto;
-  /* Enables horizontal scrolling */
 }
 
 .packages h2 {
@@ -194,13 +193,36 @@
   margin-bottom: 20px;
 }
 
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.select-all-checkbox {
+  margin-right: 10px;
+}
+.action-bar input[type="checkbox"],
+.packages-table input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.action-bar-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #CF0C2A;
+}
 
 .packages-table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
   min-width: 600px;
-  /* Minimum width to prevent breaking */
 }
 
 .packages-table th,
@@ -236,10 +258,6 @@
 
 .action-icon.edit {
   color: #FFD700;
-}
-
-.action-icon.delete {
-  color: #CF0C2A;
 }
 
 .loading {
@@ -290,6 +308,7 @@
 .floating-plus:hover .tooltip {
   opacity: 1;
 }
+
 
 
 /* Add Continent Page Styles */
@@ -457,7 +476,11 @@
     min-width: 480px;
     /* Set a smaller minimum width */
   }
-
+  .action-bar input[type="checkbox"],
+  .packages-table input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+  }
 
   /* add continent page  style start*******************************/
   .add-continent {
