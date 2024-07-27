@@ -59,6 +59,7 @@ function Packages() {
       <h2>Continents</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
+        <div></div>
         <table className="packages-table">
           <thead>
             <tr>
