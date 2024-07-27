@@ -7,32 +7,29 @@ DbConnect();
 export async function GET(req, { params }) {
     const { slug } = params;
     try {
-        // Fetch the continent by slug and populate all countries, cities, and packages
-        const findSlug = await continentModel.findOne({ slug }).populate({
-            path: 'all_countries', // Populate countries
+        const continent = await continentModel.findOne({ slug }).populate({
+            path: 'all_countries',
             populate: {
-                path: 'all_cities', // Populate cities within each country
+                path: 'all_cities',
                 populate: {
-                    path: 'all_packages', // Populate packages within each city
+                    path: 'all_packages',
                 },
             },
         }).exec();
 
-        if (findSlug) {
-            // Map the result to include details of cities and packages
-            const result = findSlug.all_countries.flatMap(country => ({
+        if (continent) {
+            const result = continent.all_countries.map(country => ({
                 _id: country._id,
                 images: country.images,
                 title: country.title,
                 description: country.description,
                 slug: country.slug,
-
                 cities: country.all_cities.map(city => ({
                     _id: city._id,
                     city_name: city.title,
-                    city_packages_Count: city.all_packages.length,
+                    city_packages_count: city.all_packages.length,
                 })),
-                totalCities: country.all_cities.length,
+                total_cities: country.all_cities.length,
             }));
 
             return NextResponse.json({ success: true, result });
