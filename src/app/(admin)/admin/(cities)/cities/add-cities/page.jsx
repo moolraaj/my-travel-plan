@@ -1,11 +1,11 @@
-// /app/(admin)/admin/(packages)/packages/add-continent/page.jsx
+// /app/(admin)/admin/(cities)/cities/add-cities/page.jsx
 
 
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const AddContinent = () => {
+const AddCity = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
@@ -43,7 +43,7 @@ const AddContinent = () => {
       submissionData.append('slug', slug);
       submissionData.append('file', file);
 
-      const res = await fetch('/api/v1/continent/add', {
+      const res = await fetch('/api/v1/city/add', {
         method: 'POST',
         body: submissionData,
       });
@@ -51,7 +51,7 @@ const AddContinent = () => {
       const data = await res.json();
 
       if (data.success) {
-        router.push('/admin/packages');
+        router.push('/admin/cities');
       } else {
         setError(data.message || 'An error occurred.');
       }
@@ -64,7 +64,7 @@ const AddContinent = () => {
 
   return (
     <div className="add-continent">
-      <h2>Add Continent</h2>
+      <h2>Add City</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -109,11 +109,11 @@ const AddContinent = () => {
           )}
         </div>
         <button type="submit" className="button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Add Continent'}
+          {isLoading ? 'Loading...' : 'Add City'}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddContinent;
+export default AddCity;

@@ -17,6 +17,9 @@ function Sidebar({ isOpen, toggleSidebar }) {
         <h2>Admin Sidebar</h2>
         <ul>
           <li><Link href="/admin/dashboard" onClick={toggleSidebar}>Dashboard</Link></li>
+          <li><Link href="/admin/continents" onClick={toggleSidebar}>Continents</Link></li>
+          <li><Link href="/admin/countries" onClick={toggleSidebar}>Countries</Link></li>
+          <li><Link href="/admin/cities" onClick={toggleSidebar}>Cities</Link></li>
           <li><Link href="/admin/packages" onClick={toggleSidebar}>Packages</Link></li>
           <li><Link href="/admin/users" onClick={toggleSidebar}>Users</Link></li>
           <li><Link href="/admin/settings" onClick={toggleSidebar}>Settings</Link></li>
