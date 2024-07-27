@@ -1,31 +1,49 @@
 import { DbConnect } from "@/database/database";
 import continentModel from "@/model/continentModel";
 import { NextResponse } from "next/server";
- 
 
 DbConnect();
 
-export async function DELETE(req,{params}){
+export async function DELETE(req, { params }) {
     try {
-        let {id}=params
-        let productId={_id:id}
+        const { id } = params;
+        const filterId = { _id: id };
 
-        let isIdExist=await continentModel.findOne(productId)
+        // Find the continent by ID and populate all countries, cities, and packages
+        const continent = await continentModel.findById(id).populate({
+            path: 'all_countries',
+            populate: {
+                path: 'all_cities',
+                populate: {
+                    path: 'all_packages',
+                },
+            },
+        }).exec();
 
-        if(!isIdExist){
-            return NextResponse.json({success:false,message:'continent not found try again'})   
+        if (!continent) {
+            return NextResponse.json({ success: false, message: 'Continent not found' });
         }
-     
-        let product=await continentModel.deleteOne(productId)
 
-        if(!product){
-            return NextResponse.json({success:false,message:'product not found'})
+        // Check if any countries have cities or packages
+        const hasNonEmptyCountries = continent.all_countries.some(country => 
+            country.all_cities.length > 0 || 
+            country.all_cities.some(city => city.all_packages.length > 0)
+        );
 
+        if (hasNonEmptyCountries) {
+            return NextResponse.json({ success: false, message: 'Continent cannot be deleted because it has associated countries, cities, or packages' });
         }
-        return NextResponse.json({success:true,message:'product delete successfully',product})
+
+        // If no countries, cities, or packages are found, proceed with deletion
+        const result = await continentModel.deleteOne(filterId);
+
+        if (result.deletedCount === 0) {
+            return NextResponse.json({ success: false, message: 'Continent not deleted' });
+        }
+
+        return NextResponse.json({ success: true, message: 'Continent deleted successfully' });
     } catch (error) {
-        return NextResponse.json({success:false,message:'error 404'})
-
+        console.error('Error in DELETE handler:', error);
+        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
     }
-
 }
