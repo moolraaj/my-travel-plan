@@ -5,12 +5,13 @@
   left: 0;
   height: 100%;
   width: 250px;
-  background-color: #333;
+  background-color: #2c3e50; /* Darker shade for sidebar background */
   color: white;
   overflow-x: hidden;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
   z-index: 99999;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /* Added shadow for depth */
 }
 
 .sidebar.open {
@@ -24,6 +25,8 @@
 .sidebar h2 {
   margin: 0;
   font-size: 24px;
+  font-weight: bold; /* Added bold text */
+  text-transform: uppercase; /* Capitalized text */
 }
 
 .sidebar ul {
@@ -33,16 +36,25 @@
 
 .sidebar ul li {
   margin: 20px 0;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar ul li a {
   color: white;
   text-decoration: none;
   font-size: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar ul li a:hover {
   text-decoration: underline;
+}
+
+.sidebar-icon {
+  margin-right: 10px; /* Space between icon and text */
+  font-size: 20px; /* Icon size */
 }
 
 /* Close button */
