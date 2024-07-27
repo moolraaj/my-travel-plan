@@ -20,10 +20,10 @@ export async function GET(req,{params}) {
                 title: e.title,
                 description: e.description,
                 slug: e.slug,
+                citiesCount:e.all_cities.length
                 
             }));
 
-            
             return NextResponse.json({ success: true,result });
         } else {
             return NextResponse.json({ success: false, error: 'country not found' });

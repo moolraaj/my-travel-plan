@@ -18,7 +18,7 @@ export async function GET() {
             slug: e.slug,
             countriesCount:e.all_countries.length  
         }))
-        
+
         return NextResponse.json({ success: true,totalResult, result });
     } catch (error) {
         console.error('Error in GET handler:', error);
