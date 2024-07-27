@@ -1,34 +1,43 @@
- 
 import { DbConnect } from "@/database/database";
 import continentModel from "@/model/continentModel";
 import { NextResponse } from "next/server";
 
- DbConnect()
+DbConnect();
 
-export async function GET(req,{params}) {
-
-    let { slug } = params;
+export async function GET(req, { params }) {
+    const { slug } = params;
     try {
-        const findSlug = await continentModel.findOne({ slug }).populate('all_countries').exec();
-     
-                                                 
+        const continent = await continentModel.findOne({ slug }).populate({
+            path: 'all_countries',
+            populate: {
+                path: 'all_cities',
+                populate: {
+                    path: 'all_packages',
+                },
+            },
+        }).exec();
 
-        if (findSlug) {
-            const result = findSlug.all_countries.map(e => ({
-                _id: e._id,      
-                images: e.images,
-                title: e.title,
-                description: e.description,
-                slug: e.slug,
-                
+        if (continent) {
+            const result = continent.all_countries.map(country => ({
+                _id: country._id,
+                images: country.images,
+                title: country.title,
+                description: country.description,
+                slug: country.slug,
+                cities: country.all_cities.map(city => ({
+                    _id: city._id,
+                    city_name: city.title,
+                    city_packages_count: city.all_packages.length,
+                })),
+                total_cities: country.all_cities.length,
             }));
 
-            
-            return NextResponse.json({ success: true,result });
+            return NextResponse.json({ success: true, result });
         } else {
-            return NextResponse.json({ success: false, error: 'country not found' });
+            return NextResponse.json({ success: false, error: 'Continent not found' });
         }
     } catch (error) {
-        return NextResponse.json({ success: false, error: 'Failed to fetch continent and country' });
+        console.error('Error in GET handler:', error);
+        return NextResponse.json({ success: false, error: 'Failed to fetch continent and countries', message: error.message });
     }
 }
