@@ -4,11 +4,13 @@ import { NextResponse } from "next/server";
  
  
 import { DbConnect } from "@/database/database";
-import CitiesModel from "@/model/citiesModel";
+import PackagesModel from "@/model/packagesModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
  
  
-DbConnect()
+ 
+ 
+DbConnect() 
 
 
 
@@ -26,7 +28,7 @@ export async function POST(req) {
 
         // check if slug is already exist
         
-        let existingSlug=await CitiesModel.findOne({slug})
+        let existingSlug=await PackagesModel.findOne({slug})
         if(existingSlug){
             return NextResponse.json({ success: false, message: 'slug is already exist' }); 
         }
@@ -41,19 +43,17 @@ export async function POST(req) {
         };
 
      
-        const response = new CitiesModel({
+        const response = new PackagesModel({
             images: [imageObject],
             title: title,
             description: description,
             slug: slug,
-            all_packages:[]
-           
         });
 
         // get total result of the continents
-        const city = await response.save();
+        const result = await response.save();
 
-        return NextResponse.json({ success: true, city });
+        return NextResponse.json({ success: true, result });
 
     } catch (error) {
         console.error('Error in POST handler:', error);
