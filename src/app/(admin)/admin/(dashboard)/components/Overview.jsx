@@ -2,76 +2,44 @@
 
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 const Overview = () => {
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [currentOption, setCurrentOption] = useState('packages');
-  const [data, setData] = useState(0);
-  const [link, setLink] = useState('/admin/packages');
-  const [icon, setIcon] = useState(faBoxOpen);
-  const [title, setTitle] = useState('Total Packages');
+  const [data, setData] = useState({
+    continents: 0,
+    countries: 0,
+    cities: 0,
+    packages: 0,
+  });
 
-  const fetchData = async (option) => {
-    let url;
-    switch (option) {
-      case 'continents':
-        url = '/api/v1/continents/get';
-        break;
-      case 'countries':
-        url = '/api/v1/countries/get';
-        break;
-      case 'cities':
-        url = '/api/v1/cities/get';
-        break;
-      case 'packages':
-      default:
-        url = '/api/v1/packages/get';
-        break;
-    }
-
+  const fetchData = async (endpoint, key, isPackage = false) => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const result = await response.json();
-      setData(result.totalResults || 0); // Set to 0 if totalResults is undefined or null
+      console.log(`API Response for ${key}:`, result); // Log the API response for debugging
+      setData(prevData => ({
+        ...prevData,
+        [key]: isPackage ? result.result.length : result.totalResults !== undefined ? result.totalResults : 0,
+      }));
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setData(0); // Set to 0 in case of an error
+      console.error(`Error fetching data for ${key}:`, error);
+      setData(prevData => ({
+        ...prevData,
+        [key]: 0,
+      }));
     }
   };
 
   useEffect(() => {
-    fetchData(currentOption);
-  }, [currentOption]);
-
-  const handleOptionClick = (option) => {
-    setData(0); // Reset data before fetching new data
-    setCurrentOption(option);
-    setPopupOpen(false);
-    switch (option) {
-      case 'continents':
-        setLink('/admin/continents');
-        setIcon(faGlobe);
-        setTitle('Total Continents');
-        break;
-      case 'countries':
-        setLink('/admin/countries');
-        setIcon(faFlag);
-        setTitle('Total Countries');
-        break;
-      case 'cities':
-        setLink('/admin/cities');
-        setIcon(faCity);
-        setTitle('Total Cities');
-        break;
-      default:
-        setLink('/admin/packages');
-        setIcon(faBoxOpen);
-        setTitle('Total Packages');
-        break;
-    }
-  };
+    fetchData('/api/v1/continents/get', 'continents');
+    fetchData('/api/v1/countries/get', 'countries');
+    fetchData('/api/v1/cities/get', 'cities');
+    fetchData('/api/v1/packages/get', 'packages', true);
+  }, []);
 
   return (
     <div className="overview">
@@ -100,30 +68,48 @@ const Overview = () => {
           </Link>
         </div>
         <div className="overview-card">
-          <div className="toggle-btn" onClick={() => setPopupOpen(!popupOpen)}>
-            <FontAwesomeIcon icon={faBars} className="menu-icon" />
-          </div>
-          <div className="card-content">
-            <Link href={link}>
-              <div className="icon_wrap">
-                <FontAwesomeIcon icon={icon} className="overview-icon" />
-              </div>
-              <div className="data_wrap">
-                <h3>{title}</h3>
-                <p>{data}</p>
-              </div>
-            </Link>
-          </div>
-          {popupOpen && (
-            <div className="popup">
-              <ul>
-                <li onClick={() => handleOptionClick('continents')}>Continents</li>
-                <li onClick={() => handleOptionClick('countries')}>Countries</li>
-                <li onClick={() => handleOptionClick('cities')}>Cities</li>
-                <li onClick={() => handleOptionClick('packages')}>Packages</li>
-              </ul>
+          <Link href="/admin/continents">
+            <div className="icon_wrap">
+              <FontAwesomeIcon icon={faGlobe} className="overview-icon" />
             </div>
-          )}
+            <div className="data_wrap">
+              <h3>Total Continents</h3>
+              <p>{data.continents}</p>
+            </div>
+          </Link>
+        </div>
+        <div className="overview-card">
+          <Link href="/admin/countries">
+            <div className="icon_wrap">
+              <FontAwesomeIcon icon={faFlag} className="overview-icon" />
+            </div>
+            <div className="data_wrap">
+              <h3>Total Countries</h3>
+              <p>{data.countries}</p>
+            </div>
+          </Link>
+        </div>
+        <div className="overview-card">
+          <Link href="/admin/cities">
+            <div className="icon_wrap">
+              <FontAwesomeIcon icon={faCity} className="overview-icon" />
+            </div>
+            <div className="data_wrap">
+              <h3>Total Cities</h3>
+              <p>{data.cities}</p>
+            </div>
+          </Link>
+        </div>
+        <div className="overview-card">
+          <Link href="/admin/packages">
+            <div className="icon_wrap">
+              <FontAwesomeIcon icon={faBoxOpen} className="overview-icon" />
+            </div>
+            <div className="data_wrap">
+              <h3>Total Packages</h3>
+              <p>{data.packages}</p>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
@@ -131,4 +117,3 @@ const Overview = () => {
 };
 
 export default Overview;
-
