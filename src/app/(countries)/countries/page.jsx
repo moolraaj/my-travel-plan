@@ -9,7 +9,6 @@ export default function page() {
     <div className='coutryinner'>
       <Topbanner/>
       <Countrycard/>
-     
     </div>
     </Layout>
   )
