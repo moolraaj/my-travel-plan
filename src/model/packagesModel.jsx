@@ -16,7 +16,8 @@ let imageSchema = new mongoose.Schema({
     contentType: {
         type: String,
         required: true
-    }
+    },
+    
 });
 
 // Define the continent schema with references to countries
