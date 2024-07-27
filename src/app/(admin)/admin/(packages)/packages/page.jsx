@@ -34,9 +34,7 @@ function Packages() {
     router.push('/admin/packages/add-continent');
   };
 
-  const handleUpdateClick = (id) => {
-    router.push(`/admin/packages/update-continent?id=${id}`);
-  };
+
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this package?')) {
@@ -90,7 +88,7 @@ function Packages() {
                   <td data-label="Countries Count">{continent.countriesCount}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" onClick={() => handleUpdateClick(continent._id)} />
+                    <FaEdit className="action-icon edit" title="Edit"  />
                     <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(continent._id)} />
                   </td>
                 </tr>
