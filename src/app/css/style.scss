@@ -56,6 +56,14 @@ ul.destinations-list li {
   margin-bottom: 10px;
 }
 
+.top-discounted-container {
+  padding-top: 50px;
+}
+
+.top-act-container {
+  padding-top: 40px;
+}
+
 .country_inner_cards {
   padding-top: 80px;
 }
@@ -255,6 +263,18 @@ margin: auto;
   color: white;
   font-size: 16px;
 }
+
+
+h2.top-dest-title {
+  margin-bottom: 0px;
+  text-align: left;
+  font-size: 30px;
+  font-weight: 500;
+  padding-top: 50px;
+}
+
+
+
 
 
 .latest-blog {
@@ -876,6 +896,8 @@ a.navbar-item {
     font-size:16px;
     font-weight:300;
     line-height:24px;
+    margin-top: 0px;
+    margin-bottom: 30px;
   }
   .top-act-title {
     font-size:30px;
@@ -962,11 +984,14 @@ a.navbar-item {
       font-size: 30px;
       font-weight: 500;
       line-height: 43.35px;
+      margin-bottom: 0px;
     }
 
     .top-discounted-subtitle {
       font-size: 16PX;
       font-weight: 300;
+      margin-top: 0px;
+      margin-bottom: 30px;
     }
 
     .top-discounted-gridContainer {
@@ -987,6 +1012,7 @@ a.navbar-item {
       width: 100%;
       max-width: 300px;
       border-radius: 8px;
+      height: 280px;
       overflow: hidden;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s;
@@ -1000,20 +1026,36 @@ a.navbar-item {
       position: absolute;
       top: 10px;
       left: 10px;
-      background: rgba(255, 0, 0, 0.7);
+      background: $primaryred;
       color: white;
-      padding: 5px 10px;
+      padding: 0px 10px;
       border-radius: 4px;
     }
 
     .top-discounted-image {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      z-index: -1;
+
     }
+    .top-discounted-Details {
+      height: 93%;
+      background: #12191d69;
+  }
+
+    h3.top-discounted-country {
+      display: none;
+  }
+    p.top-discounted-description {
+      margin-top: 174px;
+      text-align: center;
+      color: white !important;
+  }
 
     .top-discounted-Details {
       padding: 10px;
-      background: white;
       text-align: left;
     }
 
@@ -1161,9 +1203,12 @@ h2.same_heading {
 }
 
 .top-dest-subtitle {
-  font-size: 1.2rem;
+  font-size: 16px;
   color: #777;
   margin-bottom: 20px;
+  text-align: left;
+  margin-top: 0px;
+  margin-bottom: 30px;
 }
 
 .top-dest-gridContainer {
@@ -1177,6 +1222,7 @@ h2.same_heading {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  width: 24%;
 }
 
 .top-dest-card {
@@ -1184,8 +1230,8 @@ h2.same_heading {
   width: 100%;
   max-width: 300px;
   border-radius: 8px;
+  height: 270px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
 
@@ -1196,17 +1242,23 @@ h2.same_heading {
 .top-dest-image {
   width: 100%;
   height: auto;
+  z-index: -1;
 }
 
 .top-dest-Details {
   padding: 10px;
   background: white;
   text-align: left;
+  color: #000;
+  padding-top: 0px;
+  padding-left: 0px;
+
 }
 
 .top-dest-city {
   font-size: 1.5rem;
   margin: 10px 0;
+  font-weight: 500;
 }
 
 // top destination css end
@@ -1217,6 +1269,31 @@ h2.same_heading {
 .latest-news-container {
   padding: 20px;
   text-align: center;
+  background: #EEF8FF;
+  text-align: left;
+  padding-bottom: 100px;
+}
+
+
+.blog_custom {
+  background: #EEF8FF;
+  padding-top: 20px;
+  padding-bottom: 14px;
+}
+
+.blog_custom {
+  background: #EEF8FF;
+  padding-top: 20px;
+  padding-bottom: 14px;
+}
+
+.blog_custom h2.sameheading {
+  margin-bottom: 0px;
+}
+
+.blog_custom .latest-blog p {
+  margin-top: 0px;
+  margin-bottom: 30px;
 }
 
 .latest-news-title {
