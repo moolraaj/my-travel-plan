@@ -4,6 +4,8 @@ import TopDestinations from '../activity/Components/Top_destination';
 import LatestNews from '../activity/Components/latest_news_blog';
 import Layout from '@/app/_common/layout/layout';
 import Topbanner from '@/app/_common/layout/topbanner';
+import LatestBlog from '@/Components/blogs';
+
 
 export default function Home() {
   return (
@@ -14,7 +16,9 @@ export default function Home() {
       <TopActivities/>
       <TopDiscountedActivities/>
       <TopDestinations/>
-      <LatestNews/>
+     <div className='blog_custom'>
+      <LatestBlog/>
+      </div>
      
      </Layout>    
   );

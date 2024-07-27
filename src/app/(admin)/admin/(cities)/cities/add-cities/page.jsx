@@ -1,26 +1,34 @@
-// /app/(admin)/admin/(packages)/packages/add-continent/page.jsx
+// /app/(admin)/admin/(cities)/cities/add-cities/page.jsx
+
 
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-
-const AddContinent = () => {
+const AddCity = () => {
   const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [slug, setSlug] = useState('');
-  const [file, setFile] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    slug: '',
+    file: null,
+  });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: files ? files[0] : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const { title, description, slug, file } = formData;
 
     if (!title || !description || !slug || !file) {
       setError('Please fill in all fields and upload an image.');
@@ -29,21 +37,21 @@ const AddContinent = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('slug', slug);
-      formData.append('file', file);
+      const submissionData = new FormData();
+      submissionData.append('title', title);
+      submissionData.append('description', description);
+      submissionData.append('slug', slug);
+      submissionData.append('file', file);
 
-      const res = await fetch('/api/v1/continent/add', {
+      const res = await fetch('/api/v1/city/add', {
         method: 'POST',
-        body: formData,
+        body: submissionData,
       });
 
       const data = await res.json();
 
       if (data.success) {
-        router.push('/admin/packages');
+        router.push('/admin/cities');
       } else {
         setError(data.message || 'An error occurred.');
       }
@@ -56,7 +64,7 @@ const AddContinent = () => {
 
   return (
     <div className="add-continent">
-      <h2>Add Continent</h2>
+      <h2>Add City</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -64,8 +72,9 @@ const AddContinent = () => {
           <input
             type="text"
             id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             placeholder="Enter title"
           />
         </div>
@@ -73,8 +82,9 @@ const AddContinent = () => {
           <label htmlFor="description">Description</label>
           <textarea
             id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
             placeholder="Enter description"
           />
         </div>
@@ -83,26 +93,27 @@ const AddContinent = () => {
           <input
             type="text"
             id="slug"
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            name="slug"
+            value={formData.slug}
+            onChange={handleChange}
             placeholder="Enter slug"
           />
         </div>
         <div className="form-group">
           <label htmlFor="file">Image</label>
-          <input type="file" id="file" onChange={handleFileChange} />
-          {file && (
+          <input type="file" id="file" name="file" onChange={handleChange} />
+          {formData.file && (
             <div className="image-preview">
-              <img src={URL.createObjectURL(file)} alt="Preview" />
+              <img src={URL.createObjectURL(formData.file)} alt="Preview" />
             </div>
           )}
         </div>
         <button type="submit" className="button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Add Continent'}
+          {isLoading ? 'Loading...' : 'Add City'}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddContinent;
+export default AddCity;
