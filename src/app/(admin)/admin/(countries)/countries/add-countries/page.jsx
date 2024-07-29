@@ -51,7 +51,7 @@ const AddCountry = () => {
       const data = await res.json();
 
       if (data.success) {
-        router.push('/admin/continents');
+        router.push('/admin/countries');
       } else {
         setError(data.message || 'An error occurred.');
       }
