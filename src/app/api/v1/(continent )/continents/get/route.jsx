@@ -1,11 +1,13 @@
 import { DbConnect } from "@/database/database";
+import { getPaginationParams } from "@/helpers/paginations";
 import continentModel from "@/model/continentModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
 
-export async function GET() {
+export async function GET(req) {
     try {
+        let {page,limit,skip}=getPaginationParams(req)
         // Fetch and populate all continents with their countries, cities, and packages
         const continents = await continentModel.find().populate({
             path: 'all_countries',
@@ -15,7 +17,7 @@ export async function GET() {
                     path: 'all_packages',
                 },
             },
-        }).exec();
+        }).limit(limit).skip(skip).exec();
 
         let totalResults = await continentModel.countDocuments();
 
@@ -42,7 +44,7 @@ export async function GET() {
             total_countries: continent.all_countries.length,
         }));
 
-        return NextResponse.json({ success: true, totalResults, result });
+        return NextResponse.json({ success: true, totalResults, result,page,limit });
     } catch (error) {
         console.error('Error in GET handler:', error);
         return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
