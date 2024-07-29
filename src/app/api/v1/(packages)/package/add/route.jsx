@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid"; // for generating random names
 import { DbConnect } from "@/database/database";
 import PackagesModel from "@/model/packagesModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
@@ -30,11 +29,10 @@ export async function POST(req) {
 
         // Upload single image
         const uploadedFile = await HandleFileUpload(file);
-        const randomName = uuidv4() + uploadedFile.name.substring(uploadedFile.name.lastIndexOf('.'));
-        const imageUrl = `http://${host}/uploads/${randomName}`;
+        const imageUrl = `http://${host}/uploads/${uploadedFile.name}`;
 
         const imageObject = {
-            name: randomName,
+            name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
             imgurl: imageUrl
@@ -45,10 +43,9 @@ export async function POST(req) {
         const galleryImages = [];
         for (const galleryFile of galleryFiles) {
             const uploadedGalleryFile = await HandleFileUpload(galleryFile);
-            const randomGalleryName = uuidv4() + uploadedGalleryFile.name.substring(uploadedGalleryFile.name.lastIndexOf('.'));
-            const galleryImageUrl = `http://${host}/uploads/${randomGalleryName}`;
+            const galleryImageUrl = `http://${host}/uploads/${uploadedGalleryFile.name}`;
             galleryImages.push({
-                name: randomGalleryName,
+                name: uploadedGalleryFile.name,
                 path: uploadedGalleryFile.path,
                 contentType: uploadedGalleryFile.contentType,
                 imgurl: galleryImageUrl
