@@ -1,32 +1,42 @@
 import { DbConnect } from "@/database/database";
+import { getPaginationParams } from "@/helpers/paginations";
 import CitiesModel from "@/model/citiesModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-    let { slug } = params;
-    try {
-        const findBySlug = await CitiesModel.findOne({ slug }).populate('all_packages').exec();
+    const { slug } = params;
+    const { page, limit, skip } = getPaginationParams(req);
 
-        if (!findBySlug) {
+    try {
+        // Fetch the city by slug and populate all packages
+        const city = await CitiesModel.findOne({ slug }).populate('all_packages').exec();
+
+        if (!city) {
             return NextResponse.json({ success: false, message: 'City not found' });
         }
 
+        // Calculate the total number of packages for the city
+        const totalResults = city.all_packages.length;
+
+        // Paginate the packages
+        const paginatedPackages = city.all_packages.slice(skip, skip + limit);
+
+        // Prepare the result object
         const result = {
-            _id: findBySlug._id,
-            images: findBySlug.images,
-            title: findBySlug.title,
-            description: findBySlug.description,
-            slug: findBySlug.slug,
-            packages: findBySlug.all_packages.map(e => ({
-                _id: e._id,
-                // images: e.images,
-                title: e.title,
-                // description: e.description,
-                // slug: e.slug,
+            _id: city._id,
+            title: city.title,
+            totalResults, // Total number of packages
+            packages: paginatedPackages.map(pkg => ({
+                _id: pkg._id,
+                images: pkg.images,
+                title: pkg.title,
+                description: pkg.description,
+                slug: pkg.slug,
             })),
-            packagesCount:findBySlug.all_packages.length
+            page,
+            limit
         };
 
         return NextResponse.json({ success: true, result });
