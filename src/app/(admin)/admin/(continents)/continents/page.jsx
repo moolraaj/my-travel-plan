@@ -155,6 +155,8 @@ function ContinentPage() {
     router.push('/admin/continents/add-continent');
   };
 
+  
+
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete the selected continents?')) {
       try {
@@ -171,7 +173,7 @@ function ContinentPage() {
         setSelectAll(false);
         setValidationMessage('');
       } catch (error) {
-        setError('');
+        setError('Failed to delete continents, please try again.');
       }
     }
   };
@@ -191,6 +193,14 @@ function ContinentPage() {
     } else {
       setSelectedContinents([...selectedContinents, id]);
     }
+  };
+
+  const handleEdit = (id) => {
+    router.push(`/admin/continents/update-continent/${id}`);
+  };
+
+  const handlewPreview = (id) => {
+    router.push(`/admin/continents/preview-continent/${id}`);
   };
 
   return (
@@ -254,8 +264,8 @@ function ContinentPage() {
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countriesCount}</td>
                   <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
+                    <FaEye className="action-icon view" title="View" onClick={() => handlewPreview(continent._id)} />
+                    <FaEdit className="action-icon edit" onClick={() => handleEdit(continent._id)} title="Edit" />
                   </td>
                 </tr>
               ))
@@ -272,5 +282,6 @@ function ContinentPage() {
 }
 
 export default ContinentPage;
+
 
 
