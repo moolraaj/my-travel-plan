@@ -11,8 +11,14 @@ export async function GET(){
         title: e.title,
         description: e.description,
         slug: e.slug,
+        packages:e.all_packages.map((pkg)=>({
+            _id: pkg._id,      
+            title: pkg.title,
+        })),
         packagesCount:e.all_packages.length
     }))
+
+    console.log(data)
     let totalResults=await CitiesModel.countDocuments()
     return NextResponse.json({success:true,totalResults,result})
 }

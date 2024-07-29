@@ -1,14 +1,14 @@
 import { DbConnect } from "@/database/database";
-import countriestModel from "@/model/countryModel";
+import countryModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-    let { slug } = params;
+    let { id } = params;
     try {
         // Fetch the country by slug and populate all cities and their packages
-        const country = await countriestModel.findOne({ slug }).populate({
+        const country = await countryModel.findOne({ _id:id }).populate({
             path: 'all_cities',
             populate: {
                 path: 'all_packages',
@@ -29,9 +29,9 @@ export async function GET(req, { params }) {
             cities: country.all_cities.map(city => ({
                 _id: city._id,
                 title: city.title,
-
-                //comment here map all packages
-
+               
+                //comment to map all packages inside the city
+                
                 // packages: city.all_packages.map(pkg => ({
                 //     _id: pkg._id,
                 //     title: pkg.title,
