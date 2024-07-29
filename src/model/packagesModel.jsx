@@ -1,45 +1,40 @@
 import mongoose from "mongoose";
 
-
-
-
 // Define the image schema
-let imageSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    path: {
-        type: String,
-        required: true
-    },
-    contentType: {
-        type: String,
-        required: true
-    },
-    
+const imageSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    path: { type: String, required: true },
+    contentType: { type: String, required: true },
+    imgurl: { type: String, required: true }  // Added URL field
 });
 
-// Define the continent schema with references to countries
+// Define the itinerary item schema
+const itineraryItemSchema = new mongoose.Schema({
+    day: { type: Number, required: true },
+    location: { type: String, required: true },
+    tourname: { type: String, required: true },
+    itinerary_description: { type: String, required: true }
+});
+
+// Define the meta item schema for inclusions and exclusions
+const metaItemSchema = new mongoose.Schema({
+    description: { type: String, required: true }
+});
+
+// Define the package schema
 const PackagesSchema = new mongoose.Schema({
     images: [imageSchema],
-    title: {
-        type: String,
-        required: true  
-    },
-    description: {
-        type: String,
-        required: true  
-    },
-    slug:{
-        type:String,
-        required:true
-        
-    }
-     
-     
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    slug: { type: String, required: true },
+    package_overview: { type: String, required: true },
+    package_top_summary: { type: String, required: true },
+    package_itinerary: [itineraryItemSchema],
+    packages_galleries: [imageSchema],  
+    packages_include: [metaItemSchema],
+    packages_exclude: [metaItemSchema]
 });
 
-// Create the continent model
-let PackagesModel = mongoose.models.packages || mongoose.model('packages', PackagesSchema);
+// Create the package model
+const PackagesModel = mongoose.models.packages || mongoose.model('packages', PackagesSchema);
 export default PackagesModel;
