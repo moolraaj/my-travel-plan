@@ -271,6 +271,26 @@
   padding: 20px 0;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #1802A0;
+  color: white;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination-info {
+  margin: 0 10px;
+}
+
 /* Floating Plus Icon Styles */
 .floating-plus {
   position: fixed;
