@@ -1,8 +1,9 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 const Overview = () => {
@@ -11,6 +12,13 @@ const Overview = () => {
     countries: 0,
     cities: 0,
     packages: 0,
+  });
+
+  const [loading, setLoading] = useState({
+    continents: true,
+    countries: true,
+    cities: true,
+    packages: true,
   });
 
   const fetchData = async (endpoint, key, isPackage = false) => {
@@ -25,11 +33,19 @@ const Overview = () => {
         ...prevData,
         [key]: isPackage ? result.result.length : result.totalResults !== undefined ? result.totalResults : 0,
       }));
+      setLoading(prevLoading => ({
+        ...prevLoading,
+        [key]: false,
+      }));
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
       setData(prevData => ({
         ...prevData,
         [key]: 0,
+      }));
+      setLoading(prevLoading => ({
+        ...prevLoading,
+        [key]: false,
       }));
     }
   };
@@ -43,7 +59,6 @@ const Overview = () => {
 
   return (
     <div className="overview">
-    <div></div>
       <h2>Dashboard Overview</h2>
       <div className="overview-cards">
         <div className="overview-card">
@@ -75,7 +90,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Continents</h3>
-              <p>{data.continents}</p>
+              <p>{loading.continents ? <FontAwesomeIcon icon={faSpinner} spin /> : data.continents}</p>
             </div>
           </Link>
         </div>
@@ -86,7 +101,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Countries</h3>
-              <p>{data.countries}</p>
+              <p>{loading.countries ? <FontAwesomeIcon icon={faSpinner} spin /> : data.countries}</p>
             </div>
           </Link>
         </div>
@@ -97,7 +112,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Cities</h3>
-              <p>{data.cities}</p>
+              <p>{loading.cities ? <FontAwesomeIcon icon={faSpinner} spin /> : data.cities}</p>
             </div>
           </Link>
         </div>
@@ -108,7 +123,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Packages</h3>
-              <p>{data.packages}</p>
+              <p>{loading.packages ? <FontAwesomeIcon icon={faSpinner} spin /> : data.packages}</p>
             </div>
           </Link>
         </div>

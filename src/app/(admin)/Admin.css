@@ -30,6 +30,7 @@
 }
 
 .overview-card {
+  width: 90%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -49,12 +50,11 @@
 }
 .overview-card a{
   text-decoration: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
-  flex-direction: column;
   column-gap: 20px;
   row-gap: 10px;
-  flex-wrap: wrap;
   align-items: center;
   color: white;
 }
@@ -67,7 +67,10 @@
   font-size: 20px;
   font-weight: bold;
 }
-
+.data_wrap svg{
+  width: 20px;
+  height: 20px;
+}
 
 .card-content {
   display: flex;
