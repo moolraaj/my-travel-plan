@@ -187,6 +187,14 @@ function ContinentPage() {
     }
   };
 
+  const handleEdit = (id) => {
+    router.push(`/admin/continents/update-continent/${id}`);
+  };
+
+  const handlePreview = (id) => {
+    router.push(`/admin/continents/preview-continent/${id}`);
+  };
+
   return (
     <div className="packages">
       <h2>Continents</h2>
@@ -248,8 +256,8 @@ function ContinentPage() {
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
                   <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
+                    <FaEye className="action-icon view" title="View" onClick={()=> handlePreview(continent._id)} />
+                    <FaEdit className="action-icon edit" title="Edit" onClick={()=> handleEdit(continent._id)} />
                   </td>
                 </tr>
               ))
