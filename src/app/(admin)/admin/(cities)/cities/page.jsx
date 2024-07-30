@@ -186,6 +186,14 @@ function CityPage() {
     }
   };
 
+  const handleEdit = (id) => {
+    router.push(`/admin/cities/update-city/${id}`);
+  };
+
+  const handlePreview = (id) => {
+    router.push(`/admin/cities/preview-city/${id}`);
+  };
+
   return (
     <div className="packages">
       <h2>Cities</h2>
@@ -249,8 +257,8 @@ function CityPage() {
                   <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
                   <td data-label="Actions">
                   <span className="actions">
-                    <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
+                    <FaEye className="action-icon view" title="View" onClick={()=> handlePreview(city._id)}/>
+                    <FaEdit className="action-icon edit" title="Edit"  onClick={()=> handleEdit(city._id)}/>
                     </span>
                   </td>
                 </tr>
