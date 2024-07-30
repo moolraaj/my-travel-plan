@@ -247,9 +247,11 @@ function Packages() {
                   <td data-label="Title">{pkg.title}</td>
                   <td data-label="Description">{pkg.description}</td>
                   {/* <td data-label="Countries Count">{pkg.totalCountries}</td> */}
-                  <td data-label="Actions" className="actions">
+                  <td data-label="Actions">
+                  <span className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />
+                    </span>
                   </td>
                 </tr>
               ))
