@@ -1,6 +1,6 @@
 import { DbConnect } from "@/database/database";
-import continentModel from "@/model/continentModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
+import continentModel from "@/model/continentModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
@@ -15,23 +15,21 @@ export async function PUT(req, { params }) {
         const description = payload.get('description');
         const slug = payload.get('slug');
 
-
-        if(!file||!title||!description||!slug){
-            return NextResponse.json({ success: false, message: 'at least one more field is required' });  
+        // Check if all fields are empty
+        if (!file && !title && !description && !slug) {
+            return NextResponse.json({ success: false, message: 'At least one field is required to update' });
         }
-        // Check if continent exists
+
+        // Check if country exists
         let existingContinent = await continentModel.findById(id);
         if (!existingContinent) {
-            return NextResponse.json({ success: false, message: 'Continent not found' });
+            return NextResponse.json({ success: false, message: 'Country not found' });
         }
 
-        console.log(`existingContinent`)
-        console.log(existingContinent)
-
-        // Update the fields
-        existingContinent.title = title || existingContinent.title;
-        existingContinent.description = description || existingContinent.description;
-        existingContinent.slug = slug || existingContinent.slug;
+        // Update the fields if they are provided
+        if (title) existingContinent.title = title;
+        if (description) existingContinent.description = description;
+        if (slug) existingContinent.slug = slug;
 
         // Upload new image if provided
         if (file) {
@@ -45,9 +43,9 @@ export async function PUT(req, { params }) {
         }
 
         // Save the updated document
-        const updatedContinent = await existingContinent.save();
+        const result = await existingContinent.save();
 
-        return NextResponse.json({ success: true, message: 'Continent updated successfully', updatedContinent });
+        return NextResponse.json({ success: true, message: 'Country updated successfully', result });
     } catch (error) {
         console.error('Error in PUT handler:', error);
         return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
