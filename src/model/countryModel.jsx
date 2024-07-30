@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import CitiesModel from "./citiesModel";
 import PackagesModel from "./packagesModel"; 
 
-
 // Define the image schema
 let imageSchema = new mongoose.Schema({
     name: {
@@ -19,7 +18,7 @@ let imageSchema = new mongoose.Schema({
     }
 });
 
-// Define the continent schema with references to countries
+// Define the country schema with references to cities and packages
 const countrySchema = new mongoose.Schema({
     images: [imageSchema],
     title: {
@@ -33,7 +32,6 @@ const countrySchema = new mongoose.Schema({
     slug:{
         type:String,
         required: [true,'slug is required']  
-        
     },
     all_cities: [
         {
@@ -46,11 +44,12 @@ const countrySchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'packages',
         },
-      ]
-     
+    ]
 });
 
-// Create the continent model
-let countriestModel = mongoose.models.countries || mongoose.model('countries', countrySchema);
+ 
 
-export default countriestModel;
+// Create the country model
+let countriesModel = mongoose.models.countries || mongoose.model('countries', countrySchema);
+
+export default countriesModel;
