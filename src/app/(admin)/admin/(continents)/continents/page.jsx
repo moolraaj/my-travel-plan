@@ -120,6 +120,7 @@ function ContinentPage() {
   const [error, setError] = useState('');
   const [selectedContinents, setSelectedContinents] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [validationMessage, setValidationMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -145,6 +146,15 @@ function ContinentPage() {
     fetchContinents();
   }, [currentPage]);
 
+  useEffect(() => {
+    if (validationMessage) {
+      const timer = setTimeout(() => {
+        setValidationMessage('');
+      }, 3000);
+      return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
+    }
+  }, [validationMessage]);
+
   const handleAddClick = () => {
     router.push('/admin/continents/add-continent');
   };
@@ -153,13 +163,25 @@ function ContinentPage() {
     if (window.confirm('Are you sure you want to delete the selected continents?')) {
       try {
         for (const id of selectedContinents) {
-          await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+          const continent = continents.find(cont => cont._id === id);
+          if (continent.countries && continent.countries.length > 0) {
+            setValidationMessage(`Continent ${continent.title} has associated countries and cannot be deleted.`);
+            throw new Error(`Continent ${continent.title} has associated countries and cannot be deleted.`);
+          }
+          // Add similar checks for cities and packages if necessary
+          const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
+          const data = await response.json();
+          if (!data.success) {
+            setValidationMessage(data.message);
+            throw new Error(data.message);
+          }
         }
         setContinents(continents.filter(continent => !selectedContinents.includes(continent._id)));
         setSelectedContinents([]);
         setSelectAll(false);
+        setValidationMessage('');
       } catch (error) {
-        setError('Failed to delete continents, please try again.');
+        setError('');
       }
     }
   };
@@ -209,6 +231,7 @@ function ContinentPage() {
           <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
         </div>
       )}
+      {validationMessage && <div className="validation-message">{validationMessage}</div>}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
@@ -256,8 +279,8 @@ function ContinentPage() {
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
                   <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" onClick={()=> handlePreview(continent._id)} />
-                    <FaEdit className="action-icon edit" title="Edit" onClick={()=> handleEdit(continent._id)} />
+                    <FaEye className="action-icon view" title="View" onClick={() => handlePreview(continent._id)} />
+                    <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(continent._id)} />
                   </td>
                 </tr>
               ))
