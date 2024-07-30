@@ -1,15 +1,12 @@
 import { DbConnect } from "@/database/database";
 import countryModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
-import { getPaginationParams } from "@/helpers/paginations"; // Assuming this helper is for pagination
-import mongoose from "mongoose";
+
 
 DbConnect();
 
 export async function GET(req, { params }) {
     let { id } = params;
-    let { page, limit, skip } = getPaginationParams(req);
-
     try {
         // Fetch the country by id and populate all cities and their packages
         const country = await countryModel.findOne({ _id: id }).populate({

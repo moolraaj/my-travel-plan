@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import countriestModel from "./countryModel";
+import countriesModel from "./countryModel";
+ 
 
 
 
@@ -40,11 +41,13 @@ const continentSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'countries',
         },
-      ],
+    ],
      
 });
 
+
 // Create the continent model
+
 let continentModel = mongoose.models.continents || mongoose.model('continents', continentSchema);
 
 export default continentModel;
