@@ -17,6 +17,7 @@ function UpdateContinent({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Add isLoading state
   const router = useRouter();
   const { id } = params;
 
@@ -45,7 +46,7 @@ function UpdateContinent({ params }) {
 
   useEffect(() => {
     fetchContinent();
-  }, []);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -72,6 +73,7 @@ function UpdateContinent({ params }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); // Start loading
     const formData = new FormData();
     formData.append('title', continent.title);
     formData.append('slug', continent.slug);
@@ -99,6 +101,8 @@ function UpdateContinent({ params }) {
     } catch (error) {
       setError('Error updating continent.');
       setSuccessMessage('');
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -169,7 +173,9 @@ function UpdateContinent({ params }) {
               )}
             </div>
           </label>
-          <button type="submit" className="update-packages-button">Update Continent</button>
+          <button type="submit" className="update-packages-button"  disabled={isLoading} >
+            {isLoading ? 'Updating...' : 'Update Continent'} 
+          </button>
         </form>
       )}
     </div>
@@ -177,3 +183,4 @@ function UpdateContinent({ params }) {
 }
 
 export default UpdateContinent;
+
