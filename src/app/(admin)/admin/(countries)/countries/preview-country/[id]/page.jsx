@@ -67,7 +67,18 @@ function PreviewCountry({ params }) {
             <ul>
               {country.cities.length > 0 ? (
                 country.cities.map((city, index) => (
-                  <li key={index}>{city }</li>
+                 <>
+                 <ul>
+                  <li> ...{index + 1}
+                    <ul>
+                    <li key={index}>{city._id}</li>
+                  <li>{city.title}</li>
+                  <li>{city.city_packages_count}</li>
+                    </ul>
+                  </li>
+                 </ul>
+                  
+                 </>
                 ))
               ) : (
                 <li>No data available</li>

@@ -1,12 +1,12 @@
-// /app/(admin)/admin/(continents)/continents/update-continent/[id]/page.jsx
+// /app/(admin)/admin/(countries)/countries/update-country/[id]/page.jsx
 
 
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-function UpdateContinent({ params }) {
-  const [continent, setContinent] = useState({
+function UpdateCountry({ params }) {
+  const [country, setCountry] = useState({
     title: '',
     slug: '',
     description: '',
@@ -21,15 +21,15 @@ function UpdateContinent({ params }) {
   const router = useRouter();
   const { id } = params;
 
-  async function fetchContinent() {
+  async function fetchCountry() {
     try {
-      const response = await fetch(`/api/v1/continent/get/${id}`);
+      const response = await fetch(`/api/v1/country/get/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       if (data.success) {
-        setContinent({
+        setCountry({
           ...data.result,
           images: data.result.images.map(img => img.name), // Extract image names
         });
@@ -38,14 +38,14 @@ function UpdateContinent({ params }) {
         setError(data.message);
       }
     } catch (error) {
-      setError('Error fetching continent data.');
+      setError('Error fetching Country data.');
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchContinent();
+    fetchCountry();
   }, [id]);
 
   const handleChange = (e) => {
@@ -54,8 +54,8 @@ function UpdateContinent({ params }) {
       const file = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        setContinent((prevContinent) => ({
-          ...prevContinent,
+        setCountry((prevCountry) => ({
+          ...prevCountry,
           imageFile: file,
           imagePreviewUrl: reader.result, // Create a preview URL for the new image
         }));
@@ -64,8 +64,8 @@ function UpdateContinent({ params }) {
         reader.readAsDataURL(file);
       }
     } else {
-      setContinent((prevContinent) => ({
-        ...prevContinent,
+      setCountry((prevCountry) => ({
+        ...prevCountry,
         [name]: value,
       }));
     }
@@ -75,31 +75,31 @@ function UpdateContinent({ params }) {
     event.preventDefault();
     setIsLoading(true); // Start loading
     const formData = new FormData();
-    formData.append('title', continent.title);
-    formData.append('slug', continent.slug);
-    formData.append('description', continent.description);
-    if (continent.imageFile) {
-      formData.append('file', continent.imageFile); // Upload new image
+    formData.append('title', country.title);
+    formData.append('slug', country.slug);
+    formData.append('description', country.description);
+    if (country.imageFile) {
+      formData.append('file', country.imageFile); // Upload new image
     } else {
       formData.append('file', ''); // Ensure file field is included if no new image
     }
 
     try {
-      const response = await fetch(`/api/v1/continent/update/${id}`, {
+      const response = await fetch(`/api/v1/country/update/${id}`, {
         method: 'PUT',
         body: formData,
       });
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('Continent updated successfully!');
+        setSuccessMessage('country updated successfully!');
         setError('');
-        setTimeout(() => router.push('/admin/continents'), 2000); // Redirect after success
+        setTimeout(() => router.push('/admin/countries'), 2000); // Redirect after success
       } else {
         setError(data.message);
         setSuccessMessage('');
       }
     } catch (error) {
-      setError('Error updating continent.');
+      setError('Error updating country.');
       setSuccessMessage('');
     } finally {
       setIsLoading(false); // End loading
@@ -108,7 +108,7 @@ function UpdateContinent({ params }) {
 
   return (
     <div className="update-packages-container">
-      <h2 className="update-packages-heading">Update Continent</h2>
+      <h2 className="update-packages-heading">Update Country</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
       {error && <p className="update-packages-error">{error}</p>}
       {successMessage && <p className="update-packages-success">{successMessage}</p>}
@@ -119,7 +119,7 @@ function UpdateContinent({ params }) {
             <input
               type="text"
               name="title"
-              value={continent.title}
+              value={country.title}
               onChange={handleChange}
               className="update-packages-input"
               required
@@ -130,7 +130,7 @@ function UpdateContinent({ params }) {
             <input
               type="text"
               name="slug"
-              value={continent.slug}
+              value={country.slug}
               onChange={handleChange}
               className="update-packages-input"
               required
@@ -140,7 +140,7 @@ function UpdateContinent({ params }) {
             Description:
             <textarea
               name="description"
-              value={continent.description}
+              value={country.description}
               onChange={handleChange}
               className="update-packages-textarea"
               required
@@ -155,14 +155,14 @@ function UpdateContinent({ params }) {
               className="update-packages-file-input"
             />
             <div className="update-packages-image-preview">
-              {continent.imagePreviewUrl ? (
+              {country.imagePreviewUrl ? (
                 <img
-                  src={continent.imagePreviewUrl}
+                  src={country.imagePreviewUrl}
                   alt="New"
                   className="update-packages-image"
                 />
               ) : (
-                continent.images.map((image, index) => (
+                country.images.map((image, index) => (
                   <img
                     key={index}
                     src={`/uploads/${image}`}
@@ -174,7 +174,7 @@ function UpdateContinent({ params }) {
             </div>
           </label>
           <button type="submit" className="update-packages-button"  disabled={isLoading} >
-            {isLoading ? 'Updating...' : 'Update Continent'} 
+            {isLoading ? 'Updating...' : 'Update Country'} 
           </button>
         </form>
       )}
@@ -182,5 +182,5 @@ function UpdateContinent({ params }) {
   );
 }
 
-export default UpdateContinent;
+export default UpdateCountry;
 

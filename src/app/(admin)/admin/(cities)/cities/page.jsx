@@ -145,7 +145,7 @@ function CityPage() {
   }, [currentPage]);
 
   const handleAddClick = () => {
-    router.push('/admin/cities/add-cities');
+    router.push('/admin/cities/add-city');
   };
 
   const handleDelete = async () => {
