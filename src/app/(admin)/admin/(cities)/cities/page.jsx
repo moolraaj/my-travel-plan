@@ -247,9 +247,11 @@ function CityPage() {
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
                   <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
-                  <td data-label="Actions" className="actions">
+                  <td data-label="Actions">
+                  <span className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />
+                    </span>
                   </td>
                 </tr>
               ))

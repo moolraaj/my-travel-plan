@@ -39,7 +39,7 @@ const Navbar = () => {
           </button>
         </div>
         <div className={`navbar-menu ${isOpen ? 'active' : ''}`}>
-          <Link href={"/holidays"} className="navbar-item">
+          <Link href={"/"} className="navbar-item">
             <img src={holiday.src} alt="Holidays" />
             Holidays
           </Link>
