@@ -109,7 +109,6 @@
 
 
 
-
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
@@ -121,16 +120,20 @@ function ContinentPage() {
   const [error, setError] = useState('');
   const [selectedContinents, setSelectedContinents] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [validationMessage, setValidationMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+  const [itemsPerPage] = useState(4); // Number of items per page
+  const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
   useEffect(() => {
     async function fetchContinents() {
       try {
-        const response = await fetch('/api/v1/continents/get');
+        const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
         const data = await response.json();
         if (data.success) {
           setContinents(data.result);
+          setTotalResults(data.totalResults); // Set totalResults from API
         }
       } catch (error) {
         console.error('Error fetching continents:', error);
@@ -140,38 +143,21 @@ function ContinentPage() {
     }
 
     fetchContinents();
-  }, []);
-
-  useEffect(() => {
-    if (validationMessage) {
-      const timer = setTimeout(() => {
-        setValidationMessage('');
-      }, 3000);
-      return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
-    }
-  }, [validationMessage]);
+  }, [currentPage]);
 
   const handleAddClick = () => {
     router.push('/admin/continents/add-continent');
   };
 
-  
-
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete the selected continents?')) {
       try {
         for (const id of selectedContinents) {
-          const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
-          const data = await response.json();
-          if (!data.success) {
-            setValidationMessage(data.message);
-            throw new Error(data.message);
-          }
+          await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
         }
         setContinents(continents.filter(continent => !selectedContinents.includes(continent._id)));
         setSelectedContinents([]);
         setSelectAll(false);
-        setValidationMessage('');
       } catch (error) {
         setError('Failed to delete continents, please try again.');
       }
@@ -195,12 +181,10 @@ function ContinentPage() {
     }
   };
 
-  const handleEdit = (id) => {
-    router.push(`/admin/continents/update-continent/${id}`);
-  };
-
-  const handlewPreview = (id) => {
-    router.push(`/admin/continents/preview-continent/${id}`);
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
@@ -217,10 +201,8 @@ function ContinentPage() {
           <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
         </div>
       )}
-      {validationMessage && <div className="validation-message">{validationMessage}</div>}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
-        <div></div>
         <table className="packages-table">
           <thead>
             <tr>
@@ -242,7 +224,7 @@ function ContinentPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="loading">Loading...</td>
+                <td colSpan="7" className="loading">Loading...</td>
               </tr>
             ) : (
               continents.map(continent => (
@@ -254,7 +236,6 @@ function ContinentPage() {
                       onChange={() => handleSelect(continent._id)}
                     />
                   </td>
-                  
                   <td data-label="Image">
                     <img 
                       src={`/uploads/${continent.images[0].name}`} 
@@ -262,19 +243,50 @@ function ContinentPage() {
                       className="package-image" 
                     />
                   </td>
-                  <td data-label="id">{continent._id}</td>
+                  <td data-label="ID">{continent._id}</td>
                   <td data-label="Title">{continent.title}</td>
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
                   <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" onClick={() => handlewPreview(continent._id)} />
-                    <FaEdit className="action-icon edit" onClick={() => handleEdit(continent._id)} title="Edit" />
+                    <FaEye className="action-icon view" title="View" />
+                    <FaEdit className="action-icon edit" title="Edit" />
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+      </div>
+      <div className="pagination">
+        <button 
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          {'<<'}
+        </button>
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          {'<'}
+        </button>
+        <span className="pagination-info">Page {currentPage} of {totalPages}</span>
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          {'>'}
+        </button>
+        <button 
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          {'>>'}
+        </button>
       </div>
       <div className="floating-plus" onClick={handleAddClick}>
         <FaPlus />
@@ -285,6 +297,3 @@ function ContinentPage() {
 }
 
 export default ContinentPage;
-
-
-

@@ -110,8 +110,6 @@
 
 
 
-
-
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
@@ -123,15 +121,20 @@ function CountryPage() {
   const [error, setError] = useState('');
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+  const [itemsPerPage] = useState(4); // Number of items per page
+  const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
   useEffect(() => {
     async function fetchCountries() {
       try {
-        const response = await fetch('/api/v1/countries/get');
+        const response = await fetch(`/api/v1/countries/get?page=${currentPage}&limit=${itemsPerPage}`);
         const data = await response.json();
         if (data.success) {
           setCountries(data.result);
+          setTotalResults(data.totalResults); // Set totalResults from API
         }
       } catch (error) {
         console.error('Error fetching countries:', error);
@@ -141,10 +144,10 @@ function CountryPage() {
     }
 
     fetchCountries();
-  }, []);
+  }, [currentPage]);
 
   const handleAddClick = () => {
-    router.push('/admin/countries/add-countries');
+    router.push('/admin/countries/add-country');
   };
 
   const handleDelete = async () => {
@@ -179,6 +182,12 @@ function CountryPage() {
     }
   };
 
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <div className="packages">
       <h2>Countries</h2>
@@ -195,7 +204,6 @@ function CountryPage() {
       )}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
-        <div></div>
         <table className="packages-table">
           <thead>
             <tr>
@@ -210,14 +218,14 @@ function CountryPage() {
               <th>ID</th>
               <th>Title</th>
               <th>Description</th>
-              <th>City Count</th>
+              <th>Cities Count</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="loading">Loading...</td>
+                <td colSpan="7" className="loading">Loading...</td>
               </tr>
             ) : (
               countries.map(country => (
@@ -236,10 +244,10 @@ function CountryPage() {
                       className="package-image" 
                     />
                   </td>
-                  <td data-label="id">{country._id}</td>
+                  <td data-label="ID">{country._id}</td>
                   <td data-label="Title">{country.title}</td>
                   <td data-label="Description">{country.description}</td>
-                  <td data-label="Countries Count">{country.cities ? country.cities.length : 0}</td>
+                  <td data-label="Cities Count">{country.cities ? country.cities.length : 0}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />
@@ -250,9 +258,40 @@ function CountryPage() {
           </tbody>
         </table>
       </div>
+      <div className="pagination">
+        <button 
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          {'<<'}
+        </button>
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          {'<'}
+        </button>
+        <span className="pagination-info">Page {currentPage} of {totalPages}</span>
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          {'>'}
+        </button>
+        <button 
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          {'>>'}
+        </button>
+      </div>
       <div className="floating-plus" onClick={handleAddClick}>
         <FaPlus />
-        <div className="tooltip">Add Countries</div>
+        <div className="tooltip">Add Country</div>
       </div>
     </div>
   );
