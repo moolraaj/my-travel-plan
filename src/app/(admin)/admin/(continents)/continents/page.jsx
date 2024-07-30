@@ -150,6 +150,7 @@ function ContinentPage() {
     if (validationMessage) {
       const timer = setTimeout(() => {
         setValidationMessage('');
+        setSelectedContinents([]);
       }, 3000);
       return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
     }
@@ -167,6 +168,7 @@ function ContinentPage() {
           if (continent.countries && continent.countries.length > 0) {
             setValidationMessage(`Continent ${continent.title} has associated countries and cannot be deleted.`);
             throw new Error(`Continent ${continent.title} has associated countries and cannot be deleted.`);
+            
           }
           // Add similar checks for cities and packages if necessary
           const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
