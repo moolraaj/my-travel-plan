@@ -16,30 +16,37 @@ function UpdateContinent({ params }) {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
-  const { id } = params; // Get the ID from URL parameters
+  const { id } = params;  
+
+ 
+
+  async function fetchContinent() {
+    try {
+      const response = await fetch(`/api/v1/continent/get/${id}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      if (data.success) {
+        setContinent(data.result);
+        console.log(`data`)
+        console.log(data)
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      setError('Error fetching continent data.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+
 
   useEffect(() => {
-    async function fetchContinent() {
-      try {
-        const response = await fetch(`/api/v1/continent/get/${id}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data.success) {
-          setContinent(data.result);
-        } else {
-          setError(data.message);
-        }
-      } catch (error) {
-        setError('Error fetching continent data.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchContinent();
-  }, [id]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
