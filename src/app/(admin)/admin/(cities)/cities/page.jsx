@@ -214,6 +214,7 @@ function CityPage() {
                 />
               </th>
               <th>Image</th>
+              <th>ID</th>
               <th>Title</th>
               <th>Description</th>
               <th>Package Count</th>
@@ -242,9 +243,10 @@ function CityPage() {
                       className="package-image" 
                     />
                   </td>
+                  <td data-label="id">{city._id}</td>
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
-                  <td data-label="Package Count">{city.packagesCount || 0}</td>
+                  <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />

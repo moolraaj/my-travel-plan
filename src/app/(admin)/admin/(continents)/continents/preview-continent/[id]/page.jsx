@@ -5,90 +5,74 @@
 import React, { useEffect, useState } from 'react';
 
 function PreviewContinent({ params }) {
+
+  const {id} = params;
   const [continent, setContinent] = useState({
     title: '',
-    slug: '',
     description: '',
+    slug: '',
     images: [],
-    countries: [],
-    total_countries: 0,
+    all_countries: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const { id } = params;
+  async function fetchContinent() {
+    try {
+      const response = await fetch(`/api/v1/continent/get/${id}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      if (data.success) {
+        setContinent(data.result);
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      setError('Error fetching continent data.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchContinent() {
-      try {
-        const response = await fetch(`/api/v1/continent/get/${id}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data.success) {
-          setContinent(data.result);
-        } else {
-          setError(data.message);
-        }
-      } catch (error) {
-        setError('Error fetching continent data.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchContinent();
   }, [id]);
 
   return (
     <div className="preview-continent-container">
-      <h1 className="preview-continent-heading">Preview Continent</h1>
-      {loading && <p className="preview-continent-loading">Loading...</p>}
-      {error && <p className="preview-continent-error">{error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
       {!loading && !error && (
-        <div className="preview-continent-content">
-          <h2 className="preview-continent-title">{continent.title}</h2>
-          <p className="preview-continent-slug">Slug: {continent.slug}</p>
-          <p className="preview-continent-description">{continent.description}</p>
-          {continent.images.map((image, index) => (
-            <img
-              key={index}
-              src={`/uploads/${image}`}
-              alt={continent.title}
-              className="preview-continent-image"
-            />
-          ))}
-          <div className="preview-continent-countries">
-            <h3>Total Countries: {continent.total_countries}</h3>
-            {continent.countries.map((country, index) => (
-              <div key={index} className="preview-country">
-                <h4>{country.title}</h4>
-                <p>Slug: {country.slug}</p>
-                <p>Description: {country.description}</p>
-                {country.images.map((image, imgIndex) => (
-                  <img
-                    key={imgIndex}
-                    src={`/uploads/${image}`}
-                    alt={country.title}
-                    className="preview-country-image"
-                  />
-                ))}
-                <h5>Cities ({country.totalCities}):</h5>
-                <ul>
-                  {country.cities.map((city) => (
-                    <li key={city._id}>
-                      {city.city_name} - Packages: {city.city_packages_count}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        <>
+          <h2> <strong>Continent Name:</strong>  {continent.title}</h2>
+          <p><strong>Continent Description:</strong> {continent.description}</p>
+          <p><strong>Slug:</strong> {continent.slug}</p>
+          <div className="preview-continent-images">
+            {continent.images.map((image, index) => (
+              <img
+                key={index}
+                src={`/uploads/${image.name}`}
+                alt={image.name}
+                className="preview-continent-image"
+              />
+              
             ))}
           </div>
-        </div>
+          <div className="preview-continent-countries">
+          <h3>Countries: {continent.all_countries? continent.all_countries.length : 0}</h3>
+            <ul>
+              {continent.all_countries.map((country, index) => (
+                <li key={index}>{country}</li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </div>
   );
 }
 
 export default PreviewContinent;
+

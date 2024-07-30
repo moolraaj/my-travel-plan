@@ -204,6 +204,7 @@ function Packages() {
                 />
               </th>
               <th>Image</th>
+              <th>ID</th>
               <th>Title</th>
               <th>Description</th>
               <th>Countries Count</th>
@@ -232,6 +233,7 @@ function Packages() {
                       className="package-image" 
                     />
                   </td>
+                  <td data-label="id">{pkg._id}</td>
                   <td data-label="Title">{pkg.title}</td>
                   <td data-label="Description">{pkg.description}</td>
                   <td data-label="Countries Count">{pkg.totalPackages}</td>
