@@ -1,5 +1,6 @@
 // /app/(admin)/admin/(continents)/continents/update-continent/[id]/page.jsx
 
+
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,16 +10,15 @@ function UpdateContinent({ params }) {
     title: '',
     slug: '',
     description: '',
-    image: '', // This will hold the URL/path of the current image
+    images: [], // This will hold the current image list
     imageFile: null, // This will hold the new image file
+    imagePreviewUrl: '', // This will hold the preview URL of the new image
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
-  const { id } = params;  
-
- 
+  const { id } = params;
 
   async function fetchContinent() {
     try {
@@ -28,9 +28,11 @@ function UpdateContinent({ params }) {
       }
       const data = await response.json();
       if (data.success) {
-        setContinent(data.result);
-        console.log(`data`)
-        console.log(data)
+        setContinent({
+          ...data.result,
+          images: data.result.images.map(img => img.name), // Extract image names
+        });
+        console.log('Data:', data);
       } else {
         setError(data.message);
       }
@@ -41,9 +43,6 @@ function UpdateContinent({ params }) {
     }
   }
 
-
-
-
   useEffect(() => {
     fetchContinent();
   }, []);
@@ -51,10 +50,18 @@ function UpdateContinent({ params }) {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setContinent((prevContinent) => ({
-        ...prevContinent,
-        imageFile: files[0], // Store the file for upload
-      }));
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setContinent((prevContinent) => ({
+          ...prevContinent,
+          imageFile: file,
+          imagePreviewUrl: reader.result, // Create a preview URL for the new image
+        }));
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     } else {
       setContinent((prevContinent) => ({
         ...prevContinent,
@@ -143,11 +150,24 @@ function UpdateContinent({ params }) {
               onChange={handleChange}
               className="update-packages-file-input"
             />
-            {continent.image && (
-              <div className="update-packages-image-preview">
-                <img src={`/uploads/${continent.image}`} alt="Current" className="update-packages-image" />
-              </div>
-            )}
+            <div className="update-packages-image-preview">
+              {continent.imagePreviewUrl ? (
+                <img
+                  src={continent.imagePreviewUrl}
+                  alt="New"
+                  className="update-packages-image"
+                />
+              ) : (
+                continent.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`/uploads/${image}`}
+                    alt={`Current ${image}`}
+                    className="update-packages-image"
+                  />
+                ))
+              )}
+            </div>
           </label>
           <button type="submit" className="update-packages-button">Update Continent</button>
         </form>
@@ -157,5 +177,3 @@ function UpdateContinent({ params }) {
 }
 
 export default UpdateContinent;
-
-

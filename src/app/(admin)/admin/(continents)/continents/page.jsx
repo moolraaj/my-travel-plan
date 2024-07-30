@@ -232,6 +232,7 @@ function ContinentPage() {
                 />
               </th>
               <th>Image</th>
+              <th>ID</th>
               <th>Title</th>
               <th>Description</th>
               <th>Countries Count</th>
@@ -253,6 +254,7 @@ function ContinentPage() {
                       onChange={() => handleSelect(continent._id)}
                     />
                   </td>
+                  
                   <td data-label="Image">
                     <img 
                       src={`/uploads/${continent.images[0].name}`} 
@@ -260,9 +262,10 @@ function ContinentPage() {
                       className="package-image" 
                     />
                   </td>
+                  <td data-label="id">{continent._id}</td>
                   <td data-label="Title">{continent.title}</td>
                   <td data-label="Description">{continent.description}</td>
-                  <td data-label="Countries Count">{continent.countriesCount}</td>
+                  <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" onClick={() => handlewPreview(continent._id)} />
                     <FaEdit className="action-icon edit" onClick={() => handleEdit(continent._id)} title="Edit" />

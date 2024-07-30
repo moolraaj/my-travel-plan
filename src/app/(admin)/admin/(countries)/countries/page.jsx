@@ -207,6 +207,7 @@ function CountryPage() {
                 />
               </th>
               <th>Image</th>
+              <th>ID</th>
               <th>Title</th>
               <th>Description</th>
               <th>City Count</th>
@@ -235,9 +236,10 @@ function CountryPage() {
                       className="package-image" 
                     />
                   </td>
+                  <td data-label="id">{country._id}</td>
                   <td data-label="Title">{country.title}</td>
                   <td data-label="Description">{country.description}</td>
-                  <td data-label="Countries Count">{country.citiesCount}</td>
+                  <td data-label="Countries Count">{country.cities ? country.cities.length : 0}</td>
                   <td data-label="Actions" className="actions">
                     <FaEye className="action-icon view" title="View" />
                     <FaEdit className="action-icon edit" title="Edit" />
