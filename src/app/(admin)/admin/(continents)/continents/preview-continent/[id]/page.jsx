@@ -5,8 +5,7 @@
 import React, { useEffect, useState } from 'react';
 
 function PreviewContinent({ params }) {
-
-  const {id} = params;
+  const { id } = params;
   const [continent, setContinent] = useState({
     title: '',
     description: '',
@@ -46,26 +45,33 @@ function PreviewContinent({ params }) {
       {error && <p>{error}</p>}
       {!loading && !error && (
         <>
-          <h2> <strong>Continent Name:</strong>  {continent.title}</h2>
+          <h2><strong>Continent Name:</strong> {continent.title}</h2>
           <p><strong>Continent Description:</strong> {continent.description}</p>
           <p><strong>Slug:</strong> {continent.slug}</p>
           <div className="preview-continent-images">
-            {continent.images.map((image, index) => (
-              <img
-                key={index}
-                src={`/uploads/${image.name}`}
-                alt={image.name}
-                className="preview-continent-image"
-              />
-              
-            ))}
+            {continent.images.length > 0 ? (
+              continent.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={`/uploads/${image.name}`}
+                  alt={image.name}
+                  className="preview-continent-image"
+                />
+              ))
+            ) : (
+              <p>No images available</p>
+            )}
           </div>
           <div className="preview-continent-countries">
-          <h3>Countries: {continent.all_countries? continent.all_countries.length : 0}</h3>
+            <h3>Countries: {continent.all_countries.length > 0 ? continent.all_countries.length : 0}</h3>
             <ul>
-              {continent.all_countries.map((country, index) => (
-                <li key={index}>{country}</li>
-              ))}
+              {continent.all_countries.length > 0 ? (
+                continent.all_countries.map((country, index) => (
+                  <li key={index}>{country }</li>
+                ))
+              ) : (
+                <li>No data available</li>
+              )}
             </ul>
           </div>
         </>
@@ -75,4 +81,5 @@ function PreviewContinent({ params }) {
 }
 
 export default PreviewContinent;
+
 
