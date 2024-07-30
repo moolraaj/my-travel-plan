@@ -280,9 +280,11 @@ function ContinentPage() {
                   <td data-label="Title">{continent.title}</td>
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
-                  <td data-label="Actions" className="actions">
+                  <td data-label="Actions" >
+                    <span className="actions">
                     <FaEye className="action-icon view" title="View" onClick={() => handlePreview(continent._id)} />
                     <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(continent._id)} />
+                    </span>
                   </td>
                 </tr>
               ))
