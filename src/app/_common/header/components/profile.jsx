@@ -10,7 +10,7 @@ const ContactUs = () => {
       <div className="icon-container">
         <FontAwesomeIcon icon={faUser} className="user-icon" />
       </div>
-      <button className="contact-button">Contact Us</button>
+      <button className="contact-button"><a href='/contact-us'>Contact Us</a></button>
     </div>
   );
 };
