@@ -46,7 +46,7 @@ export async function POST(req) {
         };
 
         // Handle multiple gallery images
-        const galleryFiles = payload.getAll('gallery_files'); // assuming 'gallery_files' is used for multiple images
+        const galleryFiles = payload.getAll('gallery_files'); 
         const galleryImages = [];
         for (const galleryFile of galleryFiles) {
             const uploadedGalleryFile = await HandleFileUpload(galleryFile, host);
