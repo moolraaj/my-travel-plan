@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -23,16 +22,36 @@ const Overview = () => {
 
   const fetchData = async (endpoint, key, isPackage = false) => {
     try {
-      const response = await fetch(endpoint);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      let result = [];
+      let page = 1;
+      const limit = 1000; // Adjust the limit according to your API
+
+      while (true) {
+        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (isPackage) {
+          result = result.concat(data.result);
+          if (data.result.length < limit) break; // No more pages
+        } else {
+          setData(prevData => ({
+            ...prevData,
+            [key]: data.totalResults !== undefined ? data.totalResults : 0,
+          }));
+          break;
+        }
+        page += 1;
       }
-      const result = await response.json();
-      console.log(`API Response for ${key}:`, result); // Log the API response for debugging
-      setData(prevData => ({
-        ...prevData,
-        [key]: isPackage ? result.result.length : result.totalResults !== undefined ? result.totalResults : 0,
-      }));
+
+      if (isPackage) {
+        setData(prevData => ({
+          ...prevData,
+          [key]: result.length,
+        }));
+      }
+
       setLoading(prevLoading => ({
         ...prevLoading,
         [key]: false,
