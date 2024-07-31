@@ -8,7 +8,7 @@ export default function Holiday() {
   return (
     <div className="holiday_container" style={{ backgroundImage: `url(${formbg.src})`}}>
       <div className="image-container">
-        <Image src={indigoImage} alt="Indigo Airplane" layout="responsive" />
+        <img src={indigoImage.src} alt="Indigo Airplane" layout="responsive" />
       </div>
       <div className="text-container">
         <h2>How It Works</h2>
