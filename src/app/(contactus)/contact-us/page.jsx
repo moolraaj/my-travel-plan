@@ -1,9 +1,10 @@
 import AddressDetail from '../components/address_detail';
 import Layout from '@/app/_common/layout/layout';
-import ContactForm from '../Components/contactForm';
-import Map from '../Components/map';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import Map from '../components/map';
+import ContactForm from '../components/contactForm';
 export default function contact() {
   return (
 <Layout>
@@ -29,11 +30,11 @@ export default function contact() {
         </div>
         <div className='form_container' style={{ backgroundImage: 'url(/images/tourist.png)', backgroundSize: '568px', backgroundPosition: 'right bottom', backgroundRepeat: 'no-repeat' }}>
           <div className='explorations-container'>
-            <ContactForm />
+          <ContactForm/>
           </div>
         </div>
         <div className='explorations-container'>
-          <Map />
+           <Map/>
         </div>
       </div>
 

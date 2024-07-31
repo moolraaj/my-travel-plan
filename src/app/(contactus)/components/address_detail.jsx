@@ -9,8 +9,8 @@ const AddressDetail = () => {
   <div className="address_container">
     <div className="address_card">
       <div className="icon">
-      <Image
-        src={Image1} 
+      <img
+        src={Image1.src} 
         alt="map" 
       />
       </div>
@@ -21,8 +21,8 @@ const AddressDetail = () => {
     </div>
     <div className="address_card">
       <div className="icon">
-      <Image
-        src={Image2} 
+      <img
+        src={Image2.src} 
         alt="phone" 
       />
       </div>
@@ -34,8 +34,8 @@ const AddressDetail = () => {
     </div>
     <div className="address_card">
       <div className="icon">
-      <Image
-        src={Image3} 
+      <img
+        src={Image3.src} 
         alt="office-timming" 
       />
       </div>
