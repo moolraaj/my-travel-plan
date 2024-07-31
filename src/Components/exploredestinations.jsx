@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image';
+import exploretheme from '../app/assets/home_images/theme-destination.png';
 
 const ExploreDestinations = () => {
   const destinations = [
@@ -12,24 +13,27 @@ const ExploreDestinations = () => {
   ];
 
   return (
-    <div className="explore-destinations">
-      <h2 className='same_heading'>Explore Destinations By Theme</h2>
-      <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
-      <div className="destinations-container-countries">
-        {destinations.map((destination, index) => (
-          <div key={index} className="destination">
-            <Image
-              src={destination.imgSrc}
-              alt={destination.label}
-              width={100}
-              height={100}
-              className="destination-image"
-            />
-            <p>{destination.label}</p>
-          </div>
-        ))}
+    <div className='explore-theme-destination' style={{ backgroundImage: `url(${exploretheme.src})`}}>
+      <div className="explore-destinations">
+        <h2 className='same_heading'>Explore Destinations By Theme</h2>
+        <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
+        <div className="destinations-container-countries">
+          {destinations.map((destination, index) => (
+            <div key={index} className="destination">
+              <Image
+                src={destination.imgSrc}
+                alt={destination.label}
+                width={100}
+                height={100}
+                className="destination-image"
+              />
+              <p>{destination.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
+    
   );
 };
 

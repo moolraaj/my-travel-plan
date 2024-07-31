@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import discountc from '../app/assets/home_images/discountcards.png';
+import explorebg from '../app/assets/home_images/explore-package-bg.png';
 
 const packagesData = [
   { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherland.png' },
@@ -11,7 +12,8 @@ const packagesData = [
 
 const BestSellingPackages = () => {
   return (
-    <div className="container card_main_section">
+    <div class="explore-packages" style={{ backgroundImage: `url(${explorebg.src})`}}>
+      <div className="container card_main_section">
       <div className="header_best_selling">
         <h2 className='same_heading'>Explore Best Selling Packages</h2>
         <div className='link_heading'>
@@ -29,7 +31,7 @@ const BestSellingPackages = () => {
               <h3>{pkg.title}</h3>
               <p>{pkg.nights} | {pkg.customizable}</p>
               <p className="rating">
-                <span className="star">⭐</span> {pkg.rating} ({pkg.reviews})
+                <span className="star">★ {pkg.rating}  </span> ({pkg.reviews})
               </p>
               <p className="price">From {pkg.price}</p>
               <div className="buttons">
@@ -53,7 +55,9 @@ const BestSellingPackages = () => {
     </div>
 </div> 
     
+      </div>
     </div>
+ 
   );
 };
 

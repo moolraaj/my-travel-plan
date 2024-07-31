@@ -3,15 +3,16 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import heroimage from '../app/assets/home_images/heroimage.png';
-import heroimageone from '../app/assets/home_images/slidertwo.png';
-
+import herosliderthree from '../app/assets/home_images/hero-sliderthree.png';
+import explore from '../app/assets/home_images/explore.png';
+import desti from '../app/assets/home_images/search-destination.png';
 
 const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
     { src: heroimage, alt: 'Hero Image' },
-    { src: heroimageone, alt: 'Hero Image' },
+    { src: herosliderthree, alt: 'Hero Image' },
     // Add more images if needed
   ];
 
@@ -24,8 +25,9 @@ const Slider = () => {
   }, [images.length]);
 
   return (
+    
     <div className="slider">
-      <Image
+      <Image className='slider-images'
         src={images[currentIndex].src}
         alt={images[currentIndex].alt}
         layout="fill"
@@ -34,13 +36,17 @@ const Slider = () => {
       <div className="content">
         <h1 className="title">We Fell Travel</h1>
         <div className="searchContainer">
-          <input
-            type="text"
-            placeholder="You Are Searching For"
-            className="searchInput"
-          />
+          <div className='search-desti'> 
+          <img src={desti.src} alt="Destination Icon" className="desti-icon"/>
+            <input
+              type="text"
+              placeholder="You Are Searching For"
+              className="searchInput"
+            />
+          </div>
+      
           <button className="searchButton">
-            Explore
+           <img src= {explore.src} />Explore
           </button>
         </div>
       </div>
