@@ -15,6 +15,10 @@ let imageSchema = new mongoose.Schema({
     contentType: {
         type: String,
         required: true
+    },
+    imgurl: {
+        type: String,
+        required: true
     }
 });
 
@@ -48,7 +52,6 @@ const countrySchema = new mongoose.Schema({
     continent_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'continents',
-        required: true
     }
 });
 
