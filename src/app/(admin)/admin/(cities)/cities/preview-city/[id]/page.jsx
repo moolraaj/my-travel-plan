@@ -63,7 +63,7 @@ function PreviewCity({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: {city.all_packages.length > 0 ? city.all_packages.length : 0}</h3>
+            <h3>Packages: {city.all_packages.length > 0 ? city.all_packages.length : 0}</h3>
           </div>
         </>
       )}

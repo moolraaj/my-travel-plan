@@ -1,9 +1,10 @@
 // /app/(admin)/admin/(continents)/continents/add-continent/page.jsx
 
-
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
+import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 
 const AddContinent = () => {
   const router = useRouter();
@@ -13,7 +14,6 @@ const AddContinent = () => {
     slug: '',
     file: null,
   });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -31,7 +31,7 @@ const AddContinent = () => {
     const { title, description, slug, file } = formData;
 
     if (!title || !description || !slug || !file) {
-      setError('Please fill in all fields and upload an image.');
+      toast.error('Please fill in all fields and upload an image.');
       setIsLoading(false);
       return;
     }
@@ -51,12 +51,13 @@ const AddContinent = () => {
       const data = await res.json();
 
       if (data.success) {
+        toast.success('Continent added successfully!');
         router.push('/admin/continents');
       } else {
-        setError(data.message || 'An error occurred.');
+        toast.error(data.message || 'An error occurred.');
       }
     } catch (error) {
-      setError('An error occurred while submitting the form.');
+      toast.error('An error occurred while submitting the form.');
     }
 
     setIsLoading(false);
@@ -64,8 +65,8 @@ const AddContinent = () => {
 
   return (
     <div className="add-continent">
+      <ToastContainer/>
       <h2>Add Continent</h2>
-      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>

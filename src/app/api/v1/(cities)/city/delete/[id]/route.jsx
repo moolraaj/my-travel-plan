@@ -1,29 +1,36 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import CitiesModel from "@/model/citiesModel";
 import countriesModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
 DbConnect()
+
+
 export async function DELETE(req, { params }) {
-    let { id } = params;
 
-    if (!id) {
-        return NextResponse.json({ success: false, message: 'missing credentials' });
-    }
+    return handelAsyncErrors(async () => {
 
-    let existingCountry = await CitiesModel.findOne({ _id: id });
-    if (!existingCountry) {
-        return NextResponse.json({ success: false, message: 'missing credentials' });
-    }
+        let { id } = params;
 
-    let result = await CitiesModel.deleteOne({ _id: id });
-    if (!result) {
-        return NextResponse.json({ success: false, message: 'unable to delete country' });
-    }
+        if (!id) {
+            return NextResponse.json({ success: false, message: 'please provide valid _id' });
+        }
 
-    await countriesModel.updateMany(
-        { all_cities: id },
-        { $pull: { all_cities: id } }
-    );
+        let existingCity = await CitiesModel.findOne({ _id: id });
+        if (!existingCity) {
+            return NextResponse.json({ success: false, message: 'city is not exist! invalid city _id' });
+        }
 
-    return NextResponse.json({ success: true, message: 'country deleted successfully', result });
+        let result = await CitiesModel.deleteOne({ _id: id });
+        if (!result.deletedCount) {
+            return NextResponse.json({ success: false, message: 'city not found' });
+        }
+
+        await countriesModel.updateMany(
+            { all_cities: id },
+            { $pull: { all_cities: id } }
+        );
+
+        return NextResponse.json({ success: true, message: 'City deleted successfully', result });
+    });
 }

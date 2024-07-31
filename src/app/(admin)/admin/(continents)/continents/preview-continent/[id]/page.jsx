@@ -11,7 +11,7 @@ function PreviewContinent({ params }) {
     description: '',
     slug: '',
     images: [],
-    all_countries: [],
+    countries: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -24,12 +24,12 @@ function PreviewContinent({ params }) {
       }
       const data = await response.json();
       if (data.success) {
-        setContinent(data.result);
+        setContinent(data);
       } else {
         setError(data.message);
       }
     } catch (error) {
-      setError('Error fetching continent data.');
+      setError('Error fetching Continent data.');
     } finally {
       setLoading(false);
     }
@@ -39,21 +39,21 @@ function PreviewContinent({ params }) {
     fetchContinent();
   }, [id]);
 
+  const { result, totalResults } = continent;
+
   return (
     <div className="preview-continent-container">
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {!loading && !error && (
         <>
-          <h2><strong>Continent Name:</strong> {continent.title}</h2>
-          <p><strong>Continent Description:</strong> {continent.description}</p>
-          <p><strong>Slug:</strong> {continent.slug}</p>
+          <h2>{result._id}</h2>
           <div className="preview-continent-images">
-            {continent.images.length > 0 ? (
-              continent.images.map((image, index) => (
+            {result.images && result.images.length > 0 ? (
+              result.images.map((image, index) => (
                 <img
                   key={index}
-                  src={`/uploads/${image.name}`}
+                  src={image.imgurl}
                   alt={image.name}
                   className="preview-continent-image"
                 />
@@ -63,16 +63,7 @@ function PreviewContinent({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: {continent.all_countries.length > 0 ? continent.all_countries.length : 0}</h3>
-            <ul>
-              {continent.all_countries.length > 0 ? (
-                continent.all_countries.map((country, index) => (
-                  <li key={index}>{country }</li>
-                ))
-              ) : (
-                <li>No data available</li>
-              )}
-            </ul>
+            <h3>Countries count: {totalResults}</h3>
           </div>
         </>
       )}
