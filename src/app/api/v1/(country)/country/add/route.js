@@ -3,11 +3,12 @@ import { NextResponse } from "next/server";
 import countriesModel from "@/model/countryModel";
 import continentModel from "@/model/continentModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 
 DbConnect();
 
 export async function POST(req) {
-    try {
+    return handelAsyncErrors(async()=>{
         const host = req.headers.get('host');
         // Extract data from formdata
         const payload = await req.formData();
@@ -15,20 +16,20 @@ export async function POST(req) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
-        const continent_id = payload.get('continent_id'); // Get the continent ID from the form data
+        const continent_id = payload.get('continent_id');  
 
         // Check if slug is already exist
         let existingSlug = await countriesModel.findOne({ slug });
 
         if (existingSlug) {
-            return NextResponse.json({ success: false, message: 'Slug already exists' });
+            return NextResponse.json({status:401, success: false, message: 'slug is already exist' });
         }
 
         // Check if the continent ID is valid
         let existingContinent = await continentModel.findById(continent_id);
 
         if (!existingContinent) {
-            return NextResponse.json({ success: false, message: 'Invalid continent ID' });
+            return NextResponse.json({status:404, success: false, message: 'please provide valid continent id' });
         }
 
         // Upload single image
@@ -38,7 +39,7 @@ export async function POST(req) {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
-            imgurl: uploadedFile.url  
+             
         };
 
         const countryDocument = new countriesModel({
@@ -55,13 +56,13 @@ export async function POST(req) {
         const result = await countryDocument.save();
 
         // Update the continent document to include the new country
-        existingContinent.all_countries.push(country._id);
+        existingContinent.all_countries.push(result._id);
         await existingContinent.save();
 
-        return NextResponse.json({ success: true, result });
+        return NextResponse.json({status:201, success: true, result });
+    })
+    
+      
 
-    } catch (error) {
-        console.error('Error in POST handler:', error);
-        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
-    }
+     
 }

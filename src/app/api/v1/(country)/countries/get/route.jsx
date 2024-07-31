@@ -1,10 +1,11 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { getPaginationParams } from "@/helpers/paginations";
 import countriestModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
 DbConnect()
 export async function GET(req){
-    try {
+    return handelAsyncErrors(async()=>{
         let {page,limit,skip}=getPaginationParams(req)
         let data=await countriestModel.find().populate({path:'all_cities',path: 'all_cities',
             populate: {
@@ -27,8 +28,9 @@ export async function GET(req){
             total_cities:e.all_cities.length
         }))
         let totalResults=await countriestModel.countDocuments()
-        return NextResponse.json({success:true,totalResults,result,page,limit})
-    } catch (error) {
-        return NextResponse.json({success:false,message:'inertnal server error'})
-    }
+         
+        return NextResponse.json({status:200,success:true,totalResults,result,page,limit})
+    })
+    
+     
 }

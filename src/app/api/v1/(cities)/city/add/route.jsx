@@ -3,11 +3,13 @@ import { DbConnect } from "@/database/database";
 import CitiesModel from "@/model/citiesModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
 import countriesModel from "@/model/countryModel";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 
 DbConnect();
 
 export async function POST(req) {
-    try {
+
+    return handelAsyncErrors(async()=>{
         const host = req.headers.get('host'); 
         // Extract data from form data
         const payload = await req.formData();
@@ -20,23 +22,23 @@ export async function POST(req) {
         // Check if slug already exists
         let existingSlug = await CitiesModel.findOne({ slug });
         if (existingSlug) {
-            return NextResponse.json({ success: false, message: 'Slug already exists' });
+            return NextResponse.json({ success: false, message: 'slug is already exist' });
         }
 
         // Check if country ID exists
         let existingCountry = await countriesModel.findById(country_id);
         if (!existingCountry) {
-            return NextResponse.json({ success: false, message: 'Country ID does not exist' });
+            return NextResponse.json({ success: false, message: 'missing credentials country _id is missing' });
         }
 
         // Upload single image
-        const uploadedFile = await HandleFileUpload(file,host);
+        const uploadedFile = await HandleFileUpload(file, host);
 
         const imageObject = {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
-            imgurl: uploadedFile.url  
+            
         };
 
         // Create the new city document
@@ -56,9 +58,6 @@ export async function POST(req) {
         existingCountry.all_cities.push(result._id);
         await existingCountry.save();
 
-        return NextResponse.json({ success: true, result });
-    } catch (error) {
-        console.error('Error in POST handler:', error);
-        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
-    }
+        return NextResponse.json({status:201,success: true, result });
+    })
 }

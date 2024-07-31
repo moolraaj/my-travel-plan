@@ -15,10 +15,6 @@ let imageSchema = new mongoose.Schema({
     contentType: {
         type: String,
         required: true
-    },
-    imgurl: {
-        type: String,
-        required: true
     }
 });
 

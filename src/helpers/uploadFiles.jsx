@@ -20,12 +20,12 @@ export async function HandleFileUpload(file, host) {
     }
 
     // Construct the public URL of the uploaded file
-    const fileUrl = `http://${host}/uploads/${sanitizedFileName}`;
+    // const fileUrl = `http://${host}/uploads/${sanitizedFileName}`;
 
     return {
         name: sanitizedFileName,
         path: filePath,
         contentType: file.type,
-        url: fileUrl,
+       
     };
 }
