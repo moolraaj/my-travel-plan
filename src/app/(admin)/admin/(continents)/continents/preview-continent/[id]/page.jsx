@@ -41,10 +41,10 @@ function PreviewContinent({ params }) {
 
 
  
-  let{result}=continent
+  let{result,totalResults}=continent
 
-  console.log(continent)
-
+ 
+ 
 
   
 
@@ -70,7 +70,8 @@ function PreviewContinent({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: </h3>
+            <h3>countries count : {totalResults} </h3>
+  
             
           </div>
         </>
