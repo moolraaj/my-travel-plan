@@ -24,7 +24,7 @@ function PreviewContinent({ params }) {
       }
       const data = await response.json();
       if (data.success) {
-        setContinent(data.result);
+        setContinent(data);
       } else {
         setError(data.message);
       }
@@ -39,15 +39,22 @@ function PreviewContinent({ params }) {
     fetchContinent();
   }, [id]);
 
+
+ 
+  let{result}=continent
+
+  console.log(continent)
+
+
+  
+
   return (
     <div className="preview-continent-container">
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {!loading && !error && (
         <>
-          <h2><strong>Continent Name:</strong> {continent.title}</h2>
-          <p><strong>Continent Description:</strong> {continent.description}</p>
-          <p><strong>Slug:</strong> {continent.slug}</p>
+         <h1>{result._id}</h1>
           <div className="preview-continent-images">
             {continent.images===null ? (
               continent.images.map((image, index) => (
@@ -63,27 +70,8 @@ function PreviewContinent({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: {continent.countries.length > 0 ? continent.countries.length : 0}</h3>
-            <ul>
-              {continent.countries.length > 0 ? (
-                continent.countries.map((continent, index) => (
-                 <>
-                 <ul>
-                  <li> ...{index + 1}
-                    <ul>
-                    <li key={index}>{continent._id}</li>
-                  <li>{city.title}</li>
-                  <li>{city.city_packages_count}</li>
-                    </ul>
-                  </li>
-                 </ul>
-                  
-                 </>
-                ))
-              ) : (
-                <li>No data available</li>
-              )}
-            </ul>
+            <h3>Countries: </h3>
+            
           </div>
         </>
       )}
