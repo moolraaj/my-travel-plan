@@ -56,7 +56,7 @@ export async function GET(req, { params }) {
                 })),
                 total_cities: country.all_cities.length,
             })),
-            totalCountries:continent.all_countries.length
+            
 
         }
 
