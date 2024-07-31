@@ -1,126 +1,19 @@
 
-// // /app/(admin)/admin/(continents)/continent/page.jsx
-
-// 'use client';
-// import React, { useEffect, useState } from 'react';
-// import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
-// import { useRouter } from 'next/navigation';
-
-// function ContinentPage() {
-//   const [continents, setContinents] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState('');
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     async function fetchContinents() {
-//       try {
-//         const response = await fetch('/api/v1/continents/get');
-//         const data = await response.json();
-//         if (data.success) {
-//           setContinents(data.result);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching continents:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
-
-//     fetchContinents();
-//   }, []);
-
-//   const handleAddClick = () => {
-//     router.push('/admin/continents/add-continent');
-//   };
-
-
-
-//   const handleDelete = async (id) => {
-//     if (window.confirm('Are you sure you want to delete this package?')) {
-//       try {
-//         const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
-//         const data = await response.json();
-//         if (data.success) {
-//           setContinents(continents.filter(continent => continent._id !== id));
-//         } else {
-//           throw new Error(data.message);
-//         }
-//       } catch (error) {
-//         setError('Failed to delete package, please try again.');
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className="packages">
-//       <h2>Continents</h2>
-//       {error && <div className="error">{error}</div>}
-//       <div className="packages-table-container">
-//         <div></div>
-//         <table className="packages-table">
-//           <thead>
-//             <tr>
-//               <th>Image</th>
-//               <th>Title</th>
-//               <th>Description</th>
-//               <th>Countries Count</th>
-//               <th>Actions</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {loading ? (
-//               <tr>
-//                 <td colSpan="5" className="loading">Loading...</td>
-//               </tr>
-//             ) : (
-//               continents.map(continent => (
-//                 <tr key={continent._id}>
-//                   <td data-label="Image">
-//                     <img 
-//                       src={`/uploads/${continent.images[0].name}`} 
-//                       alt={continent.title} 
-//                       className="package-image" 
-//                     />
-//                   </td>
-//                   <td data-label="Title">{continent.title}</td>
-//                   <td data-label="Description">{continent.description}</td>
-//                   <td data-label="Countries Count">{continent.countriesCount}</td>
-//                   <td data-label="Actions" className="actions">
-//                     <FaEye className="action-icon view" title="View" />
-//                     <FaEdit className="action-icon edit" title="Edit"  />
-//                     <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(continent._id)} />
-//                   </td>
-//                 </tr>
-//               ))
-//             )}
-//           </tbody>
-//         </table>
-//       </div>
-//       <div className="floating-plus" onClick={handleAddClick}>
-//         <FaPlus />
-//         <div className="tooltip">Add Continent</div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ContinentPage;
-
-
+// // // /app/(admin)/admin/(continents)/continent/page.jsx
 
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
+import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [selectedContinents, setSelectedContinents] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [validationMessage, setValidationMessage] = useState('');
+  const [actionBarVisible, setActionBarVisible] = useState(true); // State for action bar visibility
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -135,9 +28,12 @@ function ContinentPage() {
         if (data.success) {
           setContinents(data.result);
           setTotalResults(data.totalResults); // Set totalResults from API
+        } else {
+          toast.error(`Error: ${data.message}`);
         }
       } catch (error) {
         console.error('Error fetching continents:', error);
+        toast.error('Error fetching continents. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -145,16 +41,6 @@ function ContinentPage() {
 
     fetchContinents();
   }, [currentPage]);
-
-  useEffect(() => {
-    if (validationMessage) {
-      const timer = setTimeout(() => {
-        setValidationMessage('');
-        setSelectedContinents([]);
-      }, 3000);
-      return () => clearTimeout(timer); // Clear timeout if component unmounts or validationMessage changes
-    }
-  }, [validationMessage]);
 
   const handleAddClick = () => {
     router.push('/admin/continents/add-continent');
@@ -166,24 +52,38 @@ function ContinentPage() {
         for (const id of selectedContinents) {
           const continent = continents.find(cont => cont._id === id);
           if (continent.countries && continent.countries.length > 0) {
-            setValidationMessage(`Continent ${continent.title} has associated countries and cannot be deleted.`);
-            throw new Error(`Continent ${continent.title} has associated countries and cannot be deleted.`);
-            
+            toast.error(`Continent ${continent.title} has associated countries and cannot be deleted.`);
+            setTimeout(() => {
+              setActionBarVisible(false);
+              setSelectedContinents([]);
+            }, 3000);
+            return; // Exit the function to prevent further processing
           }
           // Add similar checks for cities and packages if necessary
           const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
           const data = await response.json();
           if (!data.success) {
-            setValidationMessage(data.message);
-            throw new Error(data.message);
+            toast.error(data.message);
+            setActionBarVisible(false);
+            setTimeout(() => {
+              setActionBarVisible(true);
+              setSelectedContinents([]);
+            }, 3000);
+            return;
           }
         }
         setContinents(continents.filter(continent => !selectedContinents.includes(continent._id)));
         setSelectedContinents([]);
         setSelectAll(false);
-        setValidationMessage('');
+        toast.success('Selected continents have been deleted successfully.');
       } catch (error) {
-        setError('');
+        console.error('Error deleting continents:', error);
+        toast.error('Error deleting continents. Please try again later.');
+        setActionBarVisible(false);
+        setTimeout(() => {
+          setActionBarVisible(true);
+          setSelectedContinents([]);
+        }, 3000);
       }
     }
   };
@@ -221,8 +121,9 @@ function ContinentPage() {
 
   return (
     <div className="packages">
+      <ToastContainer/>
       <h2>Continents</h2>
-      {selectedContinents.length > 0 && (
+      {selectedContinents.length > 0 && actionBarVisible && (
         <div className="action-bar">
           <input
             type="checkbox"
@@ -233,8 +134,6 @@ function ContinentPage() {
           <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
         </div>
       )}
-      {validationMessage && <div className="validation-message">{validationMessage}</div>}
-      {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -280,10 +179,10 @@ function ContinentPage() {
                   <td data-label="Title">{continent.title}</td>
                   <td data-label="Description">{continent.description}</td>
                   <td data-label="Countries Count">{continent.countries ? continent.countries.length : 0}</td>
-                  <td data-label="Actions" >
+                  <td data-label="Actions">
                     <span className="actions">
-                    <FaEye className="action-icon view" title="View" onClick={() => handlePreview(continent._id)} />
-                    <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(continent._id)} />
+                      <FaEye className="action-icon view" title="View" onClick={() => handlePreview(continent._id)} />
+                      <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(continent._id)} />
                     </span>
                   </td>
                 </tr>
