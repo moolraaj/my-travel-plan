@@ -6,13 +6,13 @@ const TravelGallery = () => {
       <h2>Passionate Paris With Disney 4N-5D</h2>
       <div className="images">
         <div className="image-container">
-          <Image src="/imageone.png" alt="Image 1" width={300} height={200} />
+          <img src="/images/innerone.png" alt="Image 1" />
         </div>
         <div className="image-container">
-          <Image src="/imagetwo.png" alt="Image 2" width={300} height={200} />
+          <img src="/images/innertwo.png" alt="Image 2"/>
         </div>
         <div className="image-container">
-          <Image src="/imagethree.png" alt="Image 3" width={300} height={200} />
+          <img src="/images/innerthree.png" alt="Image 3"/>
         </div>
       </div>     
     </div>
