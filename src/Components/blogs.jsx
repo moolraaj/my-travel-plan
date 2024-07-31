@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import blogbg from '../app/assets/home_images/blog-bg.png';
 
 const LatestBlog = () => {
   const blogs = [
@@ -23,8 +24,9 @@ const LatestBlog = () => {
   ];
 
   return (
-    <div className="latest-blog">
-      <h2 className='sameheading'>Latest News And Inspirational Blog</h2>
+    <div className='blog-bg' style= {{ backgroundImage: `url(${blogbg.src})`}} >
+      <div className="latest-blog">
+      <h2 className='blog-heading'>Latest News And Inspirational Blog</h2>
       <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
       <div className="blog-container">
         <div className="blog-main">
@@ -54,7 +56,9 @@ const LatestBlog = () => {
           ))}
         </div>
       </div>
+      </div>
     </div>
+
   );
 };
 
