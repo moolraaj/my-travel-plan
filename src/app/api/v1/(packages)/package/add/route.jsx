@@ -3,13 +3,15 @@ import { DbConnect } from "@/database/database";
 import PackagesModel from "@/model/packagesModel";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
 import CitiesModel from "@/model/citiesModel";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 
 DbConnect();
 
 export async function POST(req) {
-    try {
-        const host = req.headers.get('host'); // Get host from request headers
+    return handelAsyncErrors(async()=>{
 
+        const host = req.headers.get('host'); 
+    
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -22,29 +24,29 @@ export async function POST(req) {
         const packageItinerary = JSON.parse(payload.get('package_itinerary'));
         const packagesInclude = JSON.parse(payload.get('packages_include'));
         const packagesExclude = JSON.parse(payload.get('packages_exclude'));
-
+    
         // Check if slug already exists
         let existingSlug = await PackagesModel.findOne({ slug });
         if (existingSlug) {
-            return NextResponse.json({ success: false, message: 'Slug already exists' });
+            return NextResponse.json({status:404, success: false, message: 'slug is already exist' });
         }
-
+    
         // Check if city ID exists
         let existingCity = await CitiesModel.findById(city_id);
         if (!existingCity) {
-            return NextResponse.json({ success: false, message: 'City ID not found' });
+            return NextResponse.json({status:404, success: false, message: 'missing city id !please provide valid city id' });
         }
-
+    
         // Upload single image
         const uploadedFile = await HandleFileUpload(file, host);
-
+    
         const imageObject = {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
             
         };
-
+    
         // Handle multiple gallery images
         const galleryFiles = payload.getAll('gallery_files'); 
         const galleryImages = [];
@@ -57,7 +59,7 @@ export async function POST(req) {
                  
             });
         }
-
+    
         // Create the package
         const response = new PackagesModel({
             images: [imageObject],
@@ -72,18 +74,17 @@ export async function POST(req) {
             packages_exclude: packagesExclude,
             city_id: city_id,
         });
-
+    
         // Save the package
         const result = await response.save();
-
-       
+    
+        
         existingCity.all_packages.push(result._id);
         await existingCity.save();
+    
+        return NextResponse.json({status:201, success: true, result });
+    })
+    
 
-        return NextResponse.json({ success: true, result });
-
-    } catch (error) {
-        console.error('Error in POST handler:', error);
-        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
-    }
+     
 }
