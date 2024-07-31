@@ -8,6 +8,7 @@ import ExploreDestinations from '@/Components/exploredestinations';
 import LatestBlog from '@/Components/blogs';
 import { useEffect, useState } from 'react';
 import Layout from './_common/layout/layout';
+import aeroplane from '../app/assets/home_images/aeroplane-bg.png';
 
 export default function Home() {
   let[ss,setSs]=useState([])
@@ -26,7 +27,7 @@ export default function Home() {
  <>
  <Layout>
    <div className='main_slider'>
-   <div className='main_slider_inner'>
+   <div className='main_slider_inner' style={{ backgroundImage: `url(${aeroplane.src})`}}>
    <Slider/>
    </div>
 

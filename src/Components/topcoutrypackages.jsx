@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import trending from '../app/assets/home_images/trending.png';
 import ribbon from '../app/assets/home_images/ribbon.png';
+import fishbg from '../app/assets/home_images/fish-bg.png';
 
 
 const countriesData = [
@@ -17,6 +18,7 @@ const countriesData = [
 
 const Destinations = () => {
   return (
+    <div className='top-destination' style={{ backgroundImage: `url(${fishbg.src})`}}>
     <div className="topdestination container inner-w-container">
       <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
       <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
@@ -31,7 +33,9 @@ const Destinations = () => {
                   backgroundRepeat: 'no-repeat',
                                  }}
                 className="trending"
-              ><img src={trending.src}></img>Trending</span>
+              ><img src={trending.src}></img>
+              TREADING
+               </span>
             <div className="info">
               <h3>{country.name}</h3>
               <p>{country.countries} Packages</p>
@@ -41,6 +45,7 @@ const Destinations = () => {
         ))}
       </div>
      
+    </div>
     </div>
   );
 };
