@@ -18,7 +18,7 @@ let imageSchema = new mongoose.Schema({
     }
 });
 
-// Define the country schema with references to cities and packages
+// Define the country schema with references to cities, packages, and continent
 const countrySchema = new mongoose.Schema({
     images: [imageSchema],
     title: {
@@ -44,10 +44,13 @@ const countrySchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'packages',
         },
-    ]
+    ],
+    continent_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'continents',
+        required: true
+    }
 });
-
- 
 
 // Create the country model
 let countriesModel = mongoose.models.countries || mongoose.model('countries', countrySchema);
