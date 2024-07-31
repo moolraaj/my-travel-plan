@@ -6,6 +6,7 @@ import Image3 from '../../src/app/assets/home_images/contthree.png';
 import Image4 from '../../src/app/assets/home_images/contfour.png';
 import Image5 from '../../src/app/assets/home_images/contfive.png';
 import Image6 from '../../src/app/assets/home_images/contsix.png';
+import exploresection from '../app/assets/home_images/explore-bg.png';
 
 const destinations = [
   { name: 'Greece', price: 'From ₹ 37,500', imageUrl: Image1 },
@@ -18,6 +19,7 @@ const destinations = [
 
 const ExplorationsFarAway = () => {
   return (
+    <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})`}}>
     <div className="explorations-container">
       <h2 className='same_heading'>Explorations Far Away</h2>
       <p>Ideal for 5-14 days trip</p>
@@ -36,6 +38,7 @@ const ExplorationsFarAway = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }
