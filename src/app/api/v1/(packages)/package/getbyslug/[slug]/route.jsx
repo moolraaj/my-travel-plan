@@ -4,10 +4,7 @@ import { NextResponse } from "next/server"
 DbConnect()
 export async function GET(req,{params}){
     let {slug}=params
-    try {
-
-
-        
+    try { 
         if(!slug){
             return NextResponse.json({success:false,message:'missing credential'})
         }
@@ -15,7 +12,6 @@ export async function GET(req,{params}){
         if(!result){
             return NextResponse.json({success:false,message:'result not found'})
         }
-        
         return NextResponse.json({success:true,result})
     } catch (error) {
         return NextResponse.json({success:false,message:'internal server error'})

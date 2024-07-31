@@ -1,16 +1,18 @@
 import { DbConnect } from "@/database/database";
 import countryModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
-import { getPaginationParams } from "@/helpers/paginations"; // Assuming this helper is for pagination
+import { getPaginationParams } from "@/helpers/paginations"; 
 import mongoose from "mongoose";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-    let { id } = params;
-    let { page, limit, skip } = getPaginationParams(req);
 
-    try {
+    return handelAsyncErrors(async()=>{
+
+        let { id } = params;
+        let { page, limit, skip } = getPaginationParams(req);
         // Fetch the country by id and populate all cities and their packages
         const country = await countryModel.findOne({ _id: id }).populate({
             path: 'all_cities',
@@ -18,21 +20,21 @@ export async function GET(req, { params }) {
                 path: 'all_packages',
             },
         }).exec();
-
+    
         if (!country) {
-            return NextResponse.json({ success: false, message: 'Country not found' });
+            return NextResponse.json({status:404, success: false, message: 'country not found! please provide valid id' });
         }
-
+    
         // Get the total count of cities within the country
         const totalResults = await countryModel.aggregate([
             { $match: { _id: new mongoose.Types.ObjectId(id) } },
             { $unwind: '$all_cities' },
             { $group: { _id: '$_id', total: { $sum: 1 } } }
         ]).then(results => results[0]?.total || 0);
-
+    
         // Get the paginated cities
         const paginatedCities = country.all_cities.slice(skip, skip + limit);
-
+    
         // Map the result to include details of cities and packages
         const result = {
             _id: country._id,
@@ -55,10 +57,7 @@ export async function GET(req, { params }) {
             page,
             limit
         };
-
-        return NextResponse.json({ success: true,  result });
-    } catch (error) {
-        console.error('Error in GET handler:', error);
-        return NextResponse.json({ success: false, message: 'Failed to fetch country and cities', error: error.message });
-    }
+    
+        return NextResponse.json({status:200,success: true,  result });
+    })   
 }
