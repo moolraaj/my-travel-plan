@@ -27,7 +27,7 @@ const ExploreDestinations = () => {
                 height={100}
                 className="destination-image"
               />
-              <p>{destination.label}</p>
+              <p >{destination.label}</p>
             </div>
           ))}
         </div>

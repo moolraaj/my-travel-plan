@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import discountactivitybg from '../../../assets/home_images/discount-activity-bg.png';
 
 const discountedActivities = [
   {
@@ -37,7 +38,7 @@ const discountedActivities = [
 
 const TopDiscountedActivities = () => {
   return (
-    <div className="top-discounted-container">
+    <div className="top-discounted-container" style={{ backgroundImage: `url(${discountactivitybg.src})`}} >
     <div className="inner-w-container">
       <h2 className="top-discounted-title">Top Discounted Activities</h2>
       <p className="top-discounted-subtitle">Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
