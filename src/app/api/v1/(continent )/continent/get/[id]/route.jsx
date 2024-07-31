@@ -1,6 +1,7 @@
 import { DbConnect } from "@/database/database";
 import { getPaginationParams } from "@/helpers/paginations";
 import continentModel from "@/model/continentModel";
+import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 DbConnect();
@@ -30,7 +31,7 @@ export async function GET(req, { params }) {
 
         // Get the total count of countries within the continent
         const totalResults = await continentModel.aggregate([
-            { $match: { _id:id } },
+            { $match: { _id:new mongoose.Types.ObjectId(id) } },
             { $unwind: '$all_countries' },
             { $group: { _id: '$_id', total: { $sum: 1 } } }
         ]).then(results => results[0]?.total || 0);

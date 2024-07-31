@@ -40,6 +40,11 @@ export async function PUT(req, { params }) {
         });
     }
 
+    await CitiesModel.updateMany(
+        { all_packages: { $in: packagesRef } },
+        { $pull: { all_packages: { $in: packagesRef } } }
+    );
+
     // Proceed with adding new country IDs to the continent
     let resp = await CitiesModel.findByIdAndUpdate(
         filterId,
