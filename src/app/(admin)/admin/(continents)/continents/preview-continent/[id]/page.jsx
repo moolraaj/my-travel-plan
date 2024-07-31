@@ -11,7 +11,7 @@ function PreviewContinent({ params }) {
     description: '',
     slug: '',
     images: [],
-    all_countries: [],
+    countries: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -29,7 +29,7 @@ function PreviewContinent({ params }) {
         setError(data.message);
       }
     } catch (error) {
-      setError('Error fetching continent data.');
+      setError('Error fetching Continent data.');
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ function PreviewContinent({ params }) {
           <p><strong>Continent Description:</strong> {continent.description}</p>
           <p><strong>Slug:</strong> {continent.slug}</p>
           <div className="preview-continent-images">
-            {continent.images.length > 0 ? (
+            {continent.images===null ? (
               continent.images.map((image, index) => (
                 <img
                   key={index}
@@ -63,11 +63,22 @@ function PreviewContinent({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: {continent.all_countries.length > 0 ? continent.all_countries.length : 0}</h3>
+            <h3>Countries: {continent.countries.length > 0 ? continent.countries.length : 0}</h3>
             <ul>
-              {continent.all_countries.length > 0 ? (
-                continent.all_countries.map((country, index) => (
-                  <li key={index}>{country }</li>
+              {continent.countries.length > 0 ? (
+                continent.countries.map((continent, index) => (
+                 <>
+                 <ul>
+                  <li> ...{index + 1}
+                    <ul>
+                    <li key={index}>{continent._id}</li>
+                  <li>{city.title}</li>
+                  <li>{city.city_packages_count}</li>
+                    </ul>
+                  </li>
+                 </ul>
+                  
+                 </>
                 ))
               ) : (
                 <li>No data available</li>
