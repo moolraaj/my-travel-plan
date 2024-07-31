@@ -55,7 +55,8 @@ export async function GET(req, { params }) {
                     city_packages_count: city.all_packages.length,
                 })),
                 total_cities: country.all_cities.length,
-            }))
+            })),
+            totalCountries:continent.all_countries.length
 
         }
 
