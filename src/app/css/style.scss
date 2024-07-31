@@ -43,6 +43,79 @@ ul.destinations-list li {
 }
 
 
+.itinerary {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+}
+
+.itinerary h2 {
+  text-align: center;
+}
+
+.day {
+  border-top: 1px solid #ddd;
+  padding: 5px 0;
+}
+
+.day:first-of-type {
+  border-top: none;
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dayContent {
+  padding: 10px 0;
+}
+
+.itinerary_inner {
+  display: flex;
+  column-gap: 15px;
+}
+
+.itinerary_inner {
+  display: flex;
+  column-gap: 15px;
+}
+
+.gallery .images img {
+  width: 100%;
+}
+
+
+
+
+.image-container:nth-child(2) {
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.image-container:nth-child(2) img {
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.gallery .images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+
+
+
+.gallery,
+.overview {
+@include main_container;
+margin: auto;
+}
+
 
 .top_banner_destination {
   display: flex;
