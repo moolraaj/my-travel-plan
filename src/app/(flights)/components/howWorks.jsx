@@ -1,7 +1,7 @@
 // pages/holiday.js
 
 import Image from 'next/image';
-import indigoImage from '../../assets/home_images/Indigo.png';
+import indigoImage from '../../assets/home_images/indigo.png';
 import formbg from '../../assets/home_images/theme-destination.png';
 
 export default function Holiday() {
