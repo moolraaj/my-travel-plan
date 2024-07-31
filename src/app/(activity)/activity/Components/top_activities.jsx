@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import activitytop from '../../../assets/home_images/activity-top.png';
 // import styles from './TopActivities.module.css';
 
 const activities = [
@@ -36,7 +37,7 @@ const activities = [
 
 const TopActivities = () => {
   return (
-    <div className="top-act-container">
+    <div className="top-act-container" style={{ backgroundImage: `url(${activitytop.src})`}} >
     <div className="inner-w-container">
       <h2 className="top-act-title">Top Activities</h2>
       <p className="top-act-subtitle">Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
@@ -52,7 +53,7 @@ const TopActivities = () => {
                 height={1000}
                 className="top-act-image"
               />
-                              <div className="top-act-duration">{activity.duration}</div>
+               <div className="top-act-duration">{activity.duration}</div>
 
               </div>
               <div className="top-act-Details"

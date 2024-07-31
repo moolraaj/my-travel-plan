@@ -22,10 +22,10 @@ const Destinations = () => {
     <div className="topdestination container inner-w-container">
       <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
       <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
-      <div className="destinations">
+      <div className="destinations expert-travel">
         {countriesData.map((country, index) => (
           <div key={index} className="destination">
-            <Image src={country.imgSrc} alt={country.name} width={320} height={242} />            
+            <img className= "expert-image" src={country.imgSrc} alt={country.name}  />            
             <span
                 style={{
                   backgroundImage: `url(${ribbon.src})`,

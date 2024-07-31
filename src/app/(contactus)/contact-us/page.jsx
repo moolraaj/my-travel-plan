@@ -4,6 +4,8 @@ import ContactForm from '../Components/contactForm';
 import Map from '../Components/map';
 import Image from 'next/image';
 import Link from 'next/link';
+import tourist from '../../assets/home_images/contact-tourist.png';
+import contacttop from '../../assets/home_images/contact-top.png';
 export default function contact() {
   return (
 <Layout>
@@ -24,10 +26,13 @@ export default function contact() {
             </div>
           </div>
         </div>
-        <div className='explorations-container'>
-          <AddressDetail />
+        <div className='contact-top' style={{ backgroundImage: `url(${contacttop.src})`}}  >
+          <div className='explorations-container'>
+            <AddressDetail />
+          </div>
         </div>
-        <div className='form_container' style={{ backgroundImage: 'url(/images/tourist.png)', backgroundSize: '568px', backgroundPosition: 'right bottom', backgroundRepeat: 'no-repeat' }}>
+      
+        <div className='form_container' style={{ backgroundImage: `url(${tourist.src})`}}  >
           <div className='explorations-container'>
             <ContactForm />
           </div>

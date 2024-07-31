@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import indigoImage from '../../assets/home_images/Indigo.png';
+import formbg from '../../assets/home_images/theme-destination.png';
 
 export default function Holiday() {
   return (
-    <div className="holiday_container" style={{ backgroundImage: 'url(../images/flight-vector.png)', backgroundSize: '520px', backgroundPosition: '130% 102%', backgroundRepeat: 'no-repeat' }}>
+    <div className="holiday_container" style={{ backgroundImage: `url(${formbg.src})`}}>
       <div className="image-container">
         <Image src={indigoImage} alt="Indigo Airplane" layout="responsive" />
       </div>

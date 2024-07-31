@@ -12,7 +12,7 @@ const packagesData = [
 
 const BestSellingPackages = () => {
   return (
-    <div class="explore-packages" style={{ backgroundImage: `url(${explorebg.src})`}}>
+    <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})`}}>
       <div className="container card_main_section">
       <div className="header_best_selling">
         <h2 className='same_heading'>Explore Best Selling Packages</h2>
@@ -50,8 +50,8 @@ const BestSellingPackages = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                                  }} >
-       <span>Up to 40% Discount!</span>
-      <button>Discover More</button>
+        <span>Up to 40% Discount!</span>
+        <button>Discover More</button>
     </div>
 </div> 
     
