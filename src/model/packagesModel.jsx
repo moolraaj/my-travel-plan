@@ -5,7 +5,7 @@ const imageSchema = new mongoose.Schema({
     name: { type: String, required: true },
     path: { type: String, required: true },
     contentType: { type: String, required: true },
-    imgurl: { type: String, required: true }  // Added URL field
+    
 });
 
 // Define the itinerary item schema
@@ -32,7 +32,12 @@ const PackagesSchema = new mongoose.Schema({
     package_itinerary: [itineraryItemSchema],
     packages_galleries: [imageSchema],  
     packages_include: [metaItemSchema],
-    packages_exclude: [metaItemSchema]
+    packages_exclude: [metaItemSchema],
+    city_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'cities',
+        required: true
+    }
 });
 
 // Create the package model

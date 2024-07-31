@@ -1,21 +1,23 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import CitiesModel from "@/model/citiesModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-    let { id } = params;
-    try {
-        let result=await CitiesModel.findOne({_id:id})
+
+    return handelAsyncErrors(async()=>{
+
+        let { id } = params;
+        if(!id){
+            return NextResponse.json({ success: false, message:'invalid credentials _id not found' }); 
+        }        
+        let result=await CitiesModel.findById({_id:id})
         if(!result){
-            return NextResponse.json({ success: false, message:'missing credentials' }); 
+            return NextResponse.json({ success: false, message:'invalid credentials _id not found' }); 
         }
-
-
-        return NextResponse.json({ success: true, result });
-    } catch (error) {
-        console.error('Error in GET handler:', error);
-        return NextResponse.json({ success: false, message: 'Failed to fetch city and packages', error: error.message });
-    }
+        return NextResponse.json({status:200, success: true, result });  
+    })
+    
 }
