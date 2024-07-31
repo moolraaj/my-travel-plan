@@ -40,7 +40,7 @@ function Packages() {
   }, [currentPage]);
 
   const handleAddClick = () => {
-    router.push('/admin/packages/add-package');
+    router.push('/admin/packages/add-packages');
   };
 
   const handleDelete = async () => {
