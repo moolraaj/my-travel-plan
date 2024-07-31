@@ -1,36 +1,36 @@
- 
-import { NextResponse } from "next/server";
-
- 
-import { HandleFileUpload } from "@/helpers/uploadFiles";
- 
 import { DbConnect } from "@/database/database";
-import countriestModel from "@/model/countryModel";
- 
-DbConnect()
+import { NextResponse } from "next/server";
+import countriesModel from "@/model/countryModel";
+import continentModel from "@/model/continentModel";
+import { HandleFileUpload } from "@/helpers/uploadFiles";
 
-
+DbConnect();
 
 export async function POST(req) {
     try {
-        
-        //extract data from formdata
+        // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
+        const continent_id = payload.get('continent_id'); // Get the continent ID from the form data
 
-      
+        // Check if slug is already exist
+        let existingSlug = await countriesModel.findOne({ slug });
 
-        // check if slug is already exist
-        
-        let existingSlug=await countriestModel.findOne({slug})
-        if(existingSlug){
-            return NextResponse.json({ success: false, message: 'slug is already exist' }); 
+        if (existingSlug) {
+            return NextResponse.json({ success: false, message: 'Slug already exists' });
         }
-       
-        // upload single image
+
+        // Check if the continent ID is valid
+        let existingContinent = await continentModel.findById(continent_id);
+
+        if (!existingContinent) {
+            return NextResponse.json({ success: false, message: 'Invalid continent ID' });
+        }
+
+        // Upload single image
         const uploadedFile = await HandleFileUpload(file);
 
         const imageObject = {
@@ -39,17 +39,22 @@ export async function POST(req) {
             contentType: uploadedFile.contentType,
         };
 
-     
-        const response = new countriestModel({
+        const countryDocument = new countriesModel({
             images: [imageObject],
             title: title,
             description: description,
             slug: slug,
-            all_cities:[]
+            continent_id: continent_id,
+            all_cities: [],
+            all_packages: []
         });
 
-        // get total result of the continents
-        const country = await response.save();
+        // Save the country document
+        const country = await countryDocument.save();
+
+        // Update the continent document to include the new country
+        existingContinent.all_countries.push(country._id);
+        await existingContinent.save();
 
         return NextResponse.json({ success: true, country });
 

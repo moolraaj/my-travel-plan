@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import PackagesModel from "./packagesModel";
 
-
-
 // Define the image schema
 let imageSchema = new mongoose.Schema({
     name: {
@@ -19,7 +17,7 @@ let imageSchema = new mongoose.Schema({
     }
 });
 
-// Define the continent schema with references to countries
+// Define the cities schema with references to packages
 const CitiesSchema = new mongoose.Schema({
     images: [imageSchema],
     title: {
@@ -33,18 +31,23 @@ const CitiesSchema = new mongoose.Schema({
     slug:{
         type:String,
         required:true
-        
     },
     all_packages: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'packages',
         },
-      ]
-     
-     
+    ]
 });
 
-// Create the continent model
+// Middleware to handle cascading deletions
+CitiesSchema.pre('remove', async function(next) {
+    const city = this;
+    await PackagesModel.deleteMany({ _id: { $in: city.all_packages } });
+    next();
+});
+
+// Create the cities model
 let CitiesModel = mongoose.models.cities || mongoose.model('cities', CitiesSchema);
+
 export default CitiesModel;

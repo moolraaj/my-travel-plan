@@ -36,7 +36,10 @@ export async function GET(req, { params }) {
         // Map the result to include details of cities and packages
         const result = {
             _id: country._id,
+            images: country.images,
             title: country.title,
+            description: country.description,
+            slug: country.slug,
             totalResults,
             cities: paginatedCities.map(city => ({
                 _id: city._id,

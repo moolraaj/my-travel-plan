@@ -1,12 +1,12 @@
-// /app/(admin)/admin/(countries)/countries/update-country/[id]/page.jsx
+// /app/(admin)/admin/(cities)/cities/update-city/[id]/page.jsx
 
 
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-function UpdateCountry({ params }) {
-  const [country, setCountry] = useState({
+function UpdateCity({ params }) {
+  const [city, setCity] = useState({
     title: '',
     slug: '',
     description: '',
@@ -21,15 +21,15 @@ function UpdateCountry({ params }) {
   const router = useRouter();
   const { id } = params;
 
-  async function fetchCountry() {
+  async function fetchCity() {
     try {
-      const response = await fetch(`/api/v1/country/get/${id}`);
+      const response = await fetch(`/api/v1/city/getbyid/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       if (data.success) {
-        setCountry({
+        setCity({
           ...data.result,
           images: data.result.images.map(img => img.name), // Extract image names
         });
@@ -38,14 +38,14 @@ function UpdateCountry({ params }) {
         setError(data.message);
       }
     } catch (error) {
-      setError('Error fetching Country data.');
+      setError('Error fetching City data.');
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchCountry();
+    fetchCity();
   }, [id]);
 
   const handleChange = (e) => {
@@ -54,8 +54,8 @@ function UpdateCountry({ params }) {
       const file = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCountry((prevCountry) => ({
-          ...prevCountry,
+        setCity((prevCity) => ({
+          ...prevCity,
           imageFile: file,
           imagePreviewUrl: reader.result, // Create a preview URL for the new image
         }));
@@ -64,8 +64,8 @@ function UpdateCountry({ params }) {
         reader.readAsDataURL(file);
       }
     } else {
-      setCountry((prevCountry) => ({
-        ...prevCountry,
+      setCity((prevCity) => ({
+        ...prevCity,
         [name]: value,
       }));
     }
@@ -75,31 +75,31 @@ function UpdateCountry({ params }) {
     event.preventDefault();
     setIsLoading(true); // Start loading
     const formData = new FormData();
-    formData.append('title', country.title);
-    formData.append('slug', country.slug);
-    formData.append('description', country.description);
-    if (country.imageFile) {
-      formData.append('file', country.imageFile); // Upload new image
+    formData.append('title', city.title);
+    formData.append('slug', city.slug);
+    formData.append('description', city.description);
+    if (city.imageFile) {
+      formData.append('file', city.imageFile); // Upload new image
     } else {
       formData.append('file', ''); // Ensure file field is included if no new image
     }
 
     try {
-      const response = await fetch(`/api/v1/country/update/${id}`, {
+      const response = await fetch(`/api/v1/city/update/${id}`, {
         method: 'PUT',
         body: formData,
       });
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('country updated successfully!');
+        setSuccessMessage('City updated successfully!');
         setError('');
-        setTimeout(() => router.push('/admin/countries'), 2000); // Redirect after success
+        setTimeout(() => router.push('/admin/cities'), 2000); // Redirect after success
       } else {
         setError(data.message);
         setSuccessMessage('');
       }
     } catch (error) {
-      setError('Error updating country.');
+      setError('Error updating City.');
       setSuccessMessage('');
     } finally {
       setIsLoading(false); // End loading
@@ -108,7 +108,7 @@ function UpdateCountry({ params }) {
 
   return (
     <div className="update-packages-container">
-      <h2 className="update-packages-heading">Update Country</h2>
+      <h2 className="update-packages-heading">Update City</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
       {error && <p className="update-packages-error">{error}</p>}
       {successMessage && <p className="update-packages-success">{successMessage}</p>}
@@ -119,7 +119,7 @@ function UpdateCountry({ params }) {
             <input
               type="text"
               name="title"
-              value={country.title}
+              value={city.title}
               onChange={handleChange}
               className="update-packages-input"
               required
@@ -130,7 +130,7 @@ function UpdateCountry({ params }) {
             <input
               type="text"
               name="slug"
-              value={country.slug}
+              value={city.slug}
               onChange={handleChange}
               className="update-packages-input"
               required
@@ -140,7 +140,7 @@ function UpdateCountry({ params }) {
             Description:
             <textarea
               name="description"
-              value={country.description}
+              value={city.description}
               onChange={handleChange}
               className="update-packages-textarea"
               required
@@ -155,14 +155,14 @@ function UpdateCountry({ params }) {
               className="update-packages-file-input"
             />
             <div className="update-packages-image-preview">
-              {country.imagePreviewUrl ? (
+              {city.imagePreviewUrl ? (
                 <img
-                  src={country.imagePreviewUrl}
+                  src={city.imagePreviewUrl}
                   alt="New"
                   className="update-packages-image"
                 />
               ) : (
-                country.images.map((image, index) => (
+                city.images.map((image, index) => (
                   <img
                     key={index}
                     src={`/uploads/${image}`}
@@ -174,7 +174,7 @@ function UpdateCountry({ params }) {
             </div>
           </label>
           <button type="submit" className="update-packages-button"  disabled={isLoading} >
-            {isLoading ? 'Updating...' : 'Update Country'} 
+            {isLoading ? 'Updating...' : 'Update City'} 
           </button>
         </form>
       )}
@@ -182,5 +182,5 @@ function UpdateCountry({ params }) {
   );
 }
 
-export default UpdateCountry;
+export default UpdateCity;
 

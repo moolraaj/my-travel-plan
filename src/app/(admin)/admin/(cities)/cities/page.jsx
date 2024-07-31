@@ -145,7 +145,7 @@ function CityPage() {
   }, [currentPage]);
 
   const handleAddClick = () => {
-    router.push('/admin/cities/add-cities');
+    router.push('/admin/cities/add-city');
   };
 
   const handleDelete = async () => {
@@ -184,6 +184,14 @@ function CityPage() {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleEdit = (id) => {
+    router.push(`/admin/cities/update-city/${id}`);
+  };
+
+  const handlePreview = (id) => {
+    router.push(`/admin/cities/preview-city/${id}`);
   };
 
   return (
@@ -247,9 +255,11 @@ function CityPage() {
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
                   <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
-                  <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
+                  <td data-label="Actions">
+                  <span className="actions">
+                    <FaEye className="action-icon view" title="View" onClick={()=> handlePreview(city._id)}/>
+                    <FaEdit className="action-icon edit" title="Edit"  onClick={()=> handleEdit(city._id)}/>
+                    </span>
                   </td>
                 </tr>
               ))

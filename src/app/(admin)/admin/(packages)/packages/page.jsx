@@ -186,6 +186,13 @@ function Packages() {
       setCurrentPage(page);
     }
   };
+  const handleEdit = (id) => {
+    router.push(`/admin/packages/update-package/${id}`);
+  };
+
+  const handlePreview = (id) => {
+    router.push(`/admin/packages/preview-package/${id}`);
+  };
 
   return (
     <div className="packages">
@@ -247,9 +254,11 @@ function Packages() {
                   <td data-label="Title">{pkg.title}</td>
                   <td data-label="Description">{pkg.description}</td>
                   {/* <td data-label="Countries Count">{pkg.totalCountries}</td> */}
-                  <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" />
+                  <td data-label="Actions">
+                  <span className="actions">
+                    <FaEye className="action-icon view" title="View" onClick={()=>handlePreview(pkg._id)} />
                     <FaEdit className="action-icon edit" title="Edit" />
+                    </span>
                   </td>
                 </tr>
               ))
