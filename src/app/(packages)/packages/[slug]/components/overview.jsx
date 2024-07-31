@@ -64,7 +64,7 @@ const Itinerary = () => {
 
 <div className='over'>
     <h2 className='heading_inner_page'>Overview</h2>
-    <p>Mesmerizing 4-night, 5-day journey with our Passionate Paris With Disney tour, seamlessly blending the romance of Parisian streets with the enchantment of Disneyland Paris. Begin your adventure immersing in Paris's iconic landmarks like the Eiffel Tower and Notre-Dame Cathedral, followed by leisurely explorations of charming neighborhoods and delectable French cuisine. Then, venture into the whimsical realm of Disneyland Paris, where fairy tales come alive with thrilling rides, captivating shows, and encounters with beloved Disney characters. Whether strolling along the Seine or posing for photos with Mickey Mouse, this tour promises an unforgettable fusion of culture, magic, and memories, offering the perfect escapade for travelers of all ages.</p>
+    <p>Mesmerizing 4-night, 5-day journey with our Passionate Paris With Disney tour, seamlessly blending the romance of Parisian streets with the enchantment of Disneyland Paris. Begin your adventure immersing in Paris is iconic landmarks like the Eiffel Tower and Notre-Dame Cathedral, followed by leisurely explorations of charming neighborhoods and delectable French cuisine. Then, venture into the whimsical realm of Disneyland Paris, where fairy tales come alive with thrilling rides, captivating shows, and encounters with beloved Disney characters. Whether strolling along the Seine or posing for photos with Mickey Mouse, this tour promises an unforgettable fusion of culture, magic, and memories, offering the perfect escapade for travelers of all ages.</p>
 </div>
 
 
@@ -75,7 +75,7 @@ const Itinerary = () => {
     <div className='top_summary_inner'>
         <h2 className='heading_inner_page'>Top Summary</h2>
                <p>Embark on an enchanting journey through the heart of Europe with our Passionate Paris With Disney tour, spanning four nights and five days of unforgettable experiences. This meticulously crafted itinerary seamlessly blends the timeless romance of Paris with the whimsical charm of Disneyland Paris, offering travelers a truly magical fusion of culture, adventure, and fantasy.
-         <br/>Your adventure begins in the iconic city of Paris, where you'll be swept away by the beauty of its historic landmarks and vibrant streets. Over the course of two days, explore must-see sights such as the majestic Eiffel Tower, the awe-inspiring Notre-Dame Cathedral, and the world-renowned Louvre Museum, home to priceless works of art. Wander through picturesque neighborhoods like Montmartre and Le Marais, immersing yourself in the city's rich culture and culinary delights at charming cafes and bistros
+         <br/>Your adventure begins in the iconic city of Paris, where you will be swept away by the beauty of its historic landmarks and vibrant streets. Over the course of two days, explore must-see sights such as the majestic Eiffel Tower, the awe-inspiring Notre-Dame Cathedral, and the world-renowned Louvre Museum, home to priceless works of art. Wander through picturesque neighborhoods like Montmartre and Le Marais, immersing yourself in the city is rich culture and culinary delights at charming cafes and bistros
         </p>
             </div>
             </div>
@@ -126,7 +126,7 @@ const Itinerary = () => {
                     <p>Do not hesitage to give us a call. We are an expert team and we are happy to talk to you</p>
                     <div className='contact_card'>
                         <a href='tel:+91 8627814386'>+91 8627814386</a>
-                        <a href='mailto:booking@streetromeo.com'>booking@streetromeo.com </a>
+                        <a href='mailto:booking@streetromeo.com'>booking@streetromeo.com</a>
                     </div>
                 </div>
             </div>
