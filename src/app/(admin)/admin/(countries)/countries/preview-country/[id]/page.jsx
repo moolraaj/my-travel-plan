@@ -63,7 +63,7 @@ function PreviewCountry({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>Countries: {country.cities.length > 0 ? country.cities.length : 0}</h3>
+            <h3>Cities: {country.cities.length > 0 ? country.cities.length : 0}</h3>
             <ul>
               {country.cities.length > 0 ? (
                 country.cities.map((city, index) => (
