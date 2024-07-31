@@ -188,6 +188,14 @@ function CountryPage() {
     }
   };
 
+  const handleEdit = (id) => {
+    router.push(`/admin/countries/update-country/${id}`);
+  };
+
+  const handlePreview = (id) => {
+    router.push(`/admin/countries/preview-country/${id}`);
+  };
+
   return (
     <div className="packages">
       <h2>Countries</h2>
@@ -248,9 +256,11 @@ function CountryPage() {
                   <td data-label="Title">{country.title}</td>
                   <td data-label="Description">{country.description}</td>
                   <td data-label="Cities Count">{country.cities ? country.cities.length : 0}</td>
-                  <td data-label="Actions" className="actions">
-                    <FaEye className="action-icon view" title="View" />
-                    <FaEdit className="action-icon edit" title="Edit" />
+                  <td data-label="Actions">
+                  <span className="actions">
+                    <FaEye className="action-icon view" title="View" onClick={()=>handlePreview(country._id)}/>
+                    <FaEdit className="action-icon edit" title="Edit" onClick={()=>handleEdit(country._id)}/>
+                    </span>
                   </td>
                 </tr>
               ))

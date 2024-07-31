@@ -232,12 +232,13 @@
 .packages-table th,
 .packages-table td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #a0027031;
   text-align: left;
 }
 
 .packages-table th {
-  background-color: #1802A0;
+  background-color:  #1802A0;
+  border: 1px solid #cf0c29a4;
   color: white;
 }
 
@@ -248,7 +249,7 @@
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 16px;
 }
 
 .action-icon {

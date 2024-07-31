@@ -13,4 +13,19 @@ const ContinentSchema = vine.object({
     image: vine.any(imageValidationSchema),
 });
 
+
+
+
+
 export default ContinentSchema;
+
+
+
+
+export const contactSchema = vine.object({
+    name: vine.string().minLength(4),
+    email: vine.string().email(),
+    phone_number: vine.string().maxLength(10, 'phone number can\'t exceed 10 digits').regex(/^\d{10}$/, 'phone number must be exactly 10 digits'),
+    message: vine.string().minLength(10)
+});
+
