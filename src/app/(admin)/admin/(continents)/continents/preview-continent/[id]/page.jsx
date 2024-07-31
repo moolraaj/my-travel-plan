@@ -39,14 +39,7 @@ function PreviewContinent({ params }) {
     fetchContinent();
   }, [id]);
 
-
- 
-  let{result,totalResults}=continent
-
- 
- 
-
-  
+  const { result, totalResults } = continent;
 
   return (
     <div className="preview-continent-container">
@@ -54,13 +47,13 @@ function PreviewContinent({ params }) {
       {error && <p>{error}</p>}
       {!loading && !error && (
         <>
-         <h1>{result._id}</h1>
+          <h2>{result._id}</h2>
           <div className="preview-continent-images">
-            {continent.images===null ? (
-              continent.images.map((image, index) => (
+            {result.images && result.images.length > 0 ? (
+              result.images.map((image, index) => (
                 <img
                   key={index}
-                  src={`/uploads/${image.name}`}
+                  src={image.imgurl}
                   alt={image.name}
                   className="preview-continent-image"
                 />
@@ -70,9 +63,7 @@ function PreviewContinent({ params }) {
             )}
           </div>
           <div className="preview-continent-countries">
-            <h3>countries count : {totalResults} </h3>
-  
-            
+            <h3>Countries count: {totalResults}</h3>
           </div>
         </>
       )}
