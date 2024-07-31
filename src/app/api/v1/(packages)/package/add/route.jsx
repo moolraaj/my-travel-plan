@@ -42,7 +42,7 @@ export async function POST(req) {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
-            imgurl: uploadedFile.url 
+            
         };
 
         // Handle multiple gallery images
@@ -54,7 +54,7 @@ export async function POST(req) {
                 name: uploadedGalleryFile.name,
                 path: uploadedGalleryFile.path,
                 contentType: uploadedGalleryFile.contentType,
-                imgurl: uploadedGalleryFile.url // Use the URL from the helper function
+                 
             });
         }
 

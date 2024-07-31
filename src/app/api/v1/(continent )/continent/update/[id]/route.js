@@ -38,7 +38,7 @@ export async function PUT(req, { params }) {
                 name: uploadedFile.name,
                 path: uploadedFile.path,
                 contentType: uploadedFile.contentType,
-                imgurl: uploadedFile.url 
+                
             };
             existingContinent.images = [imageObject];
         }

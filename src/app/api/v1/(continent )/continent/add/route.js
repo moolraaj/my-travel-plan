@@ -32,7 +32,7 @@ export async function POST(req) {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
-            imgurl: uploadedFile.url  
+           
         };
 
         const continentDocument = new continentModel({

@@ -14,11 +14,8 @@ let imageSchema = new mongoose.Schema({
     contentType: {
         type: String,
         required: true
-    },
-    imgurl: {
-        type: String,
-        required: true
     }
+    
 });
 
 // Define the cities schema with references to packages
