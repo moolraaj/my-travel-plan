@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import triangle from '../app/assets/home_images/triangle.png';
-import europe from '../app/assets/home_images/europe.png'
+import europe from '../app/assets/home_images/europe.png';
+import camerabg from '../app/assets/home_images/camera-bg.png';
 // import './css.scss';
 
 const countriesData = [
@@ -17,10 +18,10 @@ const countriesData = [
 
 const World_section = () => {
   return (  
-    <div className=''>
+    <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})`}} >
     <div className="grid-container">
       {countriesData.map((country, index) => (
-        <Link class="card_outer" href={`/${country.name.toLowerCase().replace(' ', '-')}`} key={index}>
+        <Link className="card_outer" href={`/${country.name.toLowerCase().replace(' ', '-')}`} key={index}>
           <div className="card">
             <div className="overlay">
               <div className="label">{country.countries}-Countries <img src={triangle.src}/> </div>
