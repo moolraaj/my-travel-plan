@@ -1,13 +1,8 @@
+import { DbConnect } from "@/database/database";
+import continentModel from "@/model/continentModel";
+import { NextResponse } from "next/server";
 
-// /app/api/v1/(continent )/continent/addcontries/[id]/route.jsx
-
-import { DbConnect } from "@/database/database"
-import continentModel from "@/model/continentModel"
-import {  NextResponse } from "next/server"
-
-DbConnect()
-
- 
+DbConnect();
 
 export async function PUT(req, { params }) {
     let { id } = params;
@@ -37,12 +32,18 @@ export async function PUT(req, { params }) {
     if (duplicates.length > 0) {
         return NextResponse.json({
             success: false,
-            message: 'duplicates countries found !please remove the duplicate entries then proceed to ahaed',
-            duplicateEntries:duplicates
+            message: 'Duplicates countries found! Please remove the duplicate entries then proceed ahead',
+            duplicateEntries: duplicates
         });
     }
 
-    // Proceed with adding new country IDs to the continent
+    // Remove the countries from their current continents
+    await continentModel.updateMany(
+        { all_countries: { $in: countryRef } },
+        { $pull: { all_countries: { $in: countryRef } } }
+    );
+
+    // Add the countries to the new continent
     let resp = await continentModel.findByIdAndUpdate(
         filterId,
         { $addToSet: { all_countries: { $each: countryRef } } },
@@ -51,5 +52,5 @@ export async function PUT(req, { params }) {
 
     console.log(resp);
 
-    return NextResponse.json({ success: true, message: 'Countries added successfully'});
+    return NextResponse.json({ success: true, message: 'Countries moved successfully' });
 }
