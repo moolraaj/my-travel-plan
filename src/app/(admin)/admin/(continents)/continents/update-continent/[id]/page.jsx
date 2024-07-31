@@ -31,7 +31,10 @@ function UpdateContinent({ params }) {
       if (data.success) {
         setContinent({
           ...data.result,
-          images: data.result.images.map(img => img.name), // Extract image names
+          images: data.result.images.map(img => ({
+            ...img,
+            imgurl: img.imgurl || '',
+          })), // Ensure images have imgurl
         });
         console.log('Data:', data);
       } else {
@@ -80,8 +83,6 @@ function UpdateContinent({ params }) {
     formData.append('description', continent.description);
     if (continent.imageFile) {
       formData.append('file', continent.imageFile); // Upload new image
-    } else {
-      formData.append('file', ''); // Ensure file field is included if no new image
     }
 
     try {
@@ -162,19 +163,23 @@ function UpdateContinent({ params }) {
                   className="update-packages-image"
                 />
               ) : (
-                continent.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={`/uploads/${image}`}
-                    alt={`Current ${image}`}
-                    className="update-packages-image"
-                  />
-                ))
+                continent.images.length > 0 ? (
+                  continent.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image.imgurl}
+                      alt={`Current ${image.name}`}
+                      className="update-packages-image"
+                    />
+                  ))
+                ) : (
+                  <p>No current images available</p>
+                )
               )}
             </div>
           </label>
-          <button type="submit" className="update-packages-button"  disabled={isLoading} >
-            {isLoading ? 'Updating...' : 'Update Continent'} 
+          <button type="submit" className="update-packages-button" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update Continent'}
           </button>
         </form>
       )}
