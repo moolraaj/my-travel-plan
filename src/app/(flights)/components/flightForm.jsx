@@ -51,6 +51,7 @@ const EnquiryForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="form flight-form">
+      <h3>Enquiry Now </h3>
       <div className="form-group">
         <input
           type="text"

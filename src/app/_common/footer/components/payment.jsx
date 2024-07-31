@@ -7,6 +7,7 @@ import mastercard from '../../../assets/home_images/master.png';
 import paytm from '../../../assets/home_images/paytm.png';
 import paypal from '../../../assets/home_images/paypal.png';
 import credit from '../../../assets/home_images/credit.png';
+import Link from 'next/link'
 
 
 const paymentMethods = [
@@ -22,7 +23,10 @@ const PaymentMethods = () => {
   return (
     <div className="container_footer" >
       <div className="logo">
-        <Image src={logo.src} alt="MyTravPlan Logo" width={150} height={50} />
+      <Link href={'/'}>
+          <img src={logo.src} alt="MyTravPlan Logo" width={150} height={50} />
+      </Link>
+        
       </div>
       <p className="description">
         A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which
