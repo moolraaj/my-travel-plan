@@ -14,6 +14,10 @@ let imageSchema = new mongoose.Schema({
     contentType: {
         type: String,
         required: true
+    },
+    imgurl: {
+        type: String,
+        required: true
     }
 });
 
@@ -37,14 +41,12 @@ const CitiesSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'packages',
         },
-    ]
-});
-
-// Middleware to handle cascading deletions
-CitiesSchema.pre('remove', async function(next) {
-    const city = this;
-    await PackagesModel.deleteMany({ _id: { $in: city.all_packages } });
-    next();
+    ],
+    country_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'countries',
+        required: true
+    }
 });
 
 // Create the cities model

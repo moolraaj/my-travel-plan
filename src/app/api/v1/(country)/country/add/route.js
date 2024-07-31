@@ -8,6 +8,7 @@ DbConnect();
 
 export async function POST(req) {
     try {
+        const host = req.headers.get('host');
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -31,12 +32,13 @@ export async function POST(req) {
         }
 
         // Upload single image
-        const uploadedFile = await HandleFileUpload(file);
+        const uploadedFile = await HandleFileUpload(file,host);
 
         const imageObject = {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
+            imgurl: uploadedFile.url  
         };
 
         const countryDocument = new countriesModel({
@@ -44,19 +46,19 @@ export async function POST(req) {
             title: title,
             description: description,
             slug: slug,
-            continent_id: continent_id,
             all_cities: [],
-            all_packages: []
+            all_packages: [],
+            continent_id: continent_id,
         });
 
         // Save the country document
-        const country = await countryDocument.save();
+        const result = await countryDocument.save();
 
         // Update the continent document to include the new country
         existingContinent.all_countries.push(country._id);
         await existingContinent.save();
 
-        return NextResponse.json({ success: true, country });
+        return NextResponse.json({ success: true, result });
 
     } catch (error) {
         console.error('Error in POST handler:', error);

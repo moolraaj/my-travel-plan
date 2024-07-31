@@ -10,7 +10,7 @@ DbConnect();
 
 export async function POST(req) {
     try {
-        
+        const host = req.headers.get('host');
         //extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -26,12 +26,13 @@ export async function POST(req) {
         }
        
         // upload single image
-        const uploadedFile = await HandleFileUpload(file);
+        const uploadedFile = await HandleFileUpload(file,host);
 
         const imageObject = {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
+            imgurl: uploadedFile.url  
         };
 
         const continentDocument = new continentModel({
