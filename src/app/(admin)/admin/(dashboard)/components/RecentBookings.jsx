@@ -1,34 +1,81 @@
-import React from 'react';
-
+'use client'
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 function RecentBookings() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch('/api/v1/flight/queries/get');
+        const data = await response.json();
+        if (data.status === 200) {
+          // Sort bookings by date in descending order
+          const sortedBookings = data.result.sort((a, b) => new Date(b.date) - new Date(a.date));
+          // Show only the first 4 most recent bookings
+          setBookings(sortedBookings.slice(0, 4));
+        } else {
+          console.error('Failed to fetch bookings:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookings();
+  }, []);
+
   return (
     <div className="recent-bookings">
       <h2>Recent Bookings</h2>
       <table>
         <thead>
           <tr>
-            <th>User</th>
-            <th>Package</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
             <th>Date</th>
-            <th>Status</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Travelers</th>
+            <th>Children</th>
+            <th>Message</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>John Doe</td>
-            <td>Beach Holiday</td>
-            <td>2023-07-01</td>
-            <td>Confirmed</td>
-          </tr>
-          <tr>
-            <td>Jane Smith</td>
-            <td>Mountain Trek</td>
-            <td>2023-07-02</td>
-            <td>Pending</td>
-          </tr>
+          {loading ? (
+            <tr>
+              <td colSpan="9" className='loading'>Loading...</td>
+            </tr>
+          ) : bookings.length > 0 ? (
+            bookings.map((booking) => (
+              <tr key={booking._id}>
+                <td>{booking.name}</td>
+                <td>{booking.email}</td>
+                <td>{booking.phone_number}</td>
+                <td>{booking.date}</td>
+                <td>{booking.origin}</td>
+                <td>{booking.destination}</td>
+                <td>{booking.traveler}</td>
+                <td>{booking.children}</td>
+                <td>{booking.message}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="9">No recent bookings found.</td>
+            </tr>
+          )}
         </tbody>
       </table>
+      <button onClick={() => router.push('/admin/bookings')}>
+        View All
+      </button>
     </div>
   );
 }

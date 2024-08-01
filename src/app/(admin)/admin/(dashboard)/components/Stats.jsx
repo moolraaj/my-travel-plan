@@ -1,6 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import LoadingOverlay from './LoadingOverlay';
 
 const userData = [
   { name: 'Jan', users: 400 },
@@ -23,38 +24,45 @@ const bookingData = [
 ];
 
 function Stats() {
+  const [loading, setLoading] = useState(true);
+
+  setTimeout(() => {
+    setLoading(false)
+  }, 2000);
   return (
     <div className="stats">
-      <h2>Statistics</h2>
-      <div className="stats-graphs">
-        <div className="stats-graph">
-          <h3>Monthly Users</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={userData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="users" stroke="#8884d8" activeDot={{ r: 8 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="stats-graph">
-          <h3>Monthly Bookings</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={bookingData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="bookings" stroke="#82ca9d" activeDot={{ r: 8 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+    <h2>Statistics</h2>
+    <div className="stats-graphs">
+      <div className="stats-graph" style={{ position: 'relative' }}>
+        <h3>Monthly Users</h3>
+        {loading && <LoadingOverlay />}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={userData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip/>
+            <Legend />
+            <Line type="monotone" dataKey="users" stroke="#8884d8" activeDot={{ r: 8 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="stats-graph" style={{ position: 'relative' }}>
+        <h3>Monthly Bookings</h3>
+        {loading && <LoadingOverlay />}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={bookingData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip  />
+            <Legend />
+            <Line type="monotone" dataKey="bookings" stroke="#82ca9d" activeDot={{ r: 8 }} />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
+  </div>
   );
 }
 
