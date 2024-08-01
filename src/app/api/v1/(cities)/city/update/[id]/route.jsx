@@ -17,9 +17,10 @@ export async function PUT(req, { params }) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
+        const countryId = payload.get('country_id');
 
         // Check if all fields are empty
-        if (!file && !title && !description && !slug) {
+        if (!file && !title && !description && !slug&&!countryId) {
             return NextResponse.json({status:404, success: false, message: 'at least one more field is required' });
         }
         // Check if country exists
@@ -41,6 +42,9 @@ export async function PUT(req, { params }) {
 
             };
             existingCountry.images = [imageObject];
+        }
+        if(countryId){
+            existingCountry.country_id=countryId
         }
         // Save the updated document
         const result = await existingCountry.save();
