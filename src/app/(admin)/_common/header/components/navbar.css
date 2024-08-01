@@ -78,6 +78,21 @@
     margin-left: 15px;
   }
   
+  /* Notification Icon Wrapper */
+.notification-button{
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: #005bb5;
+  border-radius: 50%;
+}
+
   /* Responsive Styles */
   @media (max-width: 768px) {
     .navbar_inner {

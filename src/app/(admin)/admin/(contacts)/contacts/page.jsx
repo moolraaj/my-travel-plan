@@ -1,14 +1,14 @@
-// /app/(admin)/admin/(bookings)/bookings/page.jsx
+// /app/(admin)/admin/(contacts)/contacts/page.jsx
 
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FaTrashAlt, FaEye } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function BookingPage() {
-  const [bookings, setBookings] = useState([]);
+function ContactsPage() {
+  const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,45 +18,45 @@ function BookingPage() {
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchBookings() {
+    async function fetchContacts() {
       try {
-        const response = await fetch(`/api/v1/flight/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+        const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
         const data = await response.json();
         if (response.ok && data.status === 200) {
-          setBookings(data.result);
+          setContacts(data.result);
           setTotalResults(data.totalResults); // Set totalResults from API
         } else {
-          setError('Failed to fetch bookings');
+          setError('Failed to fetch Contacts');
         }
       } catch (error) {
-        setError('Error fetching bookings');
-        console.error('Error fetching bookings:', error);
+        setError('Error fetching Contacts');
+        console.error('Error fetching Contacts:', error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchBookings();
+    fetchContacts();
   }, [currentPage, itemsPerPage]);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this booking?')) {
+    if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
-        const response = await fetch(`/api/v1/flight/query/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/sendquery/query/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
-
-        if (response.ok && data.status === 200 && data.success) {
-          setBookings(bookings.filter(booking => booking._id !== id));
-          toast.success('Booking deleted successfully');
+        console.log('Delete response data:', data); // Log the response data for debugging
+        if (response.ok && data.success) {
+          setContacts(contacts.filter(contact => contact._id !== id));
+          toast.success('contact deleted successfully');
         } else {
-          toast.error(data.message || 'Failed to delete booking');
+          toast.error('Failed to delete contact');
         }
       } catch (error) {
-        toast.error('Failed to delete booking, please try again.');
-        console.error('Error deleting booking:', error);
+        toast.error('Failed to delete contact, please try again.');
       }
     }
   };
+  
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -67,50 +67,34 @@ function BookingPage() {
   return (
     <div className="packages">
       <ToastContainer />
-      <h2>Bookings</h2>
+      <h2>Contacts</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
             <tr>
-              <th>Booking ID</th>
+              <th>Contact ID</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone Number</th>
-              <th>Date</th>
-              <th>Origin</th>
-              <th>Destination</th>
-              <th>Traveler</th>
-              <th>Children</th>
-              <th>Message</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="11" className="loading">Loading...</td>
+                <td colSpan="5" className="loading">Loading...</td>
               </tr>
             ) : (
-              bookings.map(booking => (
-                <tr key={booking._id}>
-                  <td data-label="Booking ID">{booking._id}</td>
-                  <td data-label="Name">{booking.name}</td>
-                  <td data-label="Email">{booking.email}</td>
-                  <td data-label="Phone Number">{booking.phone_number}</td>
-                  <td data-label="Date">{booking.date}</td>
-                  <td data-label="Origin">{booking.origin}</td>
-                  <td data-label="Destination">{booking.destination}</td>
-                  <td data-label="Traveler">{booking.traveler}</td>
-                  <td data-label="Children">{booking.children}</td>
-                  <td data-label="Message">{booking.message}</td>
+              contacts.map(contact => (
+                <tr key={contact._id}>
+                  <td data-label="ID">{contact._id}</td>
+                  <td data-label="Name">{contact.name}</td>
+                  <td data-label="Email">{contact.email}</td>
+                  <td data-label="Phone Number">{contact.phone_number}</td>
                   <td data-label="Actions">
                     <span className="actions">
-                      <FaTrashAlt
-                        className="action-icon delete"
-                        title="Delete"
-                        onClick={() => handleDelete(booking._id)}
-                      />
+                      <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(contact._id)} />
                     </span>
                   </td>
                 </tr>
@@ -120,14 +104,14 @@ function BookingPage() {
         </table>
       </div>
       <div className="pagination">
-        <button 
+        <button
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
           className="pagination-button"
         >
           {'<<'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="pagination-button"
@@ -135,14 +119,14 @@ function BookingPage() {
           {'<'}
         </button>
         <span className="pagination-info">Page {currentPage} of {totalPages}</span>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="pagination-button"
         >
           {'>'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
           className="pagination-button"
@@ -154,5 +138,4 @@ function BookingPage() {
   );
 }
 
-export default BookingPage;
-
+export default ContactsPage;

@@ -1,8 +1,7 @@
 import { DbConnect } from "@/database/database";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
-import CitiesModel from "@/model/citiesModel";
-
+import BlogModel from "@/model/blogModel";
 import { NextResponse } from "next/server";
 
 DbConnect();
@@ -17,21 +16,24 @@ export async function PUT(req, { params }) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
-        const countryId = payload.get('country_id');
+        const categoryId = payload.get('blog_category');  
 
         // Check if all fields are empty
-        if (!file && !title && !description && !slug&&!countryId) {
-            return NextResponse.json({status:404, success: false, message: 'at least one more field is required' });
+        if (!file && !title && !description && !slug && !categoryId) {
+            return NextResponse.json({ status: 200, success: false, message: 'at least one field is required' });
         }
-        // Check if country exists
-        let existingCountry = await CitiesModel.findById(id);
-        if (!existingCountry) {
-            return NextResponse.json({status:404, success: false, message: 'sorry! country not found' });
+
+        // Check if blog exists
+        let existingBlog = await BlogModel.findById(id);
+        if (!existingBlog) {
+            return NextResponse.json({ status: 200, success: false, message: 'sorry! Blog not found' });
         }
+
         // Update the fields if they are provided
-        if (title) existingCountry.title = title;
-        if (description) existingCountry.description = description;
-        if (slug) existingCountry.slug = slug;
+        if (title) existingBlog.title = title;
+        if (description) existingBlog.description = description;
+        if (slug) existingBlog.slug = slug;
+
         // Upload new image if provided
         if (file) {
             const uploadedFile = await HandleFileUpload(file);
@@ -39,17 +41,17 @@ export async function PUT(req, { params }) {
                 name: uploadedFile.name,
                 path: uploadedFile.path,
                 contentType: uploadedFile.contentType,
-
             };
-            existingCountry.images = [imageObject];
+            existingBlog.images = [imageObject];
         }
-        if(countryId){
-            existingCountry.country_id=countryId
+
+ 
+        if (categoryId) {
+            existingBlog.blog_category = categoryId;  
         }
+
         // Save the updated document
-        const result = await existingCountry.save();
-        return NextResponse.json({status:201, success: true, message:'city updated successfully',result });
-    })
-
-
+        const result = await existingBlog.save();
+        return NextResponse.json({ status: 200, success: true, message: 'Blog updated successfully', result });
+    });
 }
