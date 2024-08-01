@@ -792,16 +792,21 @@ a.navbar-item {
 
 
 .navbar-menu.active {
-	display: flex;
-	/* Show the menu when active */
-	position: absolute;
-	top: 80px;
-	width: 100%;
-	left: 0;
-	padding-left: 27px;
+  display: block;
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  left: 0;
+  padding-left: 27px;
+  background: #fff;
+  margin-top: -22px;
 }
-
-
+button.navbar-toggle:after {
+  content: "open-menu";
+}
+.navbar-menu.active a {
+  padding: 10px 0px;
+}
 .outer_header {
 	box-shadow: 2px 2px 9px #0000002b;
 	position: sticky;
@@ -1984,12 +1989,20 @@ form.form.flight-form h3 {
   .destinations.expert-travel {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    row-gap: 8%;
+    row-gap: 15px;
   }
   .destination-card h3 {
     font-size: 30px;
   }
-
+  img.expert-image {
+    height: 250px;
+  }
+  .card_main_section .packages {
+  width: 100%;
+  }
+  .discount_section {
+    display: none;
+  }
 }
 
 @media only screen and  (max-width:1140px ){
@@ -2001,27 +2014,36 @@ form.form.flight-form h3 {
   }
   a.navbar-item {
     column-gap: 7px;
-}
-.destinations-grid {
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 15px;
-}
-.destination-card:nth-child(1), .destination-card:nth-child(2) {
-  grid-column: unset;
-}
-.destination-card .destination-image {
-  height: 300px;
-}
-.destination-card:before {
-  content: "";
-  height: 300px;
-}
-.footer_section {
-  gap: 10px;
-}
-p.description, ul.destinations-list li, ul.footer-list li, ul.contact-list li a, .address-description p {
-  font-size: 16px;
-}
+  }
+  .destinations-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 15px;
+  }
+  .destination-card:nth-child(1), .destination-card:nth-child(2) {
+    grid-column: unset;
+  }
+  .destination-card .destination-image {
+    height: 300px;
+  }
+  .destination-card:before {
+    content: "";
+    height: 300px;
+  }
+  .footer_section {
+    gap: 10px;
+  }
+  p.description, ul.destinations-list li, ul.footer-list li, ul.contact-list li a, .address-description p {
+    font-size: 16px;
+  }
+  img.expert-image {
+    width: 300px;
+  }
+  .blog-container {
+    grid-template-columns: 1fr 2fr;
+  }
+  .card_main_section .package img {
+    max-width: 220px;
+  }
  }
 
 @media only screen and (max-width:1024px) {
@@ -2043,9 +2065,9 @@ p.description, ul.destinations-list li, ul.footer-list li, ul.contact-list li a,
 }
 
 @media (min-width: 768px) {
-	.navbar-toggle {
-		display: none;
-	}
+	// .navbar-toggle {
+	// 	display: none;
+	// }
 
 	.navbar-menu {
 		flex-direction: row;
