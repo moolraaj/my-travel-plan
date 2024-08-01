@@ -10,12 +10,13 @@ let contactUsSchema=new mongoose.Schema({
         required:[true,'email is required']
     },
     phone_number:{
-        type:String,
+        type:Number,
         required:[true,'phone numnber is required']
     },
     message:{
         type:String,
-    },
+    }
+
     
 })
 
