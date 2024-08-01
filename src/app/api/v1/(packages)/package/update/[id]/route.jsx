@@ -15,9 +15,10 @@ export async function PUT(req, { params }) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
+        const cityId = payload.get('city_id');
 
         // Check if all fields are empty
-        if (!file && !title && !description && !slug) {
+        if (!file && !title && !description && !slug&&!cityId) {
             return NextResponse.json({ success: false, message: 'At least one field is required to update' });
         }
 
@@ -41,6 +42,9 @@ export async function PUT(req, { params }) {
                 contentType: uploadedFile.contentType,
             };
             existingPackage.images = [imageObject];
+        }
+        if(cityId){
+            existingPackage.city_id=cityId
         }
 
         // Save the updated document

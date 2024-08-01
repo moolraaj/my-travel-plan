@@ -2,6 +2,7 @@ import { DbConnect } from "@/database/database";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import CitiesModel from "@/model/citiesModel";
 import countriesModel from "@/model/countryModel";
+import PackagesModel from "@/model/packagesModel";
 import { NextResponse } from "next/server";
 DbConnect()
 
@@ -26,9 +27,14 @@ export async function DELETE(req, { params }) {
             return NextResponse.json({ success: false, message: 'city not found' });
         }
 
+        await PackagesModel.updateMany(
+            { city_id: id },
+            { $unset: { city_id: '' } }
+        );
+
         await countriesModel.updateMany(
-            { blog_category: id },
-            { $pull: { blog_category: id } }
+            { all_cities: id },
+            { $pull: { all_cities: id } }
         );
 
         return NextResponse.json({ success: true, message: 'City deleted successfully', result });
