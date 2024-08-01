@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
- 
+import CategoryModel from "./categoryModel"; 
  
 
-
-
- 
 let imageSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -36,6 +33,14 @@ const blogSchema = new mongoose.Schema({
         required:true
         
     },
+    blog_category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'categories'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    }
     
      
 });
