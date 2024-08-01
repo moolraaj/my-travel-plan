@@ -27,8 +27,8 @@ export async function DELETE(req, { params }) {
         }
 
         await countriesModel.updateMany(
-            { all_cities: id },
-            { $pull: { all_cities: id } }
+            { blog_category: id },
+            { $pull: { blog_category: id } }
         );
 
         return NextResponse.json({ success: true, message: 'City deleted successfully', result });
