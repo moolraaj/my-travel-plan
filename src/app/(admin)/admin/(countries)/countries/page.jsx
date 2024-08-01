@@ -5,13 +5,15 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { toast,ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 function CountryPage() {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedCountries, setSelectedCountries] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -41,35 +43,20 @@ function CountryPage() {
     router.push('/admin/countries/add-country');
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete the selected countries?')) {
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this country?')) {
       try {
-        for (const id of selectedCountries) {
-          await fetch(`/api/v1/country/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/country/delete/${id}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          setCountries(countries.filter(country => country._id !== id));
+          toast.success('Country deleted successfully');
+        } else {
+          toast.error('Failed to delete country');
         }
-        setCountries(countries.filter(country => !selectedCountries.includes(country._id)));
-        setSelectedCountries([]);
-        setSelectAll(false);
       } catch (error) {
-        setError('Failed to delete countries, please try again.');
+        toast.error('Failed to delete country, please try again.');
       }
-    }
-  };
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    if (!selectAll) {
-      setSelectedCountries(countries.map(country => country._id));
-    } else {
-      setSelectedCountries([]);
-    }
-  };
-
-  const handleSelect = (id) => {
-    if (selectedCountries.includes(id)) {
-      setSelectedCountries(selectedCountries.filter(countryId => countryId !== id));
-    } else {
-      setSelectedCountries([...selectedCountries, id]);
     }
   };
 
@@ -89,30 +76,13 @@ function CountryPage() {
 
   return (
     <div className="packages">
+      <ToastContainer/>
       <h2>Countries</h2>
-      {selectedCountries.length > 0 && (
-        <div className="action-bar">
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAll}
-            className="select-all-checkbox"
-          />
-          <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
-        </div>
-      )}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
-              </th>
               <th>Image</th>
               <th>ID</th>
               <th>Title</th>
@@ -124,18 +94,11 @@ function CountryPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="7" className="loading">Loading...</td>
+                <td colSpan="6" className="loading">Loading...</td>
               </tr>
             ) : (
               countries.map(country => (
                 <tr key={country._id}>
-                  <td data-label="Select">
-                    <input
-                      type="checkbox"
-                      checked={selectedCountries.includes(country._id)}
-                      onChange={() => handleSelect(country._id)}
-                    />
-                  </td>
                   <td data-label="Image">
                     <img 
                       src={`/uploads/${country.images[0].name}`} 
@@ -151,6 +114,7 @@ function CountryPage() {
                     <span className="actions">
                       <FaEye className="action-icon view" title="View" onClick={() => handlePreview(country._id)} />
                       <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(country._id)} />
+                      <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(country._id)} />
                     </span>
                   </td>
                 </tr>
