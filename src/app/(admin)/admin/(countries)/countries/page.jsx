@@ -4,7 +4,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 function CountryPage() {
   const [countries, setCountries] = useState([]);
@@ -17,16 +17,11 @@ function CountryPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
-  const searchParams = useSearchParams(); // To access query parameters
 
   useEffect(() => {
-    // Read page number from URL if present
-    const pageFromURL = parseInt(searchParams.get('page')) || 1;
-    setCurrentPage(pageFromURL);
-
     async function fetchCountries() {
       try {
-        const response = await fetch(`/api/v1/countries/get?page=${pageFromURL}&limit=${itemsPerPage}`);
+        const response = await fetch(`/api/v1/countries/get?page=${currentPage}&limit=${itemsPerPage}`);
         const data = await response.json();
         if (data.success) {
           setCountries(data.result);
@@ -40,7 +35,7 @@ function CountryPage() {
     }
 
     fetchCountries();
-  }, [searchParams, itemsPerPage]);
+  }, [currentPage, itemsPerPage]);
 
   const handleAddClick = () => {
     router.push('/admin/countries/add-country');
@@ -81,8 +76,6 @@ function CountryPage() {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      const newURL = page === 1 ? '/admin/countries' : `/admin/countries?page=${page}`;
-      router.push(newURL); // Update URL without reloading
     }
   };
 
@@ -206,3 +199,4 @@ function CountryPage() {
 }
 
 export default CountryPage;
+

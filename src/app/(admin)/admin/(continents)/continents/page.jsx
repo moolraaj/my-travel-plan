@@ -1,5 +1,4 @@
-
-// // // /app/(admin)/admin/(continents)/continent/page.jsx
+// /app/(admin)/admin/(continents)/continent/page.jsx
 
 'use client';
 import React, { useEffect, useState } from 'react';
@@ -108,8 +107,6 @@ function ContinentPage() {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      const newURL = page === 1 ? '/admin/continents' : `/admin/continents?page=${page}`;
-      router.push(newURL); // Update URL without reloading
     }
   };
 
@@ -123,7 +120,7 @@ function ContinentPage() {
 
   return (
     <div className="packages">
-      <ToastContainer/>
+      <ToastContainer />
       <h2>Continents</h2>
       {selectedContinents.length > 0 && actionBarVisible && (
         <div className="action-bar">
@@ -171,10 +168,10 @@ function ContinentPage() {
                     />
                   </td>
                   <td data-label="Image">
-                    <img 
-                      src={`/uploads/${continent.images[0].name}`} 
-                      alt={continent.title} 
-                      className="package-image" 
+                    <img
+                      src={`/uploads/${continent.images[0].name}`}
+                      alt={continent.title}
+                      className="package-image"
                     />
                   </td>
                   <td data-label="ID">{continent._id}</td>
@@ -194,14 +191,14 @@ function ContinentPage() {
         </table>
       </div>
       <div className="pagination">
-        <button 
+        <button
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
           className="pagination-button"
         >
           {'<<'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="pagination-button"
@@ -209,14 +206,14 @@ function ContinentPage() {
           {'<'}
         </button>
         <span className="pagination-info">Page {currentPage} of {totalPages}</span>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="pagination-button"
         >
           {'>'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
           className="pagination-button"

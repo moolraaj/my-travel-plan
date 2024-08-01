@@ -1,10 +1,11 @@
 
 // // // /app/(admin)/admin/(cities)/cities/page.jsx
 
+
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
@@ -17,13 +18,6 @@ function CityPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    // Get the page number from the URL query parameter
-    const pageParam = parseInt(searchParams.get('page') || '1', 10);
-    setCurrentPage(pageParam);
-  }, [searchParams]);
 
   useEffect(() => {
     async function fetchCities() {
@@ -83,9 +77,6 @@ function CityPage() {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      // Update URL based on page number
-      const newUrl = page > 1 ? `/admin/cities?page=${page}` : '/admin/cities';
-      router.push(newUrl);
     }
   };
 
@@ -154,7 +145,7 @@ function CityPage() {
                       className="package-image" 
                     />
                   </td>
-                  <td data-label="id">{city._id}</td>
+                  <td data-label="ID">{city._id}</td>
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
                   <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
@@ -203,7 +194,7 @@ function CityPage() {
       </div>
       <div className="floating-plus" onClick={handleAddClick}>
         <FaPlus />
-        <div className="tooltip">Add Cities</div>
+        <div className="tooltip">Add City</div>
       </div>
     </div>
   );
