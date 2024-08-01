@@ -11,6 +11,8 @@ const Overview = () => {
     countries: 0,
     cities: 0,
     packages: 0,
+    users: 0,
+    bookings: 0
   });
 
   const [loading, setLoading] = useState({
@@ -18,6 +20,8 @@ const Overview = () => {
     countries: true,
     cities: true,
     packages: true,
+    users: true,
+    bookings: true
   });
 
   const fetchData = async (endpoint, key, isPackage = false) => {
@@ -74,38 +78,40 @@ const Overview = () => {
     fetchData('/api/v1/countries/get', 'countries');
     fetchData('/api/v1/cities/get', 'cities');
     fetchData('/api/v1/packages/get', 'packages', true);
+    fetchData('/api/v1/sendquery/queries/get', 'users');
+    fetchData('/api/v1/flight/queries/get', 'bookings');
   }, []);
 
   return (
-    <div className="overview">
+    <div className="overview-d">
       <h2>Dashboard Overview</h2>
-      <div className="overview-cards">
-        <div className="overview-card">
+      <div className="overview-d-cards">
+        <div className="overview-d-card">
           <Link href="/admin/users">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faUsers} className="overview-icon" />
+              <FontAwesomeIcon icon={faUsers} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Users</h3>
-              <p>1,234</p>
+              <p>{loading.users ? <FontAwesomeIcon icon={faSpinner} spin /> : data.users}</p>
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/bookings">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCalendarCheck} className="overview-icon" />
+              <FontAwesomeIcon icon={faCalendarCheck} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Bookings</h3>
-              <p>567</p>
+              <p>{loading.bookings ? <FontAwesomeIcon icon={faSpinner} spin /> : data.bookings}</p>
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/continents">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faGlobe} className="overview-icon" />
+              <FontAwesomeIcon icon={faGlobe} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Continents</h3>
@@ -113,10 +119,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/countries">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faFlag} className="overview-icon" />
+              <FontAwesomeIcon icon={faFlag} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Countries</h3>
@@ -124,10 +130,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/cities">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCity} className="overview-icon" />
+              <FontAwesomeIcon icon={faCity} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Cities</h3>
@@ -135,10 +141,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/packages">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faBoxOpen} className="overview-icon" />
+              <FontAwesomeIcon icon={faBoxOpen} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Packages</h3>

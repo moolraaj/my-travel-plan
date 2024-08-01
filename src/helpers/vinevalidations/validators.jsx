@@ -1,31 +1,28 @@
 import  vine  from '@vinejs/vine';
 
-const imageValidationSchema = vine.object({
-    name: vine.string().minLength(1),
-    path: vine.string().minLength(1),
-    contentType: vine.string().minLength(1),
-});
-
-const ContinentSchema = vine.object({
-    title: vine.string().minLength(4),
-    description: vine.string().minLength(20),
-    slug: vine.string().minLength(4),
-    image: vine.any(imageValidationSchema),
-});
-
-
-
-
-
-export default ContinentSchema;
-
-
-
-
 export const contactSchema = vine.object({
     name: vine.string().minLength(4),
     email: vine.string().email(),
-    phone_number: vine.string().maxLength(10, 'phone number can\'t exceed 10 digits').regex(/^\d{10}$/, 'phone number must be exactly 10 digits'),
+    phone_number: vine.number(),
     message: vine.string().minLength(10)
 });
+
+export const flightsSchema = vine.object({
+    name: vine.string().minLength(4),
+    email: vine.string().email(),
+    phone_number: vine.number('The date field must be a number'),
+    date: vine.string(),
+    origin: vine.string(),
+    destination: vine.string(),
+    traveler: vine.number(),
+    children: vine.number(),
+    message: vine.string().minLength(10, 'message should be 10 characters long')
+});
+
+export const QUERY_FORM_UNTI_TAG='query_unit_tag_9630'
+export const FLIGHT_FORM_UNTI_TAG='flight_unit_tag_8520'
+
+
+ 
+ 
 

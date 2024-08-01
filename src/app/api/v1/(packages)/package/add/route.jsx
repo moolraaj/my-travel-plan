@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
 import { DbConnect } from "@/database/database";
-import PackagesModel from "@/model/packagesModel";
+ 
 import { HandleFileUpload } from "@/helpers/uploadFiles";
-import CitiesModel from "@/model/citiesModel";
+ 
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
+import PackagesModel from "@/model/packagesModel";
+import CitiesModel from "@/model/citiesModel";
 
 DbConnect();
 
 export async function POST(req) {
-    return handelAsyncErrors(async()=>{
+    return handelAsyncErrors(async () => {
+        const host = req.headers.get('host');
 
-        const host = req.headers.get('host'); 
-    
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -24,31 +25,30 @@ export async function POST(req) {
         const packageItinerary = JSON.parse(payload.get('package_itinerary'));
         const packagesInclude = JSON.parse(payload.get('packages_include'));
         const packagesExclude = JSON.parse(payload.get('packages_exclude'));
-    
+
         // Check if slug already exists
         let existingSlug = await PackagesModel.findOne({ slug });
         if (existingSlug) {
-            return NextResponse.json({status:404, success: false, message: 'slug is already exist' });
+            return NextResponse.json({ status: 404, success: false, message: 'Slug already exists' });
         }
-    
+
         // Check if city ID exists
         let existingCity = await CitiesModel.findById(city_id);
         if (!existingCity) {
-            return NextResponse.json({status:404, success: false, message: 'missing city id !please provide valid city id' });
+            return NextResponse.json({ status: 404, success: false, message: 'City ID does not exist! Please provide a valid city ID' });
         }
-    
+
         // Upload single image
         const uploadedFile = await HandleFileUpload(file, host);
-    
+
         const imageObject = {
             name: uploadedFile.name,
             path: uploadedFile.path,
             contentType: uploadedFile.contentType,
-            
         };
-    
+
         // Handle multiple gallery images
-        const galleryFiles = payload.getAll('gallery_files'); 
+        const galleryFiles = payload.getAll('gallery_files');
         const galleryImages = [];
         for (const galleryFile of galleryFiles) {
             const uploadedGalleryFile = await HandleFileUpload(galleryFile, host);
@@ -56,10 +56,9 @@ export async function POST(req) {
                 name: uploadedGalleryFile.name,
                 path: uploadedGalleryFile.path,
                 contentType: uploadedGalleryFile.contentType,
-                 
             });
         }
-    
+
         // Create the package
         const response = new PackagesModel({
             images: [imageObject],
@@ -74,17 +73,12 @@ export async function POST(req) {
             packages_exclude: packagesExclude,
             city_id: city_id,
         });
-    
+
         // Save the package
         const result = await response.save();
-    
-        
         existingCity.all_packages.push(result._id);
         await existingCity.save();
-    
-        return NextResponse.json({status:201, success: true, result });
-    })
-    
 
-     
+        return NextResponse.json({ status: 201, success: true, result });
+    });
 }

@@ -1,29 +1,23 @@
 
 // // // /app/(admin)/admin/(cities)/cities/page.jsx
 
+
 'use client';
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedCities, setSelectedCities] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    // Get the page number from the URL query parameter
-    const pageParam = parseInt(searchParams.get('page') || '1', 10);
-    setCurrentPage(pageParam);
-  }, [searchParams]);
 
   useEffect(() => {
     async function fetchCities() {
@@ -48,44 +42,25 @@ function CityPage() {
     router.push('/admin/cities/add-city');
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete the selected cities?')) {
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this city?')) {
       try {
-        for (const id of selectedCities) {
-          await fetch(`/api/v1/city/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/city/delete/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+          setCities(cities.filter(city => city._id !== id));
+          toast.success('City deleted successfully');
+        } else {
+          toast.error('Failed to delete city, please try again.');
         }
-        setCities(cities.filter(city => !selectedCities.includes(city._id)));
-        setSelectedCities([]);
-        setSelectAll(false);
       } catch (error) {
-        setError('Failed to delete cities, please try again.');
+        toast.error('Failed to delete city, please try again.');
       }
-    }
-  };
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    if (!selectAll) {
-      setSelectedCities(cities.map(city => city._id));
-    } else {
-      setSelectedCities([]);
-    }
-  };
-
-  const handleSelect = (id) => {
-    if (selectedCities.includes(id)) {
-      setSelectedCities(selectedCities.filter(cityId => cityId !== id));
-    } else {
-      setSelectedCities([...selectedCities, id]);
     }
   };
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      // Update URL based on page number
-      const newUrl = page > 1 ? `/admin/cities?page=${page}` : '/admin/cities';
-      router.push(newUrl);
     }
   };
 
@@ -99,31 +74,13 @@ function CityPage() {
 
   return (
     <div className="packages">
+      <ToastContainer />
       <h2>Cities</h2>
-      {selectedCities.length > 0 && (
-        <div className="action-bar">
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAll}
-            className="select-all-checkbox"
-          />
-          <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
-        </div>
-      )}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
-        <div></div>
         <table className="packages-table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
-              </th>
               <th>Image</th>
               <th>ID</th>
               <th>Title</th>
@@ -140,13 +97,6 @@ function CityPage() {
             ) : (
               cities.map(city => (
                 <tr key={city._id}>
-                  <td data-label="Select">
-                    <input
-                      type="checkbox"
-                      checked={selectedCities.includes(city._id)}
-                      onChange={() => handleSelect(city._id)}
-                    />
-                  </td>
                   <td data-label="Image">
                     <img 
                       src={`/uploads/${city.images[0].name}`} 
@@ -154,7 +104,7 @@ function CityPage() {
                       className="package-image" 
                     />
                   </td>
-                  <td data-label="id">{city._id}</td>
+                  <td data-label="ID">{city._id}</td>
                   <td data-label="Title">{city.title}</td>
                   <td data-label="Description">{city.description}</td>
                   <td data-label="Package Count">{city.packages ? city.packages.length : 0}</td>
@@ -162,6 +112,7 @@ function CityPage() {
                     <span className="actions">
                       <FaEye className="action-icon view" title="View" onClick={() => handlePreview(city._id)} />
                       <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(city._id)} />
+                      <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(city._id)} />
                     </span>
                   </td>
                 </tr>
@@ -203,7 +154,7 @@ function CityPage() {
       </div>
       <div className="floating-plus" onClick={handleAddClick}>
         <FaPlus />
-        <div className="tooltip">Add Cities</div>
+        <div className="tooltip">Add City</div>
       </div>
     </div>
   );

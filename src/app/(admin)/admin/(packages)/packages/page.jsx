@@ -5,13 +5,13 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Packages() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedPackages, setSelectedPackages] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -43,37 +43,26 @@ function Packages() {
     router.push('/admin/packages/add-packages');
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete the selected packages?')) {
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this package?')) {
       try {
-        await Promise.all(selectedPackages.map(id =>
-          fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' })
-        ));
-        setPackages(packages.filter(pkg => !selectedPackages.includes(pkg._id)));
-        setSelectedPackages([]);
-        setSelectAll(false);
+        const response = await fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          setPackages(packages.filter(pkg => pkg._id !== id));
+          toast.success('Package deleted successfully.');
+        } else {
+          toast.error('Failed to delete package.');
+        }
       } catch (error) {
-        setError('Failed to delete packages, please try again.');
+        toast.error('Failed to delete package, please try again.');
       }
     }
-  };
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setSelectedPackages(selectAll ? [] : packages.map(pkg => pkg._id));
-  };
-
-  const handleSelect = (id) => {
-    setSelectedPackages(prev => 
-      prev.includes(id) ? prev.filter(pkgId => pkgId !== id) : [...prev, id]
-    );
   };
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      const newURL = page === 1 ? '/admin/packages' : `/admin/packages?page=${page}`;
-      router.push(newURL); // Update URL without reloading
     }
   };
 
@@ -87,30 +76,13 @@ function Packages() {
 
   return (
     <div className="packages">
+      <ToastContainer />
       <h2>Packages</h2>
-      {selectedPackages.length > 0 && (
-        <div className="action-bar">
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAll}
-            className="select-all-checkbox"
-          />
-          <FaTrashAlt className="action-bar-icon" onClick={handleDelete} title="Delete Selected" />
-        </div>
-      )}
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
-              </th>
               <th>Image</th>
               <th>ID</th>
               <th>Title</th>
@@ -121,18 +93,11 @@ function Packages() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="loading">Loading...</td>
+                <td colSpan="5" className="loading">Loading...</td>
               </tr>
             ) : (
               packages.map(pkg => (
                 <tr key={pkg._id}>
-                  <td data-label="Select">
-                    <input
-                      type="checkbox"
-                      checked={selectedPackages.includes(pkg._id)}
-                      onChange={() => handleSelect(pkg._id)}
-                    />
-                  </td>
                   <td data-label="Image">
                     <img 
                       src={`/uploads/${pkg.images[0].name}`} 
@@ -147,6 +112,7 @@ function Packages() {
                     <span className="actions">
                       <FaEye className="action-icon view" title="View" onClick={() => handlePreview(pkg._id)} />
                       <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(pkg._id)} />
+                      <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(pkg._id)} />
                     </span>
                   </td>
                 </tr>
@@ -195,3 +161,4 @@ function Packages() {
 }
 
 export default Packages;
+
