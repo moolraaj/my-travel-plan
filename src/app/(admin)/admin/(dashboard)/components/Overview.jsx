@@ -11,6 +11,8 @@ const Overview = () => {
     countries: 0,
     cities: 0,
     packages: 0,
+    users: 0,
+    bookings: 0
   });
 
   const [loading, setLoading] = useState({
@@ -18,6 +20,8 @@ const Overview = () => {
     countries: true,
     cities: true,
     packages: true,
+    users: true,
+    bookings: true
   });
 
   const fetchData = async (endpoint, key, isPackage = false) => {
@@ -74,6 +78,8 @@ const Overview = () => {
     fetchData('/api/v1/countries/get', 'countries');
     fetchData('/api/v1/cities/get', 'cities');
     fetchData('/api/v1/packages/get', 'packages', true);
+    fetchData('/api/v1/sendquery/queries/get', 'users');
+    fetchData('/api/v1/flight/queries/get', 'bookings');
   }, []);
 
   return (
@@ -87,7 +93,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Users</h3>
-              <p>1,234</p>
+              <p>{loading.users ? <FontAwesomeIcon icon={faSpinner} spin /> : data.users}</p>
             </div>
           </Link>
         </div>
@@ -98,7 +104,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Bookings</h3>
-              <p>567</p>
+              <p>{loading.bookings ? <FontAwesomeIcon icon={faSpinner} spin /> : data.bookings}</p>
             </div>
           </Link>
         </div>

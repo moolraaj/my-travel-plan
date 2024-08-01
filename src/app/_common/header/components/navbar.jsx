@@ -8,6 +8,8 @@ import holiday from '../../../assets/home_images/holiday.png';
 import destination from '../../../assets/home_images/dest.png';
 import flight from '../../../assets/home_images/flight.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import menubar from '../../../assets/home_images/menu.svg';
+import closebar from '../../../assets/home_images/close-menu.svg';
 
 
 
@@ -28,13 +30,13 @@ const Navbar = () => {
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
-              <svg className="icon" viewBox="0 0 24 24">
-                <path d="M6 18L18 6M6 6l12 12" />
+              <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 20L4 4M20 4L4 20" stroke="#CA1E2A" stroke-width="2" stroke-linecap="round"/>
               </svg>
+              
             ) : (
-              <svg className="icon" viewBox="0 0 24 24">
-                <path d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
+             
+              <img src={menubar.src}></img>
             )}
           </button>
         </div>
@@ -59,6 +61,9 @@ const Navbar = () => {
             <img src={car.src} alt="Transfers" />
             Transfers
           </Link>
+          <button className="contact-button mobile-button"><a href='/contact-us'>Contact Us</a></button>
+          
+        
         </div>
       </div>
     </nav>

@@ -1,20 +1,24 @@
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import FlightModel from "@/model/fligthModel";
- 
 import { NextResponse } from "next/server";
 
-export async function DELETE(req,{params}){
-    return handelAsyncErrors(async()=>{
+export async function DELETE(req, { params }) {
+  return handelAsyncErrors(async () => {
+    let { id } = params;
+    let existingFlight = await FlightModel.findById(id);
 
-        let {id}=params
-        let existingUser=await FlightModel.findById({_id:id})
-    
-        if(!existingUser){
-            return NextResponse.json({status:404,success:false,message:'missing credentials! please provide valid id'})
-        }
+    if (!existingFlight) {
+      return NextResponse.json(
+        { status: 404, success: false, message: 'Flight not found!' },
+        { status: 404 }
+      );
+    }
 
-        let result=await FlightModel.deleteOne({_id:id})
-    
-        return NextResponse.json({status:200,result})
-    })
+    await FlightModel.deleteOne({ _id: id });
+
+    return NextResponse.json(
+      { status: 200, success: true, message: 'Flight deleted successfully' },
+      { status: 200 }
+    );
+  });
 }
