@@ -37,7 +37,12 @@ function AdminNavbar() {
           />
         </div>
         <div className="navbar-right">
-          <FaBell className="icon" />
+        <div className="notification-button">
+            <Link href={`/admin/notifications`}>
+              <FaBell className="icon" />
+            <span className="notification-badge"></span>
+              </Link>
+            </div>
           <FaGlobe className="icon" />
           <img
             src="https://via.placeholder.com/40" // Placeholder profile photo

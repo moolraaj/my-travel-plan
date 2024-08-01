@@ -14,9 +14,10 @@ export async function PUT(req, { params }) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
+        const continentId = payload.get('continent_id');
 
         // Check if all fields are empty
-        if (!file && !title && !description && !slug) {
+        if (!file && !title && !description && !slug && !continentId) {
             return NextResponse.json({ success: false, message: 'At least one field is required to update' });
         }
 
@@ -41,6 +42,9 @@ export async function PUT(req, { params }) {
                
             };
             existingCountry.images = [imageObject];
+        }
+        if(continentId){
+            existingCountry.continent_id=continentId
         }
 
         // Save the updated document
