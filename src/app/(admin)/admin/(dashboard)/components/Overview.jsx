@@ -1,3 +1,5 @@
+// 'use client';
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -11,6 +13,8 @@ const Overview = () => {
     countries: 0,
     cities: 0,
     packages: 0,
+    users: 0,
+    bookings: 0,
   });
 
   const [loading, setLoading] = useState({
@@ -18,6 +22,8 @@ const Overview = () => {
     countries: true,
     cities: true,
     packages: true,
+    users: true,
+    bookings: true,
   });
 
   const fetchData = async (endpoint, key, isPackage = false) => {
@@ -25,7 +31,6 @@ const Overview = () => {
       let result = [];
       let page = 1;
       const limit = 1000; // Adjust the limit according to your API
-
       while (true) {
         const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`);
         if (!response.ok) {
@@ -69,11 +74,61 @@ const Overview = () => {
     }
   };
 
+  const fetchUsersAndBookings = async () => {
+    try {
+      // Fetching users
+      const usersResponse = await fetch('/api/v1/sendquery/queries/get');
+      if (!usersResponse.ok) {
+        throw new Error(`HTTP error! status: ${usersResponse.status}`);
+      }
+      const usersData = await usersResponse.json();
+      if (usersData.status === 200) {
+        setData(prevData => ({
+          ...prevData,
+          users: usersData.result.length,
+        }));
+      } else {
+        throw new Error(`Error fetching user data: ${usersData.message}`);
+      }
+
+      // Fetching bookings
+      const bookingsResponse = await fetch('/api/v1/flight/queries/get');
+      if (!bookingsResponse.ok) {
+        throw new Error(`HTTP error! status: ${bookingsResponse.status}`);
+      }
+      const bookingsData = await bookingsResponse.json();
+      setData(prevData => ({
+        ...prevData,
+        bookings: bookingsData.result.length,
+      }));
+
+      // Update loading states
+      setLoading(prevLoading => ({
+        ...prevLoading,
+        users: false,
+        bookings: false,
+      }));
+    } catch (error) {
+      console.error('Error fetching users or bookings:', error);
+      setData(prevData => ({
+        ...prevData,
+        users: 0,
+        bookings: 0,
+      }));
+      setLoading(prevLoading => ({
+        ...prevLoading,
+        users: false,
+        bookings: false,
+      }));
+    }
+  };
+
   useEffect(() => {
     fetchData('/api/v1/continents/get', 'continents');
     fetchData('/api/v1/countries/get', 'countries');
     fetchData('/api/v1/cities/get', 'cities');
     fetchData('/api/v1/packages/get', 'packages', true);
+    fetchUsersAndBookings();
   }, []);
 
   return (
@@ -87,7 +142,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Users</h3>
-              <p>1,234</p>
+              <p>{loading.users ? <FontAwesomeIcon icon={faSpinner} spin /> : data.users}</p>
             </div>
           </Link>
         </div>
@@ -98,7 +153,7 @@ const Overview = () => {
             </div>
             <div className="data_wrap">
               <h3>Total Bookings</h3>
-              <p>567</p>
+              <p>{loading.bookings ? <FontAwesomeIcon icon={faSpinner} spin /> : data.bookings}</p>
             </div>
           </Link>
         </div>
@@ -152,3 +207,5 @@ const Overview = () => {
 };
 
 export default Overview;
+
+
