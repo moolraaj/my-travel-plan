@@ -72,8 +72,6 @@ function Packages() {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      const newURL = page === 1 ? '/admin/packages' : `/admin/packages?page=${page}`;
-      router.push(newURL); // Update URL without reloading
     }
   };
 
@@ -195,3 +193,4 @@ function Packages() {
 }
 
 export default Packages;
+
