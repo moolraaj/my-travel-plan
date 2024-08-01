@@ -77,13 +77,13 @@ const Overview = () => {
   }, []);
 
   return (
-    <div className="overview">
+    <div className="overview-d">
       <h2>Dashboard Overview</h2>
-      <div className="overview-cards">
-        <div className="overview-card">
+      <div className="overview-d-cards">
+        <div className="overview-d-card">
           <Link href="/admin/users">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faUsers} className="overview-icon" />
+              <FontAwesomeIcon icon={faUsers} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Users</h3>
@@ -91,10 +91,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/bookings">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCalendarCheck} className="overview-icon" />
+              <FontAwesomeIcon icon={faCalendarCheck} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Bookings</h3>
@@ -102,10 +102,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/continents">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faGlobe} className="overview-icon" />
+              <FontAwesomeIcon icon={faGlobe} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Continents</h3>
@@ -113,10 +113,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/countries">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faFlag} className="overview-icon" />
+              <FontAwesomeIcon icon={faFlag} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Countries</h3>
@@ -124,10 +124,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/cities">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCity} className="overview-icon" />
+              <FontAwesomeIcon icon={faCity} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Cities</h3>
@@ -135,10 +135,10 @@ const Overview = () => {
             </div>
           </Link>
         </div>
-        <div className="overview-card">
+        <div className="overview-d-card">
           <Link href="/admin/packages">
             <div className="icon_wrap">
-              <FontAwesomeIcon icon={faBoxOpen} className="overview-icon" />
+              <FontAwesomeIcon icon={faBoxOpen} className="overview-d-icon" />
             </div>
             <div className="data_wrap">
               <h3>Total Packages</h3>

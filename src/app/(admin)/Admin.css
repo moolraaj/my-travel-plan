@@ -13,23 +13,23 @@
 /* Admin Dashboard Styles */
 
 /* Overview Component */
-.overview {
+.overview-d {
   background-color: #E8E4FF;
   padding: 20px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-.overview h2 {
+.overview-d h2 {
   color: #1802A0;
 }
 
-.overview-cards {
+.overview-d-cards {
   display: flex;
   justify-content: space-around;
 }
 
-.overview-card {
+.overview-d-card {
   width: 90%;
   position: relative;
   display: flex;
@@ -42,13 +42,13 @@
   margin: 10px;
   text-align: center;
 }
-.overview-card .toggle-btn{
+.overview-d-card .toggle-btn{
   position: absolute;
   top: 10px;
   right: 10px;
   color: #fff;
 }
-.overview-card a{
+.overview-d-card a{
   text-decoration: none;
   display: grid;
   grid-template-columns: 1fr;
@@ -611,12 +611,12 @@
     padding: 10px 20px;
   }
 
-  .overview-cards {
+  .overview-d-cards {
     flex-direction: column;
     align-items: center;
   }
 
-  .overview-card {
+  .overview-d-card {
     margin: 10px 0;
   }
 
