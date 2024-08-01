@@ -75,20 +75,18 @@ ul.destinations-list li {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  padding: 15px 30px;
 }
 
 .dayContent {
-  padding: 10px 0;
+    padding: 10px 30px;
+    border-top: 1px solid #D9D9D9;
 }
 
 .itinerary_inner {
-  display: flex;
-  column-gap: 15px;
-}
-
-.itinerary_inner {
-  display: flex;
-  column-gap: 15px;
+    display: grid;
+    column-gap: 30px;
+    grid-template-columns: 1fr 350px;
 }
 
 .gallery .images img {
@@ -111,7 +109,7 @@ ul.destinations-list li {
 
 .gallery .images {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 500px;
   gap: 20px;
 }
 
@@ -170,7 +168,9 @@ margin: auto;
 
 
 .exploration-item img {
-	width: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .exploration-details .heading_two span {
@@ -784,7 +784,7 @@ a.navbar-item {
 	padding-top:20px;
     display: block;
     position: absolute;
-    top: 69px;
+    top: 64px;
     width: 100%;
     left: 0;
     padding-left: 27px;
@@ -1971,7 +1971,20 @@ form.form.flight-form h3 {
     background-position: left;
 }
 
-// Naveen Css
+// Naveen Css Packages Innerpage
+.gallery.packages-innerpage {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.gallery.packages-innerpage .images img {
+    border-radius: 5px;
+	height: 100%;
+}
+.gallery.packages-innerpage h2 {
+    font-size: 30px;
+    font-weight: 500;
+	margin-top: 0px;
+}
 .tabs_inclusion button {
 	padding: 13px 20px;
 	margin-right: 10px;
@@ -2004,31 +2017,134 @@ form.form.flight-form h3 {
 	padding: 10px 20px;
 	background: white;
 	box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.0705882353);
-	margin-bottom: 100px;
+	margin-bottom: 50px;
   }
   
   .top_summary {
-	box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1294117647);
+	box-shadow: 0px 4px 20px 3px #f5f5f5;
 	border-radius: 10px;
+	padding-bottom: 10px;
+	border: 1px solid #c9c9c96e;
+
   }
   
   h2.heading_inner_page {
 	font-size: 22px;
 	font-family: "Jost";
-	padding: 10px 20px;
+	padding: 10px 30px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-weight: 500;
 	border-bottom: 1px solid #D9D9D9;
   }
-  
-  .top_summary_inner p {
-	padding: 6px 20px;
-	padding-bottom: 40px;
-	font-weight: 300;
-  }
+  .over p, .top_summary_inner p {
+    font-size: 16px;
+    font-family: 'Poppins';
+    font-weight: 300;
+    line-height: 33px;
+    padding: 10px 30px;
+	// margin-top: 0px;
+}
+.summary_slider {
+    margin-top: 50px;
+}
+.over {
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+}
+.card_contact {
+    box-shadow: 0px 4px 20px 3px #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    border:  1px solid #c9c9c96e;
+}
+.question h1 {
+    font-size: 30px;   
+	 margin-bottom: 0px;
+    margin-top: 5px;
+}
+.top_summary_inner span {
+    margin-top: 10px;
+	display: block;
+}
+.card_contact p {
+    font-size: 16px;
+    font-family: "Poppins";
+    font-weight: 400;
+    line-height: 33px;
+    padding-top: 0px;
+    margin-top: 5px;
+}
+.contact_card a {
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+}
+.contact_card {
+    display: grid;
+    gap: 10px;
+}
+.gallery_inner_page {
+    box-shadow: 0px 4px 20px 3px #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid rgba(201, 201, 201, 0.431372549);
+    margin-top: 50px;
+}
+.sidebar-gallery h2 {
+    font-size: 30px;
+    margin-top: 5px;
+}
+.galleryGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.iten_inner {
+    box-shadow: 0px 4px 20px 3px #f5f5f5;
+    border-radius: 10px;
+    padding-bottom: 10px;
+    border: 1px solid rgba(201, 201, 201, 0.431372549);
+    margin-top: 50px;
+}
+.iten_inner .day {
+    background: rgb(246 246 246);
+    border: 1px solid #D9D9D9;
+    padding: 0px 0px;
+    margin: 0px 30px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+.book-now-btn {
+    margin-bottom: 50px;
+	padding: 10px 20px;
+    background: #CF0C2A;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: "Poppins";
+    font-weight: 600;
+	width: 20%;
+
+}
+
+.book-now-btn a {
+	color: #fff;
+	text-decoration: none;
+}
 
 
 // Responsive Screen Start Here 
 
 @media only screen and  (max-width: 1450px ) {
+	.explorations {
+		width: auto;
+	}
+	.gallery, .overview {
+		width: auto;
+	}
   .top_header {
     width: 96%;
   }
@@ -2128,6 +2244,19 @@ form.form.flight-form h3 {
 
 
 @media only screen and (max-width:1023px) {
+	.explorations-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+	.galleryGrid {
+		display: flex;
+        flex-wrap: wrap;
+	}
+	.gallery .images {
+		grid-template-columns: 1fr 1fr;
+	}
+	.itinerary_inner {
+		grid-template-columns: 1fr;
+	}
 	.top-dest-cardOuter {
 		width: 100%;
 	}
@@ -2209,6 +2338,7 @@ form.form.flight-form h3 {
 	}
 	.destinations.expert-travel {
         grid-template-columns: 1fr 1fr;
+		gap: 10px;
     }
 	.destinations-grid {
 		grid-template-columns: 1fr 1fr;
@@ -2264,6 +2394,15 @@ form.form.flight-form h3 {
 }
 
 @media(max-width:767px) {
+	img.exploration-image {
+		height: 200px;
+	}
+	.book-now-btn {
+		width: auto;
+	}
+	.itinerary_inner {
+	display: block;
+	}
 	.address_container {
     display: grid;
     gap: 35px;
@@ -2395,6 +2534,21 @@ form.form.flight-form h3 {
 }
 
 @media(max-width:467px) {
+	.explorations-grid {
+        grid-template-columns: 1fr;
+    }
+	.gallery_inner_page {
+		margin-bottom: 50px;
+	}
+	.iten_inner .day {
+		margin: 0px 10px;
+		margin-bottom: 30px;
+		margin-top: 30px;
+	}
+	.tabs_inclusion button {
+		font-size: 16px;
+		margin-bottom: 10px;
+	}
 	.top-act-container .top-act-gridContainer, .top-discounted-container .top-discounted-gridContainer, .top-dest-gridContainer {
         grid-template-columns: 1fr;
     }

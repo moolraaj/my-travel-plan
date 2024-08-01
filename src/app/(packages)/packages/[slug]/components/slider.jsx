@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const TravelGallery = () => {
   return (
-    <div className="gallery">
+    <div className="gallery packages-innerpage">
       <h2>Passionate Paris With Disney 4N-5D</h2>
       <div className="images">
         <div className="image-container">
