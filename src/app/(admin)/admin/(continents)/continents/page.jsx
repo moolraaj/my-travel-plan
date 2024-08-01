@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedContinent, setSelectedContinent] = useState(null); // Single selected continent
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -73,6 +72,12 @@ function ContinentPage() {
 
   const handlePreview = (id) => {
     router.push(`/admin/continents/preview-continent/${id}`);
+  };
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
