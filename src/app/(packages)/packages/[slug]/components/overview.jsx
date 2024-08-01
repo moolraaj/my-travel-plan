@@ -80,11 +80,13 @@ const Itinerary = () => {
             </div>
             </div>
 
-
+<div className='iten_inner'>
     <h2 className='heading_inner_page'>Itinerary</h2>
+    <div className='day_content'>
       {itineraryData.map((item) => (
         <div key={item.day} className="day">
           <div className="dayHeader" onClick={() => toggleDay(item.day)}>
+         
             <span>Day {item.day}: {item.description}</span>
             <span>{openDay === item.day ? '↑' : '↓'}</span>
           </div>
@@ -95,9 +97,10 @@ const Itinerary = () => {
           )}
         </div>
       ))}
+</div>
+</div>
 
-
-<div className="tabs">
+<div className="tabs_inclusion">
         <button
           className={activeTab === 'inclusions' ? 'active' : ''}
           onClick={() => setActiveTab('inclusions')}
