@@ -7,7 +7,7 @@ import car from '../../../assets/home_images/car.png';
 import holiday from '../../../assets/home_images/holiday.png';
 import destination from '../../../assets/home_images/dest.png';
 import flight from '../../../assets/home_images/flight.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import menubar from '../../../assets/home_images/menu.svg';
 import closebar from '../../../assets/home_images/close-menu.svg';
 
@@ -21,22 +21,25 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-        <FontAwesomeIcon icon="fa-solid fa-bars" />
+      
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="navbar-toggle"
             aria-controls="mobile-menu"
             aria-expanded={isOpen}
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only"></span>
             {isOpen ? (
-              <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 20L4 4M20 4L4 20" stroke="#CA1E2A" stroke-width="2" stroke-linecap="round"/>
               </svg>
               
             ) : (
              
-              <img src={menubar.src}></img>
+              <svg width="30" height="30" viewBox="0 0 30 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.1429 20H28M2 11H28M13.1429 2H28" stroke="#CA1E2A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              
             )}
           </button>
         </div>
