@@ -1,7 +1,7 @@
 // /app/(admin)/admin/(packages)/packages/add-packages/page.jsx
 
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './AddPackages.css';
 import { FaMinus } from 'react-icons/fa';
@@ -20,10 +20,30 @@ const AddPackages = () => {
     packagesInclude: [{ description: '' }],
     packagesExclude: [{ description: '' }],
     file: null,
-    galleryFiles: []
+    gallery_files: [],
+    city_id: '' 
   });
+  const [cities, setCities] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const res = await fetch('/api/v1/cities/get');
+        const data = await res.json();
+        if (data.success) {
+          setCities(data.result); 
+        } else {
+          toast.error('Failed to fetch cities');
+        }
+      } catch (error) {
+        toast.error(`Error: ${error.message}`);
+      }
+    };
+
+    fetchCities();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -71,10 +91,11 @@ const AddPackages = () => {
       packagesInclude,
       packagesExclude,
       file,
-      galleryFiles
+      gallery_files,
+      city_id
     } = formData;
 
-    if (!title || !description || !slug || !file) {
+    if (!title || !description || !slug || !file || !city_id) {
       toast.error('Please fill in all required fields and upload an image.');
       setIsLoading(false);
       return;
@@ -91,7 +112,8 @@ const AddPackages = () => {
       submissionData.append('packages_include', JSON.stringify(packagesInclude));
       submissionData.append('packages_exclude', JSON.stringify(packagesExclude));
       submissionData.append('file', file);
-      galleryFiles.forEach((file) => {
+      submissionData.append('city_id', city_id);  // Include city_id
+      gallery_files.forEach((file) => {
         submissionData.append('gallery_files', file);
       });
 
@@ -171,6 +193,22 @@ const AddPackages = () => {
             onChange={handleChange}
             placeholder="Enter package top summary"
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="city_id">City</label>
+          <select
+            id="city_id"
+            name="city_id"
+            value={formData.city_id}
+            onChange={handleChange}
+          >
+            <option value="">Select a city</option>
+            {cities.map((city) => (
+              <option key={city._id} value={city._id}>
+                {city.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label>Package Itinerary</label>
@@ -254,17 +292,17 @@ const AddPackages = () => {
           )}
         </div>
         <div className="form-group">
-          <label htmlFor="galleryFiles">Gallery Images</label>
+          <label htmlFor="gallery_files">Gallery Images</label>
           <input
             type="file"
-            id="galleryFiles"
-            name="galleryFiles"
+            id="gallery_files"
+            name="gallery_files"
             multiple
-            onChange={(e) => setFormData((prevData) => ({ ...prevData, galleryFiles: [...e.target.files] }))}
+            onChange={(e) => setFormData((prevData) => ({ ...prevData, gallery_files: [...e.target.files] }))}
           />
-          {formData.galleryFiles.length > 0 && (
+          {formData.gallery_files.length > 0 && (
             <div className="gallery-preview">
-              {Array.from(formData.galleryFiles).map((file, index) => (
+              {Array.from(formData.gallery_files).map((file, index) => (
                 <img key={index} src={URL.createObjectURL(file)} alt={`Preview ${index + 1}`} />
               ))}
             </div>
