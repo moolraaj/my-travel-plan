@@ -1,8 +1,17 @@
+ 
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
+import { getPaginationParams } from "@/helpers/paginations";
 import ContactModel from "@/model/userModel";
+ 
 import { NextResponse } from "next/server";
 
-export async function GET(){
-    let result=await ContactModel.find()
-    let totalResults=await ContactModel.countDocuments()
-    return NextResponse.json({status:200,totalResults,result})
+export async function GET(req){
+    return handelAsyncErrors(async()=>{
+         let {page,limit,skip}=getPaginationParams(req)
+    
+        let result=await ContactModel.find().limit(limit).skip(skip)
+        let totalResults=await ContactModel.countDocuments()
+        return NextResponse.json({status:200,totalResults,result,page,limit})
+
+    })
 }
