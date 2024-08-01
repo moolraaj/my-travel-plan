@@ -9,7 +9,7 @@ function page() {
     <div className="dashboard-page">
       <Overview />
       <Stats />
-      {/* <DataPercentage/> */}
+      <DataPercentage/>
       <RecentBookings />
     </div>
   )
