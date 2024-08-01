@@ -13,6 +13,7 @@ export async function DELETE(req,{params}){
        }
        console.log(isValidId)
         let result=await BlogModel.deleteOne({_id:id})
+        
         return NextResponse.json({status:200,success:true,message:'blog deleted successfully',result})
     })
 }
