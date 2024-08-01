@@ -5,7 +5,7 @@
 import React from 'react';
 import './sidebar.css'; // Import the global CSS
 import Link from 'next/link';
-import { FaTachometerAlt, FaGlobe, FaFlag, FaCity, FaTag, FaUsers, FaCog, FaFileAlt, FaCalendarCheck,FaPhoneAlt} from 'react-icons/fa';
+import { FaTachometerAlt, FaGlobe, FaFlag, FaCity, FaTag, FaUsers, FaCog, FaFileAlt, FaCalendarCheck,FaAddressBook} from 'react-icons/fa';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   return (
@@ -48,7 +48,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
           </li>
           <li>
             <Link href="/admin/contacts" onClick={toggleSidebar}>
-              <FaPhoneAlt className="sidebar-icon" />
+              <FaAddressBook className="sidebar-icon" />
               Contacts
             </Link>
           </li>
