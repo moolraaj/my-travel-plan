@@ -669,6 +669,31 @@
 }
 
 
+/* Notification page style */
+
+.notifications-page {
+  padding: 20px;
+}
+
+.notification-section {
+  margin-bottom: 20px;
+}
+
+.notification-section h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.notification-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.notification-section li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
 
 
 
