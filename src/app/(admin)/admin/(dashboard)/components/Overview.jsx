@@ -31,11 +31,7 @@ const Overview = () => {
       const limit = 1000; // Adjust the limit according to your API
 
       while (true) {
-        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`,{
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
-        });
+        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -78,12 +74,12 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    fetchData('/api/v1/continents/get', 'continents',{ cache: 'no-store' });
-    fetchData('/api/v1/countries/get', 'countries',{ cache: 'no-store' });
-    fetchData('/api/v1/cities/get', 'cities',{ cache: 'no-store' });
-    fetchData('/api/v1/packages/get', 'packages', true,{ cache: 'no-store' });
-    fetchData('/api/v1/sendquery/queries/get', 'users',{ cache: 'no-store' });
-    fetchData('/api/v1/flight/queries/get', 'bookings',{ cache: 'no-store' });
+    fetchData('/api/v1/continents/get', 'continents');
+    fetchData('/api/v1/countries/get', 'countries');
+    fetchData('/api/v1/cities/get', 'cities');
+    fetchData('/api/v1/packages/get', 'packages', true);
+    fetchData('/api/v1/sendquery/queries/get', 'users');
+    fetchData('/api/v1/flight/queries/get', 'bookings');
   }, []);
 
   return (
