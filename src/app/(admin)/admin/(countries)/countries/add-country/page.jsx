@@ -2,7 +2,7 @@
 
 
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AddCountry = () => {
@@ -12,9 +12,29 @@ const AddCountry = () => {
     description: '',
     slug: '',
     file: null,
+    continent_id: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [continents, setContinents] = useState([]);
+
+  useEffect(() => {
+    const fetchContinents = async () => {
+      try {
+        const res = await fetch(`/api/v1/continents/get?page=1&limit=1000`,{
+          headers:{
+            'Cache-Control': 'no-cache'
+         }
+        });
+        const data = await res.json();
+        setContinents(data.result || []);
+      } catch (error) {
+        console.error('Error fetching continents:', error);
+      }
+    };
+
+    fetchContinents();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -28,9 +48,9 @@ const AddCountry = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { title, description, slug, file } = formData;
+    const { title, description, slug, file, continent_id } = formData;
 
-    if (!title || !description || !slug || !file) {
+    if (!title || !description || !slug || !file || !continent_id) {
       setError('Please fill in all fields and upload an image.');
       setIsLoading(false);
       return;
@@ -42,6 +62,7 @@ const AddCountry = () => {
       submissionData.append('description', description);
       submissionData.append('slug', slug);
       submissionData.append('file', file);
+      submissionData.append('continent_id', continent_id);
 
       const res = await fetch('/api/v1/country/add', {
         method: 'POST',
@@ -98,6 +119,22 @@ const AddCountry = () => {
             onChange={handleChange}
             placeholder="Enter slug"
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="continent">Continent</label>
+          <select
+            id="continent"
+            name="continent_id"
+            value={formData.continent_id}
+            onChange={handleChange}
+          >
+            <option value="">Select a continent</option>
+            {continents.map((continent) => (
+              <option key={continent._id} value={continent._id}>
+                {continent.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="file">Image</label>

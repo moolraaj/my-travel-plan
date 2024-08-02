@@ -1,5 +1,4 @@
-// /app/(admin)/admin/(countries)/countries/update-country/[id]/page.jsx
-
+// // /app/(admin)/admin/(countries)/countries/update-country/[id]/page.jsx
 
 'use client';
 import React, { useEffect, useState } from 'react';
@@ -13,38 +12,55 @@ function UpdateCountry({ params }) {
     images: [], // This will hold the current image list
     imageFile: null, // This will hold the new image file
     imagePreviewUrl: '', // This will hold the preview URL of the new image
+    continent_id: '',
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Add isLoading state
+  const [continents, setContinents] = useState([]);
   const router = useRouter();
   const { id } = params;
 
-  async function fetchCountry() {
-    try {
-      const response = await fetch(`/api/v1/country/get/${id}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.success) {
-        setCountry({
-          ...data.result,
-          images: data.result.images.map(img => img.name), // Extract image names
+ 
+    const fetchContinents = async () => {
+      try {
+        const res = await fetch('/api/v1/continents/get?page=1&limit=1000', {
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
         });
-        console.log('Data:', data);
-      } else {
-        setError(data.message);
+        const data = await res.json();
+        setContinents(data.result || []);
+      } catch (error) {
+        console.error('Error fetching continents:', error);
       }
-    } catch (error) {
-      setError('Error fetching Country data.');
-    } finally {
-      setLoading(false);
-    }
-  }
+    };
 
-  useEffect(() => {
+    const fetchCountry = async () => {
+      try {
+        const response = await fetch(`/api/v1/country/get/${id}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.success) {
+          setCountry({
+            ...data.result,
+            images: data.result.images.map(img => img.name), // Extract image names
+          });
+          console.log('Data:', data);
+        } else {
+          setError(data.message);
+        }
+      } catch (error) {
+        setError('Error fetching Country data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+    fetchContinents();
     fetchCountry();
   }, [id]);
 
@@ -74,10 +90,12 @@ function UpdateCountry({ params }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); // Start loading
+
     const formData = new FormData();
     formData.append('title', country.title);
     formData.append('slug', country.slug);
     formData.append('description', country.description);
+    formData.append('continent_id', country.continent_id);
     if (country.imageFile) {
       formData.append('file', country.imageFile); // Upload new image
     } else {
@@ -91,7 +109,7 @@ function UpdateCountry({ params }) {
       });
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('country updated successfully!');
+        setSuccessMessage('Country updated successfully!');
         setError('');
         setTimeout(() => router.push('/admin/countries'), 2000); // Redirect after success
       } else {
@@ -146,6 +164,22 @@ function UpdateCountry({ params }) {
               required
             />
           </label>
+          <div className="form-group">
+            <label htmlFor="continent">Continent</label>
+            <select
+              id="continent"
+              name="continent_id"
+              value={country.continent_id}
+              onChange={handleChange}
+            >
+              <option value="">Select a continent</option>
+              {continents.map((continent) => (
+                <option key={continent._id} value={continent._id}>
+                  {continent.title}
+                </option>
+              ))}
+            </select>
+          </div>
           <label className="update-packages-label">
             Image:
             <input
@@ -173,8 +207,8 @@ function UpdateCountry({ params }) {
               )}
             </div>
           </label>
-          <button type="submit" className="update-packages-button"  disabled={isLoading} >
-            {isLoading ? 'Updating...' : 'Update Country'} 
+          <button type="submit" className="update-packages-button" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update Country'}
           </button>
         </form>
       )}
@@ -183,4 +217,3 @@ function UpdateCountry({ params }) {
 }
 
 export default UpdateCountry;
-

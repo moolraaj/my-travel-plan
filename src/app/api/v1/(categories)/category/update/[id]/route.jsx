@@ -1,21 +1,29 @@
-import { handelAsyncErrors } from "@/helpers/asyncErrors";
+import { DbConnect } from "@/database/database";
 import CategoryModel from "@/model/categoryModel";
 import { NextResponse } from "next/server";
 
+DbConnect();
+
 export async function PUT(req, { params }) {
-    return handelAsyncErrors(async () => {
+    try {
         let { id } = params;
-        let payload = await req.formData();
-        let name = payload.get('name');
-        let slug = payload.get('slug');
+        let payload = await req.json();
+        let { name, slug } = payload;
+
+        if (!name || !slug) {
+            return NextResponse.json({ status: 400, success: false, message: 'Name and slug are required' });
+        }
 
         let isValidId = await CategoryModel.findById(id);
         if (!isValidId) {
-            return NextResponse.json({ status: 200, success: false, message: 'missing credentials! please provide a valid id' });
+            return NextResponse.json({ status: 404, success: false, message: 'Category not found with provided ID' });
         }
 
-        let result = await CategoryModel.findByIdAndUpdate(id, { $set: { name: name, slug: slug } }, { new: true });
+        let result = await CategoryModel.findByIdAndUpdate(id, { $set: { name, slug } }, { new: true });
 
-        return NextResponse.json({ status: 200, success: true, message: 'category updated successfully', result });
-    });
+        return NextResponse.json({ status: 200, success: true, message: 'Category updated successfully', result });
+    } catch (error) {
+        console.error('Error updating category:', error);
+        return NextResponse.json({ status: 500, success: false, message: 'Internal Server Error' });
+    }
 }
