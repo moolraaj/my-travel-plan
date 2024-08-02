@@ -1,9 +1,171 @@
-// /app/(admin)/admin/category-management/page.jsx
+// // /app/(admin)/admin/category-management/page.jsx
+
+// 'use client';
+// import React, { useState, useEffect } from 'react';
+// import { FaTrash, FaEdit, FaPlus , FaMinus} from 'react-icons/fa';
+
+
+// function CategoryManagement() {
+//   const [categories, setCategories] = useState([]);
+//   const [newCategory, setNewCategory] = useState({ name: '', slug: '' });
+//   const [editCategory, setEditCategory] = useState({ id: '', name: '', slug: '' });
+//   const [showAddCategory, setShowAddCategory] = useState(false);
+//   const [showEditCategory, setShowEditCategory] = useState(false);
+//   const [message, setMessage] = useState('');
+
+//   useEffect(() => {
+//     fetch('/api/v1/categories/get?page=1&limit=1000')
+//       .then(response => response.json())
+//       .then(data => setCategories(data.result))
+//       .catch(error => console.error('Error fetching categories:', error));
+//   }, []);
+
+//   const handleNewCategoryChange = (e) => {
+//     const { name, value } = e.target;
+//     setNewCategory(prev => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleEditCategoryChange = (e) => {
+//     const { name, value } = e.target;
+//     setEditCategory(prev => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleAddCategory = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await fetch('/api/v1/category/add', {
+//         method: 'POST',
+//         body: JSON.stringify(newCategory),
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+//       const result = await response.json();
+//       setMessage(result.message);
+//       if (result.success) {
+//         setCategories(prev => [...prev, result.result]);
+//         setNewCategory({ name: '', slug: '' });
+//         setShowAddCategory(false);
+//       }
+//     } catch (error) {
+//       console.error('Error adding category:', error);
+//       setMessage('Error adding category');
+//     }
+//   };
+
+//   const handleUpdateCategory = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await fetch(`/api/v1/category/update/${editCategory.id}`, {
+//         method: 'PUT',
+//         body: JSON.stringify(editCategory),
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+//       const result = await response.json();
+//       setMessage(result.message);
+//       if (result.success) {
+//         setCategories(prev => prev.map(cat => cat._id === editCategory.id ? result.result : cat));
+//         setEditCategory({ id: '', name: '', slug: '' });
+//         setShowEditCategory(false);
+//       }
+//     } catch (error) {
+//       console.error('Error updating category:', error);
+//       setMessage('Error updating category');
+//     }
+//   };
+
+//   const handleDeleteCategory = async (id) => {
+//     try {
+//       const response = await fetch(`/api/v1/category/delete/${id}`, {
+//         method: 'DELETE',
+//       });
+//       const result = await response.json();
+//       setMessage(result.message);
+//       if (result.success) {
+//         setCategories(prev => prev.filter(cat => cat._id !== id));
+//       }
+//     } catch (error) {
+//       console.error('Error deleting category:', error);
+//       setMessage('Error deleting category');
+//     }
+//   };
+
+//   return (
+//     <div className="category-management">
+//       <h2>Category Management</h2>
+
+//       <ul className="category-list">
+//         {categories.map(category => (
+//           <li key={category._id}>
+//             {category.name} ({category.slug})
+//             <div className="category-actions">
+//               <FaEdit onClick={() => {
+//                 setEditCategory({ id: category._id, name: category.name, slug: category.slug });
+//                 setShowEditCategory(true);
+//               }} />
+//               <FaTrash onClick={() => handleDeleteCategory(category._id)} />
+//             </div>
+//           </li>
+//         ))}
+//       </ul>
+
+//       <div className="add-category">
+//         <FaPlus className="add-icon" onClick={() => setShowAddCategory(true)} />
+//         <div className="tooltip">Add Category</div>
+//       </div>
+
+//       {showAddCategory && (
+//         <form onSubmit={handleAddCategory} className="category-form">
+//           <div className="form-group">
+//             <label htmlFor="name">Name:</label>
+//             <input type="text" id="name" name="name" value={newCategory.name} onChange={handleNewCategoryChange} required />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="slug">Slug:</label>
+//             <input type="text" id="slug" name="slug" value={newCategory.slug} onChange={handleNewCategoryChange} required />
+//           </div>
+//           <button type="submit" className="btn">Add Category</button>
+//         </form>
+//       )}
+
+//       {showEditCategory && (
+//         <form onSubmit={handleUpdateCategory} className="category-form">
+//           <div className="form-group">
+//             <label htmlFor="edit-id">Category ID:</label>
+//             <input type="text" id="edit-id" name="id" value={editCategory.id} onChange={handleEditCategoryChange} required />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="edit-name">Name:</label>
+//             <input type="text" id="edit-name" name="name" value={editCategory.name} onChange={handleEditCategoryChange} required />
+//           </div>
+//           <div className="form-group">
+//             <label htmlFor="edit-slug">Slug:</label>
+//             <input type="text" id="edit-slug" name="slug" value={editCategory.slug} onChange={handleEditCategoryChange} required />
+//           </div>
+//           <button type="submit" className="btn">Update Category</button>
+//         </form>
+//       )}
+
+//       {message && <p className="message">{message}</p>}
+//     </div>
+//   );
+// }
+
+// export default CategoryManagement;
+
+
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
-
+import { FaTrash, FaEdit, FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
 
 function CategoryManagement() {
   const [categories, setCategories] = useState([]);
@@ -12,12 +174,23 @@ function CategoryManagement() {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState({ add: false, update: false, delete: false });
 
   useEffect(() => {
-    fetch('/api/v1/categories/get?page=1&limit=1000')
-      .then(response => response.json())
-      .then(data => setCategories(data.result))
-      .catch(error => console.error('Error fetching categories:', error));
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
+        const data = await response.json();
+        setCategories(data.result);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
   }, []);
 
   const handleNewCategoryChange = (e) => {
@@ -38,6 +211,7 @@ function CategoryManagement() {
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
+    setLoadingButton(prev => ({ ...prev, add: true }));
     try {
       const response = await fetch('/api/v1/category/add', {
         method: 'POST',
@@ -56,11 +230,14 @@ function CategoryManagement() {
     } catch (error) {
       console.error('Error adding category:', error);
       setMessage('Error adding category');
+    } finally {
+      setLoadingButton(prev => ({ ...prev, add: false }));
     }
   };
 
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
+    setLoadingButton(prev => ({ ...prev, update: true }));
     try {
       const response = await fetch(`/api/v1/category/update/${editCategory.id}`, {
         method: 'PUT',
@@ -79,10 +256,13 @@ function CategoryManagement() {
     } catch (error) {
       console.error('Error updating category:', error);
       setMessage('Error updating category');
+    } finally {
+      setLoadingButton(prev => ({ ...prev, update: false }));
     }
   };
 
   const handleDeleteCategory = async (id) => {
+    setLoadingButton(prev => ({ ...prev, delete: true }));
     try {
       const response = await fetch(`/api/v1/category/delete/${id}`, {
         method: 'DELETE',
@@ -95,12 +275,16 @@ function CategoryManagement() {
     } catch (error) {
       console.error('Error deleting category:', error);
       setMessage('Error deleting category');
+    } finally {
+      setLoadingButton(prev => ({ ...prev, delete: false }));
     }
   };
+
 
   return (
     <div className="category-management">
       <h2>Category Management</h2>
+      {loading && <p>Loading categories...</p>}
 
       <ul className="category-list">
         {categories.map(category => (
@@ -118,7 +302,11 @@ function CategoryManagement() {
       </ul>
 
       <div className="add-category">
-        <FaPlus className="add-icon" onClick={() => setShowAddCategory(true)} />
+        {showAddCategory ? (
+          <FaMinus className="toggle-icon" onClick={() => setShowAddCategory(false)} />
+        ) : (
+          <FaPlus className="toggle-icon" onClick={() => setShowAddCategory(true)} />
+        )}
         <div className="tooltip">Add Category</div>
       </div>
 
@@ -132,7 +320,11 @@ function CategoryManagement() {
             <label htmlFor="slug">Slug:</label>
             <input type="text" id="slug" name="slug" value={newCategory.slug} onChange={handleNewCategoryChange} required />
           </div>
-          <button type="submit" className="btn">Add Category</button>
+          <div className="form-actions">
+            <button type="submit" className="btn" disabled={loadingButton.add}>
+              {loadingButton.add ? 'Adding...' : 'Add Category'}
+            </button>
+          </div>
         </form>
       )}
 
@@ -150,7 +342,12 @@ function CategoryManagement() {
             <label htmlFor="edit-slug">Slug:</label>
             <input type="text" id="edit-slug" name="slug" value={editCategory.slug} onChange={handleEditCategoryChange} required />
           </div>
-          <button type="submit" className="btn">Update Category</button>
+          <div className="form-actions">
+            <button type="submit" className="btn" disabled={loadingButton.update}>
+              {loadingButton.update ? 'Updating...' : 'Update Category'}
+            </button>
+            <FaTimes className="cancel-icon" onClick={() => setShowEditCategory(false)} />
+          </div>
         </form>
       )}
 
