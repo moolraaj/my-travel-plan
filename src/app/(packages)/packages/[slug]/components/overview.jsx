@@ -75,7 +75,9 @@ const Itinerary = () => {
     <div className='top_summary_inner'>
         <h2 className='heading_inner_page'>Top Summary</h2>
                <p>Embark on an enchanting journey through the heart of Europe with our Passionate Paris With Disney tour, spanning four nights and five days of unforgettable experiences. This meticulously crafted itinerary seamlessly blends the timeless romance of Paris with the whimsical charm of Disneyland Paris, offering travelers a truly magical fusion of culture, adventure, and fantasy.
-         <br/>Your adventure begins in the iconic city of Paris, where you will be swept away by the beauty of its historic landmarks and vibrant streets. Over the course of two days, explore must-see sights such as the majestic Eiffel Tower, the awe-inspiring Notre-Dame Cathedral, and the world-renowned Louvre Museum, home to priceless works of art. Wander through picturesque neighborhoods like Montmartre and Le Marais, immersing yourself in the city is rich culture and culinary delights at charming cafes and bistros
+         <span>
+         Your adventure begins in the iconic city of Paris, where you will be swept away by the beauty of its historic landmarks and vibrant streets. Over the course of two days, explore must-see sights such as the majestic Eiffel Tower, the awe-inspiring Notre-Dame Cathedral, and the world-renowned Louvre Museum, home to priceless works of art. Wander through picturesque neighborhoods like Montmartre and Le Marais, immersing yourself in the city is rich culture and culinary delights at charming cafes and bistros
+         </span>
         </p>
             </div>
             </div>
@@ -117,7 +119,7 @@ const Itinerary = () => {
       <div className="tabContent">
         {activeTab === 'inclusions' ? inclusionsContent : hotelActivitiesContent}
       </div>
-       
+      <button className=" book-now-btn"><a href='/contact-us'>Book Now </a></button>
 
       </div>
 
@@ -137,7 +139,7 @@ const Itinerary = () => {
 
 
         <div className='gallery_inner_page'>
-        <div className="gallery">
+        <div className="sidebar-gallery">
         <h2>Gallery</h2>
         <div className="galleryGrid">
           {galleryImages.map((image, index) => (
