@@ -13,13 +13,31 @@ function UpdateCity({ params }) {
     images: [], // This will hold the current image list
     imageFile: null, // This will hold the new image file
     imagePreviewUrl: '', // This will hold the preview URL of the new image
+    country_id: '',
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Add isLoading state
+  const [countries, setCountries] = useState([]);
   const router = useRouter();
   const { id } = params;
+
+
+  const fetchCountries = async () => {
+    try {
+      const res = await fetch(`/api/v1/countries/get?page=1&limit=1000`,{
+        headers:{
+           'Cache-Control': 'no-cache'
+        }
+      });
+      const data = await res.json();
+      setCountries(data.result || []);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
+  };
+
 
   async function fetchCity() {
     try {
@@ -45,6 +63,7 @@ function UpdateCity({ params }) {
   }
 
   useEffect(() => {
+    fetchCountries();
     fetchCity();
   }, [id]);
 
@@ -78,6 +97,7 @@ function UpdateCity({ params }) {
     formData.append('title', city.title);
     formData.append('slug', city.slug);
     formData.append('description', city.description);
+    formData.append('country_id', city.country_id);
     if (city.imageFile) {
       formData.append('file', city.imageFile); // Upload new image
     } else {
@@ -146,6 +166,22 @@ function UpdateCity({ params }) {
               required
             />
           </label>
+          <div className="form-group">
+          <label htmlFor="country">Country</label>
+          <select
+            id="country"
+            name="country_id"
+            value={city.country_id}
+            onChange={handleChange}
+          >
+            <option value="">Select a country</option>
+            {countries.map((country) => (
+              <option key={country._id} value={country._id}>
+                {country.title}
+              </option>
+            ))}
+          </select>
+        </div>
           <label className="update-packages-label">
             Image:
             <input
