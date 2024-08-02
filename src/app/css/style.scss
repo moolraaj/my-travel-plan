@@ -2135,7 +2135,181 @@ form.form.flight-form h3 {
 	text-decoration: none;
 }
 
+// Transfer Page
 
+.enquiry-section {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    text-align: center;
+    color: white;
+}
+.sidebar-enquiry {
+    position: relative;
+    // width: 300px;
+}
+.sidebar-enquiry img {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	height: 100%;
+}
+
+button.planebutton {
+    padding: 10px 26px;
+    margin-bottom: 22px;
+    font-size: 18px;
+    font-family: "Poppins";
+    border-radius: 5px;
+    background: #cf0c2a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    width: 100%;
+    letter-spacing: 0.7px;
+}
+.vechile-sidebar-inner {
+	display: flex;
+    gap: 30px;
+}
+
+.transfer-vehicle-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.planetitle {
+	font-size: 30px;
+    font-family: "Poppins";
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+.cartitle {
+    margin: 0px;
+    font-size: 30px;
+    font-weight: 500;
+	color: #fff;
+}
+
+.rating-price {
+    font-size: 16px;
+    color: #F6AF25;
+    font-family: 'Poppins';
+	text-align: end;
+}
+.carprice {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 500;
+}
+.text-container {
+    background: #000000bd;
+    padding: 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	position: absolute;
+	right: 0;
+    bottom: 0;
+    left: 0;
+}
+.car-box {
+    position: relative;
+}
+img.carimage {
+    width: 100%;
+    height: 100%;
+	object-fit: cover;
+}
+.vechile-sidebar {
+    margin: 50px 0px;
+}
+.car-box:hover .text-container {
+    background: #000;
+}
+
+
+// Blog Page 
+
+.blog-page {
+    margin: 50px 0px;
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+.blogpagecard {
+    box-shadow: 0 4px 30px 0 rgba(22,27,24,.05);
+	position: relative;
+}
+
+.blogpagecard .image {
+    width: 100%;
+	border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+}
+
+.blogcontent {
+    padding: 10px 20px;
+	padding-bottom: 20px;
+}
+
+.blogcontent .title {
+    font-size: 22px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    text-transform: capitalize;
+	margin: 15px 0px;
+}
+
+.blogcontent .category {
+    position: absolute;
+    z-index: 99;
+    background: #cf0c2a;
+    top: 15px;
+    color: #fff;
+    font-size: 16px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    left: 15px;
+	font-family: 'Jost';
+}
+.blogcontent .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #6b6f6a;
+    font-size: 16px;
+    font-family: 'Jost';
+}
+
+.blogcontent span.date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blogcontent span.comments {
+     display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.blogcontent .link {
+    color: #cf0c2a;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: "Jost";
+    text-decoration: none;
+    font-weight: 600;
+	margin-top: 20px;
+	border: none;
+    background: transparent;
+    cursor: pointer;
+}
 // Responsive Screen Start Here 
 
 @media only screen and  (max-width: 1450px ) {
@@ -2162,6 +2336,13 @@ form.form.flight-form h3 {
 }
 
 @media only screen and  (max-width:1360px ){
+	.cartitle {
+		font-size: 25px;
+	}
+	button.contact-button {
+		padding: 10px 15px;
+		font-size: 14px;
+	}
 	.top-act-container .top-act-card {
 		width: 240px;
 	}
@@ -2192,7 +2373,9 @@ form.form.flight-form h3 {
 }
 
 @media only screen and  (max-width:1140px ){
-
+	.sidebar-enquiry {
+		display: none;
+	}
 	.holiday_container .image-container img {
 		width: 500px;
 	}
@@ -2202,48 +2385,54 @@ form.form.flight-form h3 {
 	.main_slider_inner .searchContainer {
 		width: 65%;
 	}
-  .header_logo img {
-    width: 150px;
-  }
-  .navbar-menu {
-    gap: 0px;
-  }
-  a.navbar-item {
-    column-gap: 7px;
-  }
-  .destinations-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 15px;
-  }
-  .destination-card:nth-child(1), .destination-card:nth-child(2) {
-    grid-column: unset;
-  }
-  .destination-card .destination-image {
-    height: 300px;
-  }
-  .destination-card:before {
-    content: "";
-    height: 300px;
-  }
-  .footer_section {
-    gap: 10px;
-  }
-  p.description, ul.destinations-list li, ul.footer-list li, ul.contact-list li a, .address-description p {
-    font-size: 16px;
-  }
-  img.expert-image {
-    width: 300px;
-  }
-  .blog-container {
-    grid-template-columns: 1fr 2fr;
-  }
-  .card_main_section .package img {
-    max-width: 220px;
-  }
- }
+	.header_logo img {
+	width: 150px;
+	}
+	.navbar-menu {
+	gap: 0px;
+	}
+	a.navbar-item {
+	column-gap: 7px;
+	}
+	.destinations-grid {
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 15px;
+	}
+	.destination-card:nth-child(1), .destination-card:nth-child(2) {
+	grid-column: unset;
+	}
+	.destination-card .destination-image {
+	height: 300px;
+	}
+	.destination-card:before {
+	content: "";
+	height: 300px;
+	}
+	.footer_section {
+	gap: 10px;
+	}
+	p.description, ul.destinations-list li, ul.footer-list li, ul.contact-list li a, .address-description p {
+	font-size: 16px;
+	}
+	img.expert-image {
+	width: 300px;
+	}
+	.blog-container {
+	grid-template-columns: 1fr 2fr;
+	}
+	.card_main_section .package img {
+	max-width: 220px;
+	}
+}
 
 
 @media only screen and (max-width:1023px) {
+	.cartitle {
+        font-size: 22px;
+    }
+	.carprice {
+		font-size: 20px;
+	}
 	.explorations-grid {
 		grid-template-columns: 1fr 1fr;
 	}
@@ -2394,6 +2583,10 @@ form.form.flight-form h3 {
 }
 
 @media(max-width:767px) {
+	.transfer-vehicle-section {
+		grid-template-columns: 1fr;
+		width: 100%;
+	}
 	img.exploration-image {
 		height: 200px;
 	}

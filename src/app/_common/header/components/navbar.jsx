@@ -31,13 +31,13 @@ const Navbar = () => {
             <span className="sr-only"></span>
             {isOpen ? (
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 20L4 4M20 4L4 20" stroke="#CA1E2A" stroke-width="2" stroke-linecap="round"/>
+              <path d="M20 20L4 4M20 4L4 20" stroke="#CA1E2A" strokeWidth="2" strokeLinecap="round"/>
               </svg>
               
             ) : (
              
               <svg width="30" height="30" viewBox="0 0 30 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.1429 20H28M2 11H28M13.1429 2H28" stroke="#CA1E2A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.1429 20H28M2 11H28M13.1429 2H28" stroke="#CA1E2A" strokeWidth="3" strokeLinecap="round" stroke-linejoin="round"/>
               </svg>
               
             )}
