@@ -133,6 +133,7 @@ const AddPackages = () => {
         router.push('/admin/packages');
       } else {
         setError(data.message || 'An error occurred.');
+        toast.error(data.message || 'An error occurred.')
       }
     } catch (error) {
       toast.error(`Error: ${error.message}`);
