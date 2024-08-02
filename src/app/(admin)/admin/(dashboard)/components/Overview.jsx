@@ -74,12 +74,12 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    fetchData('/api/v1/continents/get', 'continents');
-    fetchData('/api/v1/countries/get', 'countries');
-    fetchData('/api/v1/cities/get', 'cities');
-    fetchData('/api/v1/packages/get', 'packages', true);
-    fetchData('/api/v1/sendquery/queries/get', 'users');
-    fetchData('/api/v1/flight/queries/get', 'bookings');
+    fetchData('/api/v1/continents/get', 'continents',{ cache: 'no-store' });
+    fetchData('/api/v1/countries/get', 'countries',{ cache: 'no-store' });
+    fetchData('/api/v1/cities/get', 'cities',{ cache: 'no-store' });
+    fetchData('/api/v1/packages/get', 'packages', true,{ cache: 'no-store' });
+    fetchData('/api/v1/sendquery/queries/get', 'users',true,{ cache: 'no-store' });
+    fetchData('/api/v1/flight/queries/get', 'bookings',true,{ cache: 'no-store' });
   }, []);
 
   return (
