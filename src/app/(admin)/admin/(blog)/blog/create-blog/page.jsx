@@ -19,7 +19,7 @@ function CreateBlog() {
 
   useEffect(() => {
     // Fetch categories when the component mounts
-    fetch('/api/v1/categories/get')
+    fetch('/api/v1/categories/get?page=1&limit=1000')
       .then(response => response.json())
       .then(data => setCategories(data.result))
       .catch(error => console.error('Error fetching categories:', error));

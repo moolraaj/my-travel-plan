@@ -13,6 +13,10 @@ function CategoryManagement() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingButton, setLoadingButton] = useState({ add: false, update: false, delete: false });
+  
+  // New state to manage the visible categories
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -126,6 +130,11 @@ function CategoryManagement() {
     }
   };
 
+  // Handle toggle between showing more and less categories
+  const handleToggleShowMore = () => {
+    setShowAll(!showAll);
+    setVisibleCount(showAll ? 6 : categories.length);
+  };
 
   return (
     <div className="category-management">
@@ -133,7 +142,7 @@ function CategoryManagement() {
       {loading && <p>Loading categories...</p>}
 
       <ul className="category-list">
-        {categories.map(category => (
+        {categories.slice(0, visibleCount).map(category => (
           <li key={category._id}>
             {category.name} ({category.slug})
             <div className="category-actions">
@@ -146,6 +155,13 @@ function CategoryManagement() {
           </li>
         ))}
       </ul>
+
+      {/* Show more or less button */}
+      {categories.length > 6 && (
+        <button onClick={handleToggleShowMore} className="btn">
+          {showAll ? 'Show Less' : 'Show More'}
+        </button>
+      )}
 
       <div className="add-category">
         {showAddCategory ? (
