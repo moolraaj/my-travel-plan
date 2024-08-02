@@ -63,6 +63,9 @@ function CategoryManagement() {
         setCategories(prev => [...prev, result.result]);
         setNewCategory({ name: '', slug: '' });
         setShowAddCategory(false);
+        setTimeout(() => {
+            setMessage(false);
+          }, 4000);
       }
     } catch (error) {
       console.error('Error adding category:', error);
@@ -89,6 +92,9 @@ function CategoryManagement() {
         setCategories(prev => prev.map(cat => cat._id === editCategory.id ? result.result : cat));
         setEditCategory({ id: '', name: '', slug: '' });
         setShowEditCategory(false);
+        setTimeout(() => {
+            setMessage(false);
+          }, 4000);
       }
     } catch (error) {
       console.error('Error updating category:', error);
@@ -108,6 +114,9 @@ function CategoryManagement() {
       setMessage(result.message);
       if (result.success) {
         setCategories(prev => prev.filter(cat => cat._id !== id));
+        setTimeout(() => {
+            setMessage(false);
+          }, 4000);
       }
     } catch (error) {
       console.error('Error deleting category:', error);
