@@ -15,7 +15,7 @@ export async function PUT(req, { params }) {
     
         // Ensure countryRef is a non-empty array
         if (!Array.isArray(countryRef) || countryRef.length === 0) {
-            return NextResponse.json({status:401, success: false, message: 'please provide valid country ref' });
+            return NextResponse.json({status:200, success: false, message: 'please provide valid country ref' });
         }
     
         let filterId = { _id: id };
@@ -24,7 +24,7 @@ export async function PUT(req, { params }) {
         let existingContinent = await continentModel.findById(filterId);
     
         if (!existingContinent) {
-            return NextResponse.json({status:401, success: false, message: 'continent not found! please provide valid continet id' });
+            return NextResponse.json({status:200, success: false, message: 'continent not found! please provide valid continet id' });
         }
     
         // Get the current list of country IDs in the continent
@@ -43,14 +43,14 @@ export async function PUT(req, { params }) {
         }
     
         // Proceed with adding new country IDs to the continent
-        let resp = await continentModel.findByIdAndUpdate(
+        let result = await continentModel.findByIdAndUpdate(
             filterId,
             { $addToSet: { all_countries: { $each: countryRef } } },
             { new: true }
         );
     
-        console.log(resp);
+        
     
-        return NextResponse.json({status:201, success: true, message: 'countries added successfully'});
+        return NextResponse.json({status:201, success: true, message: 'countries added successfully',result});
     })
 }
