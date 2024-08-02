@@ -66,10 +66,5 @@ export async function GET(req, { params }) {
             page,
             limit,
         });
-    })
-.
-    
-
-    
-     
+    }) 
 }
