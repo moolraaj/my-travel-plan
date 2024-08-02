@@ -63,6 +63,8 @@ function CreateBlog() {
   return (
     <>
       <h2>Add Blog</h2>
+      <div className="blog_cat_wrapper">
+      <div className="add_blog">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title:</label>
@@ -91,8 +93,10 @@ function CreateBlog() {
         </div>
         <button type="submit">Add Blog</button>
       </form>
+      </div>
       <div className="add_cats">
         <CategoryManagement/>
+      </div>
       </div>
       {message && <p>{message}</p>}
     </>
