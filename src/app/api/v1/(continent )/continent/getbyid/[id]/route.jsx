@@ -1,4 +1,5 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { getPaginationParams } from "@/helpers/paginations";
 import continentModel from "@/model/continentModel";
 import mongoose from "mongoose";
@@ -7,12 +8,11 @@ import { NextResponse } from "next/server";
 DbConnect();
 
 export async function GET(req, { params }) {
-    const { id } = params;
-    const { page, limit, skip } = getPaginationParams(req);
 
-    
+    return handelAsyncErrors(async()=>{
+        const { id } = params;
+        const { page, limit, skip } = getPaginationParams(req);
 
-    try {
         // Fetch the continent with its related data, paginated
         const continent = await continentModel.findOne({ _id:id }).populate({
             path: 'all_countries',
@@ -23,10 +23,10 @@ export async function GET(req, { params }) {
                 },
             },
         }).exec();
-
+    
         // Check if the continent exists
         if (!continent) {
-            return NextResponse.json({ success: false, error: 'Continent not found' });
+            return NextResponse.json({status:200, success: false, error: 'continent not found' });
         }
         // Get the total count of countries within the continent
         const totalResults = await continentModel.aggregate([
@@ -36,7 +36,7 @@ export async function GET(req, { params }) {
         ]).then(results => results[0]?.total || 0);
         // Get the paginated countries
         const countries = continent.all_countries.slice(skip, skip + limit);
-
+    
         let result={
             _id: continent._id,
             images: continent.images,
@@ -56,21 +56,20 @@ export async function GET(req, { params }) {
                 })),
                 total_cities: country.all_cities.length,
             })),
-            
-
         }
 
-        
-
         return NextResponse.json({
+            status:200,
             success: true,
             totalResults,
             result,
             page,
             limit,
         });
-    } catch (error) {
-        console.error('Error in GET handler:', error);
-        return NextResponse.json({ success: false, error: 'Failed to fetch continent and countries', message: error.message });
-    }
+    })
+
+    
+
+    
+     
 }
