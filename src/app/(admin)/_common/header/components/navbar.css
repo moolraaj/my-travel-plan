@@ -78,8 +78,8 @@
     margin-left: 15px;
   }
   
-  /* Notification Icon Wrapper */
-.notification-button{
+/* Notification Icon Wrapper */
+.notification-button {
   position: relative;
 }
 
@@ -89,9 +89,23 @@
   right: -5px;
   width: 10px;
   height: 10px;
-  background-color: #005bb5;
+  background-color: #005bb5; /* Initial color */
   border-radius: 50%;
+  animation: colorChange 1s infinite; /* Apply the animation */
 }
+
+@keyframes colorChange {
+  0% {
+    background-color: #005bb5; /* Start with the first color */
+  }
+  50% {
+    background-color: #dc3545; /* Change to the second color halfway */
+  }
+  100% {
+    background-color: #005bb5; /* Return to the first color */
+  }
+}
+
 
   /* Responsive Styles */
   @media (max-width: 768px) {
