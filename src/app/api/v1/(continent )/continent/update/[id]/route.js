@@ -1,4 +1,5 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
 import continentModel from "@/model/continentModel";
 import { NextResponse } from "next/server";
@@ -6,8 +7,10 @@ import { NextResponse } from "next/server";
 DbConnect();
 
 export async function PUT(req, { params }) {
-    let { id } = params;
-    try {
+    return handelAsyncErrors(async() => {
+
+        let { id } = params;
+
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -17,13 +20,13 @@ export async function PUT(req, { params }) {
 
         // Check if all fields are empty
         if (!file && !title && !description && !slug) {
-            return NextResponse.json({ success: false, message: 'At least one field is required to update' });
+            return NextResponse.json({ status: 200, success: false, message: 'at least one more field is required' });
         }
 
         // Check if country exists
         let existingContinent = await continentModel.findById(id);
         if (!existingContinent) {
-            return NextResponse.json({ success: false, message: 'Country not found' });
+            return NextResponse.json({ status: 200, success: false, message: 'continent not found' });
         }
 
         // Update the fields if they are provided
@@ -38,7 +41,7 @@ export async function PUT(req, { params }) {
                 name: uploadedFile.name,
                 path: uploadedFile.path,
                 contentType: uploadedFile.contentType,
-                
+
             };
             existingContinent.images = [imageObject];
         }
@@ -46,9 +49,7 @@ export async function PUT(req, { params }) {
         // Save the updated document
         const result = await existingContinent.save();
 
-        return NextResponse.json({ success: true, message: 'Country updated successfully', result });
-    } catch (error) {
-        console.error('Error in PUT handler:', error);
-        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
-    }
+        return NextResponse.json({ status: 200, success: true, message: 'continent deleted successfully', result });
+    })
+
 }

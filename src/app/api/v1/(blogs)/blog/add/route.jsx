@@ -11,7 +11,7 @@ DbConnect()
 
 export async function POST(req) {
 
-    // return handelAsyncErrors(async () => {
+    return handelAsyncErrors(async () => {
         // Extract data from form data
         const payload = await req.formData();
         const file = payload.get('file');
@@ -60,7 +60,7 @@ export async function POST(req) {
 
 
         return NextResponse.json({ status: 201, success: true, message: 'blog created successfully', result });
-    // })
+    })
 
 
 

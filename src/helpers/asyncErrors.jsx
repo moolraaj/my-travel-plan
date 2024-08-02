@@ -5,6 +5,6 @@ export const handelAsyncErrors = async (asyncFunction) => {
     try {
         return await asyncFunction();
     } catch (error) {
-        return NextResponse.json({status:404,success:false,message: 'internal server error'})
+        return NextResponse.json({status:404,success:false,message: 'no result found! internal server error'})
     }
 };

@@ -2,7 +2,7 @@
 
 
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AddCity = () => {
@@ -12,9 +12,29 @@ const AddCity = () => {
     description: '',
     slug: '',
     file: null,
+    country_id: '',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch(`/api/v1/countries/get?page=1&limit=1000`,{
+          headers:{
+             'Cache-Control': 'no-cache'
+          }
+        });
+        const data = await res.json();
+        setCountries(data.result || []);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -28,9 +48,9 @@ const AddCity = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { title, description, slug, file } = formData;
+    const { title, description, slug, file, country_id } = formData;
 
-    if (!title || !description || !slug || !file) {
+    if (!title || !description || !slug || !file || !country_id) {
       setError('Please fill in all fields and upload an image.');
       setIsLoading(false);
       return;
@@ -42,6 +62,7 @@ const AddCity = () => {
       submissionData.append('description', description);
       submissionData.append('slug', slug);
       submissionData.append('file', file);
+      submissionData.append('country_id', country_id);
 
       const res = await fetch('/api/v1/city/add', {
         method: 'POST',
@@ -98,6 +119,22 @@ const AddCity = () => {
             onChange={handleChange}
             placeholder="Enter slug"
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="country">Country</label>
+          <select
+            id="country"
+            name="country_id"
+            value={formData.country_id}
+            onChange={handleChange}
+          >
+            <option value="">Select a country</option>
+            {countries.map((country) => (
+              <option key={country._id} value={country._id}>
+                {country.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="file">Image</label>
