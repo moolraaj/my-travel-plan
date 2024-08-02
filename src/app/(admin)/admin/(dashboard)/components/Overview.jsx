@@ -31,7 +31,11 @@ const Overview = () => {
       const limit = 1000; // Adjust the limit according to your API
 
       while (true) {
-        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`);
+        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`,{
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
