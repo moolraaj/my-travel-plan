@@ -29,9 +29,9 @@ const Overview = () => {
       let result = [];
       let page = 1;
       const limit = 1000; // Adjust the limit according to your API
-
+  
       while (true) {
-        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`,{
+        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`, {
           headers: {
             'Cache-Control': 'no-cache'
           }
@@ -40,6 +40,7 @@ const Overview = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log(`Data fetched from ${endpoint}:`, data); // Debugging line
         if (isPackage) {
           result = result.concat(data.result);
           if (data.result.length < limit) break; // No more pages
@@ -52,14 +53,14 @@ const Overview = () => {
         }
         page += 1;
       }
-
+  
       if (isPackage) {
         setData(prevData => ({
           ...prevData,
           [key]: result.length,
         }));
       }
-
+  
       setLoading(prevLoading => ({
         ...prevLoading,
         [key]: false,
@@ -76,7 +77,7 @@ const Overview = () => {
       }));
     }
   };
-
+  
   useEffect(() => {
     fetchData('/api/v1/continents/get', 'continents',{ cache: 'no-store' });
     fetchData('/api/v1/countries/get', 'countries',{ cache: 'no-store' });
