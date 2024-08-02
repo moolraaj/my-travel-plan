@@ -27,10 +27,14 @@ const AddPackages = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  
     const fetchCities = async () => {
       try {
-        const res = await fetch('/api/v1/cities/get');
+        const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`,{
+          headers:{
+            'Cache-Control': 'no-cache'
+         }
+        });
         const data = await res.json();
         if (data.success) {
           setCities(data.result); 
@@ -41,7 +45,7 @@ const AddPackages = () => {
         toast.error(`Error: ${error.message}`);
       }
     };
-
+    useEffect(() => {
     fetchCities();
   }, []);
 
