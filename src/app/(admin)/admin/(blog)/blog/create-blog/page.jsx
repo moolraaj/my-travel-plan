@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import CategoryManagement from '../../category-management/page';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function CreateBlog() {
     const router = useRouter();
@@ -41,24 +42,27 @@ function CreateBlog() {
       form.append(key, formData[key]);
     });
 
-    try {
+     
       const response = await fetch('/api/v1/blog/add', {
         method: 'POST',
         body: form,
       });
-      const result = await response.json();
-      if (result.success) {
-        router.push(`/admin/blog`)
-      }
-      else{
+      
+      return handelAsyncErrors(async()=>{
+
+        const result = await response.json();
+        if (result.success) {
+          router.push(`/admin/blog`)
+        }
+        else{
+          setMessage(result.message);
+        }
         setMessage(result.message);
-      }
-      setMessage(result.message);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setMessage('Error submitting form');
-    }
+       
+      })
   };
+
+  
 
   return (
     <>
