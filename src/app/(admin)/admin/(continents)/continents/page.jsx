@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
 import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
@@ -21,7 +22,7 @@ function ContinentPage() {
   const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchContinents() {
-    try {
+    return handelAsyncErrors(async () => {
       const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
       const data = await response.json();
       if (data.success) {
@@ -30,11 +31,11 @@ function ContinentPage() {
       } else {
         toast.error(`Error: ${data.message}`);
       }
-    } catch (error) {
-      toast.error('Error fetching continents. Please try again later.');
-    } finally {
       setLoading(false);
-    }
+    })
+
+
+
   }
 
   useEffect(() => {
@@ -46,27 +47,24 @@ function ContinentPage() {
   };
 
   const handleConfirm = async () => {
-   
-      try {
-  
-       
-        // Add similar checks for cities and packages if necessary
-        const response = await fetch(`/api/v1/continent/delete/${deleteItem}`, { method: 'DELETE' });
-        const data = await response.json();
-        if (data.success) {
-          fetchContinents();
-          toast.success('Continent deleted successfully.');
-          setIsOpen(false)
-        } else {
-          toast.error(data.message);
-        }
-      } catch (error) {
-        toast.error('Error deleting continent. Please try again later.');
+
+    return handelAsyncErrors(async () => {
+      // Add similar checks for cities and packages if necessary
+      const response = await fetch(`/api/v1/continent/delete/${deleteItem}`, { method: 'DELETE' });
+      const data = await response.json();
+      if (data.success) {
+        fetchContinents();
+        toast.success('Continent deleted successfully.');
+        setIsOpen(false)
+      } else {
+        toast.error(data.message);
       }
-    
+    })
+
+
   };
 
-  const handleDelete=(id)=>{
+  const handleDelete = (id) => {
     setIsOpen(true)
     setDeleteItem(id)
   }
@@ -89,9 +87,9 @@ function ContinentPage() {
     <div className="packages">
       <ToastContainer />
       <ModalWrapper
-      isOpen={isOpen}
-      onClose={()=>setIsOpen(false)}
-      onConfirm={handleConfirm}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={handleConfirm}
       />
       <h2>Continents</h2>
       <div className="packages-table-container">

@@ -2,6 +2,7 @@
 // /app/(admin)/admin/(continents)/continents/preview-continent/[id]/page.jsx
 
 'use client';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useEffect, useState } from 'react';
 
 function PreviewContinent({ params }) {
@@ -17,22 +18,22 @@ function PreviewContinent({ params }) {
   const [error, setError] = useState('');
 
   async function fetchContinent() {
-    try {
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/continent/getbyid/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      if (data.success) {
-        setContinent(data.result);
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('Error fetching Continent data.');
-    } finally {
-      setLoading(false);
-    }
+     
+        if (data.success) {
+          setContinent(data.result);
+        } else {
+          setError(data.message);
+        }
+        setLoading(false);
+      })
+      
+    
   }
 
   useEffect(() => {

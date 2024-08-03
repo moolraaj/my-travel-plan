@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);
@@ -21,21 +22,18 @@ function ContactsPage() {
   const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchContacts() {
-    try {
-      const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
-      const data = await response.json();
+    const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+    const data = await response.json();
+
+    return handelAsyncErrors(async()=>{
       if (response.ok && data.status === 200) {
         setContacts(data.result);
         setTotalResults(data.totalResults); // Set totalResults from API
       } else {
         setError('Failed to fetch Contacts');
       }
-    } catch (error) {
-      setError('Error fetching Contacts');
-      console.error('Error fetching Contacts:', error);
-    } finally {
       setLoading(false);
-    }
+    })
   }
 
   useEffect(() => {
@@ -43,21 +41,17 @@ function ContactsPage() {
   }, [currentPage, itemsPerPage]);
 
   const handleConfirm = async () => {
-    
-      try {
         const response = await fetch(`/api/v1/sendquery/query/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
-        if (response.ok && data.success) {
-          fetchContacts();
-          toast.success('contact deleted successfully');
-          setIsOpen(false)
-        } else {
-          toast.error('Failed to delete contact');
-        }
-      } catch (error) {
-        toast.error('Failed to delete contact, please try again.');
-      }
-     
+        return handelAsyncErrors(async()=>{
+          if (response.ok && data.success) {
+            fetchContacts();
+            toast.success('contact deleted successfully');
+            setIsOpen(false)
+          } else {
+            toast.error('Failed to delete contact');
+          }
+        })
   };
 
   const handleDelete=(id)=>{

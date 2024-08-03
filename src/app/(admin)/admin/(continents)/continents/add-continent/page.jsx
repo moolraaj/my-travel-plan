@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
 import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const AddContinent = () => {
   const router = useRouter();
@@ -35,8 +36,7 @@ const AddContinent = () => {
       setIsLoading(false);
       return;
     }
-
-    try {
+    return handelAsyncErrors(async()=>{
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
@@ -56,11 +56,11 @@ const AddContinent = () => {
       } else {
         toast.error(data.message || 'An error occurred.');
       }
-    } catch (error) {
-      toast.error('An error occurred while submitting the form.');
-    }
-
+  
     setIsLoading(false);
+    })
+
+      
   };
 
   return (
