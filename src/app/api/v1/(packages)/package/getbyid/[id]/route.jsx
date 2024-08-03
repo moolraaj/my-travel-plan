@@ -31,10 +31,13 @@ export async function GET(req, { params }) {
         const formattedResult = {
             _id: result._id,
             title: result.title,
+            images:result.images,
             description: result.description,
             slug: result.slug,
             package_price: result.package_price,
             package_discounted_price: result.package_discounted_price,
+            package_days: result.package_days,
+            package_nights: result.package_nights,
             package_overview: result.package_overview,
             package_top_summary: result.package_top_summary,
             package_itinerary: result.package_itinerary,
