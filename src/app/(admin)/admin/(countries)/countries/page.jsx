@@ -20,22 +20,22 @@ function CountryPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchCountries() {
-      try {
-        const response = await fetch(`/api/v1/countries/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (data.success) {
-          setCountries(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        }
-      } catch (error) {
-        console.error('Error fetching countries:', error);
-      } finally {
-        setLoading(false);
+  async function fetchCountries() {
+    try {
+      const response = await fetch(`/api/v1/countries/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (data.success) {
+        setCountries(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
       }
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchCountries();
   }, [currentPage, itemsPerPage]);
 
@@ -49,7 +49,7 @@ function CountryPage() {
         const response = await fetch(`/api/v1/country/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
         if (data.success) {
-          setCountries(countries.filter(country => country._id !== id));
+          fetchCountries();
           toast.success('Country deleted successfully');
         } else {
           toast.error('Failed to delete country');

@@ -18,24 +18,24 @@ function Packages() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchPackages() {
-      try {
-        const response = await fetch(`/api/v1/packages/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (data.success) {
-          setPackages(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          setError('Failed to fetch packages.');
-        }
-      } catch (error) {
-        setError('Error fetching packages.');
-      } finally {
-        setLoading(false);
+  async function fetchPackages() {
+    try {
+      const response = await fetch(`/api/v1/packages/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (data.success) {
+        setPackages(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        setError('Failed to fetch packages.');
       }
+    } catch (error) {
+      setError('Error fetching packages.');
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchPackages();
   }, [currentPage]);
 
@@ -49,7 +49,7 @@ function Packages() {
         const response = await fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
         if (data.success) {
-          setPackages(packages.filter(pkg => pkg._id !== id));
+          fetchPackages();
           toast.success('Package deleted successfully.');
         } else {
           toast.error('Failed to delete package.');
