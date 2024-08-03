@@ -3,6 +3,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function UpdateCountry({ params }) {
   const [country, setCountry] = useState({
@@ -24,7 +25,7 @@ function UpdateCountry({ params }) {
 
  
     const fetchContinents = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         const res = await fetch('/api/v1/continents/get?page=1&limit=1000', {
           headers: {
             'Cache-Control': 'no-cache'
@@ -32,13 +33,13 @@ function UpdateCountry({ params }) {
         });
         const data = await res.json();
         setContinents(data.result || []);
-      } catch (error) {
-        console.error('Error fetching continents:', error);
-      }
+      })
+        
+      
     };
 
     const fetchCountry = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         const response = await fetch(`/api/v1/country/get/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -53,11 +54,8 @@ function UpdateCountry({ params }) {
         } else {
           setError(data.message);
         }
-      } catch (error) {
-        setError('Error fetching Country data.');
-      } finally {
         setLoading(false);
-      }
+      })
     };
     useEffect(() => {
     fetchContinents();
@@ -102,7 +100,7 @@ function UpdateCountry({ params }) {
       formData.append('file', ''); // Ensure file field is included if no new image
     }
 
-    try {
+    return handelAsyncErrors(async () => {
       const response = await fetch(`/api/v1/country/update/${id}`, {
         method: 'PUT',
         body: formData,
@@ -116,12 +114,10 @@ function UpdateCountry({ params }) {
         setError(data.message);
         setSuccessMessage('');
       }
-    } catch (error) {
-      setError('Error updating country.');
-      setSuccessMessage('');
-    } finally {
       setIsLoading(false); // End loading
-    }
+    })
+      
+    
   };
 
   return (

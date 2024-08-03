@@ -4,6 +4,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const AddCity = () => {
   const router = useRouter();
@@ -20,7 +21,8 @@ const AddCity = () => {
 
   useEffect(() => {
     const fetchCountries = async () => {
-      try {
+
+      return handelAsyncErrors(async()=>{
         const res = await fetch(`/api/v1/countries/get?page=1&limit=1000`,{
           headers:{
              'Cache-Control': 'no-cache'
@@ -28,9 +30,7 @@ const AddCity = () => {
         });
         const data = await res.json();
         setCountries(data.result || []);
-      } catch (error) {
-        console.error('Error fetching countries:', error);
-      }
+      })
     };
 
     fetchCountries();
@@ -55,8 +55,7 @@ const AddCity = () => {
       setIsLoading(false);
       return;
     }
-
-    try {
+    return handelAsyncErrors(async()=>{
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
@@ -76,11 +75,11 @@ const AddCity = () => {
       } else {
         setError(data.message || 'An error occurred.');
       }
-    } catch (error) {
-      setError('An error occurred while submitting the form.');
-    }
-
+   
     setIsLoading(false);
+    })
+
+      
   };
 
   return (

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 
 function BookingPage() {
@@ -23,20 +24,20 @@ function BookingPage() {
 
 
   async function fetchBookings() {
-    try {
+    
       const response = await fetch(`/api/v1/flight/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
       const data = await response.json();
-      if (response.ok && data.status === 200) {
-        setBookings(data.result);
-        setTotalResults(data.totalResults); // Set totalResults from API
-      } else {
-        setError('Failed to fetch bookings');
-      }
-    } catch (error) {
-      setError('Error fetching bookings');
-    } finally {
-      setLoading(false);
-    }
+      return handelAsyncErrors(async()=>{
+        if (response.ok && data.status === 200) {
+          setBookings(data.result);
+          setTotalResults(data.totalResults); // Set totalResults from API
+        } else {
+          setError('Failed to fetch bookings');
+        }
+        setLoading(false);
+      })
+      
+    
   }
 
   useEffect(() => {
@@ -44,21 +45,17 @@ function BookingPage() {
   }, [currentPage, itemsPerPage]);
 
   const confirmDelete = async () => {
-    
-      try {
         const response = await fetch(`/api/v1/flight/query/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
-        if (response.ok && data.status === 200 && data.success) {
-          fetchBookings();
-          toast.success('Booking deleted successfully');
-          setIsOpen(false)
-        } else {
-          toast.error(data.message || 'Failed to delete booking');
-        }
-      } catch (error) {
-        toast.error('Failed to delete booking, please try again.');
-      }
-    
+        return handelAsyncErrors(async()=>{
+          if (response.ok && data.status === 200 && data.success) {
+            fetchBookings();
+            toast.success(data.message);
+            setIsOpen(false)
+          } else {
+            toast.error(data.message || 'Failed to delete booking');
+          }
+        })
   };
 
   const handleDelete = (id) => {

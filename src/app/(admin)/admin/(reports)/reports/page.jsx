@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { userActivityData, financialData, salesData, feedbackData } from '../components/mockData';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function ReportsPage() {
   const [reports, setReports] = useState({
@@ -14,7 +15,7 @@ function ReportsPage() {
   useEffect(() => {
     // Simulate API call with dummy data
     const fetchReports = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         // Simulate a delay for fetching data
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -24,11 +25,10 @@ function ReportsPage() {
           sales: salesData,
           feedback: feedbackData,
         });
-      } catch (error) {
-        console.error('Error fetching reports:', error);
-      } finally {
         setLoading(false);
-      }
+      })
+
+
     };
 
     fetchReports();
