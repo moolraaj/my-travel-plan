@@ -3,6 +3,7 @@
 
 'use client';
 
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
@@ -12,7 +13,7 @@ const DataPercentage = () => {
 
   // Function to fetch data from APIs
   const fetchData = async () => {
-    try {
+    return handelAsyncErrors(async () => {
       const endpoints = [
         '/api/v1/continents/get',
         '/api/v1/countries/get',
@@ -37,10 +38,9 @@ const DataPercentage = () => {
       ]);
 
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setLoading(false);
-    }
+    })
+      
+    
   };
 
   useEffect(() => {

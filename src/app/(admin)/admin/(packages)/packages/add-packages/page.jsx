@@ -7,6 +7,7 @@ import './AddPackages.css';
 import { FaMinus } from 'react-icons/fa';
 import { toast, ToastContainer } from  'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const AddPackages = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const AddPackages = () => {
 
   
     const fetchCities = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`,{
           headers:{
             'Cache-Control': 'no-cache'
@@ -41,9 +42,7 @@ const AddPackages = () => {
         } else {
           toast.error('Failed to fetch cities');
         }
-      } catch (error) {
-        toast.error(`Error: ${error.message}`);
-      }
+      })
     };
     useEffect(() => {
     fetchCities();
@@ -105,7 +104,7 @@ const AddPackages = () => {
       return;
     }
 
-    try {
+    return handelAsyncErrors(async () => {
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
@@ -135,11 +134,9 @@ const AddPackages = () => {
         setError(data.message || 'An error occurred.');
         toast.error(data.message || 'An error occurred.')
       }
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    }
-
     setIsLoading(false);
+    })
+     
   };
 
   return (

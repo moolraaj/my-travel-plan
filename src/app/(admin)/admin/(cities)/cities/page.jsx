@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
@@ -24,18 +25,18 @@ function CityPage() {
 
 
   async function fetchCities() {
-    try {
+    
       const response = await fetch(`/api/v1/cities/get?page=${currentPage}&limit=${itemsPerPage}`);
       const data = await response.json();
-      if (data.success) {
-        setCities(data.result);
-        setTotalResults(data.totalResults); // Set totalResults from API
-      }
-    } catch (error) {
+      return handelAsyncErrors(async()=>{
+        if (data.success) {
+          setCities(data.result);
+          setTotalResults(data.totalResults); // Set totalResults from API
+        }
+        setLoading(false);
+      })
       
-    } finally {
-      setLoading(false);
-    }
+    
   }
 
   useEffect(() => {
@@ -47,20 +48,17 @@ function CityPage() {
   };
 
   const confirmDelete = async () => {
-    
-      try {
+  
         const response = await fetch(`/api/v1/city/delete/${deleteItem}`, { method: 'DELETE' });
-        if (response.ok) {
-          fetchCities();
-          toast.success('City deleted successfully');
-          setIsOpen(false)
-        } else {
-          toast.error('Failed to delete city, please try again.');
-        }
-      } catch (error) {
-        toast.error('Failed to delete city, please try again.');
-      }
-    
+        return handelAsyncErrors(async()=>{
+          if (response.ok) {
+            fetchCities();
+            toast.success('City deleted successfully');
+            setIsOpen(false)
+          } else {
+            toast.error('Failed to delete city, please try again.');
+          }
+        })
   };
 
   const handleDelete=(id)=>{

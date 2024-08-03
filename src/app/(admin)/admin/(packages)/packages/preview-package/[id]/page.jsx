@@ -2,6 +2,7 @@
 // /app/(admin)/admin/(cities)/cities/preview-city/[id]/page.jsx
 
 'use client';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useEffect, useState } from 'react';
 
 function PreviewPackage({ params }) {
@@ -22,7 +23,7 @@ function PreviewPackage({ params }) {
   const [error, setError] = useState('');
 
   async function fetchPkgs() {
-    try {
+    return handelAsyncErrors(async () => {
       const response = await fetch(`/api/v1/package/getbyid/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -33,11 +34,8 @@ function PreviewPackage({ params }) {
       } else {
         setError(data.message);
       }
-    } catch (error) {
-      setError('Error fetching Pkgs data.');
-    } finally {
       setLoading(false);
-    }
+    })
   }
 
   useEffect(() => {
