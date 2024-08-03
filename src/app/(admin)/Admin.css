@@ -8,7 +8,9 @@
 
 
 
-
+path.recharts-sector:focus {
+  outline: none;
+}
 
 /* Admin Dashboard Styles */
 
