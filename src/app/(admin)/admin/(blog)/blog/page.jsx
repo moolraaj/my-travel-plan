@@ -6,8 +6,10 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
+ 
+ 
 
 function BlogPage() {
     const [blogs, setBlogs] = useState([]);
@@ -17,24 +19,26 @@ function BlogPage() {
     const [totalResults, setTotalResults] = useState(0);
     const [itemsPerPage] = useState(4); // Number of items per page
     const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
+
     const router = useRouter();
 
-    useEffect(() => {
-        async function fetchBlogs() {
-            try {
-                const response = await fetch(`/api/v1/blogs/get?page=${currentPage}&limit=${itemsPerPage}`);
-                const data = await response.json();
-                if (data.success) {
-                    setBlogs(data.result);
-                    setTotalResults(data.totalResults); // Set totalResults from API
-                }
-            } catch (error) {
-                console.error('Error fetching Blogs:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
+    const [isOpen, setIsOpen] = useState(false);
+    const [deleteItem, setDeleteItem] = useState(null);
 
+    async function fetchBlogs() {
+        return handelAsyncErrors(async()=>{
+            const response = await fetch(`/api/v1/blogs/get?page=${currentPage}&limit=${itemsPerPage}`);
+            const data = await response.json();
+            if (data.success) {
+                setBlogs(data.result);
+                setTotalResults(data.totalResults); // Set totalResults from API
+            }
+      
+            setLoading(false);
+        })
+           
+    }
+    useEffect(() => {
         fetchBlogs();
     }, [currentPage, itemsPerPage]);
 
@@ -42,21 +46,26 @@ function BlogPage() {
         router.push('/admin/blog/create-blog');
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this Blogs?')) {
-            try {
-                const response = await fetch(`/api/v1/blog/delete/${id}`, { method: 'DELETE' });
-                const data = await response.json();
-                if (data.success) {
-                    setBlogs(blogs.filter(blog => blog._id !== id));
-                    toast.success(`Blog deleted successfully`);
-                } else {
-                    toast.error('Failed to delete blog');
-                }
-            } catch (error) {
-                toast.error('Failed to delete blog, please try again.');
+    const openDeleteModal = (id) => {
+        setIsOpen(true);
+        setDeleteItem(id);
+    };
+
+    const confirmDelete = async () => {
+        return handelAsyncErrors(async()=>{
+            const response = await fetch(`/api/v1/blog/delete/${deleteItem}`, { method: 'DELETE' });
+            const data = await response.json();
+            if (data.success) {
+                fetchBlogs();
+                toast.success('Blog deleted successfully');
+                
+            } else {
+                toast.error('Failed to delete blog');
             }
-        }
+            setIsOpen(false);
+        })
+           
+        
     };
 
     const handlePageChange = (page) => {
@@ -75,6 +84,11 @@ function BlogPage() {
 
     return (
         <div className="packages">
+            <ModalWrapper
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                onConfirm={confirmDelete}
+            />
             <ToastContainer />
             <h2>Blogs</h2>
             {error && <div className="error">{error}</div>}
@@ -113,7 +127,7 @@ function BlogPage() {
                                         <span className="actions">
                                             <FaEye className="action-icon view" title="View" onClick={() => handlePreview(blog._id)} />
                                             <FaEdit className="action-icon edit" title="Edit" onClick={() => handleEdit(blog._id)} />
-                                            <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => handleDelete(blog._id)} />
+                                            <FaTrashAlt className="action-icon delete" title="Delete" onClick={() => openDeleteModal(blog._id)} />
                                         </span>
                                     </td>
                                 </tr>
@@ -163,4 +177,3 @@ function BlogPage() {
 }
 
 export default BlogPage;
-

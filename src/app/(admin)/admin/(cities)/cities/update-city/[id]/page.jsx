@@ -4,6 +4,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function UpdateCity({ params }) {
   const [city, setCity] = useState({
@@ -25,7 +26,7 @@ function UpdateCity({ params }) {
 
 
   const fetchCountries = async () => {
-    try {
+    return handelAsyncErrors(async()=>{
       const res = await fetch(`/api/v1/countries/get?page=1&limit=1000`,{
         headers:{
            'Cache-Control': 'no-cache'
@@ -33,33 +34,30 @@ function UpdateCity({ params }) {
       });
       const data = await res.json();
       setCountries(data.result || []);
-    } catch (error) {
-      console.error('Error fetching countries:', error);
-    }
+    })
   };
 
 
   async function fetchCity() {
-    try {
+    
       const response = await fetch(`/api/v1/city/getbyid/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      if (data.success) {
-        setCity({
-          ...data.result,
-          images: data.result.images.map(img => img.name), // Extract image names
-        });
-        console.log('Data:', data);
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('Error fetching City data.');
-    } finally {
-      setLoading(false);
-    }
+      return handelAsyncErrors(async()=>{
+        if (data.success) {
+          setCity({
+            ...data.result,
+            images: data.result.images.map(img => img.name), // Extract image names
+          });
+          console.log('Data:', data);
+        } else {
+          setError(data.message);
+        }
+        setLoading(false);
+      })
+      
   }
 
   useEffect(() => {
@@ -103,8 +101,7 @@ function UpdateCity({ params }) {
     } else {
       formData.append('file', ''); // Ensure file field is included if no new image
     }
-
-    try {
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/city/update/${id}`, {
         method: 'PUT',
         body: formData,
@@ -118,12 +115,10 @@ function UpdateCity({ params }) {
         setError(data.message);
         setSuccessMessage('');
       }
-    } catch (error) {
-      setError('Error updating City.');
-      setSuccessMessage('');
-    } finally {
       setIsLoading(false); // End loading
-    }
+    })
+ 
+      
   };
 
   return (

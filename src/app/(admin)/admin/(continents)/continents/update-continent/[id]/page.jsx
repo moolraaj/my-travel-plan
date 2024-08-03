@@ -4,6 +4,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function UpdateContinent({ params }) {
   const [continent, setContinent] = useState({
@@ -22,29 +23,25 @@ function UpdateContinent({ params }) {
   const { id } = params;
 
   async function fetchContinent() {
-    try {
-      const response = await fetch(`/api/v1/continent/get/${id}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.success) {
-        setContinent({
-          ...data.result,
-          images: data.result.images.map(img => ({
-            ...img,
-            imgurl: img.imgurl || '',
-          })), // Ensure images have imgurl
-        });
-        console.log('Data:', data);
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('Error fetching continent data.');
-    } finally {
-      setLoading(false);
-    }
+      return handelAsyncErrors(async()=>{
+        const response = await fetch(`/api/v1/continent/getbyid/${id}`);
+        const data = await response.json();
+        if (data.success) {
+          setContinent({
+            ...data.result,
+            images: data.result.images.map(img => ({
+              ...img,
+              imgurl: img.imgurl || '',
+            })), // Ensure images have imgurl
+          });
+          console.log('Data:', data);
+        } else {
+          setError(data.message);
+        }
+        setLoading(false);
+      })
+     
+    
   }
 
   useEffect(() => {
@@ -85,7 +82,7 @@ function UpdateContinent({ params }) {
       formData.append('file', continent.imageFile); // Upload new image
     }
 
-    try {
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/continent/update/${id}`, {
         method: 'PUT',
         body: formData,
@@ -99,12 +96,10 @@ function UpdateContinent({ params }) {
         setError(data.message);
         setSuccessMessage('');
       }
-    } catch (error) {
-      setError('Error updating continent.');
-      setSuccessMessage('');
-    } finally {
       setIsLoading(false); // End loading
-    }
+    })
+     
+    
   };
 
   return (

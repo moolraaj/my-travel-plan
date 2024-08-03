@@ -6,6 +6,8 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);
@@ -16,46 +18,46 @@ function ContactsPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
+
+  async function fetchContacts() {
+    const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+    const data = await response.json();
+
+    return handelAsyncErrors(async()=>{
+      if (response.ok && data.status === 200) {
+        setContacts(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        setError('Failed to fetch Contacts');
+      }
+      setLoading(false);
+    })
+  }
 
   useEffect(() => {
-    async function fetchContacts() {
-      try {
-        const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (response.ok && data.status === 200) {
-          setContacts(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          setError('Failed to fetch Contacts');
-        }
-      } catch (error) {
-        setError('Error fetching Contacts');
-        console.error('Error fetching Contacts:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchContacts();
   }, [currentPage, itemsPerPage]);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this contact?')) {
-      try {
-        const response = await fetch(`/api/v1/sendquery/query/delete/${id}`, { method: 'DELETE' });
+  const handleConfirm = async () => {
+        const response = await fetch(`/api/v1/sendquery/query/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
-        console.log('Delete response data:', data); // Log the response data for debugging
-        if (response.ok && data.success) {
-          setContacts(contacts.filter(contact => contact._id !== id));
-          toast.success('contact deleted successfully');
-        } else {
-          toast.error('Failed to delete contact');
-        }
-      } catch (error) {
-        toast.error('Failed to delete contact, please try again.');
-      }
-    }
+        return handelAsyncErrors(async()=>{
+          if (response.ok && data.success) {
+            fetchContacts();
+            toast.success('contact deleted successfully');
+            setIsOpen(false)
+          } else {
+            toast.error('Failed to delete contact');
+          }
+        })
   };
+
+  const handleDelete=(id)=>{
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
   
 
   const handlePageChange = (page) => {
@@ -66,7 +68,13 @@ function ContactsPage() {
 
   return (
     <div className="packages">
+      <ModalWrapper
+      isOpen={isOpen}
+      onClose={()=>setIsOpen(false)}
+      onConfirm={handleConfirm}
+      />
       <ToastContainer />
+
       <h2>Contacts</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
