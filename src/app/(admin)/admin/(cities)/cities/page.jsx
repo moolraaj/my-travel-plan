@@ -28,7 +28,7 @@ function CityPage() {
         setTotalResults(data.totalResults); // Set totalResults from API
       }
     } catch (error) {
-      console.error('Error fetching cities:', error);
+      
     } finally {
       setLoading(false);
     }

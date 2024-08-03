@@ -44,7 +44,6 @@ function ContactsPage() {
       try {
         const response = await fetch(`/api/v1/sendquery/query/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
-        console.log('Delete response data:', data); // Log the response data for debugging
         if (response.ok && data.success) {
           fetchContacts();
           toast.success('contact deleted successfully');

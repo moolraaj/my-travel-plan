@@ -29,7 +29,6 @@ function BookingPage() {
       }
     } catch (error) {
       setError('Error fetching bookings');
-      console.error('Error fetching bookings:', error);
     } finally {
       setLoading(false);
     }
@@ -44,7 +43,6 @@ function BookingPage() {
       try {
         const response = await fetch(`/api/v1/flight/query/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
-
         if (response.ok && data.status === 200 && data.success) {
           fetchBookings();
           toast.success('Booking deleted successfully');
@@ -53,7 +51,6 @@ function BookingPage() {
         }
       } catch (error) {
         toast.error('Failed to delete booking, please try again.');
-        console.error('Error deleting booking:', error);
       }
     }
   };
