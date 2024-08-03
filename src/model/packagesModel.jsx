@@ -30,6 +30,8 @@ const PackagesSchema = new mongoose.Schema({
     slug: { type: String, required: true },
     package_price:{type: String, required: true},
     package_discounted_price:{type: String, required: true},
+    package_days:{type: String, required: true,default:1},
+    package_nights:{type: String, required: true,default:1},
     package_overview: { type: String, required: true },
     package_top_summary: { type: String, required: true },
     package_itinerary: [itineraryItemSchema],

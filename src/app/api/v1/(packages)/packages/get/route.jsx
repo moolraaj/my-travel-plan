@@ -19,7 +19,9 @@ return handelAsyncErrors(async()=>{
         slug: e.slug,
         slug: e.slug,
         package_price: e.package_price,
-        package_discounted_price: e.package_discounted_price
+        package_discounted_price: e.package_discounted_price,
+        package_days: e.package_days,
+        package_nights: e.package_nights,
     }))
     let totalResults = await PackagesModel.countDocuments()
     return NextResponse.json({status:200, success: true, totalResults, result, page, limit })
