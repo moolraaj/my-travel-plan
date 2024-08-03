@@ -16,25 +16,25 @@ function ContinentPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchContinents() {
-      try {
-        const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (data.success) {
-          setContinents(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          toast.error(`Error: ${data.message}`);
-        }
-      } catch (error) {
-        console.error('Error fetching continents:', error);
-        toast.error('Error fetching continents. Please try again later.');
-      } finally {
-        setLoading(false);
+  async function fetchContinents() {
+    try {
+      const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (data.success) {
+        setContinents(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        toast.error(`Error: ${data.message}`);
       }
+    } catch (error) {
+      console.error('Error fetching continents:', error);
+      toast.error('Error fetching continents. Please try again later.');
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchContinents();
   }, [currentPage]);
 
@@ -53,11 +53,11 @@ function ContinentPage() {
         // Add similar checks for cities and packages if necessary
         const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
-        if (!data.success) {
-          toast.error(data.message);
-        } else {
-          setContinents(continents.filter(continent => continent._id !== id));
+        if (data.success) {
+          fetchContinents();
           toast.success('Continent deleted successfully.');
+        } else {
+          toast.error(data.message);
         }
       } catch (error) {
         console.error('Error deleting continent:', error);

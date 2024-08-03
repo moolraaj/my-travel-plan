@@ -19,22 +19,22 @@ function CityPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchCities() {
-      try {
-        const response = await fetch(`/api/v1/cities/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (data.success) {
-          setCities(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        }
-      } catch (error) {
-        console.error('Error fetching cities:', error);
-      } finally {
-        setLoading(false);
+  async function fetchCities() {
+    try {
+      const response = await fetch(`/api/v1/cities/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (data.success) {
+        setCities(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
       }
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchCities();
   }, [currentPage]);
 
@@ -47,7 +47,7 @@ function CityPage() {
       try {
         const response = await fetch(`/api/v1/city/delete/${id}`, { method: 'DELETE' });
         if (response.ok) {
-          setCities(cities.filter(city => city._id !== id));
+          fetchCities();
           toast.success('City deleted successfully');
         } else {
           toast.error('Failed to delete city, please try again.');

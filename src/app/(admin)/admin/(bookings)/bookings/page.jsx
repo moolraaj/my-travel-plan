@@ -17,25 +17,25 @@ function BookingPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchBookings() {
-      try {
-        const response = await fetch(`/api/v1/flight/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (response.ok && data.status === 200) {
-          setBookings(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          setError('Failed to fetch bookings');
-        }
-      } catch (error) {
-        setError('Error fetching bookings');
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
+  async function fetchBookings() {
+    try {
+      const response = await fetch(`/api/v1/flight/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (response.ok && data.status === 200) {
+        setBookings(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        setError('Failed to fetch bookings');
       }
+    } catch (error) {
+      setError('Error fetching bookings');
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchBookings();
   }, [currentPage, itemsPerPage]);
 
@@ -46,7 +46,7 @@ function BookingPage() {
         const data = await response.json();
 
         if (response.ok && data.status === 200 && data.success) {
-          setBookings(bookings.filter(booking => booking._id !== id));
+          fetchBookings();
           toast.success('Booking deleted successfully');
         } else {
           toast.error(data.message || 'Failed to delete booking');
