@@ -19,12 +19,16 @@ export async function POST(req) {
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
+        const package_price = payload.get('package_price');
+        const package_discounted_price = payload.get('package_discounted_price');
         const city_id = payload.get('city_id');
         const packageOverview = payload.get('package_overview');
         const packageTopSummary = payload.get('package_top_summary');
         const packageItinerary = JSON.parse(payload.get('package_itinerary'));
         const packagesInclude = JSON.parse(payload.get('packages_include'));
         const packagesExclude = JSON.parse(payload.get('packages_exclude'));
+
+       
 
         // Check if slug already exists
         let existingSlug = await PackagesModel.findOne({ slug });
@@ -65,6 +69,8 @@ export async function POST(req) {
             title: title,
             description: description,
             slug: slug,
+            package_price:package_price,
+            package_discounted_price:package_discounted_price,
             package_overview: packageOverview,
             package_top_summary: packageTopSummary,
             package_itinerary: packageItinerary,
