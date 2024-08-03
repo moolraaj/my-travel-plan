@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 
 
@@ -25,17 +26,15 @@ function CountryPage() {
   const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchCountries() {
-    try {
+    return handelAsyncErrors(async () => {
       const response = await fetch(`/api/v1/countries/get?page=${currentPage}&limit=${itemsPerPage}`);
       const data = await response.json();
       if (data.success) {
         setCountries(data.result);
         setTotalResults(data.totalResults); // Set totalResults from API
       }
-    } catch (error) {
-    } finally {
       setLoading(false);
-    }
+    })
   }
 
   useEffect(() => {
@@ -48,20 +47,18 @@ function CountryPage() {
 
   const handleConfirm = async () => {
  
-      try {
-        const response = await fetch(`/api/v1/country/delete/${deleteItem}`, { method: 'DELETE' });
-        const data = await response.json();
-        if (data.success) {
-          fetchCountries();
-          toast.success('Country deleted successfully');
-          setIsOpen(false)
-        } else {
-          toast.error('Failed to delete country');
-        }
-      } catch (error) {
-        toast.error('Failed to delete country, please try again.');
+    return handelAsyncErrors(async () => {
+      const response = await fetch(`/api/v1/country/delete/${deleteItem}`, { method: 'DELETE' });
+      const data = await response.json();
+      if (data.success) {
+        fetchCountries();
+        toast.success('Country deleted successfully');
+        setIsOpen(false)
+      } else {
+        toast.error('Failed to delete country');
       }
-    
+    })
+       
   };
 
   const  handleDelete=(id)=>{

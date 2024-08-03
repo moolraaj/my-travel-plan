@@ -2,6 +2,7 @@
 // /app/(admin)/admin/(countries)/countries/preview-country/[id]/page.jsx
 
 'use client';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useEffect, useState } from 'react';
 
 function PreviewCountry({ params }) {
@@ -17,7 +18,7 @@ function PreviewCountry({ params }) {
   const [error, setError] = useState('');
 
   async function fetchCountry() {
-    try {
+    return handelAsyncErrors(async () => {
       const response = await fetch(`/api/v1/country/get/${id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -28,11 +29,10 @@ function PreviewCountry({ params }) {
       } else {
         setError(data.message);
       }
-    } catch (error) {
-      setError('Error fetching Country data.');
-    } finally {
       setLoading(false);
-    }
+    })
+      
+    
   }
 
   useEffect(() => {
