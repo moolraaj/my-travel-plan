@@ -8,7 +8,8 @@
 
 
 
-path.recharts-sector:focus {
+path.recharts-sector:focus,
+g.recharts-layer.recharts-pie:focus{
   outline: none;
 }
 
