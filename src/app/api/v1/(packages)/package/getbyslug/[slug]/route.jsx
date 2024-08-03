@@ -30,6 +30,8 @@ export async function GET(req, { params }) {
             title: result.title,
             description: result.description,
             slug: result.slug,
+            package_price:result.package_price,
+            package_discounted_price:result.package_discounted_price,
             package_overview: result.package_overview,
             package_top_summary: result.package_top_summary,
             package_itinerary: result.package_itinerary,
