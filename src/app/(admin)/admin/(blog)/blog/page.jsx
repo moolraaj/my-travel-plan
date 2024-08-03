@@ -58,6 +58,7 @@ function BlogPage() {
             if (data.success) {
                 fetchBlogs();
                 toast.success('Blog deleted successfully');
+                
             } else {
                 toast.error('Failed to delete blog');
             }

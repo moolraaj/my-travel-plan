@@ -7,6 +7,7 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 
 
 
@@ -19,6 +20,9 @@ function CountryPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchCountries() {
     try {
@@ -42,23 +46,28 @@ function CountryPage() {
     router.push('/admin/countries/add-country');
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this country?')) {
+  const handleConfirm = async () => {
+ 
       try {
-        const response = await fetch(`/api/v1/country/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/country/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
         if (data.success) {
           fetchCountries();
           toast.success('Country deleted successfully');
+          setIsOpen(false)
         } else {
           toast.error('Failed to delete country');
         }
       } catch (error) {
         toast.error('Failed to delete country, please try again.');
       }
-    }
+    
   };
 
+  const  handleDelete=(id)=>{
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
@@ -76,6 +85,11 @@ function CountryPage() {
   return (
     <div className="packages">
       <ToastContainer/>
+      <ModalWrapper
+      isOpen={isOpen}
+      onClose={()=>setIsOpen(false)}
+      onConfirm={handleConfirm}
+      />
       <h2>Countries</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">

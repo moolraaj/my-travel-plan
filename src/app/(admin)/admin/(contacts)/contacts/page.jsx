@@ -6,6 +6,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);
@@ -16,6 +17,8 @@ function ContactsPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchContacts() {
     try {
@@ -39,22 +42,28 @@ function ContactsPage() {
     fetchContacts();
   }, [currentPage, itemsPerPage]);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this contact?')) {
+  const handleConfirm = async () => {
+    
       try {
-        const response = await fetch(`/api/v1/sendquery/query/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/sendquery/query/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
         if (response.ok && data.success) {
           fetchContacts();
           toast.success('contact deleted successfully');
+          setIsOpen(false)
         } else {
           toast.error('Failed to delete contact');
         }
       } catch (error) {
         toast.error('Failed to delete contact, please try again.');
       }
-    }
+     
   };
+
+  const handleDelete=(id)=>{
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
   
 
   const handlePageChange = (page) => {
@@ -65,7 +74,13 @@ function ContactsPage() {
 
   return (
     <div className="packages">
+      <ModalWrapper
+      isOpen={isOpen}
+      onClose={()=>setIsOpen(false)}
+      onConfirm={handleConfirm}
+      />
       <ToastContainer />
+
       <h2>Contacts</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">

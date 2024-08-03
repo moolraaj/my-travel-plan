@@ -8,6 +8,7 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
@@ -18,6 +19,9 @@ function CityPage() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
+
 
   async function fetchCities() {
     try {
@@ -42,21 +46,27 @@ function CityPage() {
     router.push('/admin/cities/add-city');
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this city?')) {
+  const confirmDelete = async () => {
+    
       try {
-        const response = await fetch(`/api/v1/city/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/city/delete/${deleteItem}`, { method: 'DELETE' });
         if (response.ok) {
           fetchCities();
           toast.success('City deleted successfully');
+          setIsOpen(false)
         } else {
           toast.error('Failed to delete city, please try again.');
         }
       } catch (error) {
         toast.error('Failed to delete city, please try again.');
       }
-    }
+    
   };
+
+  const handleDelete=(id)=>{
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -74,6 +84,11 @@ function CityPage() {
 
   return (
     <div className="packages">
+      <ModalWrapper
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={confirmDelete}
+      />
       <ToastContainer />
       <h2>Cities</h2>
       {error && <div className="error">{error}</div>}
