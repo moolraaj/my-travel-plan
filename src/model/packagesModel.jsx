@@ -11,7 +11,7 @@ const imageSchema = new mongoose.Schema({
 
 // Define the itinerary item schema
 const itineraryItemSchema = new mongoose.Schema({
-    day: { type: Number, required: true },
+    day: { type: String, required: true },
     location: { type: String, required: true },
     tourname: { type: String, required: true },
     itinerary_description: { type: String, required: true }
