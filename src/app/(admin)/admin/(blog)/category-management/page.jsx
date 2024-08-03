@@ -1,6 +1,7 @@
 // // /app/(admin)/admin/category-management/page.jsx
 
 'use client';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useState, useEffect } from 'react';
 import { FaTrash, FaEdit, FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
 
@@ -20,15 +21,12 @@ function CategoryManagement() {
 
   const fetchCategories = async () => {
     setLoading(true);
-    try {
+    return handelAsyncErrors(async()=>{
       const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
       const data = await response.json();
       setCategories(data.result);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    } finally {
       setLoading(false);
-    }
+    })
   };
   useEffect(() => {
     fetchCategories();
@@ -53,7 +51,8 @@ function CategoryManagement() {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     setLoadingButton(prev => ({ ...prev, add: true }));
-    try {
+    
+    return handelAsyncErrors(async()=>{
       const response = await fetch('/api/v1/category/add', {
         method: 'POST',
         body: JSON.stringify(newCategory),
@@ -71,18 +70,15 @@ function CategoryManagement() {
           setMessage(false);
         }, 4000);
       }
-    } catch (error) {
-      console.error('Error adding category:', error);
-      setMessage('Error adding category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, add: false }));
-    }
+    })
   };
 
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     setLoadingButton(prev => ({ ...prev, update: true }));
-    try {
+
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/category/update/${editCategory.id}`, {
         method: 'PUT',
         body: JSON.stringify(editCategory),
@@ -100,17 +96,14 @@ function CategoryManagement() {
           setMessage(false);
         }, 4000);
       }
-    } catch (error) {
-      console.error('Error updating category:', error);
-      setMessage('Error updating category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, update: false }));
-    }
+    })
   };
 
   const handleDeleteCategory = async (id) => {
     setLoadingButton(prev => ({ ...prev, delete: true }));
-    try {
+
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/category/delete/${id}`, {
         method: 'DELETE',
       });
@@ -122,12 +115,9 @@ function CategoryManagement() {
           setMessage(false);
         }, 4000);
       }
-    } catch (error) {
-      console.error('Error deleting category:', error);
-      setMessage('Error deleting category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, delete: false }));
-    }
+    })
+      
   };
 
   // Handle toggle between showing more and less categories
