@@ -2,6 +2,7 @@
 
 'use client';
 
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useEffect, useState } from 'react'
 
 function PreviewBlog({params}) {
@@ -17,7 +18,7 @@ function PreviewBlog({params}) {
     const [error, setError] = useState('');
   
     async function fetchBlogs() {
-      try {
+      return handelAsyncErrors(async()=>{
         const response = await fetch(`/api/v1/blog/getbyid/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -28,11 +29,8 @@ function PreviewBlog({params}) {
         } else {
           setError(data.message);
         }
-      } catch (error) {
-        setError('Error fetching Blog data.');
-      } finally {
         setLoading(false);
-      }
+      })
     }
   
     useEffect(() => {

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
  
  
 
@@ -25,21 +26,19 @@ function BlogPage() {
     const [deleteItem, setDeleteItem] = useState(null);
 
     async function fetchBlogs() {
-        try {
+        return handelAsyncErrors(async()=>{
             const response = await fetch(`/api/v1/blogs/get?page=${currentPage}&limit=${itemsPerPage}`);
             const data = await response.json();
             if (data.success) {
                 setBlogs(data.result);
                 setTotalResults(data.totalResults); // Set totalResults from API
             }
-        } catch (error) {
-            console.error('Error fetching Blogs:', error);
-        } finally {
+      
             setLoading(false);
-        }
+        })
+           
     }
     useEffect(() => {
-
         fetchBlogs();
     }, [currentPage, itemsPerPage]);
 
@@ -53,7 +52,7 @@ function BlogPage() {
     };
 
     const confirmDelete = async () => {
-        try {
+        return handelAsyncErrors(async()=>{
             const response = await fetch(`/api/v1/blog/delete/${deleteItem}`, { method: 'DELETE' });
             const data = await response.json();
             if (data.success) {
@@ -62,11 +61,10 @@ function BlogPage() {
             } else {
                 toast.error('Failed to delete blog');
             }
-        } catch (error) {
-            toast.error('An error occurred while deleting the blog');
-        } finally {
             setIsOpen(false);
-        }
+        })
+           
+        
     };
 
     const handlePageChange = (page) => {

@@ -18,19 +18,19 @@ function CategoryManagement() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
 
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
+      const data = await response.json();
+      setCategories(data.result);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
-        const data = await response.json();
-        setCategories(data.result);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchCategories();
   }, []);
 

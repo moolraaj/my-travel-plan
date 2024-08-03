@@ -3,6 +3,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function UpdateBlog({ params }) {
   const [blogs, setBlogs] = useState({
@@ -24,7 +25,8 @@ function UpdateBlog({ params }) {
 
  
     const fetchCategories = async () => {
-      try {
+
+      return handelAsyncErrors (async()=>{
         const res = await fetch('/api/v1/categories/get?page=1&limit=1000', {
           headers: {
             'Cache-Control': 'no-cache'
@@ -32,13 +34,11 @@ function UpdateBlog({ params }) {
         });
         const data = await res.json();
         setCategories(data.result || []);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
+      })
     };
 
     const fetchBlogs = async () => {
-      try {
+      return handelAsyncErrors (async()=>{
         const response = await fetch(`/api/v1/blog/getbyid/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -53,11 +53,8 @@ function UpdateBlog({ params }) {
         } else {
           setError(data.message);
         }
-      } catch (error) {
-        setError('Error fetching Blog data.');
-      } finally {
         setLoading(false);
-      }
+      })
     };
     useEffect(() => {
     fetchCategories();
@@ -102,7 +99,7 @@ function UpdateBlog({ params }) {
       formData.append('file', ''); // Ensure file field is included if no new image
     }
 
-    try {
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/blog/update/${id}`, {
         method: 'PUT',
         body: formData,
@@ -116,12 +113,9 @@ function UpdateBlog({ params }) {
         setError(data.message);
         setSuccessMessage('');
       }
-    } catch (error) {
-      setError('Error updating Blog.');
-      setSuccessMessage('');
-    } finally {
       setIsLoading(false); // End loading
-    }
+    })
+    
   };
 
   return (
