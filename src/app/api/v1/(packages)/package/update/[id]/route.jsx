@@ -119,6 +119,8 @@ export async function PUT(req, { params }) {
         const slug = payload.get('slug');
         const package_price = payload.get('package_price');
         const package_discounted_price = payload.get('package_discounted_price');
+        const package_days = payload.get('package_days');
+        const package_nights = payload.get('package_nights');
         const city_id = payload.get('city_id');
         const packageOverview = payload.get('package_overview');
         const packageTopSummary = payload.get('package_top_summary');
@@ -154,6 +156,8 @@ export async function PUT(req, { params }) {
         if (slug) existingPackage.slug = slug;
         if (package_price) existingPackage.package_price = package_price;
         if (package_discounted_price) existingPackage.package_discounted_price = package_discounted_price;
+        if (package_days) existingPackage.package_days = package_days;
+        if (package_nights) existingPackage.package_nights = package_nights;
         if (packageOverview) existingPackage.package_overview = packageOverview;
         if (packageTopSummary) existingPackage.package_top_summary = packageTopSummary;
         if (packageItinerary) existingPackage.package_itinerary = packageItinerary;

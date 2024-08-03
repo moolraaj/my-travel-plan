@@ -21,12 +21,16 @@ export async function POST(req) {
         const slug = payload.get('slug');
         const package_price = payload.get('package_price');
         const package_discounted_price = payload.get('package_discounted_price');
+        const package_days = payload.get('package_days');
+        const package_nights = payload.get('package_nights');
         const city_id = payload.get('city_id');
         const packageOverview = payload.get('package_overview');
         const packageTopSummary = payload.get('package_top_summary');
         const packageItinerary = JSON.parse(payload.get('package_itinerary'));
         const packagesInclude = JSON.parse(payload.get('packages_include'));
         const packagesExclude = JSON.parse(payload.get('packages_exclude'));
+
+      
 
        
 
@@ -71,6 +75,8 @@ export async function POST(req) {
             slug: slug,
             package_price:package_price,
             package_discounted_price:package_discounted_price,
+            package_days:package_days,
+            package_nights:package_nights,
             package_overview: packageOverview,
             package_top_summary: packageTopSummary,
             package_itinerary: packageItinerary,
@@ -78,6 +84,7 @@ export async function POST(req) {
             packages_include: packagesInclude,
             packages_exclude: packagesExclude,
             city_id: city_id,
+           
         });
 
         // Save the package
