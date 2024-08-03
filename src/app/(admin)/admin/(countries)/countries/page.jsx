@@ -29,7 +29,6 @@ function CountryPage() {
         setTotalResults(data.totalResults); // Set totalResults from API
       }
     } catch (error) {
-      console.error('Error fetching countries:', error);
     } finally {
       setLoading(false);
     }

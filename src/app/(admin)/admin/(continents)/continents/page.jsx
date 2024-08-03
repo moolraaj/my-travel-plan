@@ -27,7 +27,6 @@ function ContinentPage() {
         toast.error(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error fetching continents:', error);
       toast.error('Error fetching continents. Please try again later.');
     } finally {
       setLoading(false);
@@ -60,7 +59,6 @@ function ContinentPage() {
           toast.error(data.message);
         }
       } catch (error) {
-        console.error('Error deleting continent:', error);
         toast.error('Error deleting continent. Please try again later.');
       }
     }

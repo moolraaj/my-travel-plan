@@ -29,7 +29,7 @@ function BlogPage() {
                     setTotalResults(data.totalResults); // Set totalResults from API
                 }
             } catch (error) {
-                console.error('Error fetching Blogs:', error);
+                
             } finally {
                 setLoading(false);
             }
