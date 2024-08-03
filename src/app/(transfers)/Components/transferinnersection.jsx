@@ -1,5 +1,6 @@
 // components/CarOptions.js
 import React from 'react';
+import Link from 'next/link';
 
 const CarOptions = () => {
   const carData = [
@@ -9,6 +10,7 @@ const CarOptions = () => {
       rating: 4.0,
       reviews: "1.3K",
       price: "39,550",
+      slug: "seater-car",
     },
     {
       title: "7 Seater Van",
@@ -16,6 +18,7 @@ const CarOptions = () => {
       rating: 4.0,
       reviews: "1.3K",
       price: "4,550",
+      slug: "seater-van",
     },
     {
       title: "34 Seater Car",
@@ -23,6 +26,7 @@ const CarOptions = () => {
       rating: 4.0,
       reviews: "1.3K",
       price: "5,000",
+      slug: "seater-car",
     },
     {
       title: "5 Maruti Car",
@@ -30,6 +34,7 @@ const CarOptions = () => {
       rating: 4.0,
       reviews: "1.3K",
       price: "4,550",
+      slug: "maruti-car",
     },
   ];
 
@@ -37,21 +42,21 @@ const CarOptions = () => {
     <div className="transfer-vehicle-section">
       {carData.map((car, index) => (
         <div key={index} className="car-box">
-          <img src={car.imageUrl} alt={car.title} className="carimage" />
+          <Link href={`/transfers/${car.slug}`}>
           
-            <div className='text-container'>
-                <h3 className="cartitle">{car.title}</h3>
-                <div className='rating-price'>
-                    <span className="carstars">⭐</span> {car.rating} ({car.reviews} Reviews)
-                    <div className="carprice">From ₹ {car.price}</div>
-                </div>          
+              <img src={car.imageUrl} alt={car.title} className="carimage" />
+           
+          </Link>
+          <div className='text-container'>
+            <h3 className="cartitle">{car.title}</h3>
+            <div className='rating-price'>
+              <span className="carstars">⭐</span> {car.rating} ({car.reviews} Reviews)
+              <div className="carprice">From ₹ {car.price}</div>
             </div>
-          
+          </div>
         </div>
       ))}
     </div>
- 
-    
   );
 };
 
