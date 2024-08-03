@@ -7,6 +7,7 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 
 function Packages() {
   const [packages, setPackages] = useState([]);
@@ -17,6 +18,8 @@ function Packages() {
   const [itemsPerPage] = useState(4); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   async function fetchPackages() {
     try {
@@ -43,22 +46,28 @@ function Packages() {
     router.push('/admin/packages/add-packages');
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this package?')) {
+  const handleConfirm = async () => {
+    
       try {
-        const response = await fetch(`/api/v1/package/delete/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/package/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
         if (data.success) {
           fetchPackages();
           toast.success('Package deleted successfully.');
+          setIsOpen(false)
         } else {
           toast.error('Failed to delete package.');
         }
       } catch (error) {
         toast.error('Failed to delete package, please try again.');
       }
-    }
+    
   };
+
+  const handleDelete=(id)=>{
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -77,6 +86,11 @@ function Packages() {
   return (
     <div className="packages">
       <ToastContainer />
+      <ModalWrapper
+      isOpen={isOpen}
+      onClose={()=>setIsOpen(false)}
+      onConfirm={handleConfirm}
+      />
       <h2>Packages</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
