@@ -17,25 +17,25 @@ function ContactsPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchContacts() {
-      try {
-        const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (response.ok && data.status === 200) {
-          setContacts(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          setError('Failed to fetch Contacts');
-        }
-      } catch (error) {
-        setError('Error fetching Contacts');
-        console.error('Error fetching Contacts:', error);
-      } finally {
-        setLoading(false);
+  async function fetchContacts() {
+    try {
+      const response = await fetch(`/api/v1/sendquery/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (response.ok && data.status === 200) {
+        setContacts(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        setError('Failed to fetch Contacts');
       }
+    } catch (error) {
+      setError('Error fetching Contacts');
+      console.error('Error fetching Contacts:', error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchContacts();
   }, [currentPage, itemsPerPage]);
 
@@ -44,9 +44,8 @@ function ContactsPage() {
       try {
         const response = await fetch(`/api/v1/sendquery/query/delete/${id}`, { method: 'DELETE' });
         const data = await response.json();
-        console.log('Delete response data:', data); // Log the response data for debugging
         if (response.ok && data.success) {
-          setContacts(contacts.filter(contact => contact._id !== id));
+          fetchContacts();
           toast.success('contact deleted successfully');
         } else {
           toast.error('Failed to delete contact');

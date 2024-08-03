@@ -13,7 +13,7 @@ function CategoryManagement() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingButton, setLoadingButton] = useState({ add: false, update: false, delete: false });
-  
+
   // New state to manage the visible categories
   const [visibleCount, setVisibleCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
@@ -68,8 +68,8 @@ function CategoryManagement() {
         setNewCategory({ name: '', slug: '' });
         setShowAddCategory(false);
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
     } catch (error) {
       console.error('Error adding category:', error);
@@ -97,8 +97,8 @@ function CategoryManagement() {
         setEditCategory({ id: '', name: '', slug: '' });
         setShowEditCategory(false);
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
     } catch (error) {
       console.error('Error updating category:', error);
@@ -119,8 +119,8 @@ function CategoryManagement() {
       if (result.success) {
         setCategories(prev => prev.filter(cat => cat._id !== id));
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -139,22 +139,29 @@ function CategoryManagement() {
   return (
     <div className="category-management">
       <h2>Category Management</h2>
-      {loading && <p>Loading categories...</p>}
+      {loading ? (
+        <p>Loading categories...</p>
+      ) : (
+        <ul className="category-list">
+          {categories.length === 0 ? (
+            <li>No categories available</li>
+          ) : (
+            categories.slice(0, visibleCount).map(category => (
+              <li key={category._id}>
+                {category.name} ({category.slug})
+                <div className="category-actions">
+                  <FaEdit onClick={() => {
+                    setEditCategory({ id: category._id, name: category.name, slug: category.slug });
+                    setShowEditCategory(true);
+                  }} />
+                  <FaTrash onClick={() => handleDeleteCategory(category._id)} />
+                </div>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
 
-      <ul className="category-list">
-        {categories.slice(0, visibleCount).map(category => (
-          <li key={category._id}>
-            {category.name} ({category.slug})
-            <div className="category-actions">
-              <FaEdit onClick={() => {
-                setEditCategory({ id: category._id, name: category.name, slug: category.slug });
-                setShowEditCategory(true);
-              }} />
-              <FaTrash onClick={() => handleDeleteCategory(category._id)} />
-            </div>
-          </li>
-        ))}
-      </ul>
 
       {/* Show more or less button */}
       {categories.length > 6 && (
