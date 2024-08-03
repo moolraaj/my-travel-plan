@@ -7,6 +7,11 @@ import './AddPackages.css';
 import { FaMinus } from 'react-icons/fa';
 import { toast, ToastContainer } from  'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
+
+const generateOptions = (start, end) => {
+  return Array.from({ length: end - start + 1 }, (_, i) => i + start);
+};
 
 const AddPackages = () => {
   const router = useRouter();
@@ -21,7 +26,11 @@ const AddPackages = () => {
     packagesExclude: [{ description: '' }],
     file: null,
     gallery_files: [],
-    city_id: '' 
+    city_id: '',
+    package_price: '',
+    package_discounted_price: '',
+    package_days: '1',
+    package_nights: '1'
   });
   const [cities, setCities] = useState([]);
   const [error, setError] = useState('');
@@ -29,7 +38,7 @@ const AddPackages = () => {
 
   
     const fetchCities = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`,{
           headers:{
             'Cache-Control': 'no-cache'
@@ -41,9 +50,7 @@ const AddPackages = () => {
         } else {
           toast.error('Failed to fetch cities');
         }
-      } catch (error) {
-        toast.error(`Error: ${error.message}`);
-      }
+      })
     };
     useEffect(() => {
     fetchCities();
@@ -96,7 +103,11 @@ const AddPackages = () => {
       packagesExclude,
       file,
       gallery_files,
-      city_id
+      city_id,
+      package_price,
+      package_discounted_price,
+      package_days,
+      package_nights
     } = formData;
 
     if (!title || !description || !slug || !file || !city_id) {
@@ -105,11 +116,15 @@ const AddPackages = () => {
       return;
     }
 
-    try {
+    return handelAsyncErrors(async () => {
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
       submissionData.append('slug', slug);
+      submissionData.append('package_price', package_price);
+      submissionData.append('package_discounted_price', package_discounted_price);
+      submissionData.append('package_days', package_days);
+      submissionData.append('package_nights', package_nights);
       submissionData.append('package_overview', packageOverview);
       submissionData.append('package_top_summary', packageTopSummary);
       submissionData.append('package_itinerary', JSON.stringify(packageItinerary));
@@ -135,11 +150,9 @@ const AddPackages = () => {
         setError(data.message || 'An error occurred.');
         toast.error(data.message || 'An error occurred.')
       }
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    }
-
     setIsLoading(false);
+    })
+     
   };
 
   return (
@@ -178,6 +191,54 @@ const AddPackages = () => {
             onChange={handleChange}
             placeholder="Enter slug"
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="package_price">Package Price</label>
+          <input
+            type="number"
+            id="package_price"
+            name="package_price"
+            value={formData.package_price}
+            onChange={handleChange}
+            placeholder="Enter package price"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="package_discounted_price">Discounted Price</label>
+          <input
+            type="number"
+            id="package_discounted_price"
+            name="package_discounted_price"
+            value={formData.package_discounted_price}
+            onChange={handleChange}
+            placeholder="Enter discounted price"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="package_days">Package Days</label>
+          <select
+            id="package_days"
+            name="package_days"
+            value={formData.package_days}
+            onChange={handleChange}
+          >
+            {generateOptions(1, 100).map((day) => (
+              <option key={day} value={day}>{day}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="package_nights">Package Nights</label>
+          <select
+            id="package_nights"
+            name="package_nights"
+            value={formData.package_nights}
+            onChange={handleChange}
+          >
+            {generateOptions(1, 100).map((night) => (
+              <option key={night} value={night}>{night}</option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="packageOverview">Package Overview</label>

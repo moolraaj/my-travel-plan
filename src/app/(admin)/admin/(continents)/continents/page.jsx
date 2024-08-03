@@ -6,6 +6,8 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
 import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
@@ -16,25 +18,27 @@ function ContinentPage() {
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchContinents() {
-      try {
-        const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
-        const data = await response.json();
-        if (data.success) {
-          setContinents(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        } else {
-          toast.error(`Error: ${data.message}`);
-        }
-      } catch (error) {
-        console.error('Error fetching continents:', error);
-        toast.error('Error fetching continents. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    }
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
+  async function fetchContinents() {
+    return handelAsyncErrors(async () => {
+      const response = await fetch(`/api/v1/continents/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const data = await response.json();
+      if (data.success) {
+        setContinents(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      } else {
+        toast.error(`Error: ${data.message}`);
+      }
+      setLoading(false);
+    })
+
+
+
+  }
+
+  useEffect(() => {
     fetchContinents();
   }, [currentPage]);
 
@@ -42,29 +46,28 @@ function ContinentPage() {
     router.push('/admin/continents/add-continent');
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this continent?')) {
-      try {
-        const continent = continents.find(cont => cont._id === id);
-        if (continent.countries && continent.countries.length > 0) {
-          toast.error(`Continent ${continent.title} has associated countries and cannot be deleted.`);
-          return; // Exit the function to prevent further processing
-        }
-        // Add similar checks for cities and packages if necessary
-        const response = await fetch(`/api/v1/continent/delete/${id}`, { method: 'DELETE' });
-        const data = await response.json();
-        if (!data.success) {
-          toast.error(data.message);
-        } else {
-          setContinents(continents.filter(continent => continent._id !== id));
-          toast.success('Continent deleted successfully.');
-        }
-      } catch (error) {
-        console.error('Error deleting continent:', error);
-        toast.error('Error deleting continent. Please try again later.');
+  const handleConfirm = async () => {
+
+    return handelAsyncErrors(async () => {
+      // Add similar checks for cities and packages if necessary
+      const response = await fetch(`/api/v1/continent/delete/${deleteItem}`, { method: 'DELETE' });
+      const data = await response.json();
+      if (data.success) {
+        fetchContinents();
+        toast.success('Continent deleted successfully.');
+        setIsOpen(false)
+      } else {
+        toast.error(data.message);
       }
-    }
+    })
+
+
   };
+
+  const handleDelete = (id) => {
+    setIsOpen(true)
+    setDeleteItem(id)
+  }
 
   const handleEdit = (id) => {
     router.push(`/admin/continents/update-continent/${id}`);
@@ -83,6 +86,11 @@ function ContinentPage() {
   return (
     <div className="packages">
       <ToastContainer />
+      <ModalWrapper
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={handleConfirm}
+      />
       <h2>Continents</h2>
       <div className="packages-table-container">
         <table className="packages-table">

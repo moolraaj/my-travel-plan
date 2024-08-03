@@ -1,6 +1,7 @@
 // // /app/(admin)/admin/category-management/page.jsx
 
 'use client';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import React, { useState, useEffect } from 'react';
 import { FaTrash, FaEdit, FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
 
@@ -13,24 +14,21 @@ function CategoryManagement() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingButton, setLoadingButton] = useState({ add: false, update: false, delete: false });
-  
+
   // New state to manage the visible categories
   const [visibleCount, setVisibleCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
 
+  const fetchCategories = async () => {
+    setLoading(true);
+    return handelAsyncErrors(async()=>{
+      const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
+      const data = await response.json();
+      setCategories(data.result);
+      setLoading(false);
+    })
+  };
   useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('/api/v1/categories/get?page=1&limit=1000');
-        const data = await response.json();
-        setCategories(data.result);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchCategories();
   }, []);
 
@@ -53,7 +51,8 @@ function CategoryManagement() {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     setLoadingButton(prev => ({ ...prev, add: true }));
-    try {
+    
+    return handelAsyncErrors(async()=>{
       const response = await fetch('/api/v1/category/add', {
         method: 'POST',
         body: JSON.stringify(newCategory),
@@ -68,21 +67,18 @@ function CategoryManagement() {
         setNewCategory({ name: '', slug: '' });
         setShowAddCategory(false);
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
-    } catch (error) {
-      console.error('Error adding category:', error);
-      setMessage('Error adding category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, add: false }));
-    }
+    })
   };
 
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     setLoadingButton(prev => ({ ...prev, update: true }));
-    try {
+
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/category/update/${editCategory.id}`, {
         method: 'PUT',
         body: JSON.stringify(editCategory),
@@ -97,20 +93,17 @@ function CategoryManagement() {
         setEditCategory({ id: '', name: '', slug: '' });
         setShowEditCategory(false);
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
-    } catch (error) {
-      console.error('Error updating category:', error);
-      setMessage('Error updating category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, update: false }));
-    }
+    })
   };
 
   const handleDeleteCategory = async (id) => {
     setLoadingButton(prev => ({ ...prev, delete: true }));
-    try {
+
+    return handelAsyncErrors(async()=>{
       const response = await fetch(`/api/v1/category/delete/${id}`, {
         method: 'DELETE',
       });
@@ -119,15 +112,12 @@ function CategoryManagement() {
       if (result.success) {
         setCategories(prev => prev.filter(cat => cat._id !== id));
         setTimeout(() => {
-            setMessage(false);
-          }, 4000);
+          setMessage(false);
+        }, 4000);
       }
-    } catch (error) {
-      console.error('Error deleting category:', error);
-      setMessage('Error deleting category');
-    } finally {
       setLoadingButton(prev => ({ ...prev, delete: false }));
-    }
+    })
+      
   };
 
   // Handle toggle between showing more and less categories
@@ -139,22 +129,29 @@ function CategoryManagement() {
   return (
     <div className="category-management">
       <h2>Category Management</h2>
-      {loading && <p>Loading categories...</p>}
+      {loading ? (
+        <p>Loading categories...</p>
+      ) : (
+        <ul className="category-list">
+          {categories.length === 0 ? (
+            <li>No categories available</li>
+          ) : (
+            categories.slice(0, visibleCount).map(category => (
+              <li key={category._id}>
+                {category.name} ({category.slug})
+                <div className="category-actions">
+                  <FaEdit onClick={() => {
+                    setEditCategory({ id: category._id, name: category.name, slug: category.slug });
+                    setShowEditCategory(true);
+                  }} />
+                  <FaTrash onClick={() => handleDeleteCategory(category._id)} />
+                </div>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
 
-      <ul className="category-list">
-        {categories.slice(0, visibleCount).map(category => (
-          <li key={category._id}>
-            {category.name} ({category.slug})
-            <div className="category-actions">
-              <FaEdit onClick={() => {
-                setEditCategory({ id: category._id, name: category.name, slug: category.slug });
-                setShowEditCategory(true);
-              }} />
-              <FaTrash onClick={() => handleDeleteCategory(category._id)} />
-            </div>
-          </li>
-        ))}
-      </ul>
 
       {/* Show more or less button */}
       {categories.length > 6 && (

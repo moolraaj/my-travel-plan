@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function RecentBookings() {
   const [bookings, setBookings] = useState([]);
@@ -9,7 +10,7 @@ function RecentBookings() {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      try {
+      return handelAsyncErrors(async () => {
         const response = await fetch('/api/v1/flight/queries/get');
         const data = await response.json();
         if (data.status === 200) {
@@ -20,11 +21,10 @@ function RecentBookings() {
         } else {
           console.error('Failed to fetch bookings:', data.message);
         }
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
         setLoading(false);
-      }
+      })
+        
+      
     };
 
     fetchBookings();

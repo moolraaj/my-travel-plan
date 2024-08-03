@@ -1,4 +1,5 @@
 import { DbConnect } from "@/database/database";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
 import countryModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
@@ -6,8 +7,10 @@ import { NextResponse } from "next/server";
 DbConnect();
 
 export async function PUT(req, { params }) {
-    let { id } = params;
-    try {
+    return handelAsyncErrors(async () => {
+
+        let { id } = params;
+
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -39,20 +42,18 @@ export async function PUT(req, { params }) {
                 name: uploadedFile.name,
                 path: uploadedFile.path,
                 contentType: uploadedFile.contentType,
-               
+
             };
             existingCountry.images = [imageObject];
         }
-        if(continentId){
-            existingCountry.continent_id=continentId
+        if (continentId) {
+            existingCountry.continent_id = continentId
         }
 
         // Save the updated document
         const result = await existingCountry.save();
 
         return NextResponse.json({ success: true, message: 'Country updated successfully', result });
-    } catch (error) {
-        console.error('Error in PUT handler:', error);
-        return NextResponse.json({ success: false, message: 'An error occurred', error: error.message });
-    }
+    })
+
 }
