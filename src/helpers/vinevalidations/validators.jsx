@@ -3,7 +3,7 @@ import  vine  from '@vinejs/vine';
 export const contactSchema = vine.object({
     name: vine.string().minLength(4),
     email: vine.string().email(),
-    phone_number: vine.number(),
+    phone_number: vine.number().min(10),
     message: vine.string().minLength(10)
 });
 
