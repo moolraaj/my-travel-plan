@@ -33,6 +33,8 @@ export async function GET(req) {
                 name: blog.blog_category.name,
                 slug: blog.blog_category.slug
             } : null,
+            blog_overview: blog.blog_overview,
+            blog_description: blog.blog_description,
             createdAt: blog.createdAt
         }));
 
