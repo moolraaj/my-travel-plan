@@ -1,7 +1,8 @@
 // import { Jost } from "next/font/google";
 import "./globals.css";
 import './css/style.scss'
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <ToastContainer/>
         {children}
         </body>
     </html>
