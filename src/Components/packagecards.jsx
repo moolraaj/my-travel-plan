@@ -1,16 +1,29 @@
+'use client'
 import Image from 'next/image';
 import Link from 'next/link';
 import discountc from '../app/assets/home_images/discountcards.png';
 import explorebg from '../app/assets/home_images/explore-package-bg.png';
+import { useEffect, useState } from 'react';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 
-const packagesData = [
-  { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherland.png' },
-  { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandone.png' },
-  { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandtwo.png' },
-  { title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandthree.png' },
-];
+ 
 
 const BestSellingPackages = () => {
+  let api=EXPORT_ALL_APIS()
+  let [data,setData]=useState([])
+
+  let loadAllPackages=async()=>{
+    let resp=await api.loadAllPackages()
+    setData(resp)
+  }
+  useEffect(()=>{
+    loadAllPackages()
+  },[])
+  let result=data?data.result:[]
+  let reversedPackages=Array.isArray(result)?[...result].reverse():[]
+
+  console.log(`result`)
+  console.log(result)
   return (
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})`}}>
       <div className="container card_main_section">
@@ -24,23 +37,34 @@ const BestSellingPackages = () => {
 
      <div className='card_discount'>
       <div className="packages">
-        {packagesData.map((pkg, index) => (
+        {reversedPackages===null||reversedPackages===undefined?('no result found'):(reversedPackages.slice(0,4).map((pkg, index) => (
           <div key={index} className="package">
-            <Image src={pkg.imgSrc} alt={pkg.title} width={333} height={380} />
+           
+            {pkg.images === null || pkg.images === undefined ? ('no result found') : pkg.images.map((e) => {
+                return <Image
+                  key={e._id}
+                  src={`/uploads/${e.name}`}
+                  alt={pkg.name}
+                  style={{ width: '100%', height: '100%' }}
+                  width={333}
+                  height={380}
+                  className="image"
+                />
+              })}
             <div className="info">
               <h3>{pkg.title}</h3>
-              <p>{pkg.nights} | {pkg.customizable}</p>
+              <p>{pkg.package_nights} nights / {pkg.package_days} days | {pkg.customizable}</p>
               <p className="rating">
                 <span className="star">★ {pkg.rating}  </span> ({pkg.reviews})
               </p>
-              <p className="price">From {pkg.price}</p>
+              <p className="price">From ₹ {pkg.package_price||0}</p>
               <div className="buttons">
                 <button className="details-btn">View Details</button>
                 <button className="enquiry-btn">Enquiry Now</button>
               </div>
             </div>
           </div>
-        ))}
+        )))}
       </div>
 
 
