@@ -49,7 +49,6 @@ export async function PUT(req, { params }) {
       };
     }
 
-<<<<<<< HEAD
         // Handle multiple gallery images if provided
         const galleryFiles = payload.getAll('blog_galleries');
         if (galleryFiles.length > 0) {
@@ -64,17 +63,6 @@ export async function PUT(req, { params }) {
             }
             existingBlog.blog_galleries = galleryImages;
         }
-=======
-    // Upload gallery images if provided
-    if (gallery_files.length > 0) {
-      const galleryImages = await Promise.all(gallery_files.map(file => HandleFileUpload(file)));
-      existingBlog.gallery_files = galleryImages.map(img => ({
-        name: img.name,
-        path: img.path,
-        contentType: img.contentType,
-      }));
-    }
->>>>>>> bd6ebd7a55b2b4b5170ad02f426d44539315ea09
 
     // Save the updated document
     const result = await existingBlog.save();
