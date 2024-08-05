@@ -1,46 +1,66 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import triangle from '../app/assets/home_images/triangle.png';
 import europe from '../app/assets/home_images/europe.png';
 import camerabg from '../app/assets/home_images/camera-bg.png';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 // import './css.scss';
 
-const countriesData = [
-  // G:\Node js Projects\my-travel-plan\src\app\assets\home_images\europe.png
-  { name: 'Europe', countries: 7, imgSrc: '/images/europe_img_1.png'  },
-  { name: 'North America', countries: 2, imgSrc: '/images/europe.png' },
-  { name: 'Australia', countries: 6, imgSrc: '/images/australia.png' },
-  { name: 'Asia', countries: 4, imgSrc: '/images/asia.png' },
-  { name: 'South America', countries: 8, imgSrc: '/images/southamerica.png' },
-];
+ 
 
 
 const World_section = () => {
-  return (  
-    <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})`}} >
-    <div className="grid-container">
-      {countriesData.map((country, index) => (
-        <Link className="card_outer" href={`/${country.name.toLowerCase().replace(' ', '-')}`} key={index}>
-          <div className="card">
-            <div className="overlay">
-              <div className="label">{country.countries}-Countries <img src={triangle.src}/> </div>
+
+  let [data, setData] = useState([])
+  let api = EXPORT_ALL_APIS()
+
+
+  const fetchAllContinents = async () => {
+    let resp = await api.loadAllContinents()
+    setData(resp)
+  }
+
+  useEffect(() => {
+    fetchAllContinents()
+  }, [])
+
+  let result = data ? data.result : [];
+
+
+   
+
+  let reversedContinents = Array.isArray(result) ? [...result].reverse() : [];
+
+
+  return (
+    <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }} >
+      <div className="grid-container">
+        {reversedContinents === null || reversedContinents === undefined ? ('no result found') : (reversedContinents.slice(0, 5).map((country, index) => (
+          <Link className="card_outer" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
+            <div className="card">
+              <div className="overlay">
+                <div className="label">{country.total_countries}-Countries <img src={triangle.src} /> </div>
+              </div>
+
+              {country.images === null || country.images === undefined ? ('no result found') : country.images.map((e) => {
+                return <Image
+                  key={e._id}
+                  src={`/uploads/${e.name}`}
+                  alt={country.name}
+                  style={{ width: '100%', height: '100%' }}
+                  width={1000}
+                  height={300}
+                  className="image"
+                />
+              })}
+
+              <div className="text">{country.title}</div>
             </div>
-
-            <Image
-              src={country.imgSrc}
-              alt={country.name}
-              style={{width:'100%', height:'100%'}}
-              width={1000}
-              height={300}
-              className="image"
-            />
-
-            <div className="text">{country.name}</div>
-          </div>
-        </Link>
-      ))}
-    </div>
+          </Link>
+        )))}
+      </div>
     </div>
   );
 };

@@ -2,8 +2,8 @@
 import "./globals.css";
 import './css/style.scss'
 
-import Layout from "./_common/layout/layout";
-import css from "../app/css/style.scss"
+ 
+
 
 // const Jost12 = Jost({ subsets: ["latin"] });
 
@@ -16,9 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        
         {children}
-        
         </body>
     </html>
   );
