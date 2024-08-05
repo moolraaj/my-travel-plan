@@ -23,7 +23,7 @@ const Countrycard = () => {
       <div className="destinations expert-travel">
         {countriesData.map((country, index) => (
           <div key={index} className="destination">
-            <img className= "expert-image" src={country.imgSrc} alt={country.name} />            
+            <Link href="/cities"><img className= "expert-image" src={country.imgSrc} alt={country.name} />  </Link>           
             <span
                 style={{
                   backgroundImage: `url(${ribbon.src})`,
