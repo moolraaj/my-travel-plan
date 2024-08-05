@@ -1,64 +1,100 @@
+'use client'
 import Image from 'next/image';
 import blogbg from '../app/assets/home_images/blog-bg.png';
+import { useEffect, useState } from 'react';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+import { format } from 'date-fns'; 
 
 const LatestBlog = () => {
-  const blogs = [
-    {
-      title: 'A Coastal Paradise Discovering the Charms of Norway',
-      date: '01 Jun 2024',
-      category: 'Tips & Tricks',
-      imgSrc: '/images/norway.png',
-    },
-    {
-      title: 'A Coastal Paradise Discovering the Charms of Poland',
-      date: '03 Jun 2024',
-      category: 'Solo Travel',
-      imgSrc: '/images/poland.png',
-    },
-    {
-      title: 'A Coastal Paradise Discovering the Charms of Portugal',
-      date: '10 Jun 2024',
-      category: 'Packing Tips',
-      imgSrc: '/images/portugal.png',
-    },
-  ];
+  let [data, setData] = useState([]);
+  let api = EXPORT_ALL_APIS();
+
+  const fetchAllBlogs = async () => {
+    try {
+      let resp = await api.loadAllBlogs();
+      setData(resp);
+    } catch (error) {
+      console.error("Failed to fetch blogs:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllBlogs();
+  }, []);
+
+  let result = data ? data.result : [];
+  let reversedBlogs = Array.isArray(result) ? [...result].reverse() : [];
 
   return (
-    <div className='blog-bg' style= {{ backgroundImage: `url(${blogbg.src})`}} >
+    <div className='blog-bg' style={{ backgroundImage: `url(${blogbg.src})` }} >
       <div className="latest-blog">
-      <h2 className='blog-heading'>Latest News And Inspirational Blog</h2>
-      <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
-      <div className="blog-container">
-        <div className="blog-main">
-          <Image src={blogs[0].imgSrc} alt={blogs[0].title} width={400} height={250} className="blog-image" />
-          <div className="blog-content">
-            <div className='title_date'>
-            <span className="category">{blogs[0].category}</span>
-            <span className="date">{blogs[0].date}</span>
-            </div>
-            <h3>{blogs[0].title}</h3>
-            
-          </div>
-        </div>
-        <div className="blog-side">
-          {blogs.slice(1).map((blog, index) => (
-            <div key={index} className="blog-side-item">
-              <Image src={blog.imgSrc} alt={blog.title} width={200} height={125} className="blog-image" />
-              <div className="blog-content">
-              <div className='title_date'>
-            <span className="category">{blogs[0].category}</span>
-            <span className="date">{blogs[0].date}</span>
-            </div>
-                <h3>{blog.title}</h3>
-             
+        <h2 className='blog-heading'>Latest News And Inspirational Blog</h2>
+        <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
+        <div className="blog-container">
+          {reversedBlogs.length === 0 ? (
+            <div>No result found</div>
+          ) : (
+            <>
+              <div className="blog-main">
+                {reversedBlogs.slice(0, 1).map((ele) => {
+                  const formattedDate = format(new Date(ele.createdAt), 'dd MMM yyyy'); 
+
+                  return (
+                    <div key={ele._id}>
+                      {ele.images?.map((e) => (
+                        <Image
+                          key={e._id}
+                          src={`/uploads/${e.name}`}
+                          alt={e.name}
+                          style={{ width: '100%', height: '100%' }}
+                          width={400}
+                          height={250}
+                          className="image"
+                        />
+                      ))}
+                      <div className="blog-content">
+                        <div className='title_date'>
+                          <span className="category">{ele.category?.name || 'Uncategorized'}</span>
+                          <span className="date">{formattedDate}</span>
+                        </div>
+                        <h3>{ele.title}</h3>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          ))}
+
+              <div className="blog-side">
+                {reversedBlogs.slice(0, 2).map((blog, index) => {
+                  const formattedDate = format(new Date(blog.createdAt), 'dd MMM yyyy');  
+                  return (
+                    <div key={blog._id} className="blog-side-item">
+                      {blog.images?.map((image) => (
+                        <Image
+                          key={image._id}
+                          src={`/uploads/${image.name}`}
+                          alt={blog.title}
+                          width={200}
+                          height={125}
+                          className="blog-image"
+                        />
+                      ))}
+                      <div className="blog-content">
+                        <div className='title_date'>
+                          <span className="category">{blog.category?.name || 'Uncategorized'}</span>
+                          <span className="date">{formattedDate}</span>
+                        </div>
+                        <h3>{blog.title}</h3>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
-      </div>
       </div>
     </div>
-
   );
 };
 
