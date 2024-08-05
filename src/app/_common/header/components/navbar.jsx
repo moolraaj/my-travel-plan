@@ -56,9 +56,9 @@ const Navbar = () => {
             <img src={ballon.src} alt="Activity" />
             Activity
           </Link>
-          <Link href="/destinations" className="navbar-item">
+          <Link href="/packages" className="navbar-item">
             <img src={destination.src} alt="Destinations" />
-            Destinations
+            Packages
           </Link>
           <Link href="/transfers" className="navbar-item">
             <img src={car.src} alt="Transfers" />
