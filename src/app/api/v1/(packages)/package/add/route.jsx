@@ -56,7 +56,7 @@ export async function POST(req) {
         };
 
         // Handle multiple gallery images
-        const galleryFiles = payload.getAll('gallery_files');
+        const galleryFiles = payload.getAll('blog_galleries');
         const galleryImages = [];
         for (const galleryFile of galleryFiles) {
             const uploadedGalleryFile = await HandleFileUpload(galleryFile, host);

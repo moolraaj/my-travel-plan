@@ -16,7 +16,9 @@ let imageSchema = new mongoose.Schema({
         required: true
     }
 });
-
+const blogsItemSchema = new mongoose.Schema({
+    content: { type: String, required: true }
+});
  
 const blogSchema = new mongoose.Schema({
     images: [imageSchema],
@@ -33,6 +35,13 @@ const blogSchema = new mongoose.Schema({
         required:true
         
     },
+    blog_overview:{
+        type:String,
+        required:true
+        
+    },
+    blog_galleries: [imageSchema], 
+    blog_description:[blogsItemSchema],
     blog_category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'categories'
