@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image';
+import Link from 'next/link';
 import blogbg from '../app/assets/home_images/blog-bg.png';
 import { useEffect, useState } from 'react';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
@@ -29,7 +30,13 @@ const LatestBlog = () => {
     <div className='blog-bg' style={{ backgroundImage: `url(${blogbg.src})` }} >
       <div className="latest-blog">
         <h2 className='blog-heading'>Latest News And Inspirational Blog</h2>
+        <div className='link-btn-heading'>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
+        <Link href="/blog">
+          <span className="view-all">View All Blogs</span>
+        </Link>
+      </div>
+       
         <div className="blog-container">
           {reversedBlogs.length === 0 ? (
             <div>No result found</div>
@@ -46,7 +53,6 @@ const LatestBlog = () => {
                           key={e._id}
                           src={`/uploads/${e.name}`}
                           alt={e.name}
-                          style={{ width: '100%', height: '100%' }}
                           width={400}
                           height={250}
                           className="image"

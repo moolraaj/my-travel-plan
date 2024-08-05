@@ -10,6 +10,8 @@ function PreviewBlog({params}) {
     const [blogs, setBlogs] = useState({
         title: '',
         description: '',
+        blog_overview: '',
+        blog_description: [],
         slug: '',
         blog_category: '',
         file: null,
@@ -43,9 +45,8 @@ function PreviewBlog({params}) {
         {error && <p>{error}</p>}
         {!loading && !error && (
           <>
-            <h2><strong>Blogs Name:</strong> {blogs.title}</h2>
-            <p><strong>Blogs Description:</strong> {blogs.description}</p>
-            <p><strong>Slug:</strong> {blogs.slug}</p>
+            <h2><strong>Blog Name:</strong> {blogs.title}</h2>
+            <p><strong>Description:</strong> {blogs.description}</p>
             <div className="preview-continent-images">
               {blogs.images.length > 0 ? (
                 blogs.images.map((image, index) => (
@@ -60,9 +61,31 @@ function PreviewBlog({params}) {
                 <p>No images available</p>
               )}
             </div>
+            <p><strong>Slug:</strong> {blogs.slug}</p>
             <div className="preview-continent-countries">
               <h3>Category: {blogs.category?.name || "N/A"}</h3>
             </div>
+            <p><strong>Blog Overview:</strong> {blogs.blog_overview}</p>
+            <p><strong>Blog Description:</strong>{blogs.blog_description.map((des, index) => (
+              <p key={index}>{des.content}</p>
+            ))}</p>
+            
+            <h3>Gallery:</h3>
+          <div className="preview-continent-images" style={{display: 'flex',gap: '20px', flexWrap: 'wrap'}}>
+            {blogs.blog_galleries.length > 0 ? (
+              blogs.blog_galleries.map((image, index) => (
+                <img
+                  key={index}
+                  src={`/uploads/${image.name}`}
+                  alt={image.name}
+                  className="preview-continent-image"
+                  style={{width: '200px',height: '200px'}}
+                />
+              ))
+            ) : (
+              <p>No images available</p>
+            )}
+          </div>
           </>
         )}
       </div>

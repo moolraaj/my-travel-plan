@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import Image1 from '../../src/app/assets/home_images/contone.png';
 import Image2 from '../../src/app/assets/home_images/conttwo.png';
@@ -22,7 +23,11 @@ const ExplorationsFarAway = () => {
     <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})`}}>
     <div className="explorations-container">
       <h2 className='same_heading'>Explorations Far Away</h2>
-      <p>Ideal for 5-14 days trip</p>
+        <div className='link_heading'>
+          <p>Ideal for 5-14 days trip</p>
+          <Link href="/packages"><span className="view-all">View All Cities</span></Link>
+        </div>
+     
       <div className="destinations-grid">
         {destinations.map((destination, index) => (
           <div key={index} className="destination-card">

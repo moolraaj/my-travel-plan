@@ -42,10 +42,9 @@ const Destinations = () => {
                   key={e._id}
                   src={`/uploads/${e.name}`}
                   alt={country.name}
-                  style={{ width: '100%', height: '100%' }}
                   width={1000}
                   height={300}
-                  className="image"
+                  className="image-travel-expert"
                 />
               })}
 
