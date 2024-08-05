@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import triangle from '../app/assets/home_images/triangle.png';
-import europe from '../app/assets/home_images/europe.png';
+
 import camerabg from '../app/assets/home_images/camera-bg.png';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 // import './css.scss';
