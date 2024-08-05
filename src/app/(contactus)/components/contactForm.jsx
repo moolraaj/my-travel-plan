@@ -1,60 +1,52 @@
 'use client'
 
-// components/ContactForm.js
+ 
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useState } from 'react';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
+  let api=EXPORT_ALL_APIS()
+  const [user, setUser] = useState({
     name: '',
     email: '',
-    phone: '',
+    phone_number: '',
     message: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setUser({
+      ...user,
       [name]: value,
     });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Invalid email address';
-    }
-    if (!formData.phone) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number must be 10 digits';
-    }
-    if (!formData.message) newErrors.message = 'Message is required';
-    return newErrors;
-  };
+  console.log(error)
+
+   
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted successfully', formData);
-      // Handle form submission, e.g., send data to server
-      // Reset form data
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-      });
-    } else {
-      setErrors(validationErrors);
-    }
-  };
+    e.preventDefault()
+    let formData=new FormData()
+    formData.append('name',user.name)
+    formData.append('email',user.name)
+    formData.append('phone_number',user.phone_number)
+    formData.append('message',user.message)
+    formData.append('form_unit_tag','query_unit_tag_9630')
+    return handelAsyncErrors(async()=>{
+      let resp=await api.sendQueryContactUs(formData)
+      if(resp.success===true){
+        console.log(resp)
+      }else if(resp.success===false){
+        setError(resp.errors) 
+      }
+    })
+  }
+    
+       
 
   return (
     <><h3>Send us Message</h3>
@@ -65,10 +57,10 @@ const ContactForm = () => {
                   name="name"
                   type="text"
                   placeholder="Enter Your Name"
-                  value={formData.name}
+                  value={user.name}
                   onChange={handleChange}
                   className="input" />
-              {errors.name && <p className="error">{errors.name}</p>}
+               
           </div>
 
           <div className="form-group">
@@ -77,22 +69,22 @@ const ContactForm = () => {
                   name="email"
                   type="text"
                   placeholder="Enter Your Email"
-                  value={formData.email}
+                  value={user.email}
                   onChange={handleChange}
                   className="input" />
-              {errors.email && <p className="error">{errors.email}</p>}
+               
           </div>
 
           <div className="form-group">
               <input
                   id="phone"
-                  name="phone"
+                  name="phone_number"
                   type="number"
                   placeholder="Phone Number"
-                  value={formData.phone}
+                  value={user.phone_number}
                   onChange={handleChange}
                   className="input" />
-              {errors.phone && <p className="error">{errors.phone}</p>}
+               
           </div>
 
           <div className="form-group">
@@ -100,11 +92,11 @@ const ContactForm = () => {
                   id="message"
                   name="message"
                   placeholder="Enter Your Message"
-                  value={formData.message}
+                  value={user.message}
                   onChange={handleChange}
                   className="textarea"
               ></textarea>
-              {errors.message && <p className="error">{errors.message}</p>}
+               
           </div>
 
           <button type="submit" className="button">Send Message</button>

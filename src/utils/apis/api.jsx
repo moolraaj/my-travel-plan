@@ -32,12 +32,27 @@ export const EXPORT_ALL_APIS = () => {
         });
     };
 
+
+    /////////////////////////********************************************
+    const sendQueryContactUs = async (formData) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/sendquery/query/send`,{
+                method:'POST',
+                body:formData
+            }) 
+            let data = await resp.json();
+            return data;
+        });
+    };
+    
+
     
     return {
         loadAllContinents,
         loadAllCountries,
         loadAllPackages,
-        loadAllBlogs
+        loadAllBlogs,
+        sendQueryContactUs
     };
 };
 

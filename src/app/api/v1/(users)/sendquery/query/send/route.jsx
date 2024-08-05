@@ -21,7 +21,7 @@ export async function POST(req) {
 
         // Check form_unit_tag
         if (form_unit_tag !== QUERY_FORM_UNTI_TAG) {
-            return NextResponse.json({ status: 400, success: false, errors: { message: 'please provide valid form unit tag' } });
+            return NextResponse.json({ status: 404, success: false, errors: { message: 'please provide valid form unit tag' } });
         }
 
         // Validate data
