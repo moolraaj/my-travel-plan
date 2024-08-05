@@ -67,7 +67,7 @@ const ExplorationsFarAway = () => {
               })}
               <div className="destination-info">
                 <h3>{destination.title}</h3>
-                <p>{destination.package ? destination.package.price : 0}</p>
+                <p>From ₹ {destination.package ? destination.package.price : 0}</p>
               </div>
             </div>
           )))}
