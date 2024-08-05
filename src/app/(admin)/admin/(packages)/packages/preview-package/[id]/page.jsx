@@ -11,12 +11,12 @@ function PreviewPackage({ params }) {
     title: '',
     description: '',
     slug: '',
-    package_overview: '',
-    package_top_summary: '',
-    package_itinerary: [],
+    packageOverview: '',
+    packageTopSummary: '',
+    packageItinerary: [],
     packages_galleries: [],
-    packages_include: [],
-    packages_exclude: [],
+    packagesInclude: [],
+    packagesExclude: [],
 
   });
   const [loading, setLoading] = useState(true);
@@ -67,11 +67,11 @@ function PreviewPackage({ params }) {
             </div>
           <p><strong>Package Description:</strong> {pkgs.description}</p>
           <p><strong>Slug:</strong> {pkgs.slug}</p>
-          <p><strong>Overview:</strong> {pkgs.package_overview}</p>
-          <p><strong>Top Summary:</strong> {pkgs.package_top_summary}</p>
+          <p><strong>Overview:</strong> {pkgs.packageOverview}</p>
+          <p><strong>Top Summary:</strong> {pkgs.packageTopSummary}</p>
           <h3>Itinerary:</h3>
           <ul>
-            {pkgs.package_itinerary.map((itinerary, index) => (
+            {pkgs.packageItinerary.map((itinerary, index) => (
               <li key={index}>
                 <p><strong>Day:</strong> {itinerary.day}</p>
                 <p><strong>Location:</strong> {itinerary.location}</p>
@@ -89,10 +89,10 @@ function PreviewPackage({ params }) {
             </thead>
             <tbody>
               <tr>
-                <td> {pkgs.packages_include.map((include, index) => (
+                <td> {pkgs.packagesInclude.map((include, index) => (
               <p key={index}>{include.description}</p>
             ))}</td>
-                <td> {pkgs.packages_exclude.map((exclude, index) => (
+                <td> {pkgs.packagesExclude.map((exclude, index) => (
               <p key={index}>{exclude.description}</p>
             ))}</td>
               </tr>
