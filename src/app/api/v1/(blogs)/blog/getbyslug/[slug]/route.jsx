@@ -21,6 +21,9 @@ export async function GET(req, { params }) {
             title: blog.title,
             description: blog.description,
             slug: blog.slug,
+            blog_overview: blog.blog_overview,
+            blog_description: blog.blog_description,
+            blog_galleries: blog.blog_galleries,
             category: blog.blog_category ? {
                 _id: blog.blog_category._id,
                 name: blog.blog_category.name,
