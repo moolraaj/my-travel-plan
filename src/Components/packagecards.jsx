@@ -22,8 +22,7 @@ const BestSellingPackages = () => {
   let result=data?data.result:[]
   let reversedPackages=Array.isArray(result)?[...result].reverse():[]
 
-  console.log(`result`)
-  console.log(result)
+ 
   return (
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})`}}>
       <div className="container card_main_section">

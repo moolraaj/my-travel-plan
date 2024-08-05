@@ -16,6 +16,15 @@ export async function DELETE(req, { params }) {
         if (!isValidId) {
             return NextResponse.json({ status: 200, success: false, message: 'missing credentials! please provide a valid id' });
         }
+
+        // Check if there are any blogs associated with this category
+        const isCategory = await BlogModel.findById(id).populate({
+            path: 'blog_category', 
+        }).exec();
+
+        if(isCategory){
+            return NextResponse.json({ status: 200, success: false, message: 'category cannot be deleted because it has associated blogs'});
+        }
     
         // Delete the category
         let result = await CategoryModel.deleteOne({ _id: id });
