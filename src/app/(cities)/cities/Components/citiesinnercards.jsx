@@ -1,5 +1,5 @@
 import Image from 'next/image';
-
+import Link from 'next/link';
 const explorations = [
   { country: 'Switzerland', city: 'Zurich', imgSrc: '/images/switzerland.png' },
   { country: 'Sweden', city: 'Stockholm', imgSrc: '/images/sweden.png' },
@@ -17,6 +17,7 @@ const Explorations = () => {
         <div className="explorations-grid">
         {explorations.map((exploration, index) => (
           <div key={index} className="exploration-item">
+          <Link href="/packages/netherlands-5n-6d"  >
             <Image
               src={exploration.imgSrc}
               alt={`${exploration.city}, ${exploration.country}`}
@@ -24,6 +25,7 @@ const Explorations = () => {
               height={330}
               className="exploration-image"
             />
+            </Link>
             <div className="exploration-details">
              <div className='explore_l'>
               <h3>Explorations {exploration.country}</h3>

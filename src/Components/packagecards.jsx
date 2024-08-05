@@ -31,7 +31,7 @@ const BestSellingPackages = () => {
         <h2 className='same_heading'>Explore Best Selling Packages</h2>
         <div className='link_heading'>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
-        <Link href="#"><span className="view-all">View All Packages</span></Link>
+        <Link href="/packages"><span className="view-all">View All Packages</span></Link>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ const BestSellingPackages = () => {
                   key={e._id}
                   src={`/uploads/${e.name}`}
                   alt={pkg.name}
-                  style={{ width: '100%', height: '100%' }}
+                 
                   width={333}
                   height={380}
                   className="image"
@@ -59,7 +59,7 @@ const BestSellingPackages = () => {
               </p>
               <p className="price">From ₹ {pkg.package_price||0}</p>
               <div className="buttons">
-                <button className="details-btn">View Details</button>
+              <Link href="/packages"> <button className="details-btn">View Details</button> </Link>
                 <button className="enquiry-btn">Enquiry Now</button>
               </div>
             </div>
