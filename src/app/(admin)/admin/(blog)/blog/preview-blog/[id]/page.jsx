@@ -10,6 +10,8 @@ function PreviewBlog({params}) {
     const [blogs, setBlogs] = useState({
         title: '',
         description: '',
+        blog_overview: '',
+        blog_description: [],
         slug: '',
         blog_category: '',
         file: null,
@@ -43,9 +45,13 @@ function PreviewBlog({params}) {
         {error && <p>{error}</p>}
         {!loading && !error && (
           <>
-            <h2><strong>Blogs Name:</strong> {blogs.title}</h2>
-            <p><strong>Blogs Description:</strong> {blogs.description}</p>
+            <h2><strong>Blog Name:</strong> {blogs.title}</h2>
+            <p><strong>Blog Description:</strong> {blogs.description}</p>
             <p><strong>Slug:</strong> {blogs.slug}</p>
+            <p><strong>Blog Overview:</strong> {blogs.blog_overview}</p>
+            {blogs.blog_description.map((des, index) => (
+              <p key={index}>{des.description}</p>
+            ))}
             <div className="preview-continent-images">
               {blogs.images.length > 0 ? (
                 blogs.images.map((image, index) => (
