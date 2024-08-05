@@ -6,11 +6,11 @@ import { NextResponse } from "next/server";
 DbConnect();
 
 export async function GET(req, { params }) {
-    return handelAsyncErrors(async () => {
-        let { id } = params;
+  return handelAsyncErrors(async () => {
+    let { id } = params;
 
-        // Validate the ID and find the blog
-        let blog = await BlogModel.findById(id).populate('blog_category').exec();
+    // Validate the ID and find the blog
+    let blog = await BlogModel.findById(id).populate('blog_category').exec();
 
         if (!blog) {
             return NextResponse.json({ status: 200, success: false, message: 'missing credentials! please provide a valid ID.' });

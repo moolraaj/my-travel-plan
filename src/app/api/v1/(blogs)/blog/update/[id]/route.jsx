@@ -7,8 +7,8 @@ import { NextResponse } from "next/server";
 DbConnect();
 
 export async function PUT(req, { params }) {
-    return handelAsyncErrors(async () => {
-        let { id } = params;
+  return handelAsyncErrors(async () => {
+    let { id } = params;
 
         // Extract data from formdata
         const payload = await req.formData();
@@ -39,17 +39,17 @@ export async function PUT(req, { params }) {
         if (blog_description) existingBlog.blog_description = blog_description;
         if (categoryId) existingBlog.blog_category = categoryId;
 
-        // Upload new image if provided
-        if (file) {
-            const uploadedFile = await HandleFileUpload(file);
-            const imageObject = {
-                name: uploadedFile.name,
-                path: uploadedFile.path,
-                contentType: uploadedFile.contentType,
-            };
-            existingBlog.images = [imageObject];
-        }
+    // Upload new main image if provided
+    if (file) {
+      const uploadedFile = await HandleFileUpload(file);
+      existingBlog.file = {
+        name: uploadedFile.name,
+        path: uploadedFile.path,
+        contentType: uploadedFile.contentType,
+      };
+    }
 
+<<<<<<< HEAD
         // Handle multiple gallery images if provided
         const galleryFiles = payload.getAll('blog_galleries');
         if (galleryFiles.length > 0) {
@@ -64,9 +64,20 @@ export async function PUT(req, { params }) {
             }
             existingBlog.blog_galleries = galleryImages;
         }
+=======
+    // Upload gallery images if provided
+    if (gallery_files.length > 0) {
+      const galleryImages = await Promise.all(gallery_files.map(file => HandleFileUpload(file)));
+      existingBlog.gallery_files = galleryImages.map(img => ({
+        name: img.name,
+        path: img.path,
+        contentType: img.contentType,
+      }));
+    }
+>>>>>>> bd6ebd7a55b2b4b5170ad02f426d44539315ea09
 
-        // Save the updated document
-        const result = await existingBlog.save();
-        return NextResponse.json({ status: 200, success: true, message: 'Blog updated successfully', result });
-    });
+    // Save the updated document
+    const result = await existingBlog.save();
+    return NextResponse.json({ status: 200, success: true, message: 'Blog updated successfully', result });
+  });
 }
