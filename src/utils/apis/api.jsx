@@ -31,6 +31,13 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+    const loadAllCitiesWithLowestPrices = async () => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/cities/cities-with-lowest-price`);
+            let data = await resp.json();
+            return data;
+        });
+    };
 
 
     /////////////////////////********************************************
@@ -52,6 +59,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllCountries,
         loadAllPackages,
         loadAllBlogs,
+        loadAllCitiesWithLowestPrices,
         sendQueryContactUs
     };
 };
