@@ -105,7 +105,11 @@ function Packages() {
               <tr>
                 <td colSpan="5" className="loading">Loading...</td>
               </tr>
-            ) : (
+            ) : packages.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Packages Available</td>
+              </tr>
+            ): (
               packages.map(pkg => (
                 <tr key={pkg._id}>
                   <td data-label="Image">

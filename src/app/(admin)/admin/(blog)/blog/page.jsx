@@ -107,7 +107,11 @@ function BlogPage() {
                             <tr>
                                 <td colSpan="6" className="loading">Loading...</td>
                             </tr>
-                        ) : (
+                        ) : blogs.length === 0 ? (
+                            <tr>
+                              <td colSpan="6" className="no-data">No Packages Available</td>
+                            </tr>
+                          ): (
                             blogs.map(blog => (
                                 <tr key={blog._id}>
                                     <td data-label="Image">
