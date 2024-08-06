@@ -1,23 +1,25 @@
 import Image from 'next/image';
 import Link from 'next/link';
-const explorations = [
-  { country: 'Switzerland', city: 'Zurich', imgSrc: '/images/switzerland.png' },
-  { country: 'Sweden', city: 'Stockholm', imgSrc: '/images/sweden.png' },
-  { country: 'Spain', city: 'Barcelona', imgSrc: '/images/spain.png' },
-  { country: 'Slovenia', city: 'Ljubljana', imgSrc: '/images/slovenia.png' },
-  { country: 'Slovakia', city: 'Bratislava', imgSrc: '/images/slovakia.png' },
-  { country: 'Portugal', city: 'Porto', imgSrc: '/images/portugal.png' },
-];
+ 
+ 
+ 
 
 
 
 const Explorations = ({slug,country}) => {
 
+
+  
+  
+
+
   let result=country?country.result:[]
   let reverseCountry=Array.isArray(result)?[...result].reverse():[]
 
-  
-   
+
+  console.log(`country`)
+  console.log(country)
+
   return (
     <div className="explorations">
         <div className="explorations-grid">
@@ -44,7 +46,7 @@ const Explorations = ({slug,country}) => {
               <p>{exploration.title}</p>
               </div>
               <div className='icon_custom'>
-                <img src='/images/arrowu.png'/>
+                <img src='/images/arrowu.png' alt='images'/>
               </div>
             </div>
           </div>
