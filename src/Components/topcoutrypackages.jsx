@@ -59,6 +59,8 @@ const Destinations = () => {
                 <img src={trending.src}></img>
                 TREADING
               </span>
+
+              
               <div className="info">
                 <h3>{country.title}</h3>
                 <p>{country.countries} Packages</p>
