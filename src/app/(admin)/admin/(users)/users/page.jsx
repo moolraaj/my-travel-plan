@@ -1,3 +1,4 @@
+'use client';
 import Breadcrumb from '@/app/(admin)/_common/Breadcrumb'
 import React from 'react'
 
