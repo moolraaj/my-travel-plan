@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);
@@ -72,7 +73,7 @@ function ContactsPage() {
       onClose={()=>setIsOpen(false)}
       onConfirm={handleConfirm}
       />
-      <h2>Contacts</h2>
+      <Breadcrumb path="/admin/contatcs" />
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">

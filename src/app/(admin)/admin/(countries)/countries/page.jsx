@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 
 
@@ -84,7 +85,7 @@ function CountryPage() {
       onClose={()=>setIsOpen(false)}
       onConfirm={handleConfirm}
       />
-      <h2>Countries</h2>
+      <Breadcrumb path="/admin/countries"/>
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>

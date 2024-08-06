@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
@@ -89,7 +90,7 @@ function ContinentPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={handleConfirm}
       />
-      <h2>Continents</h2>
+      <Breadcrumb path="/admin/continents"/>
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>

@@ -1,4 +1,5 @@
 'use client'
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 import React, { useState } from 'react';
 
 function SettingsPage() {
@@ -31,7 +32,7 @@ function SettingsPage() {
 
   return (
     <div className="settings-page">
-      <h1>Settings</h1>
+      <Breadcrumb path="/admin/settings"/>
 
       <div className="settings-section">
         <h2>Profile</h2>
