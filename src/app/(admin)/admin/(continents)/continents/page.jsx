@@ -4,8 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
-import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import { toast } from 'react-toastify'; 
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
@@ -29,7 +28,7 @@ function ContinentPage() {
         setContinents(data.result);
         setTotalResults(data.totalResults); // Set totalResults from API
       } else {
-        toast.error(`Error: ${data.message}`);
+        toast.error(data.message || 'An error occurred');
       }
       setLoading(false);
     })
@@ -54,10 +53,10 @@ function ContinentPage() {
       const data = await response.json();
       if (data.success) {
         fetchContinents();
-        toast.success('Continent deleted successfully.');
+        toast.success(data.message || 'Continent deleted successfully.');
         setIsOpen(false)
       } else {
-        toast.error(data.message);
+        toast.error(data.message|| 'An error occured');
       }
     })
 
@@ -85,7 +84,6 @@ function ContinentPage() {
 
   return (
     <div className="packages">
-      <ToastContainer />
       <ModalWrapper
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

@@ -4,8 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
@@ -30,7 +29,7 @@ function ContactsPage() {
         setContacts(data.result);
         setTotalResults(data.totalResults); // Set totalResults from API
       } else {
-        setError('Failed to fetch Contacts');
+        toast.error(data.message || 'Failed to fetch Contacts');
       }
       setLoading(false);
     })
@@ -46,10 +45,10 @@ function ContactsPage() {
         return handelAsyncErrors(async()=>{
           if (response.ok && data.success) {
             fetchContacts();
-            toast.success('contact deleted successfully');
+            toast.success(data.message || 'contact deleted successfully');
             setIsOpen(false)
           } else {
-            toast.error('Failed to delete contact');
+            toast.error(data.message || 'Failed to delete contact');
           }
         })
   };
@@ -73,8 +72,6 @@ function ContactsPage() {
       onClose={()=>setIsOpen(false)}
       onConfirm={handleConfirm}
       />
-      <ToastContainer />
-
       <h2>Contacts</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">

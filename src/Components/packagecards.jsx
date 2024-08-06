@@ -59,7 +59,7 @@ const BestSellingPackages = () => {
               <p className="price">From ₹ {pkg.package_price||0}</p>
               <div className="buttons">
               <Link href="/packages"> <button className="details-btn">View Details</button> </Link>
-                <button className="enquiry-btn">Enquiry Now</button>
+                <button className="enquiry-btn">Book Now</button>
               </div>
             </div>
           </div>

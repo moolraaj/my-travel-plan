@@ -4,8 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaMinus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import CategoryManagement from '../../category-management/page';
 
@@ -22,7 +21,6 @@ const CreateBlog = () => {
     gallery_files: []
   });
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCategories = async () => {
@@ -32,7 +30,7 @@ const CreateBlog = () => {
       if (data.success) {
         setCategories(data.result);
       } else {
-        toast.error('Failed to fetch categories');
+        toast.error(data.message);
       }
     });
   };
@@ -115,11 +113,10 @@ const CreateBlog = () => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success('Blog created successfully!');
+        toast.success(data.message);
         router.push('/admin/blog');
       } else {
-        setError(data.message || 'An error occurred.');
-        toast.error(data.message || 'An error occurred.');
+        toast.error(data.message);
       }
       setIsLoading(false);
     });
@@ -127,7 +124,6 @@ const CreateBlog = () => {
 
   return (
     <>
-      <ToastContainer />
       <h2>Create Blog</h2>
       <div className="blog_cat_wrapper">
         <div className="add_blog">

@@ -6,15 +6,13 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
@@ -32,6 +30,9 @@ function CityPage() {
         if (data.success) {
           setCities(data.result);
           setTotalResults(data.totalResults); // Set totalResults from API
+        }
+        else{
+          toast.error(data.message || 'An error occurred')
         }
         setLoading(false);
       })
@@ -53,10 +54,10 @@ function CityPage() {
         return handelAsyncErrors(async()=>{
           if (response.ok) {
             fetchCities();
-            toast.success('City deleted successfully');
+            toast.success(response.message || 'City deleted successfully');
             setIsOpen(false)
           } else {
-            toast.error('Failed to delete city, please try again.');
+            toast.error(response.message || 'Failed to delete city, please try again.');
           }
         })
   };
@@ -87,9 +88,7 @@ function CityPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={confirmDelete}
       />
-      <ToastContainer />
       <h2>Cities</h2>
-      {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
