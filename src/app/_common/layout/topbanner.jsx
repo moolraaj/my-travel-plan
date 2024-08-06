@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Topbanner() {
+export default function Topbanner({slug}) {
   return (
     <div
       className='top_banner_destination'
@@ -13,7 +13,7 @@ export default function Topbanner() {
     >
       <div className='heading_two'>
         <h2>Explore All <span>International Destinations</span></h2>
-        <span className='hamburger'>Home / Destination</span>               
+        <span className='hamburger'>{slug} / Destination</span>               
       </div>
     </div>
   );

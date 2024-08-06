@@ -11,32 +11,44 @@ const explorations = [
 
 
 
-const Explorations = () => {
+const Explorations = ({slug,country}) => {
+
+  let result=country?country.result:[]
+  let reverseCountry=Array.isArray(result)?[...result].reverse():[]
+
+  
+   
   return (
     <div className="explorations">
         <div className="explorations-grid">
-        {explorations.map((exploration, index) => (
+        {reverseCountry===null||reverseCountry.length===0?('no result found'):(reverseCountry.map((exploration, index) => (
           <div key={index} className="exploration-item">
-          <Link href="/packages/netherlands-5n-6d"  >
-            <Image
-              src={exploration.imgSrc}
-              alt={`${exploration.city}, ${exploration.country}`}
-              width={400}
-              height={330}
-              className="exploration-image"
-            />
+          <Link href={`/${slug}/${exploration.slug}`}>
+           
+            
+            {exploration.images ? exploration.images.map((e) => (
+                  <Image
+                    key={e._id}
+                    src={`/uploads/${e.name}`}
+                    alt={country.name}
+                    width={400}
+                    height={330}
+                    className="image"
+                  />
+                )) : 'no image found'}
+            
             </Link>
             <div className="exploration-details">
              <div className='explore_l'>
-              <h3>Explorations {exploration.country}</h3>
-              <p>{exploration.city}</p>
+              <h3>Explorations {slug}</h3>
+              <p>{exploration.title}</p>
               </div>
               <div className='icon_custom'>
                 <img src='/images/arrowu.png'/>
               </div>
             </div>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );

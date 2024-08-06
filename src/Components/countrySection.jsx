@@ -51,7 +51,7 @@ const ExplorationsFarAway = () => {
         </div>
 
         <div className="destinations-grid">
-          {reversedFilterCities === null || reversedFilterCities === undefined ? ('no result found') : (reversedFilterCities.slice(0, 6).map((destination, index) => (
+          {reversedFilterCities === null || reversedFilterCities.length === 0 ? ('no result found') : (reversedFilterCities.slice(0, 6).map((destination, index) => (
             <div key={index} className="destination-card">
              
 
