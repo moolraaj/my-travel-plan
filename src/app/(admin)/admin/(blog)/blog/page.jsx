@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast} from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
  
  
 
@@ -88,7 +89,7 @@ function BlogPage() {
                 onClose={() => setIsOpen(false)}
                 onConfirm={confirmDelete}
             />
-            <h2>Blogs</h2>
+            <Breadcrumb path="/admin/Blog" />
             {error && <div className="error">{error}</div>}
             <div className="packages-table-container">
                 <table className="packages-table">
