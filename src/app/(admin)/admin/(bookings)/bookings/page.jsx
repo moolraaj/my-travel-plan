@@ -101,7 +101,7 @@ function BookingPage() {
               </tr>
             ): bookings.length === 0 ? (
               <tr>
-                <td colSpan="6" className="no-data">No Packages Available</td>
+                <td colSpan="6" className="no-data">No Bookings Available</td>
               </tr>
             ) : (
               bookings.map(booking => (

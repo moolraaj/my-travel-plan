@@ -109,7 +109,7 @@ function ContinentPage() {
               </tr>
             ) : continents.length === 0 ? (
               <tr>
-                <td colSpan="6" className="no-data">No Packages Available</td>
+                <td colSpan="6" className="no-data">No Continents Available</td>
               </tr>
             ) : (
               continents.map(continent => (

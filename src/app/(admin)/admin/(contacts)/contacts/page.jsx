@@ -92,7 +92,7 @@ function ContactsPage() {
               </tr>
             ): contacts.length === 0 ? (
               <tr>
-                <td colSpan="6" className="no-data">No Packages Available</td>
+                <td colSpan="6" className="no-data">No Contacts Available</td>
               </tr>
             ) : (
               contacts.map(contact => (

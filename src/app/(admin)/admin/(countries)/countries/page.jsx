@@ -104,7 +104,7 @@ function CountryPage() {
               </tr>
             ) : countries.length === 0 ? (
               <tr>
-                <td colSpan="6" className="no-data">No Packages Available</td>
+                <td colSpan="6" className="no-data">No Countries Available</td>
               </tr>
             ) : (
               countries.map(country => (
