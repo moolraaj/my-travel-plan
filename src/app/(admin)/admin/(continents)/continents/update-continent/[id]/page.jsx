@@ -157,8 +157,8 @@ function UpdateContinent({ params }) {
                   continent.images.map((image, index) => (
                     <img
                       key={index}
-                      src={image.imgurl}
-                      alt={`Current ${image.name}`}
+                      src={`/uploads/${image.name}`}
+                      alt={image.name}
                       className="update-packages-image"
                     />
                   ))
