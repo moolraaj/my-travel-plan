@@ -4,8 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaTrashAlt, FaEye } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
@@ -76,7 +75,6 @@ function BookingPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={confirmDelete}
       />
-      <ToastContainer />
       <h2>Bookings</h2>
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">

@@ -5,8 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './AddPackages.css';
 import { FaMinus } from 'react-icons/fa';
-import { toast, ToastContainer } from  'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from  'react-toastify'; 
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const generateOptions = (start, end) => {
@@ -33,7 +32,6 @@ const AddPackages = () => {
     package_nights: '1'
   });
   const [cities, setCities] = useState([]);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   
@@ -48,7 +46,7 @@ const AddPackages = () => {
         if (data.success) {
           setCities(data.result); 
         } else {
-          toast.error('Failed to fetch cities');
+          toast.error(data.message || 'Failed to fetch cities');
         }
       })
     };
@@ -144,11 +142,10 @@ const AddPackages = () => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success('Package added successfully!');
+        toast.success(data.message  || 'Package added successfully!');
         router.push('/admin/packages');
       } else {
-        setError(data.message || 'An error occurred.');
-        toast.error(data.message || 'An error occurred.')
+        toast.error(data.message || 'An error occurred.');
       }
     setIsLoading(false);
     })
@@ -157,7 +154,6 @@ const AddPackages = () => {
 
   return (
     <div className="add-package-container">
-      <ToastContainer />
       <h2>Add Package</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

@@ -31,7 +31,7 @@ const Allpackages = () => {
                   <Link href={`/packages/${pkg.slug}`}>
                     <button className="details-btn">View Details</button>
                   </Link>
-                  <button className="enquiry-btn">Enquiry Now</button>
+                  <button className="enquiry-btn">Book Now</button>
                 </div>
               </div>
             </div>

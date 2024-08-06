@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import { FaMinus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 function UpdateBlog({ params }) {
   const [formData, setFormData] = useState({
@@ -19,8 +20,6 @@ function UpdateBlog({ params }) {
     gallery_files: []
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const router = useRouter();
@@ -37,7 +36,7 @@ function UpdateBlog({ params }) {
       if (data.success) {
         setCategories(data.result);
       } else {
-        setError('Failed to fetch categories');
+        toast.error(data.message);
       }
     });
   };
@@ -57,7 +56,7 @@ function UpdateBlog({ params }) {
           imagePreviewUrl: data.result.image ? `/uploads/${data.result.image}` : ''
         });
       } else {
-        setError(data.message);
+        toast.error(data.message);
       }
       setLoading(false);
     });
@@ -149,15 +148,14 @@ function UpdateBlog({ params }) {
   
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('Blog updated successfully!');
-        setError('');
+        toast.success(data.message);
+        toast.error('');
         setTimeout(() => router.push('/admin/blog'), 2000);
       } else {
-        setError(data.message);
-        setSuccessMessage('');
+        toast.error(data.message);
       }
     } catch (error) {
-      setError('An error occurred while updating the blog.');
+      toast.error(data.message);
     } finally {
       setIsLoading(false);
     }
@@ -167,8 +165,6 @@ function UpdateBlog({ params }) {
     <div className="update-packages-container">
       <h2 className="update-packages-heading">Update Blog</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
-      {error && <p className="update-packages-error">{error}</p>}
-      {successMessage && <p className="update-packages-success">{successMessage}</p>}
       {!loading && (
         <form className="update-packages-form" onSubmit={handleSubmit}>
           <label className="update-packages-label">

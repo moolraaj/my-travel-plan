@@ -3,8 +3,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast functions
-import 'react-toastify/dist/ReactToastify.css'; // Import toast CSS
+import { toast } from 'react-toastify';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const AddContinent = () => {
@@ -51,7 +50,7 @@ const AddContinent = () => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success('Continent added successfully!');
+        toast.success(data.message ||'Continent added successfully!');
         router.push('/admin/continents');
       } else {
         toast.error(data.message || 'An error occurred.');
@@ -65,7 +64,6 @@ const AddContinent = () => {
 
   return (
     <div className="add-continent">
-      <ToastContainer/>
       <h2>Add Continent</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

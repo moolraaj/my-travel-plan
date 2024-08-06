@@ -5,6 +5,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import { toast } from 'react-toastify';
+
 
 const AddCountry = () => {
   const router = useRouter();
@@ -15,7 +17,6 @@ const AddCountry = () => {
     file: null,
     continent_id: '',
   });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [continents, setContinents] = useState([]);
 
@@ -52,7 +53,7 @@ const AddCountry = () => {
     const { title, description, slug, file, continent_id } = formData;
 
     if (!title || !description || !slug || !file || !continent_id) {
-      setError('Please fill in all fields and upload an image.');
+      toast.error('Please fill in all fields and upload an image.');
       setIsLoading(false);
       return;
     }
@@ -73,9 +74,10 @@ const AddCountry = () => {
       const data = await res.json();
 
       if (data.success) {
+        toast.success(data.message || 'Country added successfully')
         router.push('/admin/countries');
       } else {
-        setError(data.message || 'An error occurred.');
+        toast.error(data.message || 'An error occurred.');
       }
 
     setIsLoading(false);
@@ -86,7 +88,6 @@ const AddCountry = () => {
   return (
     <div className="add-continent">
       <h2>Add Country</h2>
-      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
