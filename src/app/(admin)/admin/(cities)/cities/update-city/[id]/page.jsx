@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import { toast } from 'react-toastify';
 
 function UpdateCity({ params }) {
   const [city, setCity] = useState({
@@ -17,8 +18,6 @@ function UpdateCity({ params }) {
     country_id: '',
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Add isLoading state
   const [countries, setCountries] = useState([]);
   const router = useRouter();
@@ -53,7 +52,7 @@ function UpdateCity({ params }) {
           });
           console.log('Data:', data);
         } else {
-          setError(data.message);
+          toast.error(data.message || 'An error occurred');
         }
         setLoading(false);
       })
@@ -108,12 +107,10 @@ function UpdateCity({ params }) {
       });
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('City updated successfully!');
-        setError('');
+        toast.success(data.message);
         setTimeout(() => router.push('/admin/cities'), 2000); // Redirect after success
       } else {
-        setError(data.message);
-        setSuccessMessage('');
+        toast.error(data.message);
       }
       setIsLoading(false); // End loading
     })
@@ -125,8 +122,6 @@ function UpdateCity({ params }) {
     <div className="update-packages-container">
       <h2 className="update-packages-heading">Update City</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
-      {error && <p className="update-packages-error">{error}</p>}
-      {successMessage && <p className="update-packages-success">{successMessage}</p>}
       {!loading && (
         <form className="update-packages-form" onSubmit={handleSubmit}>
           <label className="update-packages-label">

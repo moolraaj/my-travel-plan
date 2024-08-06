@@ -4,8 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaMinus } from 'react-icons/fa';
-import { toast, ToastContainer } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from 'react-toastify'; 
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const generateOptions = (start, end) => {
@@ -33,7 +32,6 @@ const UpdatePackage = ({ params }) => {
     package_nights: '1'
   });
   const [cities, setCities] = useState([]);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchPackageData = async () => {
@@ -51,10 +49,9 @@ const UpdatePackage = ({ params }) => {
             packagesExclude: data.result.packagesExclude || [{ description: '' }],
           }));
         } else {
-          toast.error('Failed to fetch package data');
+          toast.error(data.message ||'Failed to fetch package data');
         }
       } catch (error) {
-        console.error('Error fetching package data:', error);
         toast.error('An error occurred while fetching package data.');
       }
     });
@@ -72,10 +69,9 @@ const UpdatePackage = ({ params }) => {
         if (data.success) {
           setCities(data.result); 
         } else {
-          toast.error('Failed to fetch cities');
+          toast.error(data.message || 'Failed to fetch cities');
         }
       } catch (error) {
-        console.error('Error fetching cities:', error);
         toast.error('An error occurred while fetching cities.');
       }
     });
@@ -176,10 +172,9 @@ const UpdatePackage = ({ params }) => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success('Package updated successfully!');
+        toast.success(data.message || 'Package updated successfully!');
         router.push('/admin/packages');
       } else {
-        setError(data.message || 'An error occurred.');
         toast.error(data.message || 'An error occurred.');
       }
       setIsLoading(false);
@@ -188,7 +183,6 @@ const UpdatePackage = ({ params }) => {
 
   return (
     <div className="add-package-container">
-      <ToastContainer />
       <h2>Update Package</h2>
       <form onSubmit={handleSubmit}>
         {/* Form fields */}
