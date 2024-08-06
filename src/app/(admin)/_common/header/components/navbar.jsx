@@ -25,9 +25,6 @@ function AdminNavbar() {
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
-            <button className="toggle-button" onClick={toggleSidebar}>
-              <FaBars />
-            </button>
             <div className="logo">
               <Link href={`/admin/dashboard`}>
                 <img src={logo.src} alt="Logo" />
@@ -70,7 +67,9 @@ function AdminNavbar() {
           </div>
         </div>
       </div>
+      <div className={`wrapper ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      </div>
     </div>
   );
 }
