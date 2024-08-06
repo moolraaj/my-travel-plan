@@ -109,7 +109,7 @@ function BlogPage() {
                             </tr>
                         ) : blogs.length === 0 ? (
                             <tr>
-                              <td colSpan="6" className="no-data">No Packages Available</td>
+                              <td colSpan="6" className="no-data">No Blogs Available</td>
                             </tr>
                           ): (
                             blogs.map(blog => (
