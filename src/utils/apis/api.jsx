@@ -8,11 +8,25 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+    const loadSingleContinent = async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/continent/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
 
 
     const loadAllCountries = async () => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/countries/get`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+    const loadSingleCountry= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/countries/get/${slug}`);
             let data = await resp.json();
             return data;
         });
@@ -56,6 +70,8 @@ export const EXPORT_ALL_APIS = () => {
     
     return {
         loadAllContinents,
+        loadSingleContinent,
+        loadSingleCountry,
         loadAllCountries,
         loadAllPackages,
         loadAllBlogs,

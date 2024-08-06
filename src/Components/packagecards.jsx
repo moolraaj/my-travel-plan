@@ -36,7 +36,7 @@ const BestSellingPackages = () => {
 
      <div className='card_discount'>
       <div className="packages">
-        {reversedPackages===null||reversedPackages===undefined?('no result found'):(reversedPackages.slice(0,4).map((pkg, index) => (
+        {reversedPackages===null||reversedPackages.length===0?('no result found'):(reversedPackages.slice(0,4).map((pkg, index) => (
           <div key={index} className="package">
            
             {pkg.images === null || pkg.images === undefined ? ('no result found') : pkg.images.map((e) => {

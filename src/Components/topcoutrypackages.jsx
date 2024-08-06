@@ -32,7 +32,7 @@ const Destinations = () => {
         <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations expert-travel">
-          {reversedCountries===null||reversedCountries===undefined?('no result found'):(reversedCountries.slice(0,8).map((country, index) => (
+          {reversedCountries===null||reversedCountries.length===0?('no result found'):(reversedCountries.slice(0,8).map((country, index) => (
             <Link href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={country._id}>
 
             <div key={index} className="destination">
