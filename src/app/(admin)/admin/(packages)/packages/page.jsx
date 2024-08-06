@@ -7,6 +7,7 @@ import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import {  toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function Packages() {
   const [packages, setPackages] = useState([]);
@@ -88,7 +89,8 @@ function Packages() {
       onClose={()=>setIsOpen(false)}
       onConfirm={handleConfirm}
       />
-      <h2>Packages</h2>
+       <Breadcrumb path="/admin/packages" />
+
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -105,7 +107,11 @@ function Packages() {
               <tr>
                 <td colSpan="5" className="loading">Loading...</td>
               </tr>
-            ) : (
+            ) : packages.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Packages Available</td>
+              </tr>
+            ): (
               packages.map(pkg => (
                 <tr key={pkg._id}>
                   <td data-label="Image">

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast} from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
  
  
 
@@ -88,7 +89,7 @@ function BlogPage() {
                 onClose={() => setIsOpen(false)}
                 onConfirm={confirmDelete}
             />
-            <h2>Blogs</h2>
+            <Breadcrumb path="/admin/Blog" />
             {error && <div className="error">{error}</div>}
             <div className="packages-table-container">
                 <table className="packages-table">
@@ -107,7 +108,11 @@ function BlogPage() {
                             <tr>
                                 <td colSpan="6" className="loading">Loading...</td>
                             </tr>
-                        ) : (
+                        ) : blogs.length === 0 ? (
+                            <tr>
+                              <td colSpan="6" className="no-data">No Blogs Available</td>
+                            </tr>
+                          ): (
                             blogs.map(blog => (
                                 <tr key={blog._id}>
                                     <td data-label="Image">
