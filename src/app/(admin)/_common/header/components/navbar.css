@@ -25,6 +25,7 @@
   }
   
   .toggle-button {
+    display: none;
     background: none;
     border: none;
     font-size: 24px;
@@ -154,7 +155,11 @@
   }
 }
 
-
+@media (max-width:1024px) {
+  .toggle-button{
+    display: block;
+  }
+}
   /* Responsive Styles */
   @media (max-width: 768px) {
     .navbar_inner {

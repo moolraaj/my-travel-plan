@@ -132,6 +132,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
               <Link href={item.href} onClick={isOpen ? toggleSidebar : undefined}>
                 <item.icon className="sidebar-icon" />
                 {isOpen && <span>{item.label}</span>}
+                {!isOpen && <span className="sidebar_tooltip">{item.label}</span>}
               </Link>
             </li>
           ))}
