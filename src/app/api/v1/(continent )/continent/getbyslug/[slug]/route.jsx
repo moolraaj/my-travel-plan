@@ -2,19 +2,17 @@ import { DbConnect } from "@/database/database";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { getPaginationParams } from "@/helpers/paginations";
 import continentModel from "@/model/continentModel";
-
 import { NextResponse } from "next/server";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-
-    return handelAsyncErrors(async()=>{
+    return handelAsyncErrors(async () => {
         const { slug } = params;
         const { page, limit, skip } = getPaginationParams(req);
 
-        // Fetch the continent with its related data, paginated
-        const continent = await continentModel.findOne({slug}).populate({
+        // Fetch the continent with its related countries, cities, and packages
+        const continent = await continentModel.findOne({ slug }).populate({
             path: 'all_countries',
             populate: {
                 path: 'all_cities',
@@ -23,48 +21,40 @@ export async function GET(req, { params }) {
                 },
             },
         }).exec();
-    
+        
         // Check if the continent exists
         if (!continent) {
-            return NextResponse.json({status:200, success: false, error: 'continent not found' });
-        }
-        // Get the total count of countries within the continent
-        const totalResults = await continentModel.aggregate([
-            { $match: {slug} },
-            { $unwind: '$all_countries' },
-            { $group: { slug: '$slug', total: { $sum: 1 } } }
-        ]).then(results => results[0]?.total || 0);
-        // Get the paginated countries
-        const countries = continent.all_countries.slice(skip, skip + limit);
-    
-        let result={
-            _id: continent._id,
-            images: continent.images,
-            title: continent.title,  
-            description: continent.description,  
-            slug: continent.slug,
-            countries:countries.map(country => ({
-                _id: country._id,
-                images: country.images,
-                title: country.title,
-                description: country.description,
-                slug: country.slug,
-                cities: country.all_cities.map(city => ({
-                    _id: city._id,
-                    city_name: city.title,
-                    city_packages_count: city.all_packages.length,
-                })),
-                total_cities: country.all_cities.length,
-            })),
+            return NextResponse.json({ status: 200, success: false, error: 'Continent not found' });
         }
 
+        // Get the total count of countries within the continent
+        const totalResults = continent.all_countries.length;
+
+        // Get the paginated countries
+        const countries = continent.all_countries.slice(skip, skip + limit);
+
+        // Map countries to desired format
+        const result = countries.map(country => ({
+            _id: country._id,
+            images: country.images,
+            title: country.title,
+            description: country.description,
+            slug: country.slug,
+            cities: country.all_cities.map(city => ({
+                _id: city._id,
+                city_name: city.title,
+                city_packages_count: city.all_packages.length,
+            })),
+            total_cities: country.all_cities.length,
+        }));
+
         return NextResponse.json({
-            status:200,
+            status: 200,
             success: true,
             totalResults,
             result,
             page,
             limit,
         });
-    }) 
+    });
 }

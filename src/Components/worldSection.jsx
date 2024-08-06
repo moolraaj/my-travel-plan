@@ -37,7 +37,7 @@ const World_section = () => {
   return (
     <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }} >
       <div className="grid-container">
-        {reversedContinents === null || reversedContinents === undefined ? ('no result found') : (reversedContinents.slice(0, 5).map((country, index) => (
+        {reversedContinents === null || reversedContinents.length===0 ? ('no result found') : (reversedContinents.slice(0, 5).map((country, index) => (
           <Link className="card_outer" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
             <div className="card">
               <div className="overlay">
