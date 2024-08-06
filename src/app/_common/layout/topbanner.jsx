@@ -8,7 +8,7 @@ export default function Topbanner({slug}) {
         backgroundImage: `url('/images/destinationfullbanner.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '400px', // Adjust the height as needed
+        height: '400px', 
       }}
     >
       <div className='heading_two'>

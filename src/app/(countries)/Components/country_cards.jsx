@@ -4,7 +4,7 @@ import trending from '../../../app/assets/home_images/trending.png';
 import ribbon from '../../../app/assets/home_images/ribbon.png';
 
 const Countrycard = ({ slug, continent, slugType }) => {
-  if (slugType === 'continent') {
+   
     const result = continent ? continent.result : [];
     const reverseContinent = Array.isArray(result) ? [...result].reverse() : [];
 
@@ -47,9 +47,9 @@ const Countrycard = ({ slug, continent, slugType }) => {
         </div>
       </div>
     );
-  }
+  
 
-  return null; // Return null if not slugType is 'continent'
+   
 };
 
 export default Countrycard;
