@@ -400,6 +400,7 @@ h2.top-dest-title {
 .blog-side img {
 	width: 340px;
 	height: 219px;
+	border-radius: 10px;
 }
 
 .blog-content h3 {
@@ -445,12 +446,7 @@ h2.top-dest-title {
 }
 
 
-.destination-image {
-	border-radius: 50%;
-	width: 180px;
-	height: 180px;
-	object-fit: cover;
-}
+
 
 .destination-image:hover {
 	filter: brightness(0.7);
@@ -483,6 +479,7 @@ p.price {
 .card_main_section .info h3 {
 	font-size: 22px;
 	color: #CA1E2A;
+	margin: 0px;
 }
 
 
@@ -690,10 +687,18 @@ ul.destinations-list {
 .destination-card .destination-image {
 	width: 100%;
 	height: 100%;
+    max-height: 390px;
 	object-fit: cover;
+	filter: brightness(0.5);
 	border-radius: 5px;
-}
 
+}
+.destination img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
 .destination-info {
 	position: absolute;
@@ -706,18 +711,6 @@ ul.destinations-list {
 
 .destination-card {
 	position: relative;
-}
-
-.destination-card:before {
-	content: "";
-	width: 100%;
-	height: 100%;
-	background: rgb(0 0 0 / 30%);
-	position: absolute;
-	border-radius: 5px;
-	z-index: 99;
-
-
 }
 
 .explorations-container h2 {
@@ -1343,6 +1336,7 @@ img.image-travel-expert {
     object-fit: cover;
 	border-radius: 8px;
     filter: brightness(0.7);
+	height: 100%;
 }
 .destination .info h3 {
 	margin: 0px;
@@ -1361,7 +1355,10 @@ img.image-travel-expert {
 	column-gap: 8px;
 	font-weight: 500;
 }
-
+span.trending img {
+    width: 100%;
+    height: 100%;
+}
 
 .destination .info p {
 	margin: 0px;
@@ -1797,7 +1794,7 @@ a.card_outer {
 }
 
 .image {
-	border-radius: 8px;
+	border-radius: 10px;
 }
 
 .world-country .label {
