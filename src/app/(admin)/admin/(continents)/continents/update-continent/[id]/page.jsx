@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import { toast } from 'react-toastify';
 
 function UpdateContinent({ params }) {
   const [continent, setContinent] = useState({
@@ -16,8 +17,6 @@ function UpdateContinent({ params }) {
     imagePreviewUrl: '', // This will hold the preview URL of the new image
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Add isLoading state
   const router = useRouter();
   const { id } = params;
@@ -36,7 +35,7 @@ function UpdateContinent({ params }) {
           });
           console.log('Data:', data);
         } else {
-          setError(data.message);
+          toast.error(data.message|| 'An error occurred');
         }
         setLoading(false);
       })
@@ -89,12 +88,10 @@ function UpdateContinent({ params }) {
       });
       const data = await response.json();
       if (data.success) {
-        setSuccessMessage('Continent updated successfully!');
-        setError('');
+        toast.success(data.message ||'Continent updated successfully!');
         setTimeout(() => router.push('/admin/continents'), 2000); // Redirect after success
       } else {
-        setError(data.message);
-        setSuccessMessage('');
+        toast.error(data.message || 'An error occurred');
       }
       setIsLoading(false); // End loading
     })
@@ -106,8 +103,6 @@ function UpdateContinent({ params }) {
     <div className="update-packages-container">
       <h2 className="update-packages-heading">Update Continent</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
-      {error && <p className="update-packages-error">{error}</p>}
-      {successMessage && <p className="update-packages-success">{successMessage}</p>}
       {!loading && (
         <form className="update-packages-form" onSubmit={handleSubmit}>
           <label className="update-packages-label">
