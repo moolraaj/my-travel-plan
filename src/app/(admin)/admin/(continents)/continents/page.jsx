@@ -4,9 +4,10 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function ContinentPage() {
   const [continents, setContinents] = useState([]);
@@ -56,7 +57,7 @@ function ContinentPage() {
         toast.success(data.message || 'Continent deleted successfully.');
         setIsOpen(false)
       } else {
-        toast.error(data.message|| 'An error occured');
+        toast.error(data.message || 'An error occured');
       }
     })
 
@@ -89,7 +90,7 @@ function ContinentPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={handleConfirm}
       />
-      <h2>Continents</h2>
+      <Breadcrumb path="/admin/continents"/>
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -106,6 +107,10 @@ function ContinentPage() {
             {loading ? (
               <tr>
                 <td colSpan="6" className="loading">Loading...</td>
+              </tr>
+            ) : continents.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Continents Available</td>
               </tr>
             ) : (
               continents.map(continent => (
@@ -132,6 +137,7 @@ function ContinentPage() {
               ))
             )}
           </tbody>
+
         </table>
       </div>
       <div className="pagination">

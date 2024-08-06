@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function CityPage() {
   const [cities, setCities] = useState([]);
@@ -88,7 +89,7 @@ function CityPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={confirmDelete}
       />
-      <h2>Cities</h2>
+      <Breadcrumb path="/admin/cities"/>
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -105,6 +106,10 @@ function CityPage() {
             {loading ? (
               <tr>
                 <td colSpan="6" className="loading">Loading...</td>
+              </tr>
+            ) : cities.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Cities Available</td>
               </tr>
             ) : (
               cities.map(city => (

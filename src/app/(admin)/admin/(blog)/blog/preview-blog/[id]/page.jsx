@@ -15,6 +15,7 @@ function PreviewBlog({params}) {
         slug: '',
         blog_category: '',
         file: null,
+        blog_galleries: []
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');

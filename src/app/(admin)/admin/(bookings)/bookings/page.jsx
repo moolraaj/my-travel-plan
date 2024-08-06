@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 
 function BookingPage() {
@@ -75,7 +76,7 @@ function BookingPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={confirmDelete}
       />
-      <h2>Bookings</h2>
+      <Breadcrumb path="/admin/bookings" />
       {error && <div className="error">{error}</div>}
       <div className="packages-table-container">
         <table className="packages-table">
@@ -98,6 +99,10 @@ function BookingPage() {
             {loading ? (
               <tr>
                 <td colSpan="11" className="loading">Loading...</td>
+              </tr>
+            ): bookings.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Bookings Available</td>
               </tr>
             ) : (
               bookings.map(booking => (

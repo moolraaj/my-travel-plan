@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { userActivityData, financialData, salesData, feedbackData } from '../components/mockData';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
 
 function ReportsPage() {
   const [reports, setReports] = useState({
@@ -36,7 +37,7 @@ function ReportsPage() {
 
   return (
     <div className="reports-page">
-      <h1>Reports</h1>
+      <Breadcrumb path="/admin/reports"/>
 
       {loading ? (
         <p>Loading...</p>
