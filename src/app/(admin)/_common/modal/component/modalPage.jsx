@@ -2,38 +2,74 @@
 import React from 'react';
 
 const Modal = ({ onClose, onConfirm }) => {
- 
-
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <p>Are you sure! you want to delete this item?</p>
+        <p>Are you sure you want to delete this item?</p>
         <div className="modal-actions">
           <button onClick={onConfirm} className="btn-confirm">Yes</button>
           <button onClick={onClose} className="btn-cancel">No</button>
         </div>
       </div>
-      <style jsx>{`.modal-overlay {
-    position: absolute;
-    z-index: 9999999;
-    background: #000000ad;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-}
-.modal {
-    max-width: 500px;
-    margin: auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 4px;
-    width: 100%;
-}`}</style>
+      <style jsx>{`
+        .modal-overlay {
+          position: fixed;
+          z-index: 9999;
+          background: rgba(0, 0, 0, 0.5);
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .modal {
+          max-width: 400px;
+          padding: 20px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          text-align: center;
+        }
+        .modal p {
+          margin-bottom: 20px;
+          font-size: 16px;
+          color: #333;
+        }
+        .modal-actions {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+        }
+        .btn-confirm {
+          background-color: #CF0C2A;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s ease;
+        }
+        .btn-confirm:hover {
+          background-color: #d10b25;
+        }
+        .btn-cancel {
+          background-color: #f0f0f0;
+          color: #333;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s ease;
+        }
+        .btn-cancel:hover {
+          background-color: #e0e0e0;
+        }
+      `}</style>
     </div>
   );
 };
