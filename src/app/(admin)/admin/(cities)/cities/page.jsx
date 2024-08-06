@@ -106,6 +106,10 @@ function CityPage() {
               <tr>
                 <td colSpan="6" className="loading">Loading...</td>
               </tr>
+            ) : cities.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Packages Available</td>
+              </tr>
             ) : (
               cities.map(city => (
                 <tr key={city._id}>

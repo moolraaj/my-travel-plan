@@ -99,6 +99,10 @@ function BookingPage() {
               <tr>
                 <td colSpan="11" className="loading">Loading...</td>
               </tr>
+            ): bookings.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Packages Available</td>
+              </tr>
             ) : (
               bookings.map(booking => (
                 <tr key={booking._id}>

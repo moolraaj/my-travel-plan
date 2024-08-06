@@ -90,6 +90,10 @@ function ContactsPage() {
               <tr>
                 <td colSpan="5" className="loading">Loading...</td>
               </tr>
+            ): contacts.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">No Packages Available</td>
+              </tr>
             ) : (
               contacts.map(contact => (
                 <tr key={contact._id}>

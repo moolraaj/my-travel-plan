@@ -285,7 +285,8 @@ g.recharts-layer.recharts-pie:focus{
   color: #FFD700;
 }
 
-.loading {
+.loading,
+.no-data{
   text-align: center;
   font-size: 1.5rem;
   color: #1802A0;
