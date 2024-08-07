@@ -36,15 +36,13 @@ function RecentBookings() {
       <table>
         <thead>
           <tr>
+            <th>Booking ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone Number</th>
             <th>Date</th>
             <th>Origin</th>
             <th>Destination</th>
-            <th>Travelers</th>
-            <th>Children</th>
-            <th>Message</th>
           </tr>
         </thead>
         <tbody>
@@ -55,15 +53,13 @@ function RecentBookings() {
           ) : bookings.length > 0 ? (
             bookings.map((booking) => (
               <tr key={booking._id}>
+                <td>{booking._id}</td>
                 <td>{booking.name}</td>
                 <td>{booking.email}</td>
                 <td>{booking.phone_number}</td>
                 <td>{booking.date}</td>
                 <td>{booking.origin}</td>
                 <td>{booking.destination}</td>
-                <td>{booking.traveler}</td>
-                <td>{booking.children}</td>
-                <td>{booking.message}</td>
               </tr>
             ))
           ) : (
