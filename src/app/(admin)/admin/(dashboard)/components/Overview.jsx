@@ -7,12 +7,12 @@ import Link from 'next/link';
 
 const Overview = () => {
   const [data, setData] = useState({
+    users: 0,
+    bookings: 0,
     continents: 0,
     countries: 0,
     cities: 0,
     packages: 0,
-    users: 0,
-    bookings: 0
   });
 
   const [loading, setLoading] = useState({
@@ -75,87 +75,48 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    fetchData('/api/v1/continents/get', 'continents',{ cache: 'no-store' });
-    fetchData('/api/v1/countries/get', 'countries',{ cache: 'no-store' });
-    fetchData('/api/v1/cities/get', 'cities',{ cache: 'no-store' });
-    fetchData('/api/v1/packages/get', 'packages', true,{ cache: 'no-store' });
-    fetchData('/api/v1/sendquery/queries/get', 'users',true,{ cache: 'no-store' });
-    fetchData('/api/v1/flight/queries/get', 'bookings',true,{ cache: 'no-store' });
+    fetchData('/api/v1/continents/get', 'continents', false);
+    fetchData('/api/v1/countries/get', 'countries', false);
+    fetchData('/api/v1/cities/get', 'cities', false);
+    fetchData('/api/v1/packages/get', 'packages', true);
+    fetchData('/api/v1/sendquery/queries/get', 'users', false);
+    fetchData('/api/v1/flight/queries/get', 'bookings', false);
   }, []);
 
   return (
     <div className="overview-d">
       <h2>Dashboard Overview</h2>
       <div className="overview-d-cards">
-        <div className="overview-d-card">
-          <Link href="/admin/users">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faUsers} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Users</h3>
-              <p>{loading.users ? <FontAwesomeIcon icon={faSpinner} spin /> : data.users}</p>
-            </div>
-          </Link>
-        </div>
-        <div className="overview-d-card">
-          <Link href="/admin/bookings">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCalendarCheck} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Bookings</h3>
-              <p>{loading.bookings ? <FontAwesomeIcon icon={faSpinner} spin /> : data.bookings}</p>
-            </div>
-          </Link>
-        </div>
-        <div className="overview-d-card">
-          <Link href="/admin/continents">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faGlobe} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Continents</h3>
-              <p>{loading.continents ? <FontAwesomeIcon icon={faSpinner} spin /> : data.continents}</p>
-            </div>
-          </Link>
-        </div>
-        <div className="overview-d-card">
-          <Link href="/admin/countries">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faFlag} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Countries</h3>
-              <p>{loading.countries ? <FontAwesomeIcon icon={faSpinner} spin /> : data.countries}</p>
-            </div>
-          </Link>
-        </div>
-        <div className="overview-d-card">
-          <Link href="/admin/cities">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faCity} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Cities</h3>
-              <p>{loading.cities ? <FontAwesomeIcon icon={faSpinner} spin /> : data.cities}</p>
-            </div>
-          </Link>
-        </div>
-        <div className="overview-d-card">
-          <Link href="/admin/packages">
-            <div className="icon_wrap">
-              <FontAwesomeIcon icon={faBoxOpen} className="overview-d-icon" />
-            </div>
-            <div className="data_wrap">
-              <h3>Total Packages</h3>
-              <p>{loading.packages ? <FontAwesomeIcon icon={faSpinner} spin /> : data.packages}</p>
-            </div>
-          </Link>
-        </div>
+        {Object.keys(data).map((key) => (
+          <div className="overview-d-card" key={key}>
+            <Link href={`/admin/${key}`}>
+              <div className="icon_wrap">
+                <FontAwesomeIcon icon={iconMap[key]} className="overview-d-icon" />
+              </div>
+              <div className="data_wrap">
+                <h3>Total {capitalizeFirstLetter(key)}</h3>
+                <p>{loading[key] ? <FontAwesomeIcon icon={faSpinner} spin /> : data[key]}</p>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );
+};
+
+// Helper functions
+const iconMap = {
+  users: faUsers,
+  bookings: faCalendarCheck,
+  continents: faGlobe,
+  countries: faFlag,
+  cities: faCity,
+  packages: faBoxOpen
+};
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 export default Overview;

@@ -4,12 +4,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaEye, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
- 
- 
+
+
 
 function BlogPage() {
     const [blogs, setBlogs] = useState([]);
@@ -26,17 +26,17 @@ function BlogPage() {
     const [deleteItem, setDeleteItem] = useState(null);
 
     async function fetchBlogs() {
-        return handelAsyncErrors(async()=>{
+        return handelAsyncErrors(async () => {
             const response = await fetch(`/api/v1/blogs/get?page=${currentPage}&limit=${itemsPerPage}`);
             const data = await response.json();
             if (data.success) {
                 setBlogs(data.result);
                 setTotalResults(data.totalResults); // Set totalResults from API
             }
-      
+
             setLoading(false);
         })
-           
+
     }
     useEffect(() => {
         fetchBlogs();
@@ -52,20 +52,20 @@ function BlogPage() {
     };
 
     const confirmDelete = async () => {
-        return handelAsyncErrors(async()=>{
+        return handelAsyncErrors(async () => {
             const response = await fetch(`/api/v1/blog/delete/${deleteItem}`, { method: 'DELETE' });
             const data = await response.json();
             if (data.success) {
                 fetchBlogs();
                 toast.success('Blog deleted successfully');
-                
+
             } else {
                 toast.error('Failed to delete blog');
             }
             setIsOpen(false);
         })
-           
-        
+
+
     };
 
     const handlePageChange = (page) => {
@@ -89,7 +89,14 @@ function BlogPage() {
                 onClose={() => setIsOpen(false)}
                 onConfirm={confirmDelete}
             />
-            <Breadcrumb path="/admin/Blog" />
+            <div className="package_header">
+                <Breadcrumb path="/admin/Blog" />
+                <div className="floating-plus" onClick={handleAddClick}>
+                    <FaPlus />
+                    <div className="add_tooltip">Add Blog</div>
+                </div>
+            </div>
+
             {error && <div className="error">{error}</div>}
             <div className="packages-table-container">
                 <table className="packages-table">
@@ -110,9 +117,9 @@ function BlogPage() {
                             </tr>
                         ) : blogs.length === 0 ? (
                             <tr>
-                              <td colSpan="6" className="no-data">No Blogs Available</td>
+                                <td colSpan="6" className="no-data">No Blogs Available</td>
                             </tr>
-                          ): (
+                        ) : (
                             blogs.map(blog => (
                                 <tr key={blog._id}>
                                     <td data-label="Image">
@@ -170,10 +177,6 @@ function BlogPage() {
                 >
                     {'>>'}
                 </button>
-            </div>
-            <div className="floating-plus" onClick={handleAddClick}>
-                <FaPlus />
-                <div className="tooltip">Add Blog</div>
             </div>
         </div>
     );

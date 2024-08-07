@@ -90,7 +90,15 @@ function ContinentPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={handleConfirm}
       />
-      <Breadcrumb path="/admin/continents"/>
+
+      <div className="package_header">
+        <Breadcrumb path="/admin/continents" />
+        <div className="floating-plus" onClick={handleAddClick}>
+          <FaPlus />
+          <div className="add_tooltip">Add Continent</div>
+        </div>
+      </div>
+
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -170,10 +178,6 @@ function ContinentPage() {
         >
           {'>>'}
         </button>
-      </div>
-      <div className="floating-plus" onClick={handleAddClick}>
-        <FaPlus />
-        <div className="tooltip">Add Continent</div>
       </div>
     </div>
   );
