@@ -3,6 +3,7 @@ import "./globals.css";
 import './css/style.scss'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NextAuthProvide from "@/provider/authProvider";
  
 
 
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <NextAuthProvide>
         <ToastContainer/>
         {children}
+        </NextAuthProvide>
         </body>
     </html>
   );
