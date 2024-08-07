@@ -12,7 +12,8 @@ const packagesData = [
   { slug: 'netherlands-5n-6d-7', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandthree.png' },
 ];
 
-const Allpackages = () => {
+const Allpackages = ({slug ,city }) => {
+  console.log(slug,city)
   return (
     <div className="container card_main_section">
       <div className="card_discount">
