@@ -85,7 +85,14 @@ function CountryPage() {
       onClose={()=>setIsOpen(false)}
       onConfirm={handleConfirm}
       />
+      <div className="package_header">
       <Breadcrumb path="/admin/countries"/>
+      <div className="floating-plus" onClick={handleAddClick}>
+        <FaPlus />
+        <div className="add_tooltip">Add Country</div>
+      </div>
+      </div>
+      
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -164,10 +171,6 @@ function CountryPage() {
         >
           {'>>'}
         </button>
-      </div>
-      <div className="floating-plus" onClick={handleAddClick}>
-        <FaPlus />
-        <div className="tooltip">Add Country</div>
       </div>
     </div>
   );
