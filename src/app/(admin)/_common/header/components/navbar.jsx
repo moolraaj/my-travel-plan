@@ -7,6 +7,7 @@ import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
 import Sidebar from '../../sidebar/components/sidebar';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 function AdminNavbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,6 +20,14 @@ function AdminNavbar() {
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
   };
+
+  const logoutAdmin=async()=>{
+    await signOut({
+      callbackUrl:'/admin/login',
+      redirect:true
+
+    })
+  }
 
   return (
     <div>
@@ -62,7 +71,7 @@ function AdminNavbar() {
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li><Link href="/admin/logout">Logout</Link></li>
+                    <button onClick={logoutAdmin}>logout</button>
                   </ul>
                 </div>
               )}
