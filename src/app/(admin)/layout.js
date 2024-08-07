@@ -1,5 +1,6 @@
 // /app/(admin)/layout.js
 
+import NextAuthProvide from "@/provider/authProvider";
 import AdminLayout from "./_common/layout/adminLayout";
 
 export const metadata = {
@@ -9,6 +10,9 @@ export const metadata = {
 
 export default function AdminRootLayout({ children }) {
   return (
-    <AdminLayout>{children}</AdminLayout>
+    <NextAuthProvide>
+
+      <AdminLayout>{children}</AdminLayout>
+    </NextAuthProvide>
   );
 }
