@@ -13,7 +13,7 @@ export const  DbConnect=async()=>{
             process.exit()
         }) 
     } catch (error) {
-       console.log('there is problem to connect database successfully') 
+       console.log('there is problem to connect database!') 
     }
  
 }

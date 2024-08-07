@@ -1,5 +1,8 @@
+'use '
 import Image from 'next/image';
 import Link from 'next/link';
+ 
+ 
  
  
  
@@ -8,6 +11,13 @@ import Link from 'next/link';
 
 const Explorations = ({slug,country}) => {
 
+ 
+   
+
+ 
+
+
+  
 
   
   
@@ -17,8 +27,7 @@ const Explorations = ({slug,country}) => {
   let reverseCountry=Array.isArray(result)?[...result].reverse():[]
 
 
-  console.log(`country`)
-  console.log(country)
+  
 
   return (
     <div className="explorations">
@@ -42,6 +51,7 @@ const Explorations = ({slug,country}) => {
             </Link>
             <div className="exploration-details">
              <div className='explore_l'>
+              <p>Packages {exploration.city_packages_count}</p>
               <h3>Explorations {slug}</h3>
               <p>{exploration.title}</p>
               </div>

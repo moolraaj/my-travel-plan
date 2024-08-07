@@ -31,6 +31,17 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+
+    const loadSingleCity= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/city/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
+
+
     const loadAllPackages = async () => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/packages/get`);
@@ -72,6 +83,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllContinents,
         loadSingleContinent,
         loadSingleCountry,
+        loadSingleCity,
         loadAllCountries,
         loadAllPackages,
         loadAllBlogs,

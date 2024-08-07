@@ -1,45 +1,135 @@
 import { useState } from 'react';
 import popupbg from '../../../../public/images/popup-bg.png';
-
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Login = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const orderId = searchParams.get('orderID');
+    const phoneNumber = searchParams.get('phone_number');
+    
+    const [otp, setOtp] = useState('');
+    const [user, setUser] = useState({
+        phoneNumber: '',
+        channel: 'SMS',
+        otpLength: 6,
+        expiry: 86400,
+    });
+    const [verifyOtp, setVerifyOtp] = useState(false);
 
-  const handleInputChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
+    const changeHandler = (value) => {
+        setUser({ ...user, phoneNumber: value });
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle OTP submission logic here
-    console.log('Phone Number:', phoneNumber);
-  };
+    const handleSendOtp = async (e) => {
+        e.preventDefault();
+        try {
+            const resp = await fetch('/api/v1/send-otp', {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-  return (
-    <div className="login-wrapper">
-      <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
-      <button className="close-button">×</button>
-        <div className="image-section">
-          <img src="/images/popup-img.png" alt="Travel" />   
-        </div>
-        <div className="form-section">
-          <h2>Enter Mobile Number To Personalise Your Trip</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="input-group">
-              <span>+91</span>
-              <input
-                type="text"
-                placeholder="Enter Your Phone Number"
-                value={phoneNumber}
-                onChange={handleInputChange}
-              />
+            const result = await resp.json();
+
+            if (result) {
+                router.push(`/login?orderID=${result.orderId}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
+                setVerifyOtp(true);
+            } else {
+                alert(result.error || 'Error sending OTP');
+            }
+        } catch (error) {
+            console.error('Internal server issue:', error);
+        }
+    };
+
+    const verifyOtpHandler = async (e) => {
+        e.preventDefault();
+        try {
+            const resp = await fetch('/api/v1/verify-otp', {
+                method: 'POST',
+                body: JSON.stringify({ orderId, otp, phoneNumber }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const result = await resp.json();
+            if (result.isOTPVerified===true) {
+                await saveUser(phoneNumber);
+                router.push('/');
+            } else {
+                alert(result.error || 'OTP verification failed');
+            }
+        } catch (error) {
+            console.error('Internal server issue:', error);
+        }
+    };
+
+    const saveUser = async (phoneNumber) => {
+        try {
+            const resp = await fetch('/api/v1/save-user', {
+                method: 'POST',
+                body: JSON.stringify({ phoneNumber }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const result = await resp.json();
+            if (result.success) {
+                console.log('User saved successfully');
+            } else {
+                console.log(result.message);
+            }
+        } catch (error) {
+            console.error('Error saving user:', error);
+        }
+    };
+
+    return (
+        <div className="login-wrapper">
+            <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
+                <button className="close-button">×</button>
+                <div className="image-section">
+                    <img src="/images/popup-img.png" alt="Travel" />
+                </div>
+                <div className="form-section">
+                    <h2>{verifyOtp ? 'Enter OTP to Verify Your Phone Number' : 'Enter Mobile Number To Personalize Your Trip'}</h2>
+                    <form onSubmit={verifyOtp ? verifyOtpHandler : handleSendOtp}>
+                        {verifyOtp ? (
+                            <div className="input-group">
+                                <input
+                                    type="number"
+                                    name="otp"
+                                    value={otp}
+                                    placeholder="Enter OTP"
+                                    onChange={(e) => setOtp(e.target.value)}
+                                />
+                            </div>
+                        ) : (
+                            <div className="input-group">
+                                <PhoneInput
+                                    id="phone-number"
+                                    defaultCountry="IN"
+                                    value={user.phoneNumber}
+                                    onChange={changeHandler}
+                                    placeholder="Enter Your Phone Number"
+                                />
+                            </div>
+                        )}
+                        <button type="submit">
+                            {verifyOtp ? 'Verify OTP' : 'Get OTP'}
+                        </button>
+                    </form>
+                </div>
             </div>
-            <button type="submit">Get Otp</button>
-          </form>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Login;
