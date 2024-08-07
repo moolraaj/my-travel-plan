@@ -21,7 +21,7 @@ const LatestBlog = () => {
 
   useEffect(() => {
     fetchAllBlogs();
-  }, [fetchAllBlogs]);
+  }, []);
 
   let result = data ? data.result : [];
   let reversedBlogs = Array.isArray(result) ? [...result].reverse() : [];
