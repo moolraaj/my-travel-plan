@@ -24,21 +24,21 @@ function CityPage() {
 
 
   async function fetchCities() {
-    
-      const response = await fetch(`/api/v1/cities/get?page=${currentPage}&limit=${itemsPerPage}`);
-      const data = await response.json();
-      return handelAsyncErrors(async()=>{
-        if (data.success) {
-          setCities(data.result);
-          setTotalResults(data.totalResults); // Set totalResults from API
-        }
-        else{
-          toast.error(data.message || 'An error occurred')
-        }
-        setLoading(false);
-      })
-      
-    
+
+    const response = await fetch(`/api/v1/cities/get?page=${currentPage}&limit=${itemsPerPage}`);
+    const data = await response.json();
+    return handelAsyncErrors(async () => {
+      if (data.success) {
+        setCities(data.result);
+        setTotalResults(data.totalResults); // Set totalResults from API
+      }
+      else {
+        toast.error(data.message || 'An error occurred')
+      }
+      setLoading(false);
+    })
+
+
   }
 
   useEffect(() => {
@@ -50,20 +50,20 @@ function CityPage() {
   };
 
   const confirmDelete = async () => {
-  
-        const response = await fetch(`/api/v1/city/delete/${deleteItem}`, { method: 'DELETE' });
-        return handelAsyncErrors(async()=>{
-          if (response.ok) {
-            fetchCities();
-            toast.success(response.message || 'City deleted successfully');
-            setIsOpen(false)
-          } else {
-            toast.error(response.message || 'Failed to delete city, please try again.');
-          }
-        })
+
+    const response = await fetch(`/api/v1/city/delete/${deleteItem}`, { method: 'DELETE' });
+    return handelAsyncErrors(async () => {
+      if (response.ok) {
+        fetchCities();
+        toast.success(response.message || 'City deleted successfully');
+        setIsOpen(false)
+      } else {
+        toast.error(response.message || 'Failed to delete city, please try again.');
+      }
+    })
   };
 
-  const handleDelete=(id)=>{
+  const handleDelete = (id) => {
     setIsOpen(true)
     setDeleteItem(id)
   }
@@ -89,7 +89,14 @@ function CityPage() {
         onClose={() => setIsOpen(false)}
         onConfirm={confirmDelete}
       />
-      <Breadcrumb path="/admin/cities"/>
+      <div className="package_header">
+        <Breadcrumb path="/admin/cities" />
+        <div className="floating-plus" onClick={handleAddClick}>
+          <FaPlus />
+          <div className="add_tooltip">Add City</div>
+        </div>
+      </div>
+
       <div className="packages-table-container">
         <table className="packages-table">
           <thead>
@@ -115,10 +122,10 @@ function CityPage() {
               cities.map(city => (
                 <tr key={city._id}>
                   <td data-label="Image">
-                    <img 
-                      src={`/uploads/${city.images[0].name}`} 
-                      alt={city.title} 
-                      className="package-image" 
+                    <img
+                      src={`/uploads/${city.images[0].name}`}
+                      alt={city.title}
+                      className="package-image"
                     />
                   </td>
                   <td data-label="ID">{city._id}</td>
@@ -139,14 +146,14 @@ function CityPage() {
         </table>
       </div>
       <div className="pagination">
-        <button 
+        <button
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
           className="pagination-button"
         >
           {'<<'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="pagination-button"
@@ -154,24 +161,20 @@ function CityPage() {
           {'<'}
         </button>
         <span className="pagination-info">Page {currentPage} of {totalPages}</span>
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="pagination-button"
         >
           {'>'}
         </button>
-        <button 
+        <button
           onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
           className="pagination-button"
         >
           {'>>'}
         </button>
-      </div>
-      <div className="floating-plus" onClick={handleAddClick}>
-        <FaPlus />
-        <div className="tooltip">Add City</div>
       </div>
     </div>
   );
