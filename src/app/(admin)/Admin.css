@@ -260,8 +260,9 @@ g.recharts-layer.recharts-pie:focus{
 
 .package-image {
   width: 100px;
-  height: auto;
+  height: 80px;
   border-radius: 4px;
+  object-fit: cover;
 }
 
 .actions {
@@ -907,7 +908,7 @@ g.recharts-layer.recharts-pie:focus{
 
   .package-image {
     width: 80px;
-    /* Smaller image size for small screens */
+    height: 40px;
   }
 
   .actions {
