@@ -33,7 +33,7 @@ const ExplorationsFarAway = () => {
 
   useEffect(() => {
     fetchAllLowestPriceCities()
-  }, [])
+  }, [fetchAllLowestPriceCities])
 
   let result = data ? data.result : []
   let reversedFilterCities = Array.isArray(result) ? [...result].reverse() : []
