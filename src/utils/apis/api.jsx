@@ -32,13 +32,7 @@ export const EXPORT_ALL_APIS = () => {
         });
     };
 
-    const loadSingleCity= async (slug) => {
-        return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/city/getbyslug/${slug}`);
-            let data = await resp.json();
-            return data;
-        });
-    };
+    
 
 
 
@@ -83,7 +77,6 @@ export const EXPORT_ALL_APIS = () => {
         loadAllContinents,
         loadSingleContinent,
         loadSingleCountry,
-        loadSingleCity,
         loadAllCountries,
         loadAllPackages,
         loadAllBlogs,

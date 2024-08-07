@@ -35,7 +35,6 @@ const Login = () => {
             });
 
             const result = await resp.json();
-
             if (result) {
                 router.push(`/login?orderID=${result.orderId}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
                 setVerifyOtp(true);
@@ -60,6 +59,7 @@ const Login = () => {
 
             const result = await resp.json();
             if (result.isOTPVerified===true) {
+  
                 await saveUser(phoneNumber);
                 router.push('/');
             } else {
