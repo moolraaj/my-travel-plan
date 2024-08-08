@@ -8,11 +8,14 @@ import logo from '../../../../assets/home_images/logo.png';
 import Sidebar from '../../sidebar/components/sidebar';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOverlay';
 
 function AdminNavbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -22,6 +25,7 @@ function AdminNavbar() {
   };
 
   const logoutAdmin=async()=>{
+    setLoading(true);
     await signOut({
       callbackUrl:'/admin/login',
       redirect:true
@@ -31,6 +35,7 @@ function AdminNavbar() {
 
   return (
     <div>
+      {loading && <LoadingOverlay />}
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
@@ -71,7 +76,7 @@ function AdminNavbar() {
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li><Link href=""><span onClick={logoutAdmin}>Logout</span></Link></li>
+                    <li onClick={logoutAdmin}><Link href=""><span>Logout</span></Link></li>
                   </ul>
                 </div>
               )}
