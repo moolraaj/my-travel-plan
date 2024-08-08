@@ -17,18 +17,24 @@ export default async function middleware(request) {
   const adminPrivateRoutes = ['/admin/dashboard'];
   const userPrivateRoutes = ['/dashboard'];
 
-  // Redirect admin users who are trying to access public routes
+  // Redirect admin users who are trying to access user public routes
   if (token && user.role === 'admin' && userPublicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/admin/dashboard', request.url));
   }
 
-  // Redirect users who are trying to access admin routes
-  if (token && user.role === 'user' && pathname.startsWith('/admin')) {
+  // Redirect regular users who are trying to access user public routes
+  if (token && user.role === 'user' && userPublicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL(request.headers.get('referer') || '/dashboard', request.url));
+
+  }
+
+  // Redirect users with role 'user' who are trying to access admin routes, except '/admin/login'
+  if (token && user.role === 'user' && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Redirect unauthenticated users trying to access private routes
-  if (!token && (userPrivateRoutes.includes(pathname) || pathname.startsWith('/dashboard'))) {
+  // Redirect unauthenticated users trying to access private user routes
+  if (!token && userPrivateRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

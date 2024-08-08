@@ -7,7 +7,7 @@ import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
 import Link from 'next/link';
 import LogoutPage from '@/app/_common/_logout/logoutPage';
-import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOverlay';
+// import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOverlay';
  
  
 
@@ -33,7 +33,7 @@ import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOv
 
   return (
     <div>
-      {loading && <LoadingOverlay />}
+     
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
@@ -76,7 +76,7 @@ import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOv
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li> <LogoutPage role='admin'/> </li>
+                    <li> <LogoutPage/> </li>
                   </ul>
                 </div>
               )}

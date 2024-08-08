@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 function AdminLoginPage() {
-    let router = useRouter();
+    
     let [data, setData] = useState({
         email: '',
         password: ''
@@ -19,9 +19,7 @@ function AdminLoginPage() {
         try {
             let resp = await fetch('/api/v1/admin/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                
                 body: JSON.stringify(data)
             });
 
@@ -35,7 +33,7 @@ function AdminLoginPage() {
                     redirect: true
                 });
 
-                console.log(result)
+                
 
                  
             } else {
