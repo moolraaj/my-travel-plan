@@ -76,7 +76,7 @@ function AdminNavbar() {
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li onClick={logoutAdmin}><Link href=""><span>Logout</span></Link></li>
+                    <li onClick={logoutAdmin}><span>Logout</span></li>
                   </ul>
                 </div>
               )}
