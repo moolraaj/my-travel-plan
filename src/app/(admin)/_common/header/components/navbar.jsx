@@ -5,12 +5,16 @@ import React, { useState } from 'react';
 import { FaBars, FaBell, FaGlobe, FaSearch } from 'react-icons/fa';
 import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
-import Sidebar from '../../sidebar/components/sidebar';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
-import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOverlay';
+import LogoutPage from '@/app/_common/_logout/logoutPage';
+// import LoadingOverlay from '@/app/(admin)/admin/(dashboard)/components/LoadingOverlay';
+ 
+ 
 
-function AdminNavbar() {
+ 
+ function AdminNavbar() {
+ 
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,22 +28,16 @@ function AdminNavbar() {
     setPopupVisible(!popupVisible);
   };
 
-  const logoutAdmin=async()=>{
-    setLoading(true);
-    setPopupVisible(!popupVisible);
-    await signOut({
-      callbackUrl:'/admin/login',
-      redirect:true
+  
 
-    })
-  }
 
   return (
     <div>
-      {loading && <LoadingOverlay />}
+     
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
+            
           <button className="toggle-button" onClick={toggleSidebar}>
               <FaBars />
             </button>
@@ -66,6 +64,7 @@ function AdminNavbar() {
             </div>
             <FaGlobe className="icon" />
             <div className="profile-container">
+               
               <img
                 src="https://via.placeholder.com/40" // Placeholder profile photo
                 alt="Profile"
@@ -75,9 +74,9 @@ function AdminNavbar() {
               {popupVisible && (
                 <div className="profile-popup">
                   <ul>
-                    <li onClick={togglePopup}><Link href="/admin/profile">View Profile</Link></li>
-                    <li onClick={togglePopup}><Link href="/admin/settings">Settings</Link></li>
-                    <li onClick={logoutAdmin}><span>Logout</span></li>
+                    <li><Link href="/admin/profile">View Profile</Link></li>
+                    <li><Link href="/admin/settings">Settings</Link></li>
+                    <li> <LogoutPage/> </li>
                   </ul>
                 </div>
               )}
