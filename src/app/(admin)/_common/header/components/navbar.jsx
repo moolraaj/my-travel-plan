@@ -26,6 +26,7 @@ function AdminNavbar() {
 
   const logoutAdmin=async()=>{
     setLoading(true);
+    setPopupVisible(!popupVisible);
     await signOut({
       callbackUrl:'/admin/login',
       redirect:true
@@ -74,8 +75,8 @@ function AdminNavbar() {
               {popupVisible && (
                 <div className="profile-popup">
                   <ul>
-                    <li><Link href="/admin/profile">View Profile</Link></li>
-                    <li><Link href="/admin/settings">Settings</Link></li>
+                    <li onClick={togglePopup}><Link href="/admin/profile">View Profile</Link></li>
+                    <li onClick={togglePopup}><Link href="/admin/settings">Settings</Link></li>
                     <li onClick={logoutAdmin}><span>Logout</span></li>
                   </ul>
                 </div>
