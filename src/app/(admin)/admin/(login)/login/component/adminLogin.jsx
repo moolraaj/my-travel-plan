@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import logo from '@/app/assets/home_images/logo.png'
 
 function AdminLoginPage() {
     let router = useRouter();
@@ -45,13 +46,16 @@ function AdminLoginPage() {
     };
 
     return (
-        <>
+        <div className="admin_login_container">
+            <div className="admin_login_logo">
+                <img src={logo.src} />
+            </div>
             <h1>Admin Login</h1>
-            <input type="email" name="email" value={data.email} onChange={onChangeHandler} />
-            <input type="password" name="password" value={data.password} onChange={onChangeHandler} />
+            <input type="email" name="email" placeholder="Email" value={data.email} onChange={onChangeHandler} />
+            <input type="password" name="password" placeholder="Password" value={data.password} onChange={onChangeHandler} />
             <button onClick={logedInAdmin}>Login</button>
-            {error && <p>{error}</p>}
-        </>
+            {error && <p className="admin_login_error">{error}</p>}
+        </div>
     );
 }
 

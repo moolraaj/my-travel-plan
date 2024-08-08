@@ -7,6 +7,84 @@ body{
 }
 
 
+/* Admin login style */
+
+.admin_login_page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.admin_login_inner {
+  position: relative;
+  padding: 40px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.admin_login_logo img {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+
+.admin_login_inner h1 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+.admin_login_description {
+  margin-bottom: 20px;
+  color: #777;
+}
+
+.admin_login_inner input {
+  display: block;
+  width: -webkit-fill-available;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.admin_login_inner button {
+  width: 100%;
+  padding: 10px;
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.admin_login_inner button:hover {
+  background: #005bb5;
+}
+
+.admin_login_error {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* admin style ends here */
+
+
 .admin_layout {
   max-width: 1520px;
   margin: 100px auto 50px auto;
