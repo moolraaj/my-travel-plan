@@ -1,56 +1,58 @@
 import { DbConnect } from '@/database/database';
-import AdminModel from '@/model/adminModel';
+import OtpUserModel from '@/model/otpUser';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions = {
-    pages: {
-        signIn: '/admin/login',
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = {
+          email: user.email,
+          role: user.role || 'user',
+          phoneNumber: user.phoneNumber,
+        };
+      }
+      return token;
     },
-    callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.user = {
-                    email: user.email,
-                    role: user.role || 'user',  
-                };
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            session.user = {
-                email: token.user.email,
-                role: token.user.role,  
-            };
-            return session;
-        },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
     },
-    providers: [
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-                email: {
-                    label: 'Email',
-                    type: 'email',
-                    placeholder: 'Enter your email',
-                },
-                password: {
-                    label: 'Password',
-                    type: 'password',
-                    placeholder: 'Enter your password',
-                },
-            },
-            async authorize(credentials) {
-                await DbConnect();
-                const admin = await AdminModel.findOne({ email: credentials?.email });
+  },
+  providers: [
+    CredentialsProvider({
+      name: 'User Credentials',
+      credentials: {
+        phoneNumber: {
+          label: 'Phone Number',
+          type: 'text',
+          placeholder: 'Enter your phone number',
+        },
+        otp: {
+          label: 'OTP',
+          type: 'text',
+          placeholder: 'Enter your OTP',
+        },
+      },
+      async authorize(credentials) {
+        await DbConnect();
+        const user = await OtpUserModel.findOne({ phoneNumber: credentials?.phoneNumber });
 
-                if (admin) {
-                    return admin;
-                } else {
-                    return null;
-                }
-            },
-        }),
-    ],
+        if (user) {
+          return {
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: 'user',
+          };
+        } else {
+          return null;
+        }
+      },
+    }),
+  ],
 };
 
 export default authOptions;

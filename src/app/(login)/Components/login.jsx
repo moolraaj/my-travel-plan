@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import popupbg from '../../../../public/images/popup-bg.png';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 const Login = () => {
     const router = useRouter();
@@ -56,12 +56,23 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             const result = await resp.json();
-            if (result.isOTPVerified===true) {
-  
-                await saveUser(phoneNumber);
-                router.push('/');
+            console.log('OTP Verification Result:', result); // Log result
+            if (result.isOTPVerified === true) {
+                const signInResult = await signIn('credentials', {
+                    phoneNumber: phoneNumber,
+                    redirect: false,
+                });
+                console.log('Sign-In Result:', signInResult); // Log sign-in result
+    
+                if (signInResult.error) {
+                    alert('Sign-in failed: ' + signInResult.error);
+                } else {
+                    // Optionally save user if needed
+                    await saveUser(phoneNumber);
+                    router.push('/dashboard'); // Redirect if needed
+                }
             } else {
                 alert(result.error || 'OTP verification failed');
             }
@@ -69,6 +80,7 @@ const Login = () => {
             console.error('Internal server issue:', error);
         }
     };
+    
 
     const saveUser = async (phoneNumber) => {
         try {
@@ -93,7 +105,7 @@ const Login = () => {
 
     return (
         <div className="login-wrapper">
-            <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
+            <div className="login-modal" style={{ backgroundImage: `url(/images/popup-bg.png)` }}>
                 <button className="close-button">×</button>
                 <div className="image-section">
                     <img src="/images/popup-img.png" alt="Travel" />
