@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
+import { FaEye } from 'react-icons/fa';
 
 function RecentBookings() {
   const [bookings, setBookings] = useState([]);
@@ -69,9 +70,11 @@ function RecentBookings() {
           )}
         </tbody>
       </table>
+      <div className='view_recent_bookings'>
       <button onClick={() => router.push('/admin/bookings')}>
-        View All
+      <FaEye /> View All
       </button>
+      </div>
     </div>
   );
 }

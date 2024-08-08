@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Overview = () => {
   const [data, setData] = useState({
-    users: 0,
+    contacts: 0,
     bookings: 0,
     continents: 0,
     countries: 0,
@@ -20,7 +20,7 @@ const Overview = () => {
     countries: true,
     cities: true,
     packages: true,
-    users: true,
+    contacts: true,
     bookings: true
   });
 
@@ -79,7 +79,7 @@ const Overview = () => {
     fetchData('/api/v1/countries/get', 'countries', false);
     fetchData('/api/v1/cities/get', 'cities', false);
     fetchData('/api/v1/packages/get', 'packages', true);
-    fetchData('/api/v1/sendquery/queries/get', 'users', false);
+    fetchData('/api/v1/sendquery/queries/get', 'contacts', false);
     fetchData('/api/v1/flight/queries/get', 'bookings', false);
   }, []);
 
@@ -107,7 +107,7 @@ const Overview = () => {
 
 // Helper functions
 const iconMap = {
-  users: faUsers,
+  contacts: faUsers,
   bookings: faCalendarCheck,
   continents: faGlobe,
   countries: faFlag,

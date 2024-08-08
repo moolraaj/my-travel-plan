@@ -116,14 +116,16 @@
     border-bottom: none;
   }
   
-  .profile-popup a {
+  .profile-popup a,
+  .profile-popup span{
     display: block;
     padding: 10px;
     color: #333;
     text-decoration: none;
   }
   
-  .profile-popup a:hover {
+  .profile-popup a:hover,
+  .profile-popup span:hover{
     background-color: #f0f0f0;
   }
   
