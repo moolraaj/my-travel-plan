@@ -1,11 +1,11 @@
-'use client'
-import { useRouter } from 'next/navigation';
+'use client';
+ 
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import logo from '@/app/assets/home_images/logo.png'
 
 function AdminLoginPage() {
-    let router = useRouter();
+ 
     let [data, setData] = useState({
         email: '',
         password: ''
@@ -28,15 +28,13 @@ function AdminLoginPage() {
 
             let result = await resp.json();
 
-            if (result) {
-                 await signIn('credentials', {
+            if (result.success) {
+                await signIn('credentials', {
                     email: data.email,
                     password: data.password,
                     callbackUrl: '/admin/dashboard',
                     redirect: true
                 });
-
-                 
             } else {
                 setError(result.message || 'An error occurred');
             }

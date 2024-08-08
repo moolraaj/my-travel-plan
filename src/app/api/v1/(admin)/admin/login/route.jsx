@@ -8,6 +8,10 @@ export async function POST(req) {
         let payload = await req.json();
         let { email, password } = payload;
 
+        if(!email||!password){
+            return NextResponse.json({status:200,success:false,message:'please provide valid credentials'})
+        }
+
         // Check if the email exists
         let existingAdmin = await AdminModel.findOne({ email: email });
 

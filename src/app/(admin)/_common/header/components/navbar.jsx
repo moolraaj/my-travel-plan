@@ -5,11 +5,15 @@ import React, { useState } from 'react';
 import { FaBars, FaBell, FaGlobe, FaSearch } from 'react-icons/fa';
 import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
-import Sidebar from '../../sidebar/components/sidebar';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import LogoutPage from '@/app/_common/_logout/logoutPage';
+ 
+ 
 
-function AdminNavbar() {
+ 
+ function AdminNavbar() {
+ 
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
 
@@ -21,19 +25,15 @@ function AdminNavbar() {
     setPopupVisible(!popupVisible);
   };
 
-  const logoutAdmin=async()=>{
-    await signOut({
-      callbackUrl:'/admin/login',
-      redirect:true
+  
 
-    })
-  }
 
   return (
     <div>
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
+            
           <button className="toggle-button" onClick={toggleSidebar}>
               <FaBars />
             </button>
@@ -60,6 +60,7 @@ function AdminNavbar() {
             </div>
             <FaGlobe className="icon" />
             <div className="profile-container">
+               
               <img
                 src="https://via.placeholder.com/40" // Placeholder profile photo
                 alt="Profile"
@@ -71,7 +72,7 @@ function AdminNavbar() {
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li><Link href=""><span onClick={logoutAdmin}>Logout</span></Link></li>
+                    <li> <LogoutPage role='admin'/> </li>
                   </ul>
                 </div>
               )}
