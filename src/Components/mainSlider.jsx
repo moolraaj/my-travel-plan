@@ -29,10 +29,9 @@ const Slider = () => {
     <div className="slider">
       <Image className='slider-images'
         src={images[currentIndex].src}
-        alt={images[currentIndex].alt}
-        layout="fill"
-        objectFit="cover"
-      />
+        alt={images[currentIndex].alt || "loading..."}
+        priority
+        />
       <div className="content">
         <h1 className="title">We Fell Travel</h1>
         <div className="searchContainer">

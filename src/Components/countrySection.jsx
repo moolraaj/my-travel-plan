@@ -1,49 +1,37 @@
-'use client'
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Image1 from '../../src/app/assets/home_images/contone.png';
-import Image2 from '../../src/app/assets/home_images/conttwo.png';
-import Image3 from '../../src/app/assets/home_images/contthree.png';
-import Image4 from '../../src/app/assets/home_images/contfour.png';
-import Image5 from '../../src/app/assets/home_images/contfive.png';
-import Image6 from '../../src/app/assets/home_images/contsix.png';
+import emptyImage from '../app/assets/empty.jpg';
 import exploresection from '../app/assets/home_images/explore-bg.png';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 
-const destinations = [
-  { name: 'Greece', price: 'From ₹ 37,500', imageUrl: Image1 },
-  { name: 'Hungary', price: 'From ₹ 35,500', imageUrl: Image2 },
-  { name: 'Iceland', price: 'From ₹ 39,550', imageUrl: Image3 },
-  { name: 'Italy', price: 'From ₹ 30,550', imageUrl: Image4 },
-  { name: 'Luxembourg', price: 'From ₹ 25,440', imageUrl: Image5 },
-  { name: 'Netherlands', price: 'From ₹ 15,440', imageUrl: Image6 }
-];
+function ExplorationsFarAway() {
+  let api = EXPORT_ALL_APIS();
+  let [data, setData] = useState([]);
+  let [loading, setLoading] = useState(true);
 
-
-
-const ExplorationsFarAway = () => {
-  let [data, setData] = useState([])
-  let api = EXPORT_ALL_APIS()
-
-  let fetchAllLowestPriceCities = async () => {
-    let resp = await api.loadAllCitiesWithLowestPrices()
-    setData(resp)
-  }
+  const fetchAllLowestPriceCities = async () => {
+    try {
+      let resp = await api.loadAllCitiesWithLowestPrices();
+      setData(resp.result || []);
+    } catch (error) {
+      console.error('Failed to load cities:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchAllLowestPriceCities()
-  }, [])
+    fetchAllLowestPriceCities();
+  }, []);
 
-  let result = data ? data.result : []
-  let reversedFilterCities = Array.isArray(result) ? [...result].reverse() : []
-
-  console.log(result)
-
+  let reversedFilterCities = Array.isArray(data) ? [...data].reverse() : [];
 
   return (
     <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})` }}>
-      <div className="explorations-container">
+      <div className="explorations-container container inner-w-container">
         <h2 className='same_heading'>Explorations Far Away</h2>
         <div className='link_heading'>
           <p>Ideal for 5-14 days trip</p>
@@ -51,29 +39,63 @@ const ExplorationsFarAway = () => {
         </div>
 
         <div className="destinations-grid">
-          {reversedFilterCities === null || reversedFilterCities.length === 0 ? ('no result found') : (reversedFilterCities.slice(0, 6).map((destination, index) => (
-            <div key={index} className="destination-card">
-             
-
-              {destination.images === null || destination.images === undefined ? ('no result found') : destination.images.map((e) => {
-                return <Image
-                  key={e._id}
-                  src={`/uploads/${e.name}`}
-                  alt={destination.name}
-                  className="destination-image"
-                  width={1000}
-                  height={50}
-                />
-              })}
-              <div className="destination-info">
-                <h3>{destination.title}</h3>
-                <p>From ₹ {destination.package ? destination.package.price : 0}</p>
+          {loading || reversedFilterCities.length === 0 ? (
+            <EmptyExplorationComponent />
+          ) : (
+            reversedFilterCities.slice(0, 6).map((destination) => (
+              <div key={destination._id} className="destination-card">
+                {destination.images && destination.images.length > 0 ? (
+                  destination.images.map((image) => (
+                    <Image
+                      key={image._id}
+                      src={`/uploads/${image.name}`}
+                      alt={destination.name || "loading..."}
+                      className="destination-image"
+                      width={1000}
+                      height={300}
+                    />
+                  ))
+                ) : (
+                  <Image
+                    src={emptyImage.src}
+                    alt="empty_image"
+                    className="destination-image"
+                    width={1000}
+                    height={300}
+                  />
+                )}
+                <div className="destination-info">
+                  <h3>{destination.title}</h3>
+                  <p>From ₹ {destination.package ? destination.package.price : 'N/A'}</p>
+                </div>
               </div>
-            </div>
-          )))}
+            ))
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+function EmptyExplorationComponent() {
+  return (
+    <>
+      {Array(6).fill().map((_, index) => (
+        <div key={index} className="destination-card">
+          <Image
+            src={emptyImage.src}
+            alt="Loading"
+            className="destination-image"
+            width={1000}
+            height={300}
+          />
+          <div className="destination-info">
+            <h3>loading...</h3>
+            <p>loading...</p>
+          </div>
+        </div>
+      ))}
+    </>
   );
 }
 

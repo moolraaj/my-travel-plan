@@ -1,68 +1,93 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import triangle from '../app/assets/home_images/triangle.png';
+'use client';
 
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import triangle from '../app/assets/home_images/triangle.png';
 import camerabg from '../app/assets/home_images/camera-bg.png';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
-// import './css.scss';
+import emptyImage from '../app/assets/empty.jpg';
 
- 
+function WorldSection() {
+  let api = EXPORT_ALL_APIS();
 
-
-const World_section = () => {
-
-  let [data, setData] = useState([])
-  let api = EXPORT_ALL_APIS()
-
+  let [result, setResult] = useState([]);
+  let [loading, setLoading] = useState(true);
 
   const fetchAllContinents = async () => {
-    let resp = await api.loadAllContinents()
-    setData(resp)
-  }
+    try {
+      let resp = await api.loadAllContinents();
+      setResult(resp.result || []);
+    } catch (error) {
+      console.error('Failed to load continents:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchAllContinents()
-  }, [])
+    fetchAllContinents();
+  }, []);
 
-  let result = data ? data.result : [];
-
-
-   
-
-  let reversedContinents = Array.isArray(result) ? [...result].reverse() : [];
-
+  let reversedContinents = [...result].reverse();
 
   return (
-    <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }} >
+    <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }}>
       <div className="grid-container">
-        {reversedContinents === null || reversedContinents.length===0 ? ('no result found') : (reversedContinents.slice(0, 5).map((country, index) => (
-          <Link className="card_outer" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
-            <div className="card">
-              <div className="overlay">
-                <div className="label">{country.total_countries}-Countries <img src={triangle.src} /> </div>
+        {loading || reversedContinents.length === 0 ? (
+          <EmptyComponent />
+        ) : (
+          reversedContinents.slice(0, 5).map((country, index) => (
+            <Link className="card_outer" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
+              <div className="card">
+                <div className="overlay">
+                  <div className="label">{country.total_countries} Countries <Image src={triangle} alt="Triangle" style={{width: 'auto', height: 'auto'}}/></div>
+                </div>
+                {country.images && country.images.length > 0 ? (
+                  <Image
+                    src={`/uploads/${country.images[0].name}`}
+                    alt={country.name || "loading..."}
+                    style={{ width: '100%', height: '100%' }}
+                    width={1000}
+                    height={300}
+                    className="image"
+                  />
+                ) : (
+                  <div className="no-image">No Image Available</div>
+                )}
+                <div className="text">{country.title}</div>
               </div>
-
-              {country.images === null || country.images === undefined ? ('no result found') : country.images.map((e) => {
-                return <Image
-                  key={e._id}
-                  src={`/uploads/${e.name}`}
-                  alt={country.name}
-                  style={{ width: '100%', height: '100%' }}
-                  width={1000}
-                  height={300}
-                  className="image"
-                />
-              })}
-
-              <div className="text">{country.title}</div>
-            </div>
-          </Link>
-        )))}
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );
-};
+}
 
-export default World_section;
+function EmptyComponent() {
+  return (
+    <>
+      {Array(5).fill().map((_, index) => (
+        <Link className="card_outer" href="#" key={index}>
+          <div className="card">
+            <div className="overlay">
+              <div className="label">Loading... <Image src={triangle} alt="Triangle"  style={{width: 'auto', height: 'auto'}}/></div>
+            </div>
+            <Image
+              src={emptyImage.src}
+              alt="Loading"
+              style={{ width: '100%', height: '100%' }}
+              width={1000}
+              height={300}
+              className="image"
+            />
+            <div className="text">Loading...</div>
+          </div>
+        </Link>
+      ))}
+    </>
+  );
+}
+
+export default WorldSection;

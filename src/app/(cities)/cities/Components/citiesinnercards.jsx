@@ -1,66 +1,76 @@
-'use '
 import Image from 'next/image';
 import Link from 'next/link';
- 
- 
- 
- 
- 
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+import { useEffect, useState } from 'react';
 
+const Explorations = ({ slug, country, continent}) => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  const api = EXPORT_ALL_APIS();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await api.loadSingleCountry(slug);
+        if (result.success) {
+          setData(result.result);
+        } else {
+          setError('No data found');
+        }
+      } catch (error) {
+        setError('An error occurred while fetching data');
+      }
+    };
 
-const Explorations = ({slug,country}) => {
+    fetchData();
+  }, [slug]);
 
- 
-   
+  if (error) {
+    return <div>{error}</div>;
+  }
 
- 
-
-
-  
-
-  
-  
-
-
-  let result=country?country.result:[]
-  let reverseCountry=Array.isArray(result)?[...result].reverse():[]
-
-
-  
+  if (data.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="explorations">
-        <div className="explorations-grid">
-        {reverseCountry===null||reverseCountry.length===0?('no result found'):(reverseCountry.map((exploration, index) => (
-          <div key={index} className="exploration-item">
-          <Link href={`/${slug}/${exploration.slug}`}>
-           
-            
-            {exploration.images ? exploration.images.map((e) => (
-                  <Image
-                    key={e._id}
-                    src={`/uploads/${e.name}`}
-                    alt={country.name}
-                    width={400}
-                    height={330}
-                    className="image"
-                  />
-                )) : 'no image found'}
-            
-            </Link>
-            <div className="exploration-details">
-             <div className='explore_l'>
-              <p>Packages {exploration.city_packages_count}</p>
-              <h3>Explorations {slug}</h3>
-              <p>{exploration.title}</p>
-              </div>
-              <div className='icon_custom'>
-                <img src='/images/arrowu.png' alt='images'/>
+      <div className="explorations-grid">
+        {data.length === 0 ? (
+          'No result found'
+        ) : (
+          data.map((exploration, index) => (
+            <div key={index} className="exploration-item">
+              <Link href={`/${continent.slug}/${country.slug}/${exploration.slug}`}>
+                  {exploration.images ? (
+                    exploration.images.map((e) => (
+                      <Image
+                        key={e._id}
+                        src={`/uploads/${e.name}`}
+                        alt={exploration.title}
+                        width={400}
+                        height={330}
+                        className="image"
+                      />
+                    ))
+                  ) : (
+                    'No image found'
+                  )}
+                
+              </Link>
+              <div className="exploration-details">
+                <div className="explore_l">
+                  <p>Packages {exploration.city_packages_count}</p>
+                  <h3>Explorations in {country.title}</h3>
+                  <p>{exploration.title}</p>
+                </div>
+                <div className="icon_custom">
+                  <img src="/images/arrowu.png" alt="arrow" />
+                </div>
               </div>
             </div>
-          </div>
-        )))}
+          ))
+        )}
       </div>
     </div>
   );

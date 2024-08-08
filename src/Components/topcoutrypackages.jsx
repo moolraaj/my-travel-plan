@@ -1,30 +1,35 @@
-'use client'
-import Image from 'next/image';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import trending from '../app/assets/home_images/trending.png';
 import ribbon from '../app/assets/home_images/ribbon.png';
 import fishbg from '../app/assets/home_images/fish-bg.png';
-import { useEffect, useState } from 'react';
+import emptyImage from '../app/assets/empty.jpg';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 
+function Destinations() {
+  let api = EXPORT_ALL_APIS();
+  let [data, setData] = useState([]);
+  let [loading, setLoading] = useState(true);
 
- 
-
-const Destinations = () => {
-  let api = EXPORT_ALL_APIS()
-  let [data, setData] = useState([])
-  let fetchAllCountries = async () => {
-    let resp = await api.loadAllCountries()
-    setData(resp)
-  }
+  const fetchAllCountries = async () => {
+    try {
+      let resp = await api.loadAllCountries();
+      setData(resp.result || []);
+    } catch (error) {
+      console.error('Failed to load countries:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchAllCountries()
-  }, [])
+    fetchAllCountries();
+  }, []);
 
-  let result = data ? data.result : [];
-
-  let reversedCountries = Array.isArray(result) ? [...result].reverse() : [];
+  let reversedCountries = Array.isArray(data) ? [...data].reverse() : [];
 
   return (
     <div className='top-destination' style={{ backgroundImage: `url(${fishbg.src})` }}>
@@ -32,48 +37,90 @@ const Destinations = () => {
         <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations expert-travel">
-          {reversedCountries===null||reversedCountries.length===0?('no result found'):(reversedCountries.slice(0,8).map((country, index) => (
-            <Link href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={country._id}>
-
-            <div key={index} className="destination">
-             
-              {country.images === null || country.images === undefined ? ('no result found') : country.images.map((e) => {
-                return <Image
-                  key={e._id}
-                  src={`/uploads/${e.name}`}
-                  alt={country.name}
-                  width={1000}
-                  height={300}
-                  className="image-travel-expert"
-                />
-              })}
-
-              <span
-                style={{
-                  backgroundImage: `url(${ribbon.src})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                }}
-                className="trending"
-              >
-                <img src={trending.src}></img>
-                TREADING
-              </span>
-
-              
-              <div className="info">
-                <h3>{country.title}</h3>
-                <p>{country.countries} Packages</p>
-
-              </div>
-            </div>
-            </Link>
-          )))}
+          {loading || reversedCountries.length === 0 ? (
+            <EmptyDestinationComponent />
+          ) : (
+            reversedCountries.slice(0, 8).map((country) => (
+              <Link href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={country._id}>
+                <div className="destination">
+                  {country.images && country.images.length > 0 ? (
+                    country.images.map((image) => (
+                      <Image
+                        key={image._id}
+                        src={`/uploads/${image.name}`}
+                        alt={country.name || "loading..."}
+                        width={1000}
+                        height={300}
+                        className="image-travel-expert"
+                      />
+                    ))
+                  ) : (
+                    <Image
+                      src={emptyImage.src}
+                      alt="No Image"
+                      width={1000}
+                      height={300}
+                      className="image-travel-expert"
+                    />
+                  )}
+                  <span
+                    style={{
+                      backgroundImage: `url(${ribbon.src})`,
+                      backgroundSize: 'cover',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                    className="trending"
+                  >
+                    <img src={trending.src} alt="Trending" />
+                    TREADING
+                  </span>
+                  <div className="info">
+                    <h3>{country.title}</h3>
+                    <p>{country.countries} Packages</p>
+                  </div>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
-
       </div>
     </div>
   );
-};
+}
+
+function EmptyDestinationComponent() {
+  return (
+    <>
+      {Array(8).fill().map((_, index) => (
+        <Link href="#" className="destination" key={index}>
+          <div className="destination">
+            <Image
+              src={emptyImage.src}
+              alt="Loading"
+              width={1000}
+              height={300}
+              className="image-travel-expert"
+              style={{ width: '100%', height: '100%' }}
+            />
+            <span
+              style={{
+                backgroundImage: `url(${ribbon.src})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+              }}
+              className="trending"
+            >
+              loading...
+            </span>
+            <div className="info">
+              <h3>loading...</h3>
+              <p>loading...</p>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </>
+  );
+}
 
 export default Destinations;
