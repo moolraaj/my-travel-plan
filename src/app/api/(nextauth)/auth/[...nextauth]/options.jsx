@@ -1,16 +1,18 @@
 import { DbConnect } from '@/database/database';
 import AdminModel from '@/model/adminModel';
+
+import OtpUserModel from '@/model/otpUser';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions = {
     pages: {
-        signIn: '/admin/login',
+        signIn: '/login',
     },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
                 token.user = {
-                    email: user.email,
+                    phoneNumber: user.phoneNumber,
                     role: user.role || 'user',  
                 };
             }
@@ -18,38 +20,61 @@ export const authOptions = {
         },
         async session({ session, token }) {
             session.user = {
-                email: token.user.email,
-                role: token.user.role,  
+                phoneNumber: token.user.phoneNumber,
+                role: token.user.role,
             };
             return session;
         },
     },
     providers: [
         CredentialsProvider({
-            name: 'Credentials',
+            name: 'User Credentials',
             credentials: {
-                email: {
-                    label: 'Email',
-                    type: 'email',
-                    placeholder: 'Enter your email',
-                },
-                password: {
-                    label: 'Password',
-                    type: 'password',
-                    placeholder: 'Enter your password',
-                },
+                phoneNumber: {
+                    label: 'phone number',
+                    type: 'text',
+                    placeholder: 'Enter your phone number',
+                }
+             
             },
             async authorize(credentials) {
                 await DbConnect();
-                const admin = await AdminModel.findOne({ email: credentials?.email });
+                const user = await OtpUserModel.findOne({ phoneNumber: credentials?.phoneNumber });
 
-                if (admin) {
-                    return admin;
+                if (user) {
+                    return user;
                 } else {
                     return null;
                 }
             },
         }),
+
+        CredentialsProvider({
+          name: 'Admin Credentials',
+          credentials: {
+              email: {
+                  label: 'email',
+                  type: 'email',
+                  placeholder: 'Enter your email address',
+              },
+              password: {
+                  label: 'password',
+                  type: 'password',
+                  placeholder: 'Enter your password',
+              }
+           
+          },
+          async authorize(credentials) {
+              await DbConnect();
+              const admin = await AdminModel.findOne({ email: credentials?.email });
+
+              if (admin) {
+                  return admin;
+              } else {
+                  return null;
+              }
+          },
+      }),
     ],
 };
 
