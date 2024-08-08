@@ -58,24 +58,16 @@ const Login = () => {
             });
     
             const result = await resp.json();
-            console.log('OTP Verification Result:', result); // Log result
-            if (result.isOTPVerified === true) {
-                const signInResult = await signIn('credentials', {
-                    phoneNumber: phoneNumber,
-                    redirect: false,
-                });
-                console.log('Sign-In Result:', signInResult); // Log sign-in result
-    
-                if (signInResult.error) {
-                    alert('Sign-in failed: ' + signInResult.error);
-                } else {
-                    // Optionally save user if needed
-                    await saveUser(phoneNumber);
-                    router.push('/dashboard'); // Redirect if needed
-                }
-            } else {
-                alert(result.error || 'OTP verification failed');
-            }
+         
+             if(result.isOTPVerified === true){
+                
+               await signIn('credentials',{
+                
+                phoneNumber,
+                redirect:true
+               })
+               console.log('otp')
+             }
         } catch (error) {
             console.error('Internal server issue:', error);
         }
