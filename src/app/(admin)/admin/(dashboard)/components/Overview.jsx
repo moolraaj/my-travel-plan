@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity, faSpinner, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 const Overview = () => {
   const [data, setData] = useState({
+    users: 0,
     contacts: 0,
     bookings: 0,
     continents: 0,
@@ -16,6 +17,7 @@ const Overview = () => {
   });
 
   const [loading, setLoading] = useState({
+    users: true,
     continents: true,
     countries: true,
     cities: true,
@@ -81,6 +83,7 @@ const Overview = () => {
     fetchData('/api/v1/packages/get', 'packages', true);
     fetchData('/api/v1/sendquery/queries/get', 'contacts', false);
     fetchData('/api/v1/flight/queries/get', 'bookings', false);
+    fetchData('/api/v1/otpuser/getallusers', 'users', true);
   }, []);
 
   return (
@@ -107,7 +110,8 @@ const Overview = () => {
 
 // Helper functions
 const iconMap = {
-  contacts: faUsers,
+  users: faUsers,
+  contacts: faPhoneAlt,
   bookings: faCalendarCheck,
   continents: faGlobe,
   countries: faFlag,
