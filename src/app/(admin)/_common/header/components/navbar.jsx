@@ -16,7 +16,9 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -30,6 +32,7 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
 
   return (
     <div>
+      {loading && <LoadingOverlay />}
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
