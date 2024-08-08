@@ -1,35 +1,33 @@
-import AdminModel from "@/model/adminModel";
-import { NextResponse } from "next/server";
+import { DbConnect } from '@/database/database';
+import AdminModel from '@/model/adminModel';
 import bcryptjs from 'bcryptjs';
-import { handelAsyncErrors } from "@/helpers/asyncErrors";
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-    return handelAsyncErrors(async () => {
-        let payload = await req.json();
-        let { email, password } = payload;
+    try {
+        const payload = await req.json();
+        const { email, password } = payload;
 
-        if(!email||!password){
-            return NextResponse.json({status:200,success:false,message:'please provide valid credentials'})
+        if (!email || !password) {
+            return NextResponse.json({ status: 400, success: false, message: 'Please provide valid credentials' });
         }
 
-        // Check if the email exists
-        let existingAdmin = await AdminModel.findOne({ email: email });
+        await DbConnect();
+        const admin = await AdminModel.findOne({ email });
 
-        if (!existingAdmin) {
-            return NextResponse.json({ status: 404, success: false, message: 'Email does not exist' });
+        if (!admin) {
+            return NextResponse.json({ status: 404, success: false, message: 'Admin not found' });
         }
 
-        // Verify the password
-        let isPasswordMatch = await bcryptjs.compare(password, existingAdmin.password);
+        const isPasswordMatch = await bcryptjs.compare(password, admin.password);
 
         if (!isPasswordMatch) {
             return NextResponse.json({ status: 401, success: false, message: 'Invalid password' });
         }
 
-        return NextResponse.json({
-            status: 200,
-            message: 'Admin logged in successfully',
-            result: existingAdmin
-        });
-    });
+        return NextResponse.json({ status: 200, success: true, result: admin });
+    } catch (error) {
+        console.error('Error logging in admin:', error);
+        return NextResponse.json({ status: 500, success: false, message: 'Internal server error' });
+    }
 }

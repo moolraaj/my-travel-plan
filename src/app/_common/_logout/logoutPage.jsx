@@ -2,10 +2,10 @@
 import { signOut } from 'next-auth/react'
 import React from 'react'
 
-function LogoutPage({ role }) {
+function LogoutPage() {
     const logoutHandler = async () => {
         await signOut({
-            callbackUrl: role == 'admin' ? '/admin/login' : '/login',
+            callbackUrl: '/login',
             redirect: true
         })
     }
@@ -13,7 +13,7 @@ function LogoutPage({ role }) {
     return (
         <>
       
-            <span onClick={logoutHandler}>logout</span>
+            <button onClick={logoutHandler}>logout</button>
 
         </>
     )
