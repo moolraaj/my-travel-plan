@@ -3,8 +3,10 @@ import AdminLoginPage from './component/adminLogin'
 
 function page() {
   return (
-    <div>
+    <div className='admin_login_page'>
+      <div className="admin_login_inner">
       <AdminLoginPage/>
+      </div>
     </div>
   )
 }
