@@ -22,7 +22,7 @@ const ExploreDestinations = () => {
             <div key={index} className="destination">
               <Image
                 src={destination.imgSrc}
-                alt={destination.label}
+                alt={destination.label || "loading..."}
                 width={100}
                 height={100}
                 className="destination-image"

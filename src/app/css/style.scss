@@ -693,6 +693,9 @@ ul.destinations-list {
 	border-radius: 5px;
 
 }
+.country_destination img{
+	border-radius: 5px !important;
+}
 .destination img {
     width: 180px;
     height: 180px;
@@ -1326,6 +1329,7 @@ h2.same_heading {
 .destination {
 	position: relative;
 	width: 100%;
+	height: 100%;
     flex: 1 0 15%;
 	margin: 10px;
 	text-align: center;
