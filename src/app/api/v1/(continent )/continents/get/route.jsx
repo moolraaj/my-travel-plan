@@ -9,8 +9,8 @@ import cache from 'memory-cache';
 DbConnect();
 
 export async function GET(req) {
-  const cacheKey = 'continentModel'; // Unique cache key for this data
-  const cacheTTL = 10 * 60 * 1000; // Cache Time-To-Live (10 minutes)
+  const cacheKey = 'continentModel';  
+  const cacheTTL = 10 * 60 * 1000;  
   
   // Check if data is cached
   const cachedData = cache.get(cacheKey);
