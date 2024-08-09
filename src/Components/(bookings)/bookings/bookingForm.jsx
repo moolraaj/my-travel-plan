@@ -210,7 +210,7 @@ function BookingForm ({setOpenBookingForm}){
           <span className='error_field'>{error.message}</span>
         </div>
         </div>
-        <button type="submit" className="button">
+        <button type="submit" className="button" onClick={closeForm}>
           {loading ? <FormLoader /> : 'Book'}
         </button>
       </form>
