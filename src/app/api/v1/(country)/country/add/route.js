@@ -8,8 +8,8 @@ import { handelAsyncErrors } from "@/helpers/asyncErrors";
 DbConnect();
 
 export async function POST(req) {
-    // return handelAsyncErrors(async()=>{
-        // const host = req.headers.get('host');
+    return handelAsyncErrors(async()=>{
+        
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -60,7 +60,7 @@ export async function POST(req) {
         await existingContinent.save();
 
         return NextResponse.json({status:201, success: true, result });
-    // )}
+    })
     
       
 
