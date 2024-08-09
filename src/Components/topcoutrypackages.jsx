@@ -22,51 +22,41 @@ function Destinations({country,loading}) {
         <h2 className='same_heading'>Top Destination By Our Travel Experts</h2>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations expert-travel">
-          {loading || reversedCountries.length === 0 ? (
-            <EmptyDestinationComponent />
-          ) : (
-            reversedCountries.slice(0, 8).map((country) => (
-              <Link href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={country._id}>
-                <div className="destination">
-                  {country.images && country.images.length > 0 ? (
-                    country.images.map((image) => (
-                      <Image
-                        key={image._id}
-                        src={`/uploads/${image.name}`}
-                        alt={country.name || "loading..."}
-                        width={1000}
-                        height={300}
-                        className="image-travel-expert"
-                      />
-                    ))
-                  ) : (
-                    <Image
-                      src={emptyImage.src}
-                      alt="No Image"
-                      width={1000}
-                      height={300}
-                      className="image-travel-expert"
-                    />
-                  )}
-                  <span
-                    style={{
-                      backgroundImage: `url(${ribbon.src})`,
-                      backgroundSize: 'cover',
-                      backgroundRepeat: 'no-repeat',
-                    }}
-                    className="trending"
-                  >
-                    <img src={trending.src} alt="Trending" />
-                    TREADING
-                  </span>
-                  <div className="info">
-                    <h3>{country.title}</h3>
-                    <p>{country.countries} Packages</p>
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
+          {reversedCountries===null||reversedCountries===undefined?('no result found'):(reversedCountries.slice(0,8).map((country, index) => (
+            <Link className="destination" href={`/${country.slug.toLowerCase().replace(' ', '-')}`}>
+
+            <div key={index} >
+             
+              {country.images === null || country.images === undefined ? ('no result found') : country.images.map((e) => {
+                return <Image
+                  key={e._id}
+                  src={`/uploads/${e.name}`}
+                  alt={country.name}
+                  width={1000}
+                  height={300}
+                  className="image-travel-expert"
+                />
+              })}
+
+              <span
+                style={{
+                  backgroundImage: `url(${ribbon.src})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                }}
+                className="trending"
+              >
+                <img src={trending.src}></img>
+                TREADING
+              </span>
+              <div className="info">
+                <h3>{country.title}</h3>
+                <p>{country.countries} Packages</p>
+
+              </div>
+            </div>
+            </Link>
+          )))}
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ function ExplorationsFarAway({loading,city}) {
   return (
     <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})` }}>
       <div className="explorations-container container inner-w-container">
-        <h2 className='same_heading'>Explorations Far Away</h2>
+        <h2 className='same_heading'>Explore Best Cities</h2>
         <div className='link_heading'>
           <p>Ideal for 5-14 days trip</p>
           <Link href="/packages"><span className="view-all">View All Cities</span></Link>
