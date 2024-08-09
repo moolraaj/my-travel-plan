@@ -35,13 +35,13 @@ const AddContinent = () => {
       setIsLoading(false);
       return;
     }
-    try {
+    return handelAsyncErrors(async()=>{
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
       submissionData.append('slug', slug);
       submissionData.append('file', file);
-      
+
       const res = await fetch('/api/v1/continent/add', {
         method: 'POST',
         body: submissionData,
@@ -57,13 +57,7 @@ const AddContinent = () => {
       }
   
     setIsLoading(false);
-      
-    } catch (error) {
-      setIsLoading(false);
-      toast.error( 'An error occurred.');
-    }
-      
-    
+    })
 
       
   };
