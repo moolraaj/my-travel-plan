@@ -2,7 +2,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { NextResponse } from 'next/server';
 
-export async function HandleFileUpload(file, host) {
+export async function HandleFileUpload(file) {
     const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
     const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
     const bufferData = await file.arrayBuffer();
