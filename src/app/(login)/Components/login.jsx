@@ -20,6 +20,10 @@ const Login = () => {
     });
     const [verifyOtp, setVerifyOtp] = useState(false);
 
+    const closeLogin =()=>{
+        router.push(`/`)
+    }
+
     const changeHandler = (value) => {
         setUser({ ...user, phoneNumber: value });
     };
@@ -98,7 +102,7 @@ const Login = () => {
     return (
         <div className="login-wrapper">
             <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
-                <button className="close-button">×</button>
+                <button className="close-button" onClick={closeLogin}>×</button>
                 <div className="image-section">
                     <img src="/images/popup-img.png" alt="Travel" />
                 </div>
