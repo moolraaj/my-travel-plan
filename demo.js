@@ -47,7 +47,7 @@ export default function Page({ params }) {
 
   return (
     <Layout>
-      {/* {slugArray.length === 2 && slugType === 'continent' && (
+      {slugArray.length === 2 && slugType === 'continent' && (
         <>
           <Topbanner slug={slugArray[1]} />
           <Explorations
@@ -69,13 +69,13 @@ export default function Page({ params }) {
           <Topbanner slug={slugArray[0]} />
           <Countrycard slug={slugArray[0]} country={country} slugType={slugType} />
         </>
-      )} */}
+      )}
 
      
       {slugArray.length === 1 && (
         <>
 
-          <Topbanner slug={slugArray[1]} />
+          <Topbanner slug={slugArray[1]}  />
           <Explorations
             slug={slugArray[1]}
             country={country}

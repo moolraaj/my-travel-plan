@@ -13,66 +13,51 @@ export default function Page({ params }) {
   const [continent, setContinent] = useState([])
   const [country, setCountry] = useState([])
   const [slugType, setSlugType] = useState('')
-  const [loading, setLoading] = useState(true)
+ 
   const api = EXPORT_ALL_APIS()
 
   const loadData = async () => {
-    setLoading(true)
     try {
+      // Check if the slugArray contains exactly 2 elements (e.g., continent and country)
       if (slugArray.length === 2) {
+        // Fetch data for both continent and country in parallel
         const [continentData, countryData] = await Promise.all([
-          api.loadSingleContinent(slugArray[0]),
-          api.loadSingleCountry(slugArray[1])
-        ])
-        setContinent(continentData)
-        setCountry(countryData)
-        setSlugType('continent')
-      } if (slugArray.length === 1||slugType==='continent') {
-        const continentData = await api.loadSingleContinent(slugArray[0])
+          api.loadSingleContinent(slugArray[0]), // Load continent data based on the first slug
+          api.loadSingleCountry(slugArray[1])    // Load country data based on the second slug
+        ]);
+        // Set the state with the fetched data
+        setContinent(continentData);
+        setCountry(countryData);
+        setSlugType('continent'); // Set slug type as 'continent' since both data were loaded
+      }
+  
+      // If the slugArray contains 1 element or slugType is 'continent'
+      if (slugArray.length === 1 || slugType === 'continent') {
+        // Try to load continent data using the single slug
+        const continentData = await api.loadSingleContinent(slugArray[0]);
         if (continentData) {
-          setContinent(continentData)
-          setSlugType('continent')
-        } else {
-          const countryData = await api.loadSingleCountry(slugArray[0])
-          if (countryData) {
-            setCountry(countryData)
-            setSlugType('country')
-          } else {
-            console.error('No data found for the given slug')
-          }
-        }
+          // If continent data is found, update the state
+          setContinent(continentData);
+          setSlugType('continent'); // Set slug type as 'continent'
+        } 
       }
-      else if (slugArray.length === 1 || slugType === 'country') {
-        const countryData = await api.loadSingleCountry(slugArray[0])
-        if (countryData) {
-          setCountry(countryData)
-          setSlugType('country')
-        } else {
-          const continentData = await api.loadSingleContinent(slugArray[0])
-          if (continentData) {
-            setContinent(continentData)
-            setSlugType('continent')
-          } else {
-            console.error('No data found for the given slug')
-          }
-        }
-      }
+  
+       
     } catch (error) {
-      console.error('Error loading data:', error)
+      console.error('Error loading data:', error); // Handle any errors that occur during data fetching
     } finally {
-      setLoading(false)
+      // This block can be used for any cleanup operations, if necessary
     }
-  }
-
+  };
+  
   useEffect(() => {
-    loadData()
-  }, [slugArray])
+    loadData(); // Call loadData when slugArray changes
+  }, [slugArray]); // The effect runs whenever slugArray changes
+  
 
 
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  
 
 
 
