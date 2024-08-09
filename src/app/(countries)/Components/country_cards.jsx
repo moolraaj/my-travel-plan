@@ -5,7 +5,7 @@ import ribbon from '../../../app/assets/home_images/ribbon.png';
 
 const Countrycard = ({ slug, continent }) => {
 
-   let {result}=continent
+    let result=continent?continent.result:[]
 
  
 

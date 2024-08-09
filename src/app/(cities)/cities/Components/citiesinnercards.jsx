@@ -6,7 +6,9 @@ import Link from 'next/link';
 
 const Explorations = ({ slug, country }) => {
 
-  let { result } = country
+ 
+
+  let result=country?country.result:[]
 
   return (
     <div className="explorations">
