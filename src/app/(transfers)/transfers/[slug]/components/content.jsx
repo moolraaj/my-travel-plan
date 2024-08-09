@@ -47,7 +47,7 @@ const TransferContent = () => {
       <div className="over">
         <h2 className="heading_inner_page">Overview</h2>
         <p>
-          Mesmerizing 4-night, 5-day journey with our Passionate Paris With Disney tour, seamlessly blending the romance of Parisian streets with the enchantment of Disneyland Paris. Begin your adventure immersing in Paris's iconic landmarks like the Eiffel Tower and Notre-Dame Cathedral, followed by leisurely explorations of charming neighborhoods and
+          Mesmerizing 4-night 5-day journey with our Passionate Paris With Disney tour seamlessly blending the romance of Parisian streets with the enchantment of Disneyland Paris. Begin your adventure immersing in Paris is iconic landmarks like the Eiffel Tower and Notre-Dame Cathedral followed by leisurely explorations of charming neighborhoods and
         </p>
       </div>
       <div className="transfer-details">
