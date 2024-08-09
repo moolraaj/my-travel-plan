@@ -7,6 +7,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 const ContactUs = () => {
+  
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -25,7 +26,7 @@ const ContactUs = () => {
         {isOpen && (
           <div className="dropdown-menu">
             <a href="/login" className="dropdown-item">Login</a>
-            <a href="/register" className="dropdown-item">Register</a>
+            
           </div>
         )} 
     </div>

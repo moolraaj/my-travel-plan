@@ -1,35 +1,19 @@
-'use client';
 
-import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import triangle from '../app/assets/home_images/triangle.png';
 import camerabg from '../app/assets/home_images/camera-bg.png';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+
 import emptyImage from '../app/assets/empty.jpg';
 
-function WorldSection() {
-  let api = EXPORT_ALL_APIS();
+function WorldSection({loading,continent}) {
 
-  let [result, setResult] = useState([]);
-  let [loading, setLoading] = useState(true);
+  let result=continent?continent.result:[]
+   
 
-  const fetchAllContinents = async () => {
-    try {
-      let resp = await api.loadAllContinents();
-      setResult(resp.result || []);
-    } catch (error) {
-      console.error('Failed to load continents:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  let reversedContinents =Array.isArray(result)? [...result].reverse():[];
 
-  useEffect(() => {
-    fetchAllContinents();
-  }, []);
-
-  let reversedContinents = [...result].reverse();
+  
 
   return (
     <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }}>
@@ -38,7 +22,7 @@ function WorldSection() {
           <EmptyComponent />
         ) : (
           reversedContinents.slice(0, 5).map((country, index) => (
-            <Link className="card_outer" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
+            <Link className="card_outer" href={`/continent/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
               <div className="card">
                 <div className="overlay">
                   <div className="label">{country.total_countries} Countries <Image src={triangle} alt="Triangle" style={{width: 'auto', height: 'auto'}}/></div>

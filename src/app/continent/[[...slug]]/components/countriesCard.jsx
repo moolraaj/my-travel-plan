@@ -1,12 +1,13 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import trending from '../../../app/assets/home_images/trending.png';
-import ribbon from '../../../app/assets/home_images/ribbon.png';
+
+import trending from '../../../../app/assets/home_images/trending.png';
+import ribbon from '../../../../app/assets/home_images/ribbon.png';
 import { useEffect, useState } from 'react';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 
-const Countrycard = ({slug}) => {
+const ContinentCountrycard = ({slug}) => {
     let api=EXPORT_ALL_APIS()
 
     let [data,setData]=useState([])
@@ -33,7 +34,7 @@ const Countrycard = ({slug}) => {
             <div className="destinations expert-travel">
                 { result===null || result===undefined ? ('No destinations found') : (result.map((country, index) => (
                     <div key={index} className="destination">
-                        <Link href={`/continent/${country.slug}`}>
+                        <Link href={`/continent/${slug}/${country.slug}`}>
                             {country.images ? country.images.map((e) => (
                                 <Image
                                     key={e._id}
@@ -67,4 +68,4 @@ const Countrycard = ({slug}) => {
     );
 };
 
-export default Countrycard;
+export default ContinentCountrycard;

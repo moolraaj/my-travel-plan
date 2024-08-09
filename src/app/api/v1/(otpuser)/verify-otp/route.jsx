@@ -19,27 +19,11 @@ export async function POST(request) {
 
         const result = await response.json();
 
-        // Log the result for debugging
-        console.log('OTP Verification Result:', result);
+        return NextResponse.json(result)
 
-        // Check if the OTP verification is successful
-        if (result.isOTPVerified===true) {
-            // Connect to the database
-            await DbConnect();
-  
-            // Check if the phone number already exists
-            let user = await OtpUserModel.findOne({ phoneNumber });
-  
-            if (!user) {
-                // Save phone number to MongoDB if not exists
-                user = await OtpUserModel.create({ phoneNumber });
-            }
-  
-            // Return success response
-            return NextResponse.json({ success: true, user });
-        } else {
-            return NextResponse.json({ error: 'Invalid OTP' }, { status: 400 });
-        }
+     
+
+         
     } catch (error) {
         console.error('Error verifying OTP:', error);
         return NextResponse.json({ error: 'Internal server issue' }, { status: 500 });

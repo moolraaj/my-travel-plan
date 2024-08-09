@@ -57,12 +57,13 @@ const Login = () => {
             });
 
             const result = await resp.json();
-            if (result) {
+            if (result.isOTPVerified===true) {
                 await signIn('credentials',{
                     phoneNumber:phoneNumber,
                     callbackUrl:'/',
                     redirect:true
                 })
+                saveUser(phoneNumber)
                 console.log(result)
             } else {
                 alert(result.error || 'OTP verification failed');
@@ -72,28 +73,27 @@ const Login = () => {
         }
     };
 
-    // const saveUser = async (phoneNumber) => {
-    //     try {
-    //         const resp = await fetch('/api/v1/save-user', {
-    //             method: 'POST',
-    //             body: JSON.stringify({ phoneNumber }),
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
+    const saveUser = async (phoneNumber) => {
+        try {
+            const resp = await fetch('/api/v1/otpuser/save', {
+                method: 'POST',
+                body: JSON.stringify({ phoneNumber }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            const result = await resp.json();
+            if (result) {
 
-    //         const result = await resp.json();
-    //         if (result) {
-
-    //             console.log(result)
+                console.log(result)
                 
-    //         } else {
-    //             console.log(result.message);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error saving user:', error);
-    //     }
-    // };
+            } else {
+                console.log(result.message);
+            }
+        } catch (error) {
+            console.error('Error saving user:', error);
+        }
+    };
 
     return (
         <div className="login-wrapper">

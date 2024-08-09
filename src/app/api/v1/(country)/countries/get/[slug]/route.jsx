@@ -34,7 +34,7 @@ export async function GET(req, { params }) {
             images: city.images,
             title: city.title,
             description: city.description,
-            slug: city.description,
+            slug: city.slug,
             city_packages_count: city.all_packages.length,   
         }));
 

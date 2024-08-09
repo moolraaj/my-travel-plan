@@ -51,6 +51,9 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+
+   
+
     const loadAllBlogs = async () => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/blogs/get`);
@@ -66,11 +69,30 @@ export const EXPORT_ALL_APIS = () => {
         });
     };
 
+  
+    const loadSinglePackage= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/package/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
 
     /////////////////////////********************************************
     const sendQueryContactUs = async (formData) => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/sendquery/query/send`,{
+                method:'POST',
+                body:formData
+            }) 
+            let data = await resp.json();
+            return data;
+        });
+    };
+    const sendQueryFlights = async (formData) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/flight/query/send`,{
                 method:'POST',
                 body:formData
             }) 
@@ -90,7 +112,9 @@ export const EXPORT_ALL_APIS = () => {
         loadAllPackages,
         loadAllBlogs,
         loadAllCitiesWithLowestPrices,
-        sendQueryContactUs
+        loadSinglePackage,
+        sendQueryContactUs,
+        sendQueryFlights
     };
 };
 

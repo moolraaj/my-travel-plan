@@ -1,33 +1,52 @@
+'use client'
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-const packagesData = [
-  { slug: 'netherlands-5n-6d', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherland.png' },
-  { slug: 'netherlands-5n-6d-1', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandone.png' },
-  { slug: 'netherlands-5n-6d-2', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandtwo.png' },
-  { slug: 'netherlands-5n-6d-3', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandthree.png' },
-  { slug: 'netherlands-5n-6d-4', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherland.png' },
-  { slug: 'netherlands-5n-6d-5', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandone.png' },
-  { slug: 'netherlands-5n-6d-6', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandtwo.png' },
-  { slug: 'netherlands-5n-6d-7', title: 'Netherlands 5N - 6D', nights: '3 Night / 4 Days', customizable: 'Customizable', rating: 4.0, reviews: '1.3k Review', price: '₹ 39,550', imgSrc: '/images/netherlandthree.png' },
-];
 
-const Allpackages = ({slug ,city }) => {
-  console.log(slug,city)
+
+const Allpackages = () => {
+
+  let api = EXPORT_ALL_APIS()
+
+  let [data, setData] = useState([])
+
+  let fetchAllPackages = async () => {
+    let resp = await api.loadAllPackages()
+    setData(resp)
+  }
+
+  useEffect(() => {
+    fetchAllPackages()
+  }, [])
+
+  let result = data ? data.result : []
+
+
+
   return (
     <div className="container card_main_section">
       <div className="card_discount">
         <div className="packages">
-          {packagesData.map((pkg, index) => (
+          {result === undefined || result === null ? ('no result found') : (result.map((pkg, index) => (
             <div key={index} className="package">
-              <Image src={pkg.imgSrc} alt={pkg.title} width={333} height={380} />
+              {pkg.images ? pkg.images.map((e) => (
+                <Image
+                  key={e._id}
+                  src={`/uploads/${e.name}`}
+                  alt={e.title}
+                  width={333} height={380}
+
+                />
+              )) : 'No image found'}
               <div className="info">
                 <h3>{pkg.title}</h3>
-                <p>{pkg.nights} | {pkg.customizable}</p>
+                <p>{pkg.package_nights || 0} nights / {pkg.package_days} days</p>
                 <p className="rating">
                   <span className="star">⭐</span> {pkg.rating} ({pkg.reviews})
                 </p>
-                <p className="price">From {pkg.price}</p>
+                <p className="price">From {pkg.package_price}</p>
                 <div className="buttons">
                   <Link href={`/packages/${pkg.slug}`}>
                     <button className="details-btn">View Details</button>
@@ -36,10 +55,11 @@ const Allpackages = ({slug ,city }) => {
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
     </div>
+
   );
 };
 

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-const Itinerary = () => {
+const Itinerary = ({result}) => {
+
+  console.log(`result`)
+  console.log(result)
   const [openDay, setOpenDay] = useState(null);
   const [activeTab, setActiveTab] = useState('inclusions');
 
@@ -9,12 +12,6 @@ const Itinerary = () => {
     setOpenDay(openDay === day ? null : day);
   };
 
-  const itineraryData = [
-    { day: 1, description: 'Arrive Paris, France' },
-    { day: 2, description: 'Paris City Tour River Seine Cruise Eiffel Tower Tour' },
-    { day: 3, description: 'Paris City Tour River Seine Cruise Eiffel Tower Tour' },
-    { day: 4, description: 'Paris City Tour River Seine Cruise Eiffel Tower Tour' },
-  ];
 
 
   const galleryImages = [
@@ -60,102 +57,110 @@ const Itinerary = () => {
   );
 
   return (
-<div className='overview'>
+  
+    <>
+    { result===undefined||result===null?('no result found'):(result.map((ele)=>{
+      return  <div className='overview' key={ele._id}>
 
-<div className='over'>
-    <h2 className='heading_inner_page'>Overview</h2>
-    <p>Mesmerizing 4-night, 5-day journey with our Passionate Paris With Disney tour, seamlessly blending the romance of Parisian streets with the enchantment of Disneyland Paris. Begin your adventure immersing in Paris is iconic landmarks like the Eiffel Tower and Notre-Dame Cathedral, followed by leisurely explorations of charming neighborhoods and delectable French cuisine. Then, venture into the whimsical realm of Disneyland Paris, where fairy tales come alive with thrilling rides, captivating shows, and encounters with beloved Disney characters. Whether strolling along the Seine or posing for photos with Mickey Mouse, this tour promises an unforgettable fusion of culture, magic, and memories, offering the perfect escapade for travelers of all ages.</p>
-</div>
-
-
-<div className='summary_slider'>   
-    <div className="itinerary_inner">
-    <div className='itenary_contact'>
-    <div className='top_summary'>
-    <div className='top_summary_inner'>
-        <h2 className='heading_inner_page'>Top Summary</h2>
-               <p>Embark on an enchanting journey through the heart of Europe with our Passionate Paris With Disney tour, spanning four nights and five days of unforgettable experiences. This meticulously crafted itinerary seamlessly blends the timeless romance of Paris with the whimsical charm of Disneyland Paris, offering travelers a truly magical fusion of culture, adventure, and fantasy.
-         <span>
-         Your adventure begins in the iconic city of Paris, where you will be swept away by the beauty of its historic landmarks and vibrant streets. Over the course of two days, explore must-see sights such as the majestic Eiffel Tower, the awe-inspiring Notre-Dame Cathedral, and the world-renowned Louvre Museum, home to priceless works of art. Wander through picturesque neighborhoods like Montmartre and Le Marais, immersing yourself in the city is rich culture and culinary delights at charming cafes and bistros
-         </span>
-        </p>
-            </div>
-            </div>
-
-<div className='iten_inner'>
-    <h2 className='heading_inner_page'>Itinerary</h2>
-    <div className='day_content'>
-      {itineraryData.map((item) => (
-        <div key={item.day} className="day">
-          <div className="dayHeader" onClick={() => toggleDay(item.day)}>
-         
-            <span>Day {item.day}: {item.description}</span>
-            <span>{openDay === item.day ? '↑' : '↓'}</span>
-          </div>
-          {openDay === item.day && (
-            <div className="dayContent">
-              <p>{item.description}</p>
-            </div>
-          )}
-        </div>
-      ))}
-</div>
-</div>
-
-<div className="tabs_inclusion">
-        <button
-          className={activeTab === 'inclusions' ? 'active' : ''}
-          onClick={() => setActiveTab('inclusions')}
-        >
-          Inclusions & Exclusions
-        </button>
-        <button
-          className={activeTab === 'activities' ? 'active' : ''}
-          onClick={() => setActiveTab('activities')}
-        >
-          Hotel Activities
-        </button>
+      <div className='over'>
+          <h2 className='heading_inner_page'>Overview</h2>
+          <p>{ele.package_overview||null}</p>
       </div>
-      <div className="tabContent">
-        {activeTab === 'inclusions' ? inclusionsContent : hotelActivitiesContent}
-      </div>
-      <button className=" book-now-btn"><a href='/contact-us'>Book Now </a></button>
-
-      </div>
-
-         <div className='right_query'>
-            <div className='card_contact'>
-                <span>Package Code: 128391823</span>
-                <div className='question'>
-                    <h1>Have a Question?</h1>
-                    <p>Do not hesitage to give us a call. We are an expert team and we are happy to talk to you</p>
-                    <div className='contact_card'>
-                        <a href='tel:+91 8627814386'>+91 8627814386</a>
-                        <a href='mailto:booking@streetromeo.com'>booking@streetromeo.com</a>
-                    </div>
+      
+      
+      <div className='summary_slider'>   
+          <div className="itinerary_inner">
+          <div className='itenary_contact'>
+          <div className='top_summary'>
+          <div className='top_summary_inner'>
+              <h2 className='heading_inner_page'>Top Summary</h2>
+                     <p>{ele.package_top_summary}
+               
+              </p>
+                  </div>
+                  </div>
+      
+      <div className='iten_inner'>
+          <h2 className='heading_inner_page'>Itinerary</h2>
+          <div className='day_content'>
+            {ele.package_itinerary.map((item) => (
+              <div key={item._id} className="day">
+                <div className="dayHeader" onClick={() => toggleDay(item.day)}>
+               
+                  <span>Day {item.day}: {item.location}</span>
+                  <span>{openDay === item.day ? '↑' : '↓'}</span>
                 </div>
-            </div>
-
-
-
-        <div className='gallery_inner_page'>
-        <div className="sidebar-gallery">
-        <h2>Gallery</h2>
-        <div className="galleryGrid">
-          {galleryImages.map((image, index) => (
-            <img key={index} src={image} alt={`Gallery Image ${index + 1}`} />
-          ))}
-        </div>
+                {openDay === item.day && (
+                  <div className="dayContent">
+                    <p>{item.itinerary_description}</p>
+                  </div>
+                )}
+              </div>
+            ))}
       </div>
-
+      </div>
+      
+      <div className="tabs_inclusion">
+              <button
+                className={activeTab === 'inclusions' ? 'active' : ''}
+                onClick={() => setActiveTab('inclusions')}
+              >
+                Inclusions & Exclusions
+              </button>
+              <button
+                className={activeTab === 'activities' ? 'active' : ''}
+                onClick={() => setActiveTab('activities')}
+              >
+                Hotel Activities
+              </button>
             </div>
-         </div>
+            <div className="tabContent">
+              {activeTab === 'inclusions' ? inclusionsContent : hotelActivitiesContent}
+            </div>
+            <button className=" book-now-btn"><a href='/contact-us'>Book Now </a></button>
+      
+            </div>
+      
+               <div className='right_query'>
+                  <div className='card_contact'>
+                      <span>Package Code: 128391823</span>
+                      <div className='question'>
+                          <h1>Have a Question?</h1>
+                          <p>Do not hesitage to give us a call. We are an expert team and we are happy to talk to you</p>
+                          <div className='contact_card'>
+                              <a href='tel:+91 8627814386'>+91 8627814386</a>
+                              <a href='mailto:booking@streetromeo.com'>booking@streetromeo.com</a>
+                          </div>
+                      </div>
+                  </div>
+      
+      
+      
+              <div className='gallery_inner_page'>
+              <div className="sidebar-gallery">
+              <h2>Gallery</h2>
+              <div className="galleryGrid">
+               
+                {ele.packages_galleries === null || ele.packages_galleries.length === 0 ? ('no result found') : (ele.packages_galleries.slice(0,3).map((e, index) => {
+              return <img src={`uploads/${e.name}`} alt="Image 1" key={index}/>
 
+            }))}
+              </div>
+            </div>
+      
+                  </div>
+               </div>
+      
+      
+          </div>
+          </div>
+      
+          </div>
+    }))
+      
+    }
+    </>
 
-    </div>
-    </div>
-
-    </div>
 
 
   );
