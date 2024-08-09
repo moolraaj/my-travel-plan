@@ -90,7 +90,9 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
-    const sendQueryFlights = async (formData) => {
+ 
+    
+    const sendQueryBookings = async (formData) => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/flight/query/send`,{
                 method:'POST',
@@ -114,7 +116,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllCitiesWithLowestPrices,
         loadSinglePackage,
         sendQueryContactUs,
-        sendQueryFlights
+        sendQueryBookings
     };
 };
 
