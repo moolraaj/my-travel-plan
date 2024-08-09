@@ -5,14 +5,14 @@ import { handelAsyncErrors } from "@/helpers/asyncErrors";
 export const EXPORT_ALL_APIS = () => {
     const loadAllContinents = async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/continents/get`);
+            let resp = await fetch(`/api/v1/continents/get`);
             let data = await resp.json();
             return data;
         });
     };
     const loadSingleContinent = async (slug) => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/continent/getbyslug/${slug}`);
+            let resp = await fetch(`/api/v1/continent/getbyslug/${slug}`);
             let data = await resp.json();
             return data;
         });
@@ -21,21 +21,21 @@ export const EXPORT_ALL_APIS = () => {
 
     const loadAllCountries = async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/countries/get`);
+            let resp = await fetch(`/api/v1/countries/get`);
             let data = await resp.json();
             return data;
         });
     };
     const loadSingleCountry= async (slug) => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/countries/get/${slug}`);
+            let resp = await fetch(`/api/v1/countries/get/${slug}`);
             let data = await resp.json();
             return data;
         });
     };
     const loadSingleCity= async (slug) => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/city/getbyslug/${slug}`);
+            let resp = await fetch(`/api/v1/city/getbyslug/${slug}`);
             let data = await resp.json();
             return data;
         });
@@ -46,21 +46,21 @@ export const EXPORT_ALL_APIS = () => {
 
     const loadAllPackages = async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/packages/get`);
+            let resp = await fetch(`/api/v1/packages/get`);
             let data = await resp.json();
             return data;
         });
     };
     const loadAllBlogs = async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/blogs/get`);
+            let resp = await fetch(`/api/v1/blogs/get`);
             let data = await resp.json();
             return data;
         });
     };
     const loadAllCitiesWithLowestPrices = async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/cities/cities-with-lowest-price`);
+            let resp = await fetch(`/api/v1/cities/cities-with-lowest-price`);
             let data = await resp.json();
             return data;
         });
@@ -70,7 +70,7 @@ export const EXPORT_ALL_APIS = () => {
     /////////////////////////********************************************
     const sendQueryContactUs = async (formData) => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/v1/sendquery/query/send`,{
+            let resp = await fetch(`/api/v1/sendquery/query/send`,{
                 method:'POST',
                 body:formData
             }) 
