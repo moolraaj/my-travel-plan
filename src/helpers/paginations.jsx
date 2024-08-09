@@ -1,3 +1,5 @@
+// src/helpers/paginations.jsx
+
 import { PER_PAGE_LIMIT } from "@/utils/apis/api";
 
 export function getPaginationParams(req) {
