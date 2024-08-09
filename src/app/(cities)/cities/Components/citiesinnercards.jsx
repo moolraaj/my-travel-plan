@@ -1,9 +1,10 @@
+'use client'
 import Image from 'next/image';
 import Link from 'next/link';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useEffect, useState } from 'react';
 
-const Explorations = ({ slug, country, continent}) => {
+const Explorations = ({ slug, country}) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const api = EXPORT_ALL_APIS();

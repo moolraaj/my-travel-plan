@@ -60,13 +60,10 @@ const Login = () => {
             if (result) {
                 await signIn('credentials',{
                     phoneNumber:phoneNumber,
-                    callbackUrl:'/dashboard',
+                    callbackUrl:'/',
                     redirect:true
                 })
-
                 console.log(result)
-                 
-               
             } else {
                 alert(result.error || 'OTP verification failed');
             }
