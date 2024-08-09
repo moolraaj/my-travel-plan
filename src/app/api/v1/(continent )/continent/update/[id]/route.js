@@ -49,7 +49,7 @@ export async function PUT(req, { params }) {
         // Save the updated document
         const result = await existingContinent.save();
 
-        return NextResponse.json({ status: 200, success: true, message: 'continent deleted successfully', result });
+        return NextResponse.json({ status: 200, success: true, message: 'continent updated successfully', result });
     })
 
 }
