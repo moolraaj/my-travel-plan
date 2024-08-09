@@ -1,60 +1,25 @@
 
 import mongoose from "mongoose";
 
-// export const  DbConnect=async()=>{
-//     try {
-//         await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL)
-//         let connection=mongoose.connection
-//         connection.on('connected',()=>{
-//             console.log('database connected successfully')
-//         })
-//         connection.on('error',(error)=>{
-//             console.log('databse not connected' + error)
-//             process.exit()
-//         }) 
-//     } catch (error) {
-//        console.log('there is problem to connect database!') 
-//     }
- 
-// }
-
-
- 
-
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGO_URL;
-
-if (!MONGODB_URI) {
-    throw new Error(
-        "Please define the MONGODB_URI environment variable inside .env.local"
-    );
-}
-
-let cached = global.mongoose;
-if (!cached) {
-    cached = global.mongoose = { conn: null, promise: null };
-}
-
-export const DbConnect = async () => {
-    if (cached.conn) {
-        return cached.conn;
-    }
-
-    if (!cached.promise) {
-        const opts = { bufferCommands: false };
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-            console.log("DB connected");
-            return mongoose;
-        });
-    }
-
+export const  DbConnect=async()=>{
     try {
-        cached.conn = await cached.promise;
-    } catch (e) {
-        cached.promise = null;
-        throw e;
+        await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL)
+        let connection=mongoose.connection
+        connection.on('connected',()=>{
+            console.log('database connected successfully')
+        })
+        connection.on('error',(error)=>{
+            console.log('databse not connected' + error)
+            process.exit()
+        }) 
+    } catch (error) {
+       console.log('there is problem to connect database!') 
     }
+ 
+}
 
-    return cached.conn;
-};
+
+ 
+
 
 
