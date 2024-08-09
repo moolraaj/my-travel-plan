@@ -4,7 +4,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const AddContinent = () => {
   const router = useRouter();
@@ -35,7 +34,8 @@ const AddContinent = () => {
       setIsLoading(false);
       return;
     }
-    return handelAsyncErrors(async()=>{
+
+    try {
       const submissionData = new FormData();
       submissionData.append('title', title);
       submissionData.append('description', description);
@@ -49,17 +49,18 @@ const AddContinent = () => {
 
       const data = await res.json();
 
-      if (data.success) {
-        toast.success(data.message ||'Continent added successfully!');
+      if (res.ok) {
+        toast.success(data.message || 'Continent added successfully!');
         router.push('/admin/continents');
       } else {
         toast.error(data.message || 'An error occurred.');
       }
-  
-    setIsLoading(false);
-    })
-
-      
+    } catch (error) {
+      console.error('Submission Error:', error);
+      toast.error('An error occurred while adding the continent.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
