@@ -29,7 +29,7 @@ export default async function middleware(request) {
   }
 
   // Redirect users with role 'user' who are trying to access admin routes, except '/admin/login'
-  if (token && user.role === 'user' && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
+  if (token && user.role === 'user' && pathname.startsWith('/ww') && !adminPublicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -39,7 +39,7 @@ export default async function middleware(request) {
   }
 
   // Redirect unauthenticated users trying to access admin routes
-  if (!token && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
+  if (!token && pathname.startsWith('/ww') && !adminPublicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 

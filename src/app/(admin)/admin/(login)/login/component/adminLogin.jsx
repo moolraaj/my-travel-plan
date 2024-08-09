@@ -22,20 +22,15 @@ function AdminLoginPage() {
                 
                 body: JSON.stringify(data)
             });
-
             let result = await resp.json();
-
             if (result) {
                  await signIn('credentials', {
                     email: data.email,
                     password: data.password,
                     callbackUrl: '/admin/dashboard',
-                    redirect: true
+                    redirect: false
                 });
 
-                
-
-                 
             } else {
                 setError(result.message || 'An error occurred');
             }
