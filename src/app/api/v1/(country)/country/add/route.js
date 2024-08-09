@@ -9,7 +9,7 @@ DbConnect();
 
 export async function POST(req) {
     return handelAsyncErrors(async()=>{
-        const host = req.headers.get('host');
+        
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
@@ -33,7 +33,7 @@ export async function POST(req) {
         }
 
         // Upload single image
-        const uploadedFile = await HandleFileUpload(file,host);
+        const uploadedFile = await HandleFileUpload(file);
 
         const imageObject = {
             name: uploadedFile.name,
