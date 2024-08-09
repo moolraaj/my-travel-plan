@@ -11,83 +11,39 @@ import Explorations from "../(cities)/cities/Components/citiesinnercards";
 export default function Page({ params }) {
   const { slug } = params;
   const slugArray = Array.isArray(slug) ? slug : slug.split('/');
-  const [continent, setContinent] = useState(null);
-  const [country, setCountry] = useState(null);
-  const [slugType, setSlugType] = useState('');
+  const [continent, setContinent] = useState([]);
+  const [country, setCountry] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const api = EXPORT_ALL_APIS();
 
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      if (slugArray.length === 2) {
-        // Fetch continent and country
-        const [continentData, countryData] = await Promise.all([
-          api.loadSingleContinent(slugArray[0]),
-          api.loadSingleCountry(slugArray[1])
-        ]);
+  let fetchSingleContinent = async () => {
+    let data = await api.loadSingleContinent(slugArray[0])
+    setContinent(data)
+  }
 
-        setContinent(continentData.result || []); 
-        setCountry(countryData.result[0] || null); 
-        setSlugType('continent');
-      } else if (slugArray.length === 1) {
-        // Fetch continent or country
-        const continentData = await api.loadSingleContinent(slugArray[0]);
+  let fetchSingleCountry = async () => {
+    let data = await api.loadSingleContinent(slugArray[1])
+    setCountry(data)
+  }
 
-        if (continentData.result) {
-          setContinent(continentData.result || []);
-          setSlugType('continent');
-        } else {
-          const countryData = await api.loadSingleCountry(slugArray[0]);
 
-          if (countryData.result.length > 0) {
-            setCountry(countryData.result[0] || null); 
-            setSlugType('country');
-          } else {
-            console.error('No data found for the given slug');
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error loading data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    loadData();
+    fetchSingleContinent()
+    fetchSingleCountry()
   }, [slugArray]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+ 
+
+   
+
+
 
   return (
     <Layout>
-      {slugArray.length === 2 && slugType === 'continent' && (
-        <>
-          <Topbanner slug={slugArray[1]} />
-          <Explorations
-            slug={slugArray[1]}
-            country={country}
-            continent={continent}
-            slugType={slugType}
-          />
-        </>
-      )}
-      {slugArray.length === 1 && slugType === 'continent' && (
-        <>
-          <Topbanner slug={slugArray[0]} />
-          <Countrycard slug={slugArray[0]} continent={continent} slugType={slugType} />
-        </>
-      )}
-      {slugArray.length === 1 && slugType === 'country' && (
-        <>
-          <Topbanner slug={slugArray[0]} />
-          <Countrycard slug={slugArray[0]} country={country} slugType={slugType} />
-        </>
-      )}
+       {slugArray.length===0?<Countrycard slug={slugArray[0]} continent={continent}/>:null}
+       {slugArray.length===0?<Topbanner slug={slugArray[0]}/>:null}
     </Layout>
   );
 }
