@@ -46,13 +46,13 @@ const Overview = () => {
       const dataResults = await Promise.all(responses.map((res) => res.json()));
 
       setData({
-        users: dataResults[0].result.length || 0,
+        users: dataResults[0].totalResult || 0,
         contacts: dataResults[1].totalResults || 0,
         bookings: dataResults[2].totalResults || 0,
         continents: dataResults[3].totalResults || 0,
         countries: dataResults[4].totalResults || 0,
         cities: dataResults[5].totalResults || 0,
-        packages: dataResults[6].result.length || 0,
+        packages: dataResults[6].totalResult || 0,
       });
 
       setLoading(false);
