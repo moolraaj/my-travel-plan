@@ -52,7 +52,7 @@ const Overview = () => {
         continents: dataResults[3].totalResults || 0,
         countries: dataResults[4].totalResults || 0,
         cities: dataResults[5].totalResults || 0,
-        packages: dataResults[6].totalResult || 0,
+        packages: dataResults[6].result.length || 0,
       });
 
       setLoading(false);
