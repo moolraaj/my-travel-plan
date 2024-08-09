@@ -48,6 +48,24 @@ export default function Page({ params }) {
           }
         } 
       }
+
+
+      if (slugArray.length === 1 || slugType === 'country') {
+        // Try to load continent data using the single slug
+        const continentData = await api.loadSingleContinent(slugArray[0]);
+        if (continentData) {
+          // If continent data is found, update the state
+          setContinent(continentData);
+          setSlugType('country'); // Set slug type as 'continent'
+        }else{
+          const continentData = await api.loadSingleContinent(slugArray[0]);
+        if (continentData) {
+          // If continent data is found, update the state
+          setContinent(continentData);
+          setSlugType('continent'); // Set slug type as 'continent'
+        }
+        } 
+      }
   
        
     } catch (error) {
