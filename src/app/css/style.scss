@@ -721,7 +721,17 @@ ul.destinations-list {
 	grid-template-columns: 1fr 1fr;
 }
 .booking_input-group_wrapper input{
-	
+	padding: 20px;
+	border-radius: 5px;
+	max-width: 80%;
+	width: 100%;
+	margin: 10px;
+}
+.booking_input-group_wrapper textarea{
+	max-width: 100%;
+	width: 100%;
+	border-radius: 5px;
+	margin: 10px;
 }
 .country_destination img{
 	border-radius: 5px !important;
