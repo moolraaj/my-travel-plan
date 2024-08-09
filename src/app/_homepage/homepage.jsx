@@ -7,8 +7,9 @@ import World_section from '@/Components/worldSection'
 import React from 'react'
 import aeroplane from '../assets/home_images/aeroplane-bg.png';
 import Slider from '@/Components/mainSlider'
+  
+function Homepage({loading,continent,country,city}) {
  
-function Homepage() {
   return (
    <>
    <div className='main_slider'>
@@ -18,9 +19,9 @@ function Homepage() {
 
           <div className='outer_section'>
 
-            <World_section />
-            <Destinations />
-            <ExplorationsFarAway />
+            <World_section continent={continent} loading={loading}/>
+            <Destinations country={country} loading={loading}/>
+            <ExplorationsFarAway city={city} loading={loading}/>
 
             <BestSellingPackages />
 

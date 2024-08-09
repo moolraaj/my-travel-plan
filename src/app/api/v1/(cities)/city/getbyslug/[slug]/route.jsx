@@ -22,20 +22,22 @@ export async function GET(req, { params }) {
         // Paginate the packages
         const paginatedPackages = city.all_packages.slice(skip, skip + limit);
 
-        const result = {
-            _id: city._id,
-            title: city.title,
-            totalResults, 
-            packages: paginatedPackages.map(pkg => ({
+         
+             
+            let result= paginatedPackages.map(pkg => ({
                 _id: pkg._id,
                 images: pkg.images,
                 title: pkg.title,
                 description: pkg.description,
                 slug: pkg.slug,
-            })),
-            page,
-            limit
-        };
-        return NextResponse.json({status:200, success: true, result });
+                slug: pkg.slug,
+                package_price: pkg.package_price,
+                package_discounted_price: pkg.package_discounted_price,
+                package_days: pkg.package_days,
+                package_nights: pkg.package_nights,
+            }))
+           
+        
+        return NextResponse.json({status:200, success: true, totalResults,result,page,limit });
     })
 }

@@ -1,31 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+ 
 import Link from 'next/link';
 import Image from 'next/image';
 import emptyImage from '../app/assets/empty.jpg';
 import exploresection from '../app/assets/home_images/explore-bg.png';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+ 
 
-function ExplorationsFarAway() {
-  let api = EXPORT_ALL_APIS();
-  let [data, setData] = useState([]);
-  let [loading, setLoading] = useState(true);
+function ExplorationsFarAway({loading,city}) {
 
-  const fetchAllLowestPriceCities = async () => {
-    try {
-      let resp = await api.loadAllCitiesWithLowestPrices();
-      setData(resp.result || []);
-    } catch (error) {
-      console.error('Failed to load cities:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  let data=city?city.result:[]
+ 
 
-  useEffect(() => {
-    fetchAllLowestPriceCities();
-  }, []);
+  
 
   let reversedFilterCities = Array.isArray(data) ? [...data].reverse() : [];
 

@@ -1,33 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import trending from '../app/assets/home_images/trending.png';
 import ribbon from '../app/assets/home_images/ribbon.png';
 import fishbg from '../app/assets/home_images/fish-bg.png';
 import emptyImage from '../app/assets/empty.jpg';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+ 
 
-function Destinations() {
-  let api = EXPORT_ALL_APIS();
-  let [data, setData] = useState([]);
-  let [loading, setLoading] = useState(true);
+function Destinations({country,loading}) {
 
-  const fetchAllCountries = async () => {
-    try {
-      let resp = await api.loadAllCountries();
-      setData(resp.result || []);
-    } catch (error) {
-      console.error('Failed to load countries:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllCountries();
-  }, []);
+  let data=country?country.result:[]
+  
 
   let reversedCountries = Array.isArray(data) ? [...data].reverse() : [];
 

@@ -8,9 +8,11 @@ DbConnect();
 
 export async function GET(req) {
     return handelAsyncErrors(async () => {
+        
 
         let { page, limit, skip } = getPaginationParams(req)
         // Fetch and populate all continents with their countries, cities, and packages
+        
         const continents = await continentModel.find().populate({
             path: 'all_countries',
             populate: {
@@ -20,6 +22,7 @@ export async function GET(req) {
                 },
             },
         }).limit(limit).skip(skip).exec();
+       
 
         let totalResults = await continentModel.countDocuments();
 
@@ -46,6 +49,7 @@ export async function GET(req) {
             total_countries: continent.all_countries.length,
         }));
 
+      
         return NextResponse.json({ status: 200, success: true, totalResults, result, page, limit });
     })
 

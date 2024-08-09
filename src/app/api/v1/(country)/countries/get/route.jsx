@@ -12,7 +12,7 @@ export async function GET(req){
                 path: 'all_packages',
             }}).limit(limit).skip(skip).exec()
     
-            console.log(data)
+             
     
         let result=data.map((e)=>({
             _id: e._id,      
