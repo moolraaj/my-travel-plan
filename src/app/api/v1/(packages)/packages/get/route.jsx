@@ -14,7 +14,7 @@ return handelAsyncErrors(async()=>{
     // Check if data is cached
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
-        console.log(cachedData)
+       
     
       return NextResponse.json(cachedData);
     }
