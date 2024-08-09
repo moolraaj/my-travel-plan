@@ -2,17 +2,18 @@ import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import ContactModel from "@/model/userModel";
 import { NextResponse } from "next/server";
 
-export async function DELETE(req, { params }) {
-  return handelAsyncErrors(async () => {
-    let { id } = params;
-    let existingUser = await ContactModel.findById(id);
+export async function DELETE(req,{params}){
+    return handelAsyncErrors(async()=>{
 
-    if (!existingUser) {
-      return NextResponse.json({ status: 404, success: false, message: 'User not found!' }, { status: 404 });
-    }
+        let {id}=params
+        let existingUser=await ContactModel.findById({_id:id})
+    
+        if(!existingUser){
+            return NextResponse.json({status:404,success:false,message:'missing credentials! please provide valid id'})
+        }
 
-    await ContactModel.deleteOne({ _id: id });
-
-    return NextResponse.json({ status: 200, success: true, message: 'User deleted successfully' }, { status: 200 });
-  });
+        let result=await ContactModel.deleteOne({_id:id})
+    
+        return NextResponse.json({status:200,result})
+    })
 }
