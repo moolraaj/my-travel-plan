@@ -39,6 +39,13 @@ export default function Page({ params }) {
           // If continent data is found, update the state
           setContinent(continentData);
           setSlugType('continent'); // Set slug type as 'continent'
+        }else{
+          const countryData = await api.loadSingleContinent(slugArray[0]);
+          if (countryData) {
+            // If continent data is found, update the state
+            setCountry(countryData);
+            setSlugType('country'); // Set slug type as 'continent'
+          }
         } 
       }
   
