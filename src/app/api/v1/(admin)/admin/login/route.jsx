@@ -1,8 +1,9 @@
+ 
 import { DbConnect } from '@/database/database';
 import AdminModel from '@/model/adminModel';
 import bcryptjs from 'bcryptjs';
 import { NextResponse } from 'next/server';
-
+DbConnect()
 export async function POST(req) {
     try {
         const payload = await req.json();
@@ -12,7 +13,7 @@ export async function POST(req) {
             return NextResponse.json({ status: 400, success: false, message: 'Please provide valid credentials' });
         }
 
-        await DbConnect();
+        
         const admin = await AdminModel.findOne({ email });
 
         if (!admin) {
