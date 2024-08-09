@@ -2,7 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faCalendarCheck, faBoxOpen, faGlobe, faFlag, faCity, faSpinner, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUsers,
+  faCalendarCheck,
+  faBoxOpen,
+  faGlobe,
+  faFlag,
+  faCity,
+  faSpinner,
+  faPhoneAlt
+} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 const Overview = () => {
@@ -16,74 +25,45 @@ const Overview = () => {
     packages: 0,
   });
 
-  const [loading, setLoading] = useState({
-    users: true,
-    continents: true,
-    countries: true,
-    cities: true,
-    packages: true,
-    contacts: true,
-    bookings: true
-  });
+  const [loading, setLoading] = useState(true);
 
-  const fetchData = async (endpoint, key, isPackage = false) => {
+  const endpoints = [
+    '/api/v1/otpuser/getallusers',
+    '/api/v1/sendquery/queries/get',
+    '/api/v1/flight/queries/get',
+    '/api/v1/continents/get',
+    '/api/v1/countries/get',
+    '/api/v1/cities/get',
+    '/api/v1/packages/get',
+  ];
+
+  const fetchData = async () => {
     try {
-      let result = [];
-      let page = 1;
-      const limit = 1000; // Adjust the limit according to your API
+      const responses = await Promise.all(
+        endpoints.map(endpoint => fetch(endpoint))
+      );
 
-      while (true) {
-        const response = await fetch(`${endpoint}?page=${page}&limit=${limit}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (isPackage) {
-          result = result.concat(data.result);
-          if (data.result.length < limit) break; // No more pages
-        } else {
-          setData(prevData => ({
-            ...prevData,
-            [key]: data.totalResults !== undefined ? data.totalResults : 0,
-          }));
-          break;
-        }
-        page += 1;
-      }
+      const dataResults = await Promise.all(responses.map((res) => res.json()));
 
-      if (isPackage) {
-        setData(prevData => ({
-          ...prevData,
-          [key]: result.length,
-        }));
-      }
-      
+      setData({
+        users: dataResults[0].totalResult || 0,
+        contacts: dataResults[1].totalResults || 0,
+        bookings: dataResults[2].totalResults || 0,
+        continents: dataResults[3].totalResults || 0,
+        countries: dataResults[4].totalResults || 0,
+        cities: dataResults[5].totalResults || 0,
+        packages: dataResults[6].result.length || 0,
+      });
 
-      setLoading(prevLoading => ({
-        ...prevLoading,
-        [key]: false,
-      }));
+      setLoading(false);
     } catch (error) {
-      console.error(`Error fetching data for ${key}:`, error);
-      setData(prevData => ({
-        ...prevData,
-        [key]: 0,
-      }));
-      setLoading(prevLoading => ({
-        ...prevLoading,
-        [key]: false,
-      }));
+      console.error('Error fetching data:', error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData('/api/v1/continents/get', 'continents', false);
-    fetchData('/api/v1/countries/get', 'countries', false);
-    fetchData('/api/v1/cities/get', 'cities', false);
-    fetchData('/api/v1/packages/get', 'packages', true);
-    fetchData('/api/v1/sendquery/queries/get', 'contacts', false);
-    fetchData('/api/v1/flight/queries/get', 'bookings', false);
-    fetchData('/api/v1/otpuser/getallusers', 'users', true);
+    fetchData();
   }, []);
 
   return (
@@ -98,7 +78,7 @@ const Overview = () => {
               </div>
               <div className="data_wrap">
                 <h3>Total {capitalizeFirstLetter(key)}</h3>
-                <p>{loading[key] ? <FontAwesomeIcon icon={faSpinner} spin /> : data[key]}</p>
+                <p>{loading ? <FontAwesomeIcon icon={faSpinner} spin /> : data[key]}</p>
               </div>
             </Link>
           </div>
