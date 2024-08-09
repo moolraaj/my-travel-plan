@@ -77,12 +77,12 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    fetchData('/api/v1/continents/get', 'continents', false);
-    fetchData('/api/v1/countries/get', 'countries', false);
-    fetchData('/api/v1/cities/get', 'cities', false);
+    fetchData('/api/v1/continents/get', 'continents', true);
+    fetchData('/api/v1/countries/get', 'countries', true);
+    fetchData('/api/v1/cities/get', 'cities', true);
     fetchData('/api/v1/packages/get', 'packages', true);
-    fetchData('/api/v1/sendquery/queries/get', 'contacts', false);
-    fetchData('/api/v1/flight/queries/get', 'bookings', false);
+    fetchData('/api/v1/sendquery/queries/get', 'contacts', true);
+    fetchData('/api/v1/flight/queries/get', 'bookings', true);
     fetchData('/api/v1/otpuser/getallusers', 'users', true);
   }, []);
 
