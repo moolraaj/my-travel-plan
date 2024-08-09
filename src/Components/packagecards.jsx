@@ -141,7 +141,6 @@ import emptyImage from '../app/assets/empty.jpg';
 import { useEffect, useState } from 'react';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useRouter } from 'next/navigation';
-import BookingForm from './(bookings)/bookings/bookingForm';
 import { getSession } from 'next-auth/react'; 
 
 
@@ -150,7 +149,6 @@ const BestSellingPackages = () => {
   let api = EXPORT_ALL_APIS();
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(true);
-  let [openBookingForm, setOpenBookingForm] = useState(false);
   const [userVerified, setUserVerified] = useState(false);
 
   const loadAllPackages = async () => {
@@ -190,7 +188,7 @@ const BestSellingPackages = () => {
     if (!userVerified) {
       router.push('/login');
     } else {
-      setOpenBookingForm(true);
+     router.push('/flights')
     }
   };
 
@@ -198,7 +196,7 @@ const BestSellingPackages = () => {
 
   return (
     <>
-    {openBookingForm && <BookingForm setOpenBookingForm={setOpenBookingForm}/>}
+
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
       
       <div className="container card_main_section">
