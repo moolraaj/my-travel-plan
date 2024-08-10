@@ -6,13 +6,15 @@ import Bloggallery from './components/overview';
 
 export default function page({params}) {
     let {slug}=params
+
+    
  
  
   return (
     <div>
       <Layout>
-          <Topbanner/>  
-          <Bloggallery/>
+          <Topbanner slug={slug}/>  
+          <Bloggallery slug={slug}/>
        
       </Layout>
     </div>

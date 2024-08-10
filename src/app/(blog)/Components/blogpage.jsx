@@ -1,73 +1,40 @@
-// components/BlogCardsContainer.js
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import commentimg from '../../assets/home_images/comment.svg';
 import calenderimg from '../../assets/home_images/calender.svg';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+import { format } from 'date-fns';
+ 
 
-const blogData = [
-  {
-    image: "/images/blog-1.png",
-    category: "Adventure",
-    date: "March 28, 2023",
-    comments: "2 Comments",
-    title: "You should see things when visiting Japan",
-    link: "#",
-    slug: "visiting-japan",
-  },
-  {
-    image: "/images/blog-2.png",
-    category: "City Tours",
-    date: "March 28, 2023",
-    comments: "2 Comments",
-    title: "A place where start new life with adventure travel",
-    link: "#",
-    slug: "adventure-travel",
-  },
-  {
-    image: "/images/blog-3.png",
-    category: "City Tours",
-    date: "March 28, 2023",
-    comments: "2 Comments",
-    title: "A place where start new life with adventure Dhaka",
-    link: "#",
-    slug: "adventure-dhaka",
-  },
-  {
-    image: "/images/blog-4.png",
-    category: "City Tours",
-    date: "March 28, 2023",
-    comments: "2 Comments",
-    title: "A place where start new life with adventure Dhaka",
-    link: "#",
-    slug: "adventure-dhaka",
-  },
-  {
-    image: "/images/blog-5.png",
-    category: "City Tours",
-    date: "March 28, 2023",
-    comments: "2 Comments",
-    title: "A place where start new life with adventure travel",
-    link: "#",
-    slug: "adventure-travel",
-  },
-];
+ 
 
-const BlogCard = ({ image, category, date, comments, title, link, slug }) => {
+const BlogCard = ({blog,formattedDate}) => {
+  
   return (
     <div className="blogpagecard">
-      <img src={image} alt={title} className="image" />
+     
+      {blog.images?.map((e) => (
+        <img
+        src={`/uploads/${e.name}`}
+
+          key={e._id}
+          alt='blog-image'
+          className="image"
+        />
+      ))}
       <div className="blogcontent">
-        <div className="category">{category}</div>
+        <div className="category">{blog.category||'uncategorised'}</div>
         <div className="meta">
           <span className="date">
-            <img src={calenderimg.src} alt="Calendar" />{date}
+            <img src={calenderimg.src} alt="Calendar" />{formattedDate}
           </span>
           <span className="comments">
-            <img src={commentimg.src} alt="Comments" />{comments}
+            <img src={commentimg.src} alt="Comments" />{blog.comments||null}
           </span>
         </div>
-        <h3 className="title">{title}</h3>
-        <Link href={`/blog/${slug}`}>
+        <h3 className="title">{blog.title}</h3>
+        <Link href={`/blog/${blog.slug}`}>
           <button className="link">Read More → </button>
         </Link>
       </div>
@@ -75,12 +42,30 @@ const BlogCard = ({ image, category, date, comments, title, link, slug }) => {
   );
 };
 
+
+ 
+
 const BlogCardsContainer = () => {
+  let api=EXPORT_ALL_APIS()
+  let [data,setData]=useState([])
+  let LoadAllBlogs=async()=>{
+    let resp=await api.loadAllBlogs()
+    setData(resp)
+  }
+  useEffect(()=>{
+    LoadAllBlogs()
+  },[])
+  let result=data?data.result:[]
+
   return (
     <div className="blog-page">
-      {blogData.map((blog, index) => (
-        <BlogCard key={index} {...blog} />
-      ))}
+      {result===undefined||result===null?('no result found'):(result.map((blog,index)=>{
+        const formattedDate = format(new Date(blog.createdAt), 'dd MMM yyyy')
+        return  <BlogCard key={index} blog={blog} formattedDate={formattedDate}/>
+      }))}
+        
+       
+      
     </div>
   );
 };

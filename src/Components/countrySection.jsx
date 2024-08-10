@@ -29,8 +29,9 @@ function ExplorationsFarAway({loading,city}) {
           {loading || reversedFilterCities.length === 0 ? (
             <EmptyExplorationComponent />
           ) : (
-            reversedFilterCities.slice(0, 6).map((destination) => (
-              <div key={destination._id} className="destination-card">
+            reversedFilterCities.slice(0, 8).map((destination) => (
+              <Link href={`/city/${destination.slug}`} key={destination._id}>
+              <div  className="destination-card">
                 {destination.images && destination.images.length > 0 ? (
                   destination.images.map((image) => (
                     <Image
@@ -56,6 +57,7 @@ function ExplorationsFarAway({loading,city}) {
                   <p>From ₹ {destination.package ? destination.package.price : 'N/A'}</p>
                 </div>
               </div>
+              </Link>
             ))
           )}
         </div>

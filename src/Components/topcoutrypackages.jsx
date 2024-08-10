@@ -23,7 +23,7 @@ function Destinations({country,loading}) {
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations expert-travel">
           {reversedCountries===null||reversedCountries===undefined?('no result found'):(reversedCountries.slice(0,8).map((country, index) => (
-            <Link className="destination" href={`/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
+            <Link className="destination" href={`/country/${country.slug.toLowerCase().replace(' ', '-')}`} key={index}>
 
             <div key={index} >
              

@@ -8,7 +8,7 @@ import React from 'react'
 import aeroplane from '../assets/home_images/aeroplane-bg.png';
 import Slider from '@/Components/mainSlider'
   
-function Homepage({loading,continent,country,city}) {
+function Homepage({loading,continent,country,city,packages,blogs}) {
  
   return (
    <>
@@ -23,11 +23,11 @@ function Homepage({loading,continent,country,city}) {
             <Destinations country={country} loading={loading}/>
             <ExplorationsFarAway city={city} loading={loading}/>
 
-            <BestSellingPackages />
+            <BestSellingPackages packages={packages} loading={packages}/>
 
             <ExploreDestinations />
 
-            <LatestBlog />
+            <LatestBlog blogs={blogs} loading={loading}/>
 
 
 

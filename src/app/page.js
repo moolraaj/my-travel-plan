@@ -15,6 +15,8 @@ export default  function Home() {
   let[continent,setContinent]=useState([])
   let[country,setCountry]=useState([])
   let[city,setCity]=useState([])
+  let[packages,setPackages]=useState([])
+  let[blogs,setBlogs]=useState([])
 
   let fetchAllContinents=async()=>{
     let data=await api.loadAllContinents()
@@ -33,6 +35,17 @@ export default  function Home() {
     setLoading(false)
   }
 
+  let fetchAllPackages=async()=>{
+    let data=await api.loadAllPackages()
+    setPackages(data)
+    setLoading(false)
+  }
+  let fetchAllBlogs=async()=>{
+    let data=await api.loadAllBlogs()
+    setBlogs(data)
+    setLoading(false)
+  }
+
 
 
 
@@ -40,6 +53,8 @@ export default  function Home() {
     fetchAllContinents()
     fetchAllCountries()
     fetchAllCities()
+    fetchAllPackages()
+    fetchAllBlogs()
   },[])
 
 
@@ -49,7 +64,7 @@ export default  function Home() {
     <>
       <Layout>
       
-        <Homepage continent={continent} loading={loading} country={country} city={city}/>
+        <Homepage continent={continent} loading={loading} country={country} city={city} packages={packages} blogs={blogs}/>
 
       </Layout>
     </>

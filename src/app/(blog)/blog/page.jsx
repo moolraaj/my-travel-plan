@@ -4,6 +4,7 @@ import Topbanner from '@/app/_common/layout/topbanner'
 import BlogCardsContainer from '../Components/blogpage';
 
 function page() {
+ 
     return (
       <Layout>
           <Topbanner/>   
