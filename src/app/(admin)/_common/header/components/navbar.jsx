@@ -12,17 +12,12 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
  
 
  
- function AdminNavbar() {
+ function AdminNavbar({toggleSidebar}) {
  
   
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const [popupVisible, setPopupVisible] = useState(false);
+
 
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
