@@ -18,7 +18,7 @@ function WorldSection({loading,continent}) {
   return (
     <div className='world-country' style={{ backgroundImage: `url(${camerabg.src})` }}>
       <div className="grid-container">
-        {loading || reversedContinents.length === 0 ? (
+        {reversedContinents.length === undefined||reversedContinents===null ? (
           <EmptyComponent />
         ) : (
           reversedContinents.slice(0, 5).map((country, index) => (

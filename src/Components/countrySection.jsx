@@ -26,7 +26,7 @@ function ExplorationsFarAway({loading,city}) {
         </div>
 
         <div className="destinations-grid">
-          {loading || reversedFilterCities.length === 0 ? (
+          {reversedFilterCities.length === undefined||reversedFilterCities===null ? (
             <EmptyExplorationComponent />
           ) : (
             reversedFilterCities.slice(0, 6).map((destination) => (
