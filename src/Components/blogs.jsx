@@ -3,31 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import blogbg from '../app/assets/home_images/blog-bg.png';
 import emptyImage from '../app/assets/empty.jpg';
-import { useEffect, useState } from 'react';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+ 
 import { format } from 'date-fns';
 
-const LatestBlog = () => {
-  let [data, setData] = useState([]);
-  let [loading, setLoading] = useState(true);
-  let api = EXPORT_ALL_APIS();
+const LatestBlog = ({blogs,loading}) => {
 
-  const fetchAllBlogs = async () => {
-    try {
-      let resp = await api.loadAllBlogs();
-      setData(resp.result || []);
-    } catch (error) {
-      console.error("Failed to fetch blogs:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllBlogs();
-  }, []);
-
-  let reversedBlogs = Array.isArray(data) ? [...data].reverse() : [];
+  let result=blogs?blogs.result:[]
+   
 
   return (
     <div className='blog-bg' style={{ backgroundImage: `url(${blogbg.src})` }}>
@@ -41,16 +23,18 @@ const LatestBlog = () => {
         </div>
 
         <div className="blog-container">
-          {loading || reversedBlogs.length === 0 ? (
+          {loading || result=== undefined||result===null ? (
             <EmptyBlogComponent />
           ) : (
             <>
+        
               <div className="blog-main">
-                {reversedBlogs.slice(0, 1).map((ele) => {
+                {result.slice(0, 1).map((ele) => {
                   const formattedDate = format(new Date(ele.createdAt), 'dd MMM yyyy');
 
                   return (
-                    <div key={ele._id}>
+                    <Link href={`/blog/${ele.slug}`} key={ele._id}>
+                    <div >
                       {ele.images?.map((e) => (
                         <Image
                           key={e._id}
@@ -69,14 +53,17 @@ const LatestBlog = () => {
                         <h3>{ele.title}</h3>
                       </div>
                     </div>
+                    </Link>
                   );
+                 
                 })}
               </div>
 
               <div className="blog-side">
-                {reversedBlogs.slice(0, 2).map((blog, index) => {
+                {result.slice(0, 2).map((blog, index) => {
                   const formattedDate = format(new Date(blog.createdAt), 'dd MMM yyyy');
                   return (
+                    <Link href={`/blog/${blog.slug}`} key={index}>
                     <div key={blog._id} className="blog-side-item">
                       {blog.images?.map((image) => (
                         <Image
@@ -96,6 +83,7 @@ const LatestBlog = () => {
                         <h3>{blog.title}</h3>
                       </div>
                     </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -131,6 +119,7 @@ function EmptyBlogComponent() {
 
       <div className="blog-side">
         {Array(2).fill().map((_, index) => (
+        
           <div key={index} className="blog-side-item">
             <Image
               src={emptyImage.src}

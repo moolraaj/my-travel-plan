@@ -139,37 +139,25 @@ import discountc from '../app/assets/home_images/discountcards.png';
 import explorebg from '../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../app/assets/empty.jpg';
 import { useEffect, useState } from 'react';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
-import { useRouter } from 'next/navigation';
+ 
 import { getSession } from 'next-auth/react'; 
 
 
-const BestSellingPackages = () => {
-  const router = useRouter();
-  let api = EXPORT_ALL_APIS();
-  let [data, setData] = useState([]);
-  let [loading, setLoading] = useState(true);
+const BestSellingPackages = ({packages,loading}) => {
+ 
+ 
+ 
   const [userVerified, setUserVerified] = useState(false);
 
-  const loadAllPackages = async () => {
-    try {
-      let resp = await api.loadAllPackages();
-      setData(resp.result || []);
-    } catch (error) {
-      console.error('Failed to load packages:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+   
 
   const checkUserVerification = async () => {
     try {
-      const session = await getSession(); // Fetch the session
+      const session = await getSession();  
 
       if (session && session.user) {
-        // Adjust based on how you determine if a user is verified
-        // Assuming user has a 'verified' field or similar
-        setUserVerified(session.user.role === 'user'); // Example condition
+    
+        setUserVerified(session.user.role === 'user');  
       } else {
         setUserVerified(false);
       }
@@ -180,7 +168,7 @@ const BestSellingPackages = () => {
 
 
   useEffect(() => {
-    loadAllPackages();
+    
     checkUserVerification();
   }, []);
 
@@ -192,7 +180,10 @@ const BestSellingPackages = () => {
     }
   };
 
-  let reversedPackages = Array.isArray(data) ? [...data].reverse() : [];
+  let result=packages?packages.result:[]
+
+  console.log(`result of the all home page packages`)
+  console.log(result)
 
   return (
     <>
@@ -210,10 +201,10 @@ const BestSellingPackages = () => {
 
         <div className='card_discount'>
           <div className="packages">
-            {loading || reversedPackages.length === 0 ? (
+            {result === undefined || result===null? (
               <EmptyPackageComponent />
             ) : (
-              reversedPackages.slice(0, 4).map((pkg, index) => (
+              result?.slice(0, 4).map((pkg, index) => (
                 <div key={index} className="package">
                   {pkg.images && pkg.images.length > 0 ? (
                     pkg.images.map((image) => (
@@ -243,7 +234,7 @@ const BestSellingPackages = () => {
                     </p>
                     <p className="price">From ₹ {pkg.package_price || 0}</p>
                     <div className="buttons">
-                      <Link href="/packages"><button className="details-btn">View Details</button></Link>
+                      <Link href={`/packages/${pkg.slug}`}><button className="details-btn">View Details</button></Link>
                       <button className="enquiry-btn" onClick={bookingAndLogin}>Book Now</button>
                     </div>
                   </div>

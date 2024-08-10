@@ -31,6 +31,6 @@ export async function GET(req, { params }) {
             } : null,
             createdAt: blog.createdAt
         };
-        return NextResponse.json({ status: 200, success: true, result });
+        return NextResponse.json({ status: 200, success: true, result:[result] });
     });
 }

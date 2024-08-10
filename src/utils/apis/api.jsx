@@ -61,6 +61,15 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+
+    const loadSingleBlog = async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/blog/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
     const loadAllCitiesWithLowestPrices = async () => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/cities/cities-with-lowest-price`);
@@ -113,6 +122,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllCountries,
         loadAllPackages,
         loadAllBlogs,
+        loadSingleBlog,
         loadAllCitiesWithLowestPrices,
         loadSinglePackage,
         sendQueryContactUs,
