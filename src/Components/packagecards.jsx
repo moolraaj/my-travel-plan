@@ -142,6 +142,7 @@ import { useEffect, useState } from 'react';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react'; 
+import BookingForm from './(bookings)/bookings/bookingForm';
 
 
 const BestSellingPackages = () => {
@@ -150,6 +151,7 @@ const BestSellingPackages = () => {
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(true);
   const [userVerified, setUserVerified] = useState(false);
+  const [isopenForm, setIsopenForm] =useState(false)
 
   const loadAllPackages = async () => {
     try {
@@ -188,7 +190,7 @@ const BestSellingPackages = () => {
     if (!userVerified) {
       router.push('/login');
     } else {
-     router.push('/flights')
+      setIsopenForm(true)
     }
   };
 
@@ -196,6 +198,7 @@ const BestSellingPackages = () => {
 
   return (
     <>
+    {isopenForm && <BookingForm setIsopenForm={setIsopenForm}/>}
 
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
       

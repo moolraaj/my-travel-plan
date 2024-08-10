@@ -1,5 +1,6 @@
 'use client'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
 import React from 'react'
 
 function LogoutPage() {
@@ -13,7 +14,7 @@ function LogoutPage() {
     return (
         <>
       
-            <button onClick={logoutHandler}>logout</button>
+            <span onClick={logoutHandler} className='dropdown-item'>Logout</span>
 
         </>
     )

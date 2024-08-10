@@ -694,45 +694,6 @@ ul.destinations-list {
 
 }
 
-.booking_form_outer{
-	position: fixed;
-	z-index: 99999;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: #80808056;
-	color: #000;
-}
-
-.booking_form_inner{
-	position: absolute;
-	top: 50px;
-	left: 20%;
-	max-width: 999px;
-	width: 100%;
-	padding: 20px;
-	height: 80vh;
-	overflow-x: auto;
-	background-color: #fff;
-}
-.booking_input-group_wrapper{
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-}
-.booking_input-group_wrapper input{
-	padding: 20px;
-	border-radius: 5px;
-	max-width: 80%;
-	width: 100%;
-	margin: 10px;
-}
-.booking_input-group_wrapper textarea{
-	max-width: 100%;
-	width: 100%;
-	border-radius: 5px;
-	margin: 10px;
-}
 .country_destination img{
 	border-radius: 5px !important;
 }
@@ -1928,6 +1889,44 @@ a.card_outer {
 	color: #000;
 	text-decoration: none;
 }
+
+/* book now popoup form starts */
+
+.booking_form_outer{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #00000064;
+}
+
+.booking_form_inner{
+	border-radius: 5px;
+	position: relative;
+	max-width: 450px;
+	width: 100%;
+	padding: 20px;
+	overflow-x: auto;
+	background-color: #fff;
+}
+.booking_form_inner .error_field{
+	color: $primaryred;
+	font-size: 13px;
+}
+
+.booking_input-group_wrapper input,
+.booking_input-group_wrapper textarea{
+	padding: 20px;
+	border-radius: 5px;
+	width: 100%;
+	margin: 10px 0px;
+}
+/* book now popup form end */
 
 .form {
 	max-width: 1030px;
