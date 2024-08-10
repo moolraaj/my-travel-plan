@@ -1,43 +1,19 @@
-// components/ContactUs.js
-'use client';
-import React, { useEffect, useState } from 'react';
-
-import { faUser } from '@fortawesome/free-solid-svg-icons';  
-import { getSession } from 'next-auth/react';
+'use client'
+import React, { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import LogoutPage from '../../_logout/logoutPage';
 
-
-
 const ContactUs = () => {
-  
   const [isOpen, setIsOpen] = useState(false);
-  const [userVerified, setUserVerified] = useState(false);
-
+  const { data: session, status } = useSession();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const checkUserVerification = async () => {
-    try {
-      const session = await getSession(); // Fetch the session
-
-      if (session && session.user) {
-        // Adjust based on how you determine if a user is verified
-        // Assuming user has a 'verified' field or similar
-        setUserVerified(session.user.role === 'user'); // Example condition
-      } else {
-        setUserVerified(false);
-      }
-    } catch (error) {
-      console.error('Error checking verification:', error);
-    }
+  const handleLogout = () => {
+    signOut();
   };
-  useEffect(() => {
-    checkUserVerification();
-  }, [])
-  
-
 
   return (
     <div className="contact-us-container">
@@ -49,23 +25,22 @@ const ContactUs = () => {
             </svg>
           </div>
         </div>
-        {!userVerified ?(
-           isOpen && (
-            <div className="dropdown-menu">
+        {isOpen && (
+          <div className="dropdown-menu">
+            {status === 'loading' ? (
+              <p>Loading...</p>
+            ) : !session ? (
               <a href="/login" className="dropdown-item">Login</a>
-            </div>)
-          
-        ):(
-          isOpen && (
-            <div className="dropdown-menu">
+            ) : (
               <LogoutPage/>
-            </div>)
+            )}
+          </div>
         )}
-        
+      </div>
+      <button className="contact-button">
+        <a href='/contact-us'>Contact Us</a>
+      </button>
     </div>
-    <button className="contact-button"><a href='/contact-us'>Contact Us</a></button>
-  </div>
-
   );
 };
 

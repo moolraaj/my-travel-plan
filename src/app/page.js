@@ -61,8 +61,10 @@ export default  function Home() {
  
 
   return (
+    
     <>
       <Layout>
+    
       
         <Homepage continent={continent} loading={loading} country={country} city={city} packages={packages} blogs={blogs}/>
 

@@ -1,6 +1,6 @@
 'use client'
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
-import Image from 'next/image';
+
 import React, { useEffect, useState } from 'react';
 const Bloggallery = ({ slug }) => {
     let api = EXPORT_ALL_APIS()

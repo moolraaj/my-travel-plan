@@ -76,7 +76,7 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li> <LogoutPage/> </li>
+                    <li> <LogoutPage role='admin'/> </li>
                   </ul>
                 </div>
               )}

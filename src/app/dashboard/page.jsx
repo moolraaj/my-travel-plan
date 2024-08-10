@@ -2,8 +2,9 @@
 import { getServerSession } from 'next-auth'
 import React from 'react'
 import authOptions from '../api/(nextauth)/auth/[...nextauth]/options'
- 
 import LogoutPage from '../_common/_logout/logoutPage'
+ 
+ 
 
 
 async function page() {
