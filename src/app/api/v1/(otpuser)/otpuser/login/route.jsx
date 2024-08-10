@@ -11,7 +11,7 @@ DbConnect()
 export async function POST(req) {
     return handelAsyncErrors(async () => {
         let payload = await req.json();
-        let { phoneNumber } = payload;
+        let { name,phoneNumber } = payload;
 
         
         let existingUser = await OtpUserModel.findOne({ phoneNumber });
@@ -28,6 +28,7 @@ export async function POST(req) {
 
         
         let newUser = new OtpUserModel({
+            name:name,
             phoneNumber: phoneNumber
         });
 

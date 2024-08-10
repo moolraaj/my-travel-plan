@@ -2,14 +2,13 @@
 import { signOut } from 'next-auth/react'
 import React from 'react'
 
-function LogoutPage() {
+function LogoutPage({role}) {
     const logoutHandler = async () => {
         await signOut({
-            callbackUrl: '/login',
+            callbackUrl:role==='admin'?'/admin/login': '/login',
             redirect: true
         })
     }
-
     return (
         <>
       
