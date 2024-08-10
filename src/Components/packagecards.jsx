@@ -184,8 +184,7 @@ const BestSellingPackages = ({packages,loading}) => {
 
   let result=packages?packages.result:[]
 
-  console.log(`result of the all home page packages`)
-  console.log(result)
+ 
 
   return (
     <>

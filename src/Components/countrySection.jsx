@@ -9,12 +9,12 @@ import exploresection from '../app/assets/home_images/explore-bg.png';
 
 function ExplorationsFarAway({loading,city}) {
 
-  let data=city?city.result:[]
+  let result=city?city.result:[]
  
 
   
 
-  let reversedFilterCities = Array.isArray(data) ? [...data].reverse() : [];
+  let reversedFilterCities = Array.isArray(result) ? [...result].reverse() : [];
 
   return (
     <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})` }}>
@@ -26,7 +26,7 @@ function ExplorationsFarAway({loading,city}) {
         </div>
 
         <div className="destinations-grid">
-          {reversedFilterCities.length === undefined||reversedFilterCities===null ? (
+          {reversedFilterCities === undefined||reversedFilterCities===null ? (
             <EmptyExplorationComponent />
           ) : (
             reversedFilterCities.slice(0, 6).map((destination) => (

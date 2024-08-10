@@ -11,10 +11,10 @@ import emptyImage from '../app/assets/empty.jpg';
 
 function Destinations({country,loading}) {
 
-  let data=country?country.result:[]
+  let result=country?country.result:[]
   
 
-  let reversedCountries = Array.isArray(data) ? [...data].reverse() : [];
+  let reversedCountries = Array.isArray(result) ? [...result].reverse() : [];
 
   return (
     <div className='top-destination' style={{ backgroundImage: `url(${fishbg.src})` }}>
