@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import LogoutPage from '../../_logout/logoutPage';
 
 const ContactUs = () => {
@@ -11,9 +11,7 @@ const ContactUs = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = () => {
-    signOut();
-  };
+ 
 
   return (
     <div className="contact-us-container">

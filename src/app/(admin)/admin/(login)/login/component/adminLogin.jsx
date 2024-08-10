@@ -12,42 +12,60 @@ function AdminLoginPage() {
         password: '',
         rememberMe: false,
     });
-    const [error, setError] = useState('');
+    let [erros, setErrors] = useState({})
     const [showPassword, setShowPassword] = useState(false);
 
     const onChangeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
+        setErrors({...erros,[e.target.name]:''})
     };
 
-    const onRememberMeChange = () => {
-        setData({ ...data, rememberMe: !data.rememberMe });
-    };
+    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    const logedInAdmin = async () => {
-        try {
-            let resp = await fetch('/api/v1/admin/login', {
-                method: 'POST',
-                body: JSON.stringify(data),
-            });
-            let result = await resp.json();
-            if (result) {
-                await signIn('credentials', {
-                    email: data.email,
-                    password: data.password,
-                    callbackUrl: '/admin/dashboard',
-                    redirect: true
-                });
-
-            } else {
-                setError(result.message || 'An error occurred');
-            }
-        } catch (err) {
-            setError('An error occurred');
+    const excuteErrors = () => {
+        let { email, password } = data
+        let valid = true
+        let errorFields = {}
+        if(!email){
+            valid =false
+            errorFields.email ='email is required'
         }
+        if(!password){
+            valid =false
+            errorFields.password ='password is required'
+        }
+        setErrors(errorFields)
+        return valid
+    }
+
+    const logedInAdmin = async () => {
+        if(excuteErrors()){
+            try {
+                let resp = await fetch('/api/v1/admin/login', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                });
+                let result = await resp.json();
+                if (result) {
+                    await signIn('credentials', {
+                        email: data.email,
+                        password: data.password,
+                        callbackUrl: '/admin/dashboard',
+                        redirect: true
+                    });
+    
+                } else {
+                    console.log('error')
+                }
+            } catch (err) {
+                 console.log('error')
+            }
+        }
+       
     };
 
     return (
@@ -66,6 +84,7 @@ function AdminLoginPage() {
                     placeholder="example@gmail.com"
                 />
             </div>
+            {erros.email && <span className='admin_login_error'>{erros.email}</span>}
             <div className="input-group">
                 <label htmlFor="password">Password*</label>
                 <div className="password-wrapper">
@@ -81,18 +100,11 @@ function AdminLoginPage() {
                     </span>
                 </div>
             </div>
-            <div className="remember-me">
-                <input
-                    type="checkbox"
-                    name="rememberMe"
-                    id="rememberMe"
-                    checked={data.rememberMe}
-                    onChange={onRememberMeChange}
-                />
-                <label htmlFor="rememberMe">Remember Me</label>
-            </div>
+            {erros.password && <span className='admin_login_error'>{erros.password}</span>}
+           
+            
             <button onClick={logedInAdmin}>Login</button>
-            {error && <p>{error}</p>}
+             
         </>
     );
 }

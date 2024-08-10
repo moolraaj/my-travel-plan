@@ -1,6 +1,6 @@
 import { DbConnect } from '@/database/database';
 import OtpUserModel from '@/model/otpUser';
- 
+   
  
 import CredentialsProvider from 'next-auth/providers/credentials';
  
@@ -44,17 +44,11 @@ export const authOptions = {
         },
       },
       async authorize(credentials) {
-        await DbConnect();
-       
-
+        await DbConnect()
         const user = await OtpUserModel.findOne({ phoneNumber: credentials?.phoneNumber });
-      
-
         if (user) {
-          return user
-            
+          return user 
         } else {
-         
           return null;
         }
       },
