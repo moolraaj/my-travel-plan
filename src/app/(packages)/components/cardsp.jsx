@@ -29,7 +29,7 @@ const Allpackages = () => {
     <div className="container card_main_section">
       <div className="card_discount">
         <div className="packages">
-          {result === undefined || result === null ? ('no result found') : (result.map((pkg, index) => (
+          {result && (result.map((pkg, index) => (
             <div key={index} className="package">
               {pkg.images ? pkg.images.map((e) => (
                 <Image
