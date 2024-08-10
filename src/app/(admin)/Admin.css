@@ -22,6 +22,19 @@ body{
   background: #fff;
 }
 
+
+.overview-d-card {
+  background: white;
+}
+
+.icon_wrap {
+  color: #12191d;
+}
+
+.data_wrap {
+  color: #1802a0;
+}
+
 .admin_login_inner {
   position: relative;
   padding: 40px;
@@ -119,7 +132,7 @@ body{
 
 
 .admin_layout {
-  max-width: 1520px;
+  max-width: 1600px;
   margin: 100px auto 50px auto;
   padding: 20px 0px;
   width: 100%;
@@ -149,6 +162,42 @@ g.recharts-layer.recharts-pie:focus{
   color: #1802A0;
 }
 
+.admin_outer_layout {
+  display: flex;
+  column-gap: 20px;
+  overflow: hidden;
+
+}
+
+.admin_contexts {
+  width: 84%;
+}
+
+.navbar {
+  background-color: #fff;
+  padding: 10px 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: sticky !important;
+  top: 0;
+  z-index: 999;
+}
+.sidebar {
+  position: relative !important; 
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #2c3e50;
+  color: white;
+  overflow-x: clip;
+  z-index: 9999;
+  box-shadow: none !important;
+}
+.sidebar_contexts {
+  max-width: 280px;
+  background: #2c3e50;
+}
+
 .overview-d-cards {
   display: flex;
   justify-content: space-around;
@@ -161,7 +210,7 @@ g.recharts-layer.recharts-pie:focus{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #CF0C2A;
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
   flex: 1;
