@@ -21,7 +21,7 @@ function AdminLayout({children}) {
       </div>
       </div>
       <div className='admin_contexts'>
-      <AdminNavbar/>
+      <AdminNavbar  toggleSidebar={toggleSidebar}/>
       <div className='admin_layout'>
         <ToastContainer/>
       {children}
