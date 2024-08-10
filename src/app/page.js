@@ -64,7 +64,7 @@ export default  function Home() {
     
     <>
       <Layout>
-        <h1></h1>
+    
       
         <Homepage continent={continent} loading={loading} country={country} city={city} packages={packages} blogs={blogs}/>
 
