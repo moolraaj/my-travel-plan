@@ -141,13 +141,15 @@ import emptyImage from '../app/assets/empty.jpg';
 import { useEffect, useState } from 'react';
  
 import { getSession } from 'next-auth/react'; 
+import BookingForm from './(bookings)/bookings/bookingForm';
+import { useRouter } from 'next/navigation';
 
 
 const BestSellingPackages = ({packages,loading}) => {
- 
- 
- 
+
+  const router = useRouter();
   const [userVerified, setUserVerified] = useState(false);
+  const [isopenForm, setIsopenForm] =useState(false)
 
    
 
@@ -176,7 +178,7 @@ const BestSellingPackages = ({packages,loading}) => {
     if (!userVerified) {
       router.push('/login');
     } else {
-     router.push('/flights')
+      setIsopenForm(true)
     }
   };
 
@@ -187,6 +189,7 @@ const BestSellingPackages = ({packages,loading}) => {
 
   return (
     <>
+    {isopenForm && <BookingForm setIsopenForm={setIsopenForm}/>}
 
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
       

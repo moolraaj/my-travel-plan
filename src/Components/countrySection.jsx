@@ -29,7 +29,7 @@ function ExplorationsFarAway({loading,city}) {
           {loading || reversedFilterCities.length === 0 ? (
             <EmptyExplorationComponent />
           ) : (
-            reversedFilterCities.slice(0, 8).map((destination) => (
+            reversedFilterCities.slice(0, 6).map((destination) => (
               <Link href={`/city/${destination.slug}`} key={destination._id}>
               <div  className="destination-card">
                 {destination.images && destination.images.length > 0 ? (

@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image';
 import exploretheme from '../app/assets/home_images/theme-destination.png';
+import Link from 'next/link';
 
 const ExploreDestinations = () => {
   const destinations = [
@@ -20,6 +21,7 @@ const ExploreDestinations = () => {
         <div className="destinations-container-countries">
           {destinations.map((destination, index) => (
             <div key={index} className="destination">
+              <Link href={`/`}>
               <Image
                 src={destination.imgSrc}
                 alt={destination.label || "loading..."}
@@ -28,6 +30,7 @@ const ExploreDestinations = () => {
                 className="destination-image"
               />
               <p >{destination.label}</p>
+              </Link>
             </div>
           ))}
         </div>

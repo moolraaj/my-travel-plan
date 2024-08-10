@@ -18,8 +18,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+      <ToastContainer style={{zIndex: '9999999999999999'}}/>
         <NextAuthProvide>
-        <ToastContainer/>
         {children}
         </NextAuthProvide>
         </body>
