@@ -36,33 +36,38 @@ const discountedActivities = [
   },
 ];
 
-const TopDiscountedActivities = () => {
+const TopDiscountedActivities = ({result}) => {
+  let reversedActivities=Array.isArray(result)?[...result].reverse():[]
   return (
     <div className="top-discounted-container" style={{ backgroundImage: `url(${discountactivitybg.src})`}} >
     <div className="inner-w-container">
       <h2 className="top-discounted-title">Top Discounted Activities</h2>
       <p className="top-discounted-subtitle">Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
       <div className="top-discounted-gridContainer">
-        {discountedActivities.map((activity, index) => (
-          <Link className="top-discounted-cardOuter" href={`/${activity.country.toLowerCase().replace(' ', '-')}`} key={index}>
+        {reversedActivities===undefined||reversedActivities===null?('no result found'):(reversedActivities.map((activity, index) => (
+          <Link className="top-discounted-cardOuter" href={`/${activity.slug.toLowerCase().replace(' ', '-')}`} key={index}>
             <div className="top-discounted-card">
               <div className="top-discounted-overlay">
-                <span className="top-discounted-label">{activity.discount}</span>
+                <span className="top-discounted-label">{activity.discount} % </span>
               </div>
-              <Image
-                src={activity.imgSrc}
-                alt={activity.country}
-                width={1000}
+              
+                {activity.images ? activity.images.map((e) => (
+                      <Image
+                        key={e._id}
+                        src={`/uploads/${e.name}`}
+                        alt={e.title}
+                        width={1000}
                 height={300}
                 className="top-discounted-image"
-              />
+                      />
+                    )) : 'No image found'}
               <div className="top-discounted-Details">
-                <h3 className="top-discounted-country">{activity.country}</h3>
+                <h3 className="top-discounted-country">{activity.title}</h3>
                 <p className="top-discounted-description">{activity.description}</p>
               </div>
             </div>
           </Link>
-        ))}
+        )))}
       </div>
     </div>
     </div>

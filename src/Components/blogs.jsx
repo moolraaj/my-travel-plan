@@ -6,7 +6,7 @@ import emptyImage from '../app/assets/empty.jpg';
  
 import { format } from 'date-fns';
 
-const LatestBlog = ({blogs,loading}) => {
+const LatestBlog = ({blogs}) => {
 
   let result=blogs?blogs.result:[]
    
@@ -23,8 +23,8 @@ const LatestBlog = ({blogs,loading}) => {
         </div>
 
         <div className="blog-container">
-          {loading || result=== undefined||result===null ? (
-            <EmptyBlogComponent />
+          {result=== undefined||result===null ? (
+            'dfasdf'
           ) : (
             <>
         

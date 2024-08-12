@@ -17,6 +17,7 @@ export async function POST(req) {
     // Extract data from formdata
     const payload = await req.formData();
     const file = payload.get('file');
+    const icon = payload.get('icon');
     const title = payload.get('title');
     const description = payload.get('description');
     const slug = payload.get('slug');
@@ -46,6 +47,13 @@ export async function POST(req) {
         contentType: uploadedFile.contentType,
     };
 
+    const uploadedIcon = await HandleFileUpload(icon, host);
+    const iconObject = {
+        name: uploadedIcon.name,
+        path: uploadedIcon.path,
+        contentType: uploadedIcon.contentType,
+    };
+
     // Handle multiple gallery images
     const galleryFiles = payload.getAll('activity_galleries');
     const galleryImages = [];
@@ -61,6 +69,7 @@ export async function POST(req) {
     // Create the activity
     const response = new ActivitiesModel({
         images: [imageObject],
+        icon:[iconObject],
         title,
         description,
         slug,

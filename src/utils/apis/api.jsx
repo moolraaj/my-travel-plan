@@ -70,6 +70,14 @@ export const EXPORT_ALL_APIS = () => {
         });
     };
 
+    const loadAllCities = async () => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/cities/get`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
     const loadAllCitiesWithLowestPrices = async () => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/cities/cities-with-lowest-price`);
@@ -82,6 +90,21 @@ export const EXPORT_ALL_APIS = () => {
     const loadSinglePackage= async (slug) => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/package/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+    const loadSingleActivity= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/activity/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
+    const loadAllActivities= async () => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`api/v1/activities/get`);
             let data = await resp.json();
             return data;
         });
@@ -124,7 +147,10 @@ export const EXPORT_ALL_APIS = () => {
         loadAllBlogs,
         loadSingleBlog,
         loadAllCitiesWithLowestPrices,
+        loadAllCities,
         loadSinglePackage,
+        loadSingleActivity,
+        loadAllActivities,
         sendQueryContactUs,
         sendQueryBookings
     };
