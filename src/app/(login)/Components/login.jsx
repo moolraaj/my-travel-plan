@@ -2,22 +2,22 @@ import { useState } from 'react';
 import popupbg from '../../../../public/images/popup-bg.png';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
-import { toast } from 'react-toastify';
-
 
 const Login = () => {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const orderId = searchParams.get('orderID');
-    const phoneNumber = searchParams.get('phone_number');
 
+    const [info, setInfo] = useState({
+        orderId: '',
+        phoneNumber: '',
+        registerusername: ''
+    });
 
     const [otp, setOtp] = useState('');
     const [user, setUser] = useState({
         phoneNumber: '',
+        registerusername: '',
         channel: 'SMS',
         otpLength: 6,
         expiry: 86400,
@@ -25,8 +25,8 @@ const Login = () => {
     const [verifyOtp, setVerifyOtp] = useState(false);
 
     const closeLogin = () => {
-        router.push(`/`)
-    }
+        router.push(`/`);
+    };
 
     const changeHandler = (value, e) => {
         if (e) {
@@ -49,7 +49,11 @@ const Login = () => {
 
             const result = await resp.json();
             if (result) {
-                router.push(`/login?orderID=${result.orderId}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
+                setInfo({
+                    orderId: result.orderId,
+                    phoneNumber: user.phoneNumber,
+                    registerusername: user.registerusername
+                });
                 setVerifyOtp(true);
             } else {
                 alert(result.error || 'Error sending OTP');
@@ -62,45 +66,50 @@ const Login = () => {
     const verifyOtpHandler = async (e) => {
         e.preventDefault();
         try {
-            // Verify OTP
-            const otpResp = await fetch('/api/v1/verify-otp', {
+            const resp = await fetch('/api/v1/verify-otp', {
                 method: 'POST',
-                body: JSON.stringify({ orderId, otp, phoneNumber }),
+                body: JSON.stringify({ orderId: info.orderId, otp, phoneNumber: info.phoneNumber }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
-    
-            const otpResult = await otpResp.json();
-            if (otpResult.isOTPVerified === true) {
-                // Check if user exists in the database
-                const usersResp = await fetch('/api/v1/otpuser/getallusers');
-                const usersResult = await usersResp.json();
-    
-                // Check if user exists based on phoneNumber
-                const userExists = usersResult.result.some(user =>
-                    user.phoneNumber === phoneNumber
-                );
-    
-                if (userExists) {
-                    // User exists, proceed to sign in
-                    await signIn('credentials', {
-                        phoneNumber: phoneNumber,
-                        callbackUrl: '/',
-                        redirect: true,
-                    });
-                } else {
-                    // No user found, show a toast and redirect to signup page
-                    toast.info('No user found. Redirecting to signup page...');
-                    setTimeout(() => {
-                        router.push('/signup');
-                    }, 3000); // Delay to allow the user to see the toast message
-                }
+
+            const result = await resp.json();
+            if (result.isOTPVerified) {
+                await saveUser(info.phoneNumber, user.registerusername);  
+                await signIn('credentials', {
+                    phoneNumber: info.phoneNumber,
+                    registerusername: user.registerusername,  
+                    callbackUrl: '/',
+                    redirect: true,
+                });
             } else {
-                alert(otpResult.error || 'OTP verification failed');
+                alert(result.error || 'OTP verification failed');
             }
         } catch (error) {
             console.error('Internal server issue:', error);
         }
     };
-    
+
+    const saveUser = async (phoneNumber, registerusername) => {
+        try {
+            const resp = await fetch('/api/v1/otpuser/login', {
+                method: 'POST',
+                body: JSON.stringify({ phoneNumber, registerusername }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await resp.json();
+            if (result) {
+                console.log('User saved:', result);
+            } else {
+                console.log('Error:', result.message);
+            }
+        } catch (error) {
+            console.error('Error saving user:', error);
+        }
+    };
 
     return (
         <div className="login-wrapper">
@@ -125,6 +134,15 @@ const Login = () => {
                         ) : (
                             <>
                                 <div className="input-group">
+                                    <input
+                                        id="registerusername"
+                                        name="registerusername"
+                                        value={user.registerusername}
+                                        onChange={(e) => changeHandler(null, e)}
+                                        placeholder="Enter Your Name"
+                                    />
+                                </div>
+                                <div className="input-group">
                                     <PhoneInput
                                         id="phone-number"
                                         defaultCountry="IN"
@@ -138,7 +156,6 @@ const Login = () => {
                         <button type="submit">
                             {verifyOtp ? 'Verify OTP' : 'Get OTP'}
                         </button>
-                        <p>Don't have an account <Link href={`/signup`}>Signup</Link></p>
                     </form>
                 </div>
             </div>

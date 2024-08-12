@@ -16,7 +16,7 @@ export async function POST(req) {
             return NextResponse.json({
                 status: 200,
                 success: true,
-                message: 'phone number already exist please try another way',
+                message: ' user logged in successfully',
             });
         }
 
