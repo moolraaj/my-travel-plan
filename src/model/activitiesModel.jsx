@@ -12,6 +12,7 @@ const imageSchema = new mongoose.Schema({
 // Define the package schema
 const activitiesSchema = new mongoose.Schema({
     images: [imageSchema],
+    icon:[imageSchema],
     title: { type: String, required: true },
     description: { type: String, required: true },
     slug: { type: String, required: true },

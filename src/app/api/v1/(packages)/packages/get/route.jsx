@@ -28,7 +28,6 @@ return handelAsyncErrors(async()=>{
         title: e.title,
         description: e.description,
         slug: e.slug,
-        slug: e.slug,
         package_price: e.package_price,
         package_discounted_price: e.package_discounted_price,
         package_days: e.package_days,
