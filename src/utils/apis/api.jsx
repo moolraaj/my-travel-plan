@@ -131,8 +131,9 @@ export const EXPORT_ALL_APIS = () => {
         let result=await resp.json()
         return result
     }
-    const loggedInUser=async()=>{
-        let resp=await fetch(`/api/v1/otpuser/login`,{
+    
+    const loadAllRegisteredUsers=async()=>{
+        let resp=await fetch(`/api/v1/otpuser/getallusers`,{
             method:'POST',
             body:JSON.stringify()
         })
@@ -170,7 +171,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllActivities,
         sendQueryContactUs,
         registerUser,
-        loggedInUser,
+        loadAllRegisteredUsers,
         sendQueryBookings,
     };
 };

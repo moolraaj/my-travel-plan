@@ -76,7 +76,7 @@ const Signup = () => {
                     phoneNumber: phoneNumber,
                     name: name,
                     callbackUrl: '/',
-                    redirect: true,
+                    redirect: false,
                 });
             } else {
                 alert(result.error || 'OTP verification failed');
