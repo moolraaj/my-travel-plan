@@ -1,12 +1,10 @@
-// /app/(admin)/admin/(packages)/packages/add-packages/page.jsx
+// /app/(admin)/admin/(activites)/activites/add-Activity/page.jsx
 
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaMinus } from 'react-icons/fa';
-import { toast } from  'react-toastify'; 
+import { toast } from 'react-toastify';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
-
 
 const AddActivity = () => {
   const router = useRouter();
@@ -14,36 +12,36 @@ const AddActivity = () => {
     title: '',
     description: '',
     slug: '',
-    packageOverview: '',
-    packageTopSummary: '',
-    packageItinerary: [{ day: '', location: '', tourname: '', itinerary_description: '' }],
-    packagesInclude: [{ description: '' }],
-    packagesExclude: [{ description: '' }],
+    activityOverview: '',
+    activityTopSummary: '',
     file: null,
+    icon: null,
     gallery_files: [],
     city_id: '',
- 
+    activity_price: '',
+    activity_discounted_price: '',
   });
+
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  
-    const fetchCities = async () => {
-      return handelAsyncErrors(async () => {
-        const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`,{
-          headers:{
-            'Cache-Control': 'no-cache'
-         }
-        });
-        const data = await res.json();
-        if (data.success) {
-          setCities(data.result); 
-        } else {
-          toast.error(data.message || 'Failed to fetch cities');
-        }
-      })
-    };
-    useEffect(() => {
+  const fetchCities = async () => {
+    return handelAsyncErrors(async () => {
+      const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCities(data.result);
+      } else {
+        toast.error(data.message || 'Failed to fetch cities');
+      }
+    });
+  };
+
+  useEffect(() => {
     fetchCities();
   }, []);
 
@@ -55,28 +53,12 @@ const AddActivity = () => {
     }));
   };
 
-  const handleDynamicChange = (e, index, field) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => {
-      const updatedField = [...prevData[field]];
-      updatedField[index][name] = value;
-      return { ...prevData, [field]: updatedField };
-    });
-  };
-
-  const handleAddField = (field) => {
+  const handleGalleryChange = (e) => {
+    const files = Array.from(e.target.files);
     setFormData((prevData) => ({
       ...prevData,
-      [field]: [...prevData[field], field === 'packageItinerary' ? { day: '', location: '', tourname: '', itinerary_description: '' } : { description: '' }]
+      gallery_files: files,
     }));
-  };
-
-  const handleRemoveField = (index, field) => {
-    setFormData((prevData) => {
-      const updatedField = [...prevData[field]];
-      updatedField.splice(index, 1);
-      return { ...prevData, [field]: updatedField };
-    });
   };
 
   const handleSubmit = async (e) => {
@@ -87,22 +69,30 @@ const AddActivity = () => {
       title,
       description,
       slug,
-      packageOverview,
-      packageTopSummary,
-      packageItinerary,
-      packagesInclude,
-      packagesExclude,
+      activityOverview,
+      activityTopSummary,
       file,
+      icon,
       gallery_files,
       city_id,
-      package_price,
-      package_discounted_price,
-      package_days,
-      package_nights
+      activity_price,
+      activity_discounted_price,
     } = formData;
 
-    if (!title || !description || !slug || !file || !city_id) {
-      toast.error('Please fill in all required fields and upload an image.');
+    if (
+      !title ||
+      !description ||
+      !slug ||
+      !activityOverview ||
+      !activityTopSummary ||
+      !file ||
+      !icon ||
+      gallery_files.length === 0 ||
+      !city_id ||
+      !activity_price ||
+      !activity_discounted_price
+    ) {
+      toast.error('Please fill in all required fields and upload images.');
       setIsLoading(false);
       return;
     }
@@ -112,22 +102,19 @@ const AddActivity = () => {
       submissionData.append('title', title);
       submissionData.append('description', description);
       submissionData.append('slug', slug);
-      submissionData.append('package_price', package_price);
-      submissionData.append('package_discounted_price', package_discounted_price);
-      submissionData.append('package_days', package_days);
-      submissionData.append('package_nights', package_nights);
-      submissionData.append('package_overview', packageOverview);
-      submissionData.append('package_top_summary', packageTopSummary);
-      submissionData.append('package_itinerary', JSON.stringify(packageItinerary));
-      submissionData.append('packages_include', JSON.stringify(packagesInclude));
-      submissionData.append('packages_exclude', JSON.stringify(packagesExclude));
+      submissionData.append('activityOverview', activityOverview);
+      submissionData.append('activityTopSummary', activityTopSummary);
       submissionData.append('file', file);
+      submissionData.append('icon', icon);
+      submissionData.append('activity_price', activity_price);
+      submissionData.append('activity_discounted_price', activity_discounted_price);
       submissionData.append('city_id', city_id);  // Include city_id
+
       gallery_files.forEach((file) => {
         submissionData.append('gallery_files', file);
       });
 
-      const res = await fetch('/api/v1/package/add', {
+      const res = await fetch('/api/v1/activity/add', {
         method: 'POST',
         body: submissionData,
       });
@@ -135,104 +122,83 @@ const AddActivity = () => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success(data.message  || 'Package added successfully!');
-        router.push('/admin/packages');
+        toast.success(data.message || 'Activity added successfully!');
+        router.push('/admin/activities');
       } else {
         toast.error(data.message || 'An error occurred.');
       }
-    setIsLoading(false);
-    })
-     
+
+      setIsLoading(false);
+    });
   };
 
   return (
-    <div className="add-package-container">
+    <div className="add-activity-container">
       <h2>Add Activity</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div>
           <label htmlFor="title">Title</label>
           <input
             type="text"
-            id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            placeholder="Enter title"
+            required
           />
         </div>
-        <div className="form-group">
+        <div>
           <label htmlFor="description">Description</label>
           <textarea
-            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Enter description"
+            required
           />
         </div>
-        <div className="form-group">
+        <div>
           <label htmlFor="slug">Slug</label>
           <input
             type="text"
-            id="slug"
             name="slug"
             value={formData.slug}
             onChange={handleChange}
-            placeholder="Enter slug"
+            required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="package_price">Package Price</label>
-          <input
-            type="number"
-            id="package_price"
-            name="package_price"
-            value={formData.package_price}
-            onChange={handleChange}
-            placeholder="Enter package price"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="package_discounted_price">Discounted Price</label>
-          <input
-            type="number"
-            id="package_discounted_price"
-            name="package_discounted_price"
-            value={formData.package_discounted_price}
-            onChange={handleChange}
-            placeholder="Enter discounted price"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="packageOverview">Package Overview</label>
+        <div>
+          <label htmlFor="activityOverview">Activity Overview</label>
           <textarea
-            id="packageOverview"
-            name="packageOverview"
-            value={formData.packageOverview}
+            name="activityOverview"
+            value={formData.activityOverview}
             onChange={handleChange}
-            placeholder="Enter package overview"
+            required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="packageTopSummary">Package Top Summary</label>
+        <div>
+          <label htmlFor="activityTopSummary">Activity Top Summary</label>
           <textarea
-            id="packageTopSummary"
-            name="packageTopSummary"
-            value={formData.packageTopSummary}
+            name="activityTopSummary"
+            value={formData.activityTopSummary}
             onChange={handleChange}
-            placeholder="Enter package top summary"
+            required
           />
         </div>
-        <div className="form-group">
+        <div>
+          <label htmlFor="file">Main Image</label>
+          <input type="file" name="file" onChange={handleChange} required />
+        </div>
+        <div>
+          <label htmlFor="icon">Icon</label>
+          <input type="file" name="icon" onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="gallery_files">Gallery Images</label>
+          <input type="file" name="gallery_files" onChange={handleGalleryChange} multiple />
+        </div>
+        <div>
           <label htmlFor="city_id">City</label>
-          <select
-            id="city_id"
-            name="city_id"
-            value={formData.city_id}
-            onChange={handleChange}
-          >
-            <option value="">Select a city</option>
+          <select name="city_id" value={formData.city_id} onChange={handleChange} required>
+            <option value="">Select City</option>
             {cities.map((city) => (
               <option key={city._id} value={city._id}>
                 {city.title}
@@ -240,106 +206,27 @@ const AddActivity = () => {
             ))}
           </select>
         </div>
-        <div className="form-group">
-          <label>Package Itinerary</label>
-          {formData.packageItinerary.map((item, index) => (
-            <div key={index} className="itinerary-item">
-              <input
-                type="text"
-                name="day"
-                value={item.day}
-                onChange={(e) => handleDynamicChange(e, index, 'packageItinerary')}
-                placeholder="Day"
-              />
-              <input
-                type="text"
-                name="location"
-                value={item.location}
-                onChange={(e) => handleDynamicChange(e, index, 'packageItinerary')}
-                placeholder="Location"
-              />
-              <input
-                type="text"
-                name="tourname"
-                value={item.tourname}
-                onChange={(e) => handleDynamicChange(e, index, 'packageItinerary')}
-                placeholder="Tour Name"
-              />
-              <textarea
-                name="itinerary_description"
-                value={item.itinerary_description}
-                onChange={(e) => handleDynamicChange(e, index, 'packageItinerary')}
-                placeholder="Itinerary Description"
-              />
-              <div className="remove_package" onClick={() => handleRemoveField(index, 'packageItinerary')}>
-                <FaMinus />
-              </div>
-            </div>
-          ))}
-          <button type="button" onClick={() => handleAddField('packageItinerary')}>Add Itinerary</button>
-        </div>
-        <div className="form-group">
-          <label>Packages Include</label>
-          {formData.packagesInclude.map((item, index) => (
-            <div key={index} className="include-item">
-              <textarea
-                name="description"
-                value={item.description}
-                onChange={(e) => handleDynamicChange(e, index, 'packagesInclude')}
-                placeholder="Description"
-              />
-              <div className="remove_package" onClick={() => handleRemoveField(index, 'packagesInclude')}>
-                <FaMinus />
-              </div>
-            </div>
-          ))}
-          <button type="button" onClick={() => handleAddField('packagesInclude')}>Add Include</button>
-        </div>
-        <div className="form-group">
-          <label>Packages Exclude</label>
-          {formData.packagesExclude.map((item, index) => (
-            <div key={index} className="exclude-item">
-              <textarea
-                name="description"
-                value={item.description}
-                onChange={(e) => handleDynamicChange(e, index, 'packagesExclude')}
-                placeholder="Description"
-              />
-              <div className="remove_package" onClick={() => handleRemoveField(index, 'packagesExclude')}>
-                <FaMinus />
-              </div>
-            </div>
-          ))}
-          <button type="button" onClick={() => handleAddField('packagesExclude')}>Add Exclude</button>
-        </div>
-        <div className="form-group">
-          <label htmlFor="file">Image</label>
-          <input type="file" id="file" name="file" onChange={handleChange} />
-          {formData.file && (
-            <div className="image-preview">
-              <img src={URL.createObjectURL(formData.file)} alt="Preview" />
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="gallery_files">Gallery Images</label>
+        <div>
+          <label htmlFor="activity_price">Price</label>
           <input
-            type="file"
-            id="gallery_files"
-            name="gallery_files"
-            multiple
-            onChange={(e) => setFormData((prevData) => ({ ...prevData, gallery_files: [...e.target.files] }))}
+            type="number"
+            name="activity_price"
+            value={formData.activity_price}
+            onChange={handleChange}
+            required
           />
-          {formData.gallery_files.length > 0 && (
-            <div className="gallery-preview">
-              {Array.from(formData.gallery_files).map((file, index) => (
-                <img key={index} src={URL.createObjectURL(file)} alt={`Preview ${index + 1}`} />
-              ))}
-            </div>
-          )}
         </div>
-        <button type="submit" className="submit-button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Add Activity'}
+        <div>
+          <label htmlFor="activity_discounted_price">Discounted Price</label>
+          <input
+            type="number"
+            name="activity_discounted_price"
+            value={formData.activity_discounted_price}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Adding...' : 'Add Activity'}
         </button>
       </form>
     </div>
@@ -347,4 +234,5 @@ const AddActivity = () => {
 };
 
 export default AddActivity;
+
  
