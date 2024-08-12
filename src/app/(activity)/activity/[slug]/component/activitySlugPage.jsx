@@ -1,13 +1,23 @@
+'use client'
+import { EXPORT_ALL_APIS } from "@/utils/apis/api";
+import { useEffect, useState } from "react";
+
  
 
 
-const Bloggallery = ({ data }) => {
-    
+const ActivityBloggallery = ({ slug }) => {
+    let [data,setData]=useState([])
+    let api=EXPORT_ALL_APIS()
+    let fetchSingleActivity=async()=>{
+        let resp=await api.loadSingleActivity(slug)
+        setData(resp)
+       
+    }
+    useEffect(()=>{
+        fetchSingleActivity()
+    },[])
 
     let result=data?data.result:[]
-
-    
-
 
 
     return (
@@ -21,7 +31,7 @@ const Bloggallery = ({ data }) => {
                         <div className='top_summary'>
                             <div className='top_summary_inner'>
                                 <h2 className='heading_inner_page'>Top Summary</h2>
-                                <p>{ele.blog_overview}
+                                <p>{ele.activity_overview}
                                 </p>
                             </div>
                         </div>
@@ -50,4 +60,4 @@ const Bloggallery = ({ data }) => {
 
 
     );
-}; export default Bloggallery;
+}; export default ActivityBloggallery;

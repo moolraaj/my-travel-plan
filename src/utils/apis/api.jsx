@@ -94,6 +94,13 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+    const loadSingleActivity= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/activity/getbyslug/${slug}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
 
     const loadAllActivities= async () => {
         return await handelAsyncErrors(async () => {
@@ -142,6 +149,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllCitiesWithLowestPrices,
         loadAllCities,
         loadSinglePackage,
+        loadSingleActivity,
         loadAllActivities,
         sendQueryContactUs,
         sendQueryBookings

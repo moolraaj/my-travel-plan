@@ -29,7 +29,7 @@ const TopDestinations = ({response}) => {
                       />
                     )) : 'No image found'}
               <div className="top-dest-Details">
-                <h3 className="top-dest-city">{destination.title}</h3>
+                <h3 className="top-dest-city">{destination.title||'no title found'}</h3>
               </div>
             </div>
           </Link>

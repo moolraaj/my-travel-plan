@@ -1,11 +1,18 @@
+ 
+import Topbanner from '@/app/_common/layout/topbanner'
+ 
 import React from 'react'
+import ActivityBloggallery from './component/activitySlugPage'
 
-function page({params}) {
+async function page({params}) {
     let {slug}=params
+
+    
   return (
-    <div>
-      <h1>this is {slug}</h1>
-    </div>
+     <>
+     <Topbanner slug={slug}/>
+      <ActivityBloggallery slug={slug}/>
+     </>
   )
 }
 

@@ -11,6 +11,7 @@ function CombineActivitiesPage() {
     let api=EXPORT_ALL_APIS()
     let [data,setData]=useState([]) 
     let [city,setCity]=useState([]) 
+    let [blog,setBlog]=useState([])
 
     let fetchAllActivities=async()=>{
         let resp=await api.loadAllActivities()
@@ -20,13 +21,19 @@ function CombineActivitiesPage() {
         let resp=await api.loadAllCities()
         setCity(resp)
     }
+    let fetchAllBlog=async()=>{
+        let resp=await api.loadAllBlogs()
+        setBlog(resp)
+    }
     useEffect(()=>{
         fetchAllActivities()
         fetchAllCountries()
+        fetchAllBlog()
     },[])
 
     let result=data?data.result:[]
     let response=city?city.result:[]
+  
   return (
      <>
       <div className='outer_section_abanner'>
@@ -37,7 +44,7 @@ function CombineActivitiesPage() {
       <TopDiscountedActivities result={result}/>
       <TopDestinations response={response}/>
      <div className='blog_custom'>
-      <LatestBlog/>
+      <LatestBlog blogs={blog}/>
       </div>
      </>
   )

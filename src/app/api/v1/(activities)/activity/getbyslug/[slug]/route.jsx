@@ -58,7 +58,7 @@ export async function GET(req, { params }) {
             } : null
         };
 
-        return NextResponse.json({ status: 200, success: true, result: formattedResult });
+        return NextResponse.json({ status: 200, success: true, result: [formattedResult] });
     })
      
 }
