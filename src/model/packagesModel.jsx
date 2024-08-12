@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import countriesModel from "./countryModel";
 import continentModel from "./continentModel";
+import CitiesModel from "./citiesModel";
+
 // Define the image schema
 const imageSchema = new mongoose.Schema({
     name: { type: String, required: true },
