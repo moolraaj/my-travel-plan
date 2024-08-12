@@ -5,6 +5,7 @@ import 'react-phone-number-input/style.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -61,46 +62,45 @@ const Login = () => {
     const verifyOtpHandler = async (e) => {
         e.preventDefault();
         try {
-            const resp = await fetch('/api/v1/verify-otp', {
+            // Verify OTP
+            const otpResp = await fetch('/api/v1/verify-otp', {
                 method: 'POST',
                 body: JSON.stringify({ orderId, otp, phoneNumber }),
             });
-
-            const result = await resp.json();
-            if (result.isOTPVerified === true) {
-                saveUser(phoneNumber);
-                await signIn('credentials', {
-                    phoneNumber: phoneNumber,
-                    callbackUrl: '/',
-                    redirect: true,
-                });
+    
+            const otpResult = await otpResp.json();
+            if (otpResult.isOTPVerified === true) {
+                // Check if user exists in the database
+                const usersResp = await fetch('/api/v1/otpuser/getallusers');
+                const usersResult = await usersResp.json();
+    
+                // Check if user exists based on phoneNumber
+                const userExists = usersResult.result.some(user =>
+                    user.phoneNumber === phoneNumber
+                );
+    
+                if (userExists) {
+                    // User exists, proceed to sign in
+                    await signIn('credentials', {
+                        phoneNumber: phoneNumber,
+                        callbackUrl: '/',
+                        redirect: true,
+                    });
+                } else {
+                    // No user found, show a toast and redirect to signup page
+                    toast.info('No user found. Redirecting to signup page...');
+                    setTimeout(() => {
+                        router.push('/signup');
+                    }, 3000); // Delay to allow the user to see the toast message
+                }
             } else {
-                alert(result.error || 'OTP verification failed');
+                alert(otpResult.error || 'OTP verification failed');
             }
         } catch (error) {
             console.error('Internal server issue:', error);
         }
     };
-
-    const saveUser = async (phoneNumber) => {
-        try {
-            const resp = await fetch('/api/v1/otpuser/login', {
-                method: 'POST',
-                body: JSON.stringify({ phoneNumber }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const result = await resp.json();
-            if (result) {
-                console.log(result);
-            } else {
-                console.log(result.message);
-            }
-        } catch (error) {
-            console.error('Error saving user:', error);
-        }
-    };
+    
 
     return (
         <div className="login-wrapper">
