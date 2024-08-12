@@ -1,5 +1,4 @@
 // /app/(admin)/admin/(activites)/activites/add-Activity/page.jsx
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -27,7 +26,7 @@ const AddActivity = () => {
 
   const fetchCities = async () => {
     return handelAsyncErrors(async () => {
-      const res = await fetch(`/api/v1/cities/get?page=1&limit=1000`, {
+      const res = await fetch('/api/v1/cities/get?page=1&limit=1000', {
         headers: {
           'Cache-Control': 'no-cache',
         },
@@ -102,16 +101,16 @@ const AddActivity = () => {
       submissionData.append('title', title);
       submissionData.append('description', description);
       submissionData.append('slug', slug);
-      submissionData.append('activityOverview', activityOverview);
-      submissionData.append('activityTopSummary', activityTopSummary);
+      submissionData.append('activity_overview', activityOverview);
+      submissionData.append('activity_top_summary', activityTopSummary);
       submissionData.append('file', file);
       submissionData.append('icon', icon);
       submissionData.append('activity_price', activity_price);
       submissionData.append('activity_discounted_price', activity_discounted_price);
-      submissionData.append('city_id', city_id);  // Include city_id
+      submissionData.append('city_id', city_id);
 
       gallery_files.forEach((file) => {
-        submissionData.append('gallery_files', file);
+        submissionData.append('activity_galleries', file);
       });
 
       const res = await fetch('/api/v1/activity/add', {
@@ -234,5 +233,3 @@ const AddActivity = () => {
 };
 
 export default AddActivity;
-
- 
