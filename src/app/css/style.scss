@@ -1899,9 +1899,10 @@ a.card_outer {
 	text-decoration: none;
 }
 
-/* login popup form */
+/* login and signup popup form */
 
-.login_popup_outer{
+.login_popup_outer,
+.signup_popup_outer{
 	position: fixed;
 	height: 100%;
 	width: 100%;
@@ -1914,6 +1915,7 @@ a.card_outer {
 	align-items: center;
 }
 
+/* login and signup popup form  end*/
 
 
 /* book now popoup form starts */
