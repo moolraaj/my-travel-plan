@@ -6,7 +6,7 @@ import LogoutPage from '../../_logout/logoutPage';
 
 const ContactUs = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -28,9 +28,7 @@ const ContactUs = () => {
         </div>
         {isOpen && (
           <div className="dropdown-menu">
-            {status === 'loading' ? (
-              <p>Loading...</p>
-            ) : !session ? (
+            {!session ? (
               <a href="/login" className="dropdown-item">Login</a>
             ) : (
               <LogoutPage/>

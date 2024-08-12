@@ -113,11 +113,11 @@ const sidebarItems = [
 
 function Sidebar({ isOpen, toggleSidebar }) {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : 'shrink'}`}>
+    <div className={`sidebar ${!isOpen ? 'open' : 'shrink'}`}>
       <div className="sidebar-content">
         <ul>
           <li>
-            {isOpen ? (
+            {!isOpen ? (
               <button className="close-btn" onClick={toggleSidebar}>
                 &times;
               </button>
@@ -129,10 +129,10 @@ function Sidebar({ isOpen, toggleSidebar }) {
           </li>
           {sidebarItems.map((item, index) => (
             <li key={index}>
-              <Link href={item.href} onClick={isOpen ? toggleSidebar : undefined}>
+              <Link href={item.href} >
                 <item.icon className="sidebar-icon" />
-                {isOpen && <span>{item.label}</span>}
-                {!isOpen && <span className="sidebar_tooltip">{item.label}</span>}
+                {!isOpen && <span>{item.label}</span>}
+                {isOpen && <span className="sidebar_tooltip">{item.label}</span>}
               </Link>
             </li>
           ))}
