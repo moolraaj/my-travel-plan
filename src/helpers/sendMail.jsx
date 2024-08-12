@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const SendEmail = async ({ name, email, phone_number, message, formType, date, origin, destination, traveler, children }) => {
+export const SendEmail = async ({ name, email, phone_number, message, formType, date, origin, destination, traveler, children, phoneNumber, registerusername }) => {
     try {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -40,7 +40,7 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                 to: email,
                 subject: 'Thank you for your flight inquiry',
                 html: `<p>Dear ${name},</p>
-                       <p>Thank you for your flight inquiry. We have received the following details</p>
+                       <p>Thank you for your flight inquiry. We have received the following details:</p>
                        <p><strong>Date:</strong> ${date}</p>
                        <p><strong>Origin:</strong> ${origin}</p>
                        <p><strong>Destination:</strong> ${destination}</p>
@@ -48,7 +48,6 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Children:</strong> ${children}</p>
                        <p><strong>Message:</strong> ${message}</p>
                        <p>We will get back to you soon.</p>`
-                        
             };
 
             adminMailOptions = {
@@ -66,12 +65,44 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Children:</strong> ${children}</p>
                        <p><strong>Message:</strong> ${message}</p>`
             };
+        } else if (formType === 'userlogin') {
+            
+            userMailOptions = {
+                from: process.env.GMAIL_AUTH_EMAIL_ID,
+                to: phoneNumber,  
+                subject: 'Registration Confirmation',
+                html: `<p>Dear ${registerusername},</p>
+                       <p>Thank you for registering with us. Your registration details are:</p>
+                       <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+                       <p><strong>Username:</strong> ${registerusername}</p>`
+            };
+
+           
+            adminMailOptions = {
+                from: process.env.GMAIL_AUTH_EMAIL_ID,
+                to: "raaj73906@gmail.com",
+                subject: 'New User Registration',
+                html: `<p>New user registration received:</p>
+                       <p><strong>Name:</strong> ${registerusername}</p>
+                       <p><strong>Phone Number:</strong> ${phoneNumber}</p>`
+            };
+
+           
+            userMailOptions = null;
+        } else {
+            throw new Error('Unsupported form type');
         }
 
-        const userMailResponse = await transporter.sendMail(userMailOptions);
-        const adminMailResponse = await transporter.sendMail(adminMailOptions);
+        if (userMailOptions) {
+            await transporter.sendMail(userMailOptions);
+        }
 
-        return { userMailResponse, adminMailResponse };
+        if (adminMailOptions) {
+            const adminMailResponse = await transporter.sendMail(adminMailOptions);
+            return { adminMailResponse };
+        } else {
+            throw new Error('No admin email options defined');
+        }
     } catch (error) {
         console.error('Error sending emails:', error.message);
         throw new Error('Error sending emails: ' + error.message);

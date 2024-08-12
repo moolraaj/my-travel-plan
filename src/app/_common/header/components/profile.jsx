@@ -14,7 +14,7 @@ const ContactUs = () => {
   };
 
   // Get the first letter of the user's name
-  const firstLetter = session?.user?.name ? session.user.name.charAt(0).toUpperCase() : '';
+  const firstLetter = session?.user?.registerusername ? session.user.registerusername.charAt(0).toUpperCase() : '';
 
   return (
     <div className="contact-us-container">
