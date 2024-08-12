@@ -23,7 +23,7 @@ const Signup = () => {
     });
     const [verifyOtp, setVerifyOtp] = useState(false);
 
-    const closeLogin = () => {
+    const closeSignup = () => {
         router.push(`/`)
     }
 
@@ -106,7 +106,7 @@ const Signup = () => {
     return (
         <div className="login-wrapper">
             <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
-                <button className="close-button" onClick={closeLogin}>×</button>
+                <button className="close-button" onClick={closeSignup}>×</button>
                 <div className="image-section">
                     <img src="/images/popup-img.png" alt="Travel" />
                 </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import LogoutPage from '../../_logout/logoutPage';
+import Link from 'next/link';
 
 const ContactUs = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const ContactUs = () => {
         {isOpen && (
           <div className="dropdown-menu">
             {!session ? (
-              <a href="/login" className="dropdown-item">Login</a>
+              <Link href={`/login`} className="dropdown-item">Login</Link>
             ) : (
               <LogoutPage/>
             )}

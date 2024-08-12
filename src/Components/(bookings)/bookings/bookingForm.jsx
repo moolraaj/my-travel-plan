@@ -56,7 +56,7 @@ const BookingForm = ({ setIsopenForm }) => {
                 });
                 setTimeout(() => {
                     setIsopenForm(false);
-                }, 1000);
+                }, 800);
 
             } else {
                 setError(resp.errors);

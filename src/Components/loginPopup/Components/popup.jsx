@@ -3,9 +3,9 @@ import popupbg from '../../../../public/images/popup-bg.png';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
 
-const Login = ({ setIsLogin, setIsSignup }) => {
+
+const LoginPopup = ({ setIsLogin, setIsSignup }) => {
    
     const [otp, setOtp] = useState('');
     const [info, setInfo] = useState({
@@ -22,6 +22,7 @@ const Login = ({ setIsLogin, setIsSignup }) => {
 
     const closeLogin = () => {
         setIsLogin(false);
+        setIsSignup(false);
     };
 
     const changeHandler = (value, e) => {
@@ -77,6 +78,7 @@ const Login = ({ setIsLogin, setIsSignup }) => {
                     phoneNumber: info.phoneNumber,
                 });
                 setIsLogin(false);
+                setIsSignup(false);
             } else {
                 alert(result.error || 'OTP verification failed');
             }
@@ -107,6 +109,7 @@ const Login = ({ setIsLogin, setIsSignup }) => {
 
     const openSignUp=()=>{
         setIsSignup(true);
+        setIsLogin(false);
     }
 
     return (
@@ -157,4 +160,4 @@ const Login = ({ setIsLogin, setIsSignup }) => {
     );
 };
 
-export default Login;
+export default LoginPopup;
