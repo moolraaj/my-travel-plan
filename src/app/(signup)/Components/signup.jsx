@@ -5,8 +5,11 @@ import 'react-phone-number-input/style.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const Signup = () => {
+    let api=EXPORT_ALL_APIS()
     const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderID');
@@ -68,7 +71,7 @@ const Signup = () => {
 
             const result = await resp.json();
             if (result.isOTPVerified === true) {
-                saveUser(phoneNumber,name);
+                registerSaveUser(phoneNumber,name);
                 await signIn('credentials', {
                     phoneNumber: phoneNumber,
                     name: name,
@@ -83,24 +86,15 @@ const Signup = () => {
         }
     };
 
-    const saveUser = async (phoneNumber,name) => {
-        try {
-            const resp = await fetch('/api/v1/otpuser/login', {
-                method: 'POST',
-                body: JSON.stringify({ phoneNumber,name }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const result = await resp.json();
-            if (result) {
-                console.log(result);
-            } else {
-                console.log(result.message);
+    const registerSaveUser = async (phoneNumber,name) => {
+        return handelAsyncErrors(async()=>{
+
+            let result=await api.registerUser(phoneNumber,name)
+            if(result){
+                console.log(result)
             }
-        } catch (error) {
-            console.error('Error saving user:', error);
-        }
+        })
+         
     };
 
     return (

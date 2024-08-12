@@ -9,20 +9,26 @@ export async function POST(req) {
     return handelAsyncErrors(async () => {
         let payload = await req.json();
         let phoneNumber = payload.phoneNumber;
-
-        if(!phoneNumber){
-            return NextResponse.json({status:200,message:'phone number is required'})
-        }
-
+        let name = payload.name;
         let existingUser = await OtpUserModel.findOne({ phoneNumber });
 
         if (existingUser) {
             return NextResponse.json({
                 status: 200,
                 success: true,
-                message: 'User logged  in successfully',
+                message: 'phone number already exist please try another way',
             });
         }
 
+        let newUser = new OtpUserModel({ phoneNumber,name });
+
+        await newUser.save();
+
+        return NextResponse.json({
+            status: 201,
+            success: true,
+            message: 'User registered successfully',
+            result: newUser
+        });
     });
 }

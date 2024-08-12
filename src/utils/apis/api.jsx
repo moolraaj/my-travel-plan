@@ -122,6 +122,23 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+
+    const registerUser=async(phoneNumber,name)=>{
+        let resp=await fetch(`/api/v1/otpuser/register`,{
+            method:'POST',
+            body:JSON.stringify({phoneNumber,name})
+        })
+        let result=await resp.json()
+        return result
+    }
+    const loggedInUser=async()=>{
+        let resp=await fetch(`/api/v1/otpuser/login`,{
+            method:'POST',
+            body:JSON.stringify()
+        })
+        let result=await resp.json()
+        return result
+    }
  
     
     const sendQueryBookings = async (formData) => {
@@ -152,7 +169,9 @@ export const EXPORT_ALL_APIS = () => {
         loadSingleActivity,
         loadAllActivities,
         sendQueryContactUs,
-        sendQueryBookings
+        registerUser,
+        loggedInUser,
+        sendQueryBookings,
     };
 };
 
