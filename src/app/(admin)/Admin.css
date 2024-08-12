@@ -173,15 +173,7 @@ g.recharts-layer.recharts-pie:focus{
   width: 84%;
 }
 
-.navbar {
-  background-color: #fff;
-  padding: 10px 0px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  position: sticky !important;
-  top: 0;
-  z-index: 999;
-}
+
 .sidebar {
   position: relative !important; 
   top: 0;
