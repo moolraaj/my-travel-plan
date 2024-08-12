@@ -10,22 +10,28 @@ const Login = () => {
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderID');
     const phoneNumber = searchParams.get('phone_number');
-    
+    const name = searchParams.get('name');
+
     const [otp, setOtp] = useState('');
     const [user, setUser] = useState({
         phoneNumber: '',
+        name: '',
         channel: 'SMS',
         otpLength: 6,
         expiry: 86400,
     });
     const [verifyOtp, setVerifyOtp] = useState(false);
 
-    const closeLogin =()=>{
+    const closeLogin = () => {
         router.push(`/`)
     }
 
-    const changeHandler = (value) => {
-        setUser({ ...user, phoneNumber: value });
+    const changeHandler = (value, e) => {
+        if (e) {
+            setUser({ ...user, [e.target.name]: e.target.value });
+        } else {
+            setUser({ ...user, phoneNumber: value });
+        }
     };
 
     const handleSendOtp = async (e) => {
@@ -41,7 +47,7 @@ const Login = () => {
 
             const result = await resp.json();
             if (result) {
-                router.push(`/login?orderID=${result.orderId}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
+                router.push(`/login?orderID=${result.orderId}&name=${user.name}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
                 setVerifyOtp(true);
             } else {
                 alert(result.error || 'Error sending OTP');
@@ -57,18 +63,17 @@ const Login = () => {
             const resp = await fetch('/api/v1/verify-otp', {
                 method: 'POST',
                 body: JSON.stringify({ orderId, otp, phoneNumber }),
-                 
             });
 
             const result = await resp.json();
-            if (result.isOTPVerified===true) {
-                await signIn('credentials',{
-                    phoneNumber:phoneNumber,
-                    callbackUrl:'/',
-                    redirect:true
-                })
-                saveUser(phoneNumber)
-                console.log(result)
+            if (result.isOTPVerified === true) {
+                saveUser(phoneNumber,name);
+                await signIn('credentials', {
+                    phoneNumber: phoneNumber,
+                    name: name,
+                    callbackUrl: '/',
+                    redirect: true,
+                });
             } else {
                 alert(result.error || 'OTP verification failed');
             }
@@ -77,20 +82,18 @@ const Login = () => {
         }
     };
 
-    const saveUser = async (phoneNumber) => {
+    const saveUser = async (phoneNumber,name) => {
         try {
-            const resp = await fetch('/api/v1/otpuser/save', {
+            const resp = await fetch('/api/v1/otpuser/login', {
                 method: 'POST',
-                body: JSON.stringify({ phoneNumber }),
+                body: JSON.stringify({ phoneNumber,name }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            })
+            });
             const result = await resp.json();
             if (result) {
-
-                console.log(result)
-                
+                console.log(result);
             } else {
                 console.log(result.message);
             }
@@ -120,15 +123,26 @@ const Login = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="input-group">
-                                <PhoneInput
-                                    id="phone-number"
-                                    defaultCountry="IN"
-                                    value={user.phoneNumber}
-                                    onChange={changeHandler}
-                                    placeholder="Enter Your Phone Number"
-                                />
-                            </div>
+                            <>
+                                <div className="input-group">
+                                    <input
+                                        id="name"
+                                        name="name"
+                                        value={user.name}
+                                        onChange={(e) => changeHandler(null, e)}
+                                        placeholder="Enter Your Name"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <PhoneInput
+                                        id="phone-number"
+                                        defaultCountry="IN"
+                                        value={user.phoneNumber}
+                                        onChange={(value) => changeHandler(value)}
+                                        placeholder="Enter Your Phone Number"
+                                    />
+                                </div>
+                            </>
                         )}
                         <button type="submit">
                             {verifyOtp ? 'Verify OTP' : 'Get OTP'}

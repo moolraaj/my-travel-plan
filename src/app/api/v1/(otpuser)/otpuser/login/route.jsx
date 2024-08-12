@@ -3,21 +3,16 @@ import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import OtpUserModel from "@/model/otpUser";
 import { NextResponse } from "next/server";
 
- 
-
- 
-DbConnect()
+DbConnect();
 
 export async function POST(req) {
     return handelAsyncErrors(async () => {
         let payload = await req.json();
-        let { name,phoneNumber } = payload;
-
-        
+        let phoneNumber = payload.phoneNumber;
+        let name = payload.name;
         let existingUser = await OtpUserModel.findOne({ phoneNumber });
 
         if (existingUser) {
-           
             return NextResponse.json({
                 status: 200,
                 success: true,
@@ -26,15 +21,10 @@ export async function POST(req) {
             });
         }
 
-        
-        let newUser = new OtpUserModel({
-            name:name,
-            phoneNumber: phoneNumber
-        });
+        let newUser = new OtpUserModel({ phoneNumber,name });
 
         await newUser.save();
 
-         
         return NextResponse.json({
             status: 201,
             success: true,
