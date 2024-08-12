@@ -51,7 +51,7 @@ const Signup = () => {
 
             const result = await resp.json();
             if (result) {
-                router.push(`/login?orderID=${result.orderId}&name=${user.name}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
+                router.push(`/signup?orderID=${result.orderId}&name=${user.name}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
                 setVerifyOtp(true);
             } else {
                 alert(result.error || 'Error sending OTP');
