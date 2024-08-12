@@ -6,7 +6,7 @@ import { signIn } from 'next-auth/react';
 
 
 const Login = ({ setIsLogin, setIsSignup }) => {
-    // State for OTP, user information, and the verification status
+   
     const [otp, setOtp] = useState('');
     const [info, setInfo] = useState({
         orderId: '',
@@ -46,7 +46,7 @@ const Login = ({ setIsLogin, setIsSignup }) => {
 
             const result = await resp.json();
             if (result) {
-                // Directly store the orderId and phoneNumber in the info state
+                 
                 setInfo({ 
                     orderId: result.orderId, 
                     phoneNumber: user.phoneNumber 
