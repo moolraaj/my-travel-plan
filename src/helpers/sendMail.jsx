@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const SendEmail = async ({ name, email, phone_number, message, formType, date, origin, destination, traveler, children, phoneNumber, registerusername }) => {
+export const SendEmail = async ({ name, email, phone_number, message, formType, date, origin, destination, traveler, children, phoneNumber, registerusername, packageDetails }) => {
     try {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -21,6 +21,7 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                 html: `<p>Dear ${name},</p>
                        <p>Thank you for reaching out to us. We have received your message:</p>
                        <p>${message}</p>
+                       ${packageDetails ? `<p><strong>Package:</strong> ${packageDetails.title} (Slug: ${packageDetails.slug})</p>` : ''}
                        <p>We will get back to you soon.</p>`
             };
 
@@ -32,7 +33,8 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Name:</strong> ${name}</p>
                        <p><strong>Email:</strong> ${email}</p>
                        <p><strong>Phone Number:</strong> ${phone_number}</p>
-                       <p><strong>Message:</strong> ${message}</p>`
+                       <p><strong>Message:</strong> ${message}</p>
+                       ${packageDetails ? `<p><strong>Package:</strong> ${packageDetails.title} (Slug: ${packageDetails.slug})</p>` : ''}`
             };
         } else if (formType === 'flights') {
             userMailOptions = {
@@ -66,7 +68,6 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Message:</strong> ${message}</p>`
             };
         } else if (formType === 'userlogin') {
-            
             userMailOptions = {
                 from: process.env.GMAIL_AUTH_EMAIL_ID,
                 to: phoneNumber,  
@@ -77,7 +78,6 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Username:</strong> ${registerusername}</p>`
             };
 
-           
             adminMailOptions = {
                 from: process.env.GMAIL_AUTH_EMAIL_ID,
                 to: "raaj73906@gmail.com",
@@ -87,7 +87,6 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
                        <p><strong>Phone Number:</strong> ${phoneNumber}</p>`
             };
 
-           
             userMailOptions = null;
         } else {
             throw new Error('Unsupported form type');
