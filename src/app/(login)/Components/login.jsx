@@ -4,18 +4,19 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+
 
 const Login = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderID');
     const phoneNumber = searchParams.get('phone_number');
-    const name = searchParams.get('name');
+
 
     const [otp, setOtp] = useState('');
     const [user, setUser] = useState({
         phoneNumber: '',
-        name: '',
         channel: 'SMS',
         otpLength: 6,
         expiry: 86400,
@@ -47,7 +48,7 @@ const Login = () => {
 
             const result = await resp.json();
             if (result) {
-                router.push(`/login?orderID=${result.orderId}&name=${user.name}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
+                router.push(`/login?orderID=${result.orderId}&phone_number=${encodeURIComponent(user.phoneNumber)}`);
                 setVerifyOtp(true);
             } else {
                 alert(result.error || 'Error sending OTP');
@@ -67,10 +68,9 @@ const Login = () => {
 
             const result = await resp.json();
             if (result.isOTPVerified === true) {
-                saveUser(phoneNumber,name);
+                saveUser(phoneNumber);
                 await signIn('credentials', {
                     phoneNumber: phoneNumber,
-                    name: name,
                     callbackUrl: '/',
                     redirect: true,
                 });
@@ -82,11 +82,11 @@ const Login = () => {
         }
     };
 
-    const saveUser = async (phoneNumber,name) => {
+    const saveUser = async (phoneNumber) => {
         try {
             const resp = await fetch('/api/v1/otpuser/login', {
                 method: 'POST',
-                body: JSON.stringify({ phoneNumber,name }),
+                body: JSON.stringify({ phoneNumber }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -125,15 +125,6 @@ const Login = () => {
                         ) : (
                             <>
                                 <div className="input-group">
-                                    <input
-                                        id="name"
-                                        name="name"
-                                        value={user.name}
-                                        onChange={(e) => changeHandler(null, e)}
-                                        placeholder="Enter Your Name"
-                                    />
-                                </div>
-                                <div className="input-group">
                                     <PhoneInput
                                         id="phone-number"
                                         defaultCountry="IN"
@@ -147,6 +138,7 @@ const Login = () => {
                         <button type="submit">
                             {verifyOtp ? 'Verify OTP' : 'Get OTP'}
                         </button>
+                        <p>Don't have an account <Link href={`/signup`}>Signup</Link></p>
                     </form>
                 </div>
             </div>

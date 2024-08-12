@@ -9,15 +9,18 @@ import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react'; 
 import BookingForm from './(bookings)/bookings/bookingForm';
 import { useRouter } from 'next/navigation';
+import Login from './(login)/Components/login';
+import Signup from './(signup)/Components/signup';
+
 
 
 const BestSellingPackages = ({packages,loading}) => {
 
   const router = useRouter();
   const [userVerified, setUserVerified] = useState(false);
-  const [isopenForm, setIsopenForm] =useState(false)
-
-   
+  const [isopenForm, setIsopenForm] =useState(false);
+  const [isLogin, setIsLogin] =useState(false);
+  const [isSignup, setIsSignup] =useState(false);
 
   const checkUserVerification = async () => {
     try {
@@ -42,7 +45,7 @@ const BestSellingPackages = ({packages,loading}) => {
 
   const bookingAndLogin = () => {
     if (!userVerified) {
-      router.push('/login');
+      setIsLogin(true);
     } else {
       setIsopenForm(true)
     }
@@ -55,6 +58,8 @@ const BestSellingPackages = ({packages,loading}) => {
   return (
     <>
     {isopenForm && <BookingForm setIsopenForm={setIsopenForm}/>}
+    {isLogin && <Login setIsLogin={setIsLogin} setIsSignup={setIsSignup}/>}
+    {isSignup && <Signup setIsLogin={setIsSignup} setIsSignup={setIsSignup}/>}
 
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
       

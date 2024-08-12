@@ -1899,7 +1899,25 @@ a.card_outer {
 	text-decoration: none;
 }
 
+/* login popup form */
+
+.login_popup_outer{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background-color: #00000064;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
 /* book now popoup form starts */
+
 
 .booking_form_outer{
 	display: flex;
