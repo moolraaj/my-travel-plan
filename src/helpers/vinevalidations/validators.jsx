@@ -4,7 +4,8 @@ export const contactSchema = vine.object({
     name: vine.string().minLength(4),
     email: vine.string().email(),
     phone_number: vine.number().min(10),
-    message: vine.string().minLength(10)
+    message: vine.string().minLength(10),
+    package_id: vine.string()
 });
 
 export const flightsSchema = vine.object({

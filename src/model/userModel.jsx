@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import PackagesModel from './packagesModel'
 let contactUsSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -15,7 +15,12 @@ let contactUsSchema=new mongoose.Schema({
     },
     message:{
         type:String,
-    }
+    },
+    package_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'packages',
+        required: [true, 'Package ID is required'], 
+    },
 
     
 })

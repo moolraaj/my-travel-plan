@@ -6,13 +6,14 @@ import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const BookingForm = ({ setIsopenForm }) => {
+const BookingForm = ({ setIsopenForm,packageId }) => {
     let api = EXPORT_ALL_APIS();
     const [user, setUser] = useState({
         name: '',
         email: '',
         phone_number: '',
         message: '',
+        package_id:packageId
     });
 
     const [error, setError] = useState({});
@@ -39,6 +40,7 @@ const BookingForm = ({ setIsopenForm }) => {
         formData.append('email', user.email);
         formData.append('phone_number', Number(user.phone_number));
         formData.append('message', user.message);
+        formData.append('package_id', user.package_id);
         formData.append('form_unit_tag', 'query_unit_tag_9630');
 
         try {
