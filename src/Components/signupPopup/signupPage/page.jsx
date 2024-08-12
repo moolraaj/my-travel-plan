@@ -1,16 +1,17 @@
 'use client'
 import React, { Suspense } from 'react'
-import Login from '../Components/login'
-import loginbg from '../../../../public/images/login-bg.png'
 
-function page() {
+import loginbg from '../../../../public/images/login-bg.png'
+import SignupPopup from '../Components/popup'
+
+function SignupPage() {
   return (
     <div className='popup-bg' style={{ backgroundImage: `url(${loginbg.src})` }}>
       <Suspense fallback={<div>Loading...</div>}>
-      <Login/>
+      <SignupPopup/>
     </Suspense>
     </div>
   )
 }
 
-export default page
+export default SignupPage

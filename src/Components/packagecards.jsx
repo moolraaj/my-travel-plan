@@ -5,12 +5,13 @@ import discountc from '../app/assets/home_images/discountcards.png';
 import explorebg from '../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../app/assets/empty.jpg';
 import { useEffect, useState } from 'react';
- 
 import { getSession } from 'next-auth/react'; 
 import BookingForm from './(bookings)/bookings/bookingForm';
 import { useRouter } from 'next/navigation';
-import Login from './(login)/Components/login';
-import Signup from './(signup)/Components/signup';
+import LoginPopup from './loginPopup/Components/popup';
+import SignupPopup from './signupPopup/Components/popup';
+
+
 
 
 
@@ -58,8 +59,8 @@ const BestSellingPackages = ({packages,loading}) => {
   return (
     <>
     {isopenForm && <BookingForm setIsopenForm={setIsopenForm}/>}
-    {isLogin && <Login setIsLogin={setIsLogin} setIsSignup={setIsSignup}/>}
-    {isSignup && <Signup setIsLogin={setIsSignup} setIsSignup={setIsSignup}/>}
+    {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup}/>}
+    {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup}/>}
 
     <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
       

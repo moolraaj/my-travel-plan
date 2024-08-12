@@ -4,25 +4,25 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { signIn } from 'next-auth/react';
 
-const Signup = ({ setIsLogin, setIsSignup }) => {
+
+const LoginPopup = ({ setIsLogin, setIsSignup }) => {
+   
+    const [otp, setOtp] = useState('');
     const [info, setInfo] = useState({
         orderId: '',
         phoneNumber: ''
     });
-
-    const [otp, setOtp] = useState('');
     const [user, setUser] = useState({
         phoneNumber: '',
-        name: '',
         channel: 'SMS',
         otpLength: 6,
         expiry: 86400,
     });
     const [verifyOtp, setVerifyOtp] = useState(false);
 
-    const closeSignup = () => {
-        setIsSignup(false);
+    const closeLogin = () => {
         setIsLogin(false);
+        setIsSignup(false);
     };
 
     const changeHandler = (value, e) => {
@@ -46,6 +46,7 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
 
             const result = await resp.json();
             if (result) {
+                 
                 setInfo({ 
                     orderId: result.orderId, 
                     phoneNumber: user.phoneNumber 
@@ -72,10 +73,9 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
 
             const result = await resp.json();
             if (result.isOTPVerified === true) {
-                saveUser(info.phoneNumber, user.name);
+                saveUser(info.phoneNumber);
                 await signIn('credentials', {
                     phoneNumber: info.phoneNumber,
-                    name: user.name,
                 });
                 setIsLogin(false);
                 setIsSignup(false);
@@ -87,11 +87,11 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
         }
     };
 
-    const saveUser = async (phoneNumber, name) => {
+    const saveUser = async (phoneNumber) => {
         try {
             const resp = await fetch('/api/v1/otpuser/login', {
                 method: 'POST',
-                body: JSON.stringify({ phoneNumber, name }),
+                body: JSON.stringify({ phoneNumber }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -107,17 +107,17 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
         }
     };
 
-    const openLogIN = () => {
-        setIsLogin(true);
-        setIsSignup(false);
-    };
+    const openSignUp=()=>{
+        setIsSignup(true);
+        setIsLogin(false);
+    }
 
     return (
-        <div className="signup_popup_outer">
-            <div className="signup_popup_inner">
+        <div className="login_popup_outer">
+            <div className="login_popup_inner">
                 <div className="login-wrapper">
                     <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
-                        <button className="close-button" onClick={closeSignup}>×</button>
+                        <button className="close-button" onClick={closeLogin}>×</button>
                         <div className="image-section">
                             <img src="/images/popup-img.png" alt="Travel" />
                         </div>
@@ -137,15 +137,6 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
                                 ) : (
                                     <>
                                         <div className="input-group">
-                                            <input
-                                                id="name"
-                                                name="name"
-                                                value={user.name}
-                                                onChange={(e) => changeHandler(null, e)}
-                                                placeholder="Enter Your Name"
-                                            />
-                                        </div>
-                                        <div className="input-group">
                                             <PhoneInput
                                                 id="phone-number"
                                                 defaultCountry="IN"
@@ -159,7 +150,7 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
                                 <button type="submit">
                                     {verifyOtp ? 'Verify OTP' : 'Get OTP'}
                                 </button>
-                                <p>Already have an account? <span onClick={openLogIN}>Login</span></p>
+                                <p>Don't have an account <span onClick={openSignUp}>Signup</span></p>
                             </form>
                         </div>
                     </div>
@@ -169,4 +160,4 @@ const Signup = ({ setIsLogin, setIsSignup }) => {
     );
 };
 
-export default Signup;
+export default LoginPopup;
