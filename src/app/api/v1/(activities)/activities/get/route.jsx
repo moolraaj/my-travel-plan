@@ -27,7 +27,8 @@ export async function GET(req) {
                 slug: e.slug,
                 activity_price: e.activity_price,
                 activity_discounted_price: e.activity_discounted_price,
-                discount: discount.toFixed(2)  
+                discount: discount.toFixed(2),
+                city_id: e.city_id
             };
         });
 
