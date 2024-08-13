@@ -233,7 +233,17 @@ ul.destinations-list li {
 	@include main_container;
 	margin: auto;
 }
+.PhoneInput {
+    display: flex;
+    align-items: center;
+    box-shadow: 2px 2px 12px #9b9b9b29;
+    padding: 10px;
+    border-radius: 10px;
+}
 
+.form-section p {
+    display:none;
+}
 
 .explorations-grid {
 	display: grid;
@@ -420,6 +430,7 @@ h2.top-dest-title {
 
 .title_date .category {
 	font-size: 18px;
+	color:black;
 }
 
 
@@ -434,6 +445,7 @@ h2.top-dest-title {
 	font-size: 24px;
 	font-weight: 500;
 	line-height: 29px;
+	color: black;
 }
 
 .blog-main img {
@@ -628,6 +640,10 @@ ul.footer-list {
 	font-size: 25px;
 	font-weight: 500;
 }
+input#phone-number::placeholder {
+    color: black;
+}
+
 
 .left_offer_side button {
 	padding: 10px 26px;
@@ -1105,9 +1121,11 @@ a.navbar-item {
 	}
 
 	.top-act-gridContainer {
-		display: flex;
+		display: grid;
 		justify-content: space-between;
 		gap: 10px;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+    	row-gap: 40px;
 	}
 
 	.top-act-Details {
@@ -1188,8 +1206,8 @@ a.navbar-item {
 	}
 
 	.top-discounted-gridContainer {
-		display: flex;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 		gap: 20px;
 	}
 
@@ -1421,7 +1439,7 @@ span.trending img {
 }
 
 .top-dest-gridContainer {
-	display: flex;
+	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	gap: 20px;
 }
@@ -1431,7 +1449,7 @@ span.trending img {
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	width: 24%;
+	width: 100%;
 }
 
 .top-dest-card {
@@ -1450,8 +1468,9 @@ span.trending img {
 
 .top-dest-image {
 	width: 100%;
-	height: auto;
-	z-index: -1;
+    height: 201px;
+    z-index: -1;
+    object-fit: cover;
 }
 
 .top-dest-Details {
@@ -2686,11 +2705,12 @@ img.carimage {
 	font-size: 15px;
 }
 
+
 .login-wrapper .input-group input {
 	padding: 0px 29px;
 	border-left: none;
 	height: 51px;
-	border: 1px solid #f1f1f1;
+	border: 1px solid #000;
 	border-radius: 7px;
 	width: 100%;
 	font-size: 16px;
@@ -2706,7 +2726,7 @@ img.carimage {
 
 .login-wrapper form button {
 	width: 100%;
-	background: #FB878F;
+	background: $primaryred;
 	border: none;
 	height: 50px;
 	border-radius: 5px;
@@ -2715,6 +2735,7 @@ img.carimage {
 	font-weight: 500;
 	font-family: 'Poppins';
 	margin-top: 50px;
+	cursor: pointer;
 }
 
 .login-wrapper .input-group input::placeholder {
@@ -2798,7 +2819,7 @@ img.carimage {
 	}
 
 	.top-act-container .top-act-card {
-		width: 240px;
+		width: 100%;
 	}
 
 	.destinations.expert-travel {
@@ -3127,9 +3148,18 @@ img.carimage {
 		grid-template-columns: 1fr;
 	}
 
+	.main_slider_inner .slider {
+		width: 100%;
+		height: 384px;
+	}
+
 	.transfer-vehicle-section {
 		grid-template-columns: 1fr;
 		width: 100%;
+	}
+
+	.destinations-grid {
+		display: block;
 	}
 
 	img.exploration-image {
@@ -3358,6 +3388,7 @@ img.carimage {
 	.destinations.expert-travel,
 	.destinations-grid {
 		grid-template-columns: 1fr;
+		display: block;
 	}
 
 	.card_main_section .package {
