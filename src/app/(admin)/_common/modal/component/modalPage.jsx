@@ -1,13 +1,36 @@
 // components/Modal.js
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Modal = ({ onClose, onConfirm }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    try {
+      await onConfirm(); 
+    } catch (error) {
+      toast.error('Error during confirmation:', error);
+    } finally {
+      setIsLoading(false);
+      onClose();
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal">
         <p>Are you sure you want to delete this item?</p>
         <div className="modal-actions">
-          <button onClick={onConfirm} className="btn-confirm">Yes</button>
+          <button
+            onClick={handleConfirm}
+            className="btn-confirm"
+            disabled={isLoading}
+            type="button"
+          >
+            {isLoading ? 'deleting...' : 'Yes'}
+          </button>
           <button onClick={onClose} className="btn-cancel">No</button>
         </div>
       </div>
