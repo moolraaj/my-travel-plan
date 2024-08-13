@@ -104,7 +104,22 @@ export const EXPORT_ALL_APIS = () => {
 
     const loadAllActivities= async () => {
         return await handelAsyncErrors(async () => {
-            let resp = await fetch(`api/v1/activities/get`);
+            let resp = await fetch(`/api/v1/activities/get`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+
+    const loadAllPackagesActivities= async () => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/package-categories/get`);
+            let data = await resp.json();
+            return data;
+        });
+    };
+    const loadSinglePackagesActivitiy= async (slug) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/package-category/getbyslug/${slug}`);
             let data = await resp.json();
             return data;
         });
@@ -169,6 +184,8 @@ export const EXPORT_ALL_APIS = () => {
         loadSinglePackage,
         loadSingleActivity,
         loadAllActivities,
+        loadAllPackagesActivities,
+        loadSinglePackagesActivitiy,
         sendQueryContactUs,
         registerUser,
         loadAllRegisteredUsers,

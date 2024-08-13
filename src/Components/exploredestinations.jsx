@@ -2,41 +2,52 @@
 import Image from 'next/image';
 import exploretheme from '../app/assets/home_images/theme-destination.png';
 import Link from 'next/link';
+import emptyImage from '../app/assets/empty.jpg';
+const ExploreDestinations = ({ packagescat }) => {
 
-const ExploreDestinations = () => {
-  const destinations = [
-    { label: 'Adventure Holiday', imgSrc: '/images/adventure.png' },
-    { label: 'Domestic Holiday', imgSrc: '/images/domestic.png' },
-    { label: 'International Holiday', imgSrc: '/images/international.png' },
-    { label: 'Hill Station Holiday', imgSrc: '/images/hill_station.png' },
-    { label: 'Beach Holiday', imgSrc: '/images/beach.png' },
-    { label: 'Pilgrim Holidays', imgSrc: '/images/pilgrim.png' },
-  ];
+
+
+  let result = packagescat ? packagescat.result : []
+
 
   return (
-    <div className='explore-theme-destination' style={{ backgroundImage: `url(${exploretheme.src})`}}>
+    <div className='explore-theme-destination' style={{ backgroundImage: `url(${exploretheme.src})` }}>
       <div className="explore-destinations">
         <h2 className='same_heading'>Explore Destinations By Theme</h2>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations-container-countries">
-          {destinations.map((destination, index) => (
+          {result === null || result === undefined ? ('no result found') : (result.slice(0, 6).map((destination, index) => (
             <div key={index} className="destination">
-              <Link href={`/`}>
-              <Image
-                src={destination.imgSrc}
-                alt={destination.label || "loading..."}
-                width={100}
-                height={100}
-                className="destination-image"
-              />
-              <p >{destination.label}</p>
+              <Link href={`/${destination.slug}`}>
+
+                {destination.image && destination.image.length > 0 ? (
+                  destination.image.map((e) => (
+                    <Image
+                      key={e._id}
+                      src={`/uploads/${e.name}`}
+                      alt='packages_categories'
+                      width={100}
+                      height={100}
+                      className="destination-image"
+                    />
+                  ))
+                ) : (
+                  <Image
+                    src={emptyImage.src}
+                    alt="No Image Available"
+                    width={333}
+                    height={380}
+                    className="image"
+                  />
+                )}
+                <p >{destination.name}</p>
               </Link>
             </div>
-          ))}
+          )))}
         </div>
       </div>
     </div>
-    
+
   );
 };
 

@@ -1,11 +1,28 @@
-import React from 'react'
+'use client';
 
-function loading() {
+ 
+import { Blocks } from 'react-loader-spinner';
+
+function Loading() {
+   
+
   return (
-    <div>
-      loading.......
-    </div>
-  )
+    <>
+      <div className="loading_wrapper">
+        
+          <Blocks
+            height="180"
+            width="180"
+            color="#000"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            visible={true}
+          />
+        
+      </div>
+    </>
+  );
 }
 
-export default loading
+export default Loading;
