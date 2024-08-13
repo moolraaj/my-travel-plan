@@ -2,6 +2,21 @@
 @import 'mixin';
 @import 'extends';
 
+
+//// loading
+
+
+
+.loading_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fff;
+}
+
+
+
 body {
 	margin: 0px;
 	padding: 0px;
@@ -3390,3 +3405,5 @@ img.carimage {
 		width: 100%;
 	}
 }
+
+

@@ -1,16 +1,22 @@
-// /app/_common/layout/layout.jsx
  
-import React from 'react'
-import Header from '../header/page'
-import Footer from '../footer/page'
-function Layout({children}) {
+import Header from '../header/page';
+import Footer from '../footer/page';
+ 
+ 
+
+function Layout({ children }) {
+ 
+
   return (
     <>
-    <Header/>
-    {children}
-    <Footer/>
+      
+          <Header />
+          {children}
+          <Footer />
+       
+      
     </>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

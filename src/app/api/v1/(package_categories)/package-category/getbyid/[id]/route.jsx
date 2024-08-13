@@ -14,12 +14,12 @@ export async function GET(req, { params }) {
         // Find the category by ID
         let result = await PackageCategoryModel.findById(id);
 
-        if (!category) {
+        if (!result) {
             return NextResponse.json({ status: 200, success: false, message: 'Category not found! Please provide a valid ID.' });
         }
 
         // Find the packages associated with this category and populate the relevant fields
-        let packages = await PackagesModel.find({ package_categories_id: category._id })
+        let packages = await PackagesModel.find({ package_categories_id: result._id })
             .populate('package_categories_id')  
             .populate('city_id')  
             .exec();
