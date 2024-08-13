@@ -159,7 +159,7 @@ const SignupPopup = ({ setIsLogin, setIsSignup }) => {
                                 <button type="submit">
                                     {verifyOtp ? 'Verify OTP' : 'Get OTP'}
                                 </button>
-                               {<p>Already have an account? <span onClick={openLogIN}>Login</span></p>} 
+                                <p>Already have an account? <span onClick={openLogIN}>Login</span></p>
                             </form>
                         </div>
                     </div>
