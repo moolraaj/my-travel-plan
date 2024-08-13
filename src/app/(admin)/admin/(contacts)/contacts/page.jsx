@@ -43,8 +43,9 @@ function ContactsPage() {
   const handleConfirm = async () => {
         const response = await fetch(`/api/v1/sendquery/query/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
+        console.log('API Response:', data);
         return handelAsyncErrors(async()=>{
-          if (response.ok && data.success) {
+          if (response.ok && data.status === 200 ) {
             fetchContacts();
             toast.success(data.message || 'contact deleted successfully');
             setIsOpen(false)
