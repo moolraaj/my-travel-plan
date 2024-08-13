@@ -24,7 +24,7 @@ const LatestBlog = ({blogs}) => {
 
         <div className="blog-container">
           {result=== undefined||result===null ? (
-            'dfasdf'
+            <EmptyBlogComponent/>
           ) : (
             <>
         
