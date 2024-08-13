@@ -12,12 +12,15 @@ function UpdateBlog({ params }) {
     title: '',
     description: '',
     slug: '',
-    blog_category: null,
+    blog_category: '',
     blog_overview: '',
     blog_description: [{ content: '' }],
+    images: [],
     imageFile: null,
     imagePreviewUrl: '',
-    gallery_files: []
+    blog_galleries: [],
+    gallery_files: null,
+    galleryPreviewUrls: [],
   });
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,45 +28,46 @@ function UpdateBlog({ params }) {
   const router = useRouter();
   const { id } = params;
 
-  const fetchCategories = async () => {
-    return handelAsyncErrors(async () => {
-      const res = await fetch('/api/v1/categories/get?page=1&limit=1000', {
-        headers: {
-          'Cache-Control': 'no-cache'
+  useEffect(() => {
+    const fetchCategories = async () => {
+      return handelAsyncErrors(async () => {
+        const res = await fetch('/api/v1/categories/get?page=1&limit=1000', {
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+        const data = await res.json();
+        if (data.success) {
+          setCategories(data.result);
+        } else {
+          toast.error(data.message);
         }
       });
-      const data = await res.json();
-      if (data.success) {
-        setCategories(data.result);
-      } else {
-        toast.error(data.message);
-      }
-    });
-  };
+    };
 
-  const fetchBlog = async () => {
-    return handelAsyncErrors(async () => {
-      const response = await fetch(`/api/v1/blog/getbyid/${id}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.success) {
-        setFormData({
-          ...data.result,
-          blog_description: data.result.blog_description.map(desc => ({ content: desc.content })),
-          gallery_files: data.result.gallery_files || [],
-          imagePreviewUrl: data.result.image ? `/uploads/${data.result.image}` : '',
-          blog_category: data.result.category?._id,
-        });
-      } else {
-        toast.error(data.message);
-      }
-      setLoading(false);
-    });
-  };
+    const fetchBlog = async () => {
+      return handelAsyncErrors(async () => {
+        const response = await fetch(`/api/v1/blog/getbyid/${id}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.success) {
+          setFormData({
+            ...data.result,
+            gallery_files: [],
+            galleryPreviewUrls: [],
+            blog_description: data.result.blog_description.map(desc => ({ content: desc.content })),
+            blog_category: data.result.category?._id || '',
+            imageFile: null,
+          });
+        } else {
+          toast.error(data.message);
+        }
+        setLoading(false);
+      });
+    };
 
-  useEffect(() => {
     fetchCategories();
     fetchBlog();
   }, [id]);
@@ -84,15 +88,18 @@ function UpdateBlog({ params }) {
         reader.readAsDataURL(file);
       }
     } else if (name === 'gallery_files') {
-      const filesArray = Array.from(files);
-      setFormData(prevData => ({
+      const galleryFiles = Array.from(files);
+      const galleryPreviews = galleryFiles.map(file => URL.createObjectURL(file)); // Create previews
+
+      setFormData((prevData) => ({
         ...prevData,
-        gallery_files: filesArray
+        gallery_files: galleryFiles,
+        galleryPreviewUrls: galleryPreviews,
       }));
     } else {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -124,7 +131,7 @@ function UpdateBlog({ params }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-  
+
     const formDataToSend = new FormData();
     formDataToSend.append('title', formData.title);
     formDataToSend.append('description', formData.description);
@@ -132,21 +139,21 @@ function UpdateBlog({ params }) {
     formDataToSend.append('blog_category', formData.blog_category);
     formDataToSend.append('blog_overview', formData.blog_overview);
     formDataToSend.append('blog_description', JSON.stringify(formData.blog_description));
-  
+
     if (formData.imageFile) {
       formDataToSend.append('file', formData.imageFile);
     }
-  
+
     formData.gallery_files.forEach((file, index) => {
       formDataToSend.append('blog_galleries', file);
     });
-  
+
     try {
       const response = await fetch(`/api/v1/blog/update/${id}`, {
         method: 'PUT',
         body: formDataToSend,
       });
-  
+
       const data = await response.json();
       if (data.success) {
         toast.success(data.message);
@@ -155,7 +162,7 @@ function UpdateBlog({ params }) {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(data.message);
+      toast.error('An error occurred while updating the blog.');
     } finally {
       setIsLoading(false);
     }
@@ -165,56 +172,57 @@ function UpdateBlog({ params }) {
     <div className="update-packages-container">
       <h2 className="update-packages-heading">Update Blog</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
-     
-        <form className="update-packages-form" onSubmit={handleSubmit}>
-          <label className="update-packages-label">
-            Title:
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="update-packages-input"
-              required
-            />
-          </label>
-          <label className="update-packages-label">
-            Slug:
-            <input
-              type="text"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
-              className="update-packages-input"
-              required
-            />
-          </label>
-          <label className="update-packages-label">
-            Description:
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="update-packages-textarea"
-              required
-            />
-          </label>
-          <div className="form-group">
-            <label htmlFor="continent">Blog Category</label>
-            <select
-              id="categories"
-              name="categories"
-              value={formData.blog_category}
-              onChange={handleChange}
-            >
-              <option value="">Select a Category</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
+
+      <form className="update-packages-form" onSubmit={handleSubmit}>
+        <label className="update-packages-label">
+          Title:
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="update-packages-input"
+            required
+          />
+        </label>
+        <label className="update-packages-label">
+          Slug:
+          <input
+            type="text"
+            name="slug"
+            value={formData.slug}
+            onChange={handleChange}
+            className="update-packages-input"
+            required
+          />
+        </label>
+        <label className="update-packages-label">
+          Description:
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="update-packages-textarea"
+            required
+          />
+        </label>
+        <div className="form-group">
+          <label htmlFor="continent">Blog Category</label>
+          <select
+            id="categories"
+            name="blog_category"
+            value={formData.blog_category}
+            onChange={handleChange}
+          >
+            <option value="">Select a Category</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
           <label className="update-blog-label">
             Blog Overview:
             <textarea
@@ -225,23 +233,25 @@ function UpdateBlog({ params }) {
               required
             />
           </label>
-          <div className="form-group">
-            <label className="update-packages-label">Blog Description</label>
-            {formData.blog_description.map((item, index) => (
-              <div key={index} className="description-item">
-                <textarea
-                  name="content"
-                  value={item.content}
-                  onChange={(e) => handleDynamicChange(e, index)}
-                  placeholder="Description content"
-                />
-                <div className="remove-field" onClick={() => handleRemoveField(index)}>
-                  <FaMinus />
-                </div>
+        </div>
+        <div className="form-group">
+          <label className="update-packages-label">Blog Description</label>
+          {formData.blog_description.map((item, index) => (
+            <div key={index} className="description-item">
+              <textarea
+                name="content"
+                value={item.content}
+                onChange={(e) => handleDynamicChange(e, index)}
+                placeholder="Description content"
+              />
+              <div className="remove-field" onClick={() => handleRemoveField(index)}>
+                <FaMinus />
               </div>
-            ))}
-            <button type="button" onClick={handleAddField}>Add Description</button>
-          </div>
+            </div>
+          ))}
+          <button type="button" onClick={handleAddField}>Add Description</button>
+        </div>
+        <div className="form-group">
           <label className="update-blog-label">
             Main Image:
             <input
@@ -251,15 +261,28 @@ function UpdateBlog({ params }) {
               className="update-blog-file-input"
             />
             <div className="update-blog-image-preview">
-              {formData.imagePreviewUrl && (
+              {formData.imagePreviewUrl ? (
                 <img
                   src={formData.imagePreviewUrl}
-                  alt="Main Image Preview"
-                  className="update-blog-image"
+                  alt="New"
+                  className="update-packages-image"
+                  style={{ width: '100px', height: '100px' }}
                 />
+              ) : (
+                formData.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`/uploads/${image.name}`}
+                    alt={`Current ${image.name}`}
+                    className="update-packages-image"
+                    style={{ width: '100px', height: '100px' }}
+                  />
+                ))
               )}
             </div>
           </label>
+        </div>
+        <div className="form-group">
           <label className="update-blog-label">
             Gallery Images:
             <input
@@ -270,23 +293,36 @@ function UpdateBlog({ params }) {
               className="update-blog-file-input"
             />
             <div className="update-blog-gallery-preview">
-              {formData.gallery_files.length > 0 && (
-                formData.gallery_files.map((file, index) => (
+              
+               {formData.galleryPreviewUrls.length > 0 ? (
+                formData.galleryPreviewUrls.map((url, index) => (
                   <img
                     key={index}
-                    src={URL.createObjectURL(file)}
-                    alt={`Gallery ${index + 1}`}
-                    className="update-blog-image"
+                    src={url}
+                    alt={`Gallery Preview ${index}`}
+                    className="update-packages-gallery-image"
+                    style={{width: '100px',height:'100px'}}
+                  />
+                ))
+              ) : (
+                formData.blog_galleries.map((file, index) => (
+                  <img
+                    key={index}
+                    src={`/uploads/${file.name}`}
+                    alt={`Gallery Image ${index}`}
+                    className="update-packages-gallery-image"
+                    style={{width: '100px',height:'100px'}}
                   />
                 ))
               )}
             </div>
           </label>
-          <button type="submit" className="update-packages-button" disabled={isLoading}>
-            {isLoading ? 'Updating...' : 'Update blog'}
-          </button>
-        </form>
-    
+        </div>
+        <button type="submit" className="update-packages-button" disabled={isLoading}>
+          {isLoading ? 'Updating...' : 'Update blog'}
+        </button>
+      </form>
+
     </div>
   );
 }
