@@ -9,7 +9,7 @@ export async function GET(req) {
         const { page, limit, skip } = getPaginationParams(req);
 
       
-        const results = await ContactModel.find()
+        const result = await ContactModel.find()
             .populate({
                 path: 'package_id',
                 select: '_id title'
@@ -23,7 +23,7 @@ export async function GET(req) {
         return NextResponse.json({
             status: 200,
             totalResults,
-            results,
+            result,
             page,
             limit
         });

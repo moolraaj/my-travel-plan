@@ -12,7 +12,6 @@ export async function POST(req) {
         let image = payload.get('image')
         let name = payload.get('name')
         let slug = payload.get('slug')
-        let packages_id = payload.get('packages_id')
 
 
         if (!name || !slug) {
@@ -33,7 +32,7 @@ export async function POST(req) {
         };
 
         let result = new PackageCategoryModel({
-            image: [imageObject], name: name, slug: slug,packages_id:packages_id
+            image: [imageObject], name: name, slug: slug
         });
         await result.save();
 

@@ -48,7 +48,7 @@ const CitiesSchema = new mongoose.Schema({
     country_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'countries',
-        required: true
+       
     }
 });
 

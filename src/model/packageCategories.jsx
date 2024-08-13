@@ -29,11 +29,9 @@ const PackageCategorySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    packages_id: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'packages',
-        required:true
-    }]
+   
+
+    
 });
 
 const PackageCategoryModel = mongoose.models.packages_categories || mongoose.model('packages_categories', PackageCategorySchema);
