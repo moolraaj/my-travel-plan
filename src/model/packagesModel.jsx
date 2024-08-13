@@ -44,7 +44,8 @@ const PackagesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'cities',
         required: true
-    }
+    },
+    
 });
 
 // Create the package model

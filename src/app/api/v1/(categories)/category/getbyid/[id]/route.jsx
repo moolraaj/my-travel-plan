@@ -1,6 +1,9 @@
+import { DbConnect } from "@/database/database";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import CategoryModel from "@/model/categoryModel";
 import { NextResponse } from "next/server";
+
+DbConnect()
 
 export async function GET(req,{params}) {
      return handelAsyncErrors(async()=>{
