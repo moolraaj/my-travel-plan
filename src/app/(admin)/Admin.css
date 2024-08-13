@@ -1050,6 +1050,15 @@ g.recharts-layer.recharts-pie:focus{
   .sidebar.shrink{
     display: none;
   }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  .wrapper.sidebar-closed {
+    position: fixed;
+    z-index: 99999;
+}
 }
 
 /* Responsive Styles */

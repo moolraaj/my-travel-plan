@@ -12,7 +12,7 @@ function UpdateBlog({ params }) {
     title: '',
     description: '',
     slug: '',
-    blog_category: '',
+    blog_category: null,
     blog_overview: '',
     blog_description: [{ content: '' }],
     imageFile: null,
@@ -53,7 +53,8 @@ function UpdateBlog({ params }) {
           ...data.result,
           blog_description: data.result.blog_description.map(desc => ({ content: desc.content })),
           gallery_files: data.result.gallery_files || [],
-          imagePreviewUrl: data.result.image ? `/uploads/${data.result.image}` : ''
+          imagePreviewUrl: data.result.image ? `/uploads/${data.result.image}` : '',
+          blog_category: data.result.category?._id,
         });
       } else {
         toast.error(data.message);
@@ -149,7 +150,6 @@ function UpdateBlog({ params }) {
       const data = await response.json();
       if (data.success) {
         toast.success(data.message);
-        toast.error('');
         setTimeout(() => router.push('/admin/blog'), 2000);
       } else {
         toast.error(data.message);
@@ -165,7 +165,7 @@ function UpdateBlog({ params }) {
     <div className="update-packages-container">
       <h2 className="update-packages-heading">Update Blog</h2>
       {loading && <p className="update-packages-loading">Loading...</p>}
-      {!loading && (
+     
         <form className="update-packages-form" onSubmit={handleSubmit}>
           <label className="update-packages-label">
             Title:
@@ -204,12 +204,12 @@ function UpdateBlog({ params }) {
             <select
               id="categories"
               name="categories"
-              value={categories.blog_category}
+              value={formData.blog_category}
               onChange={handleChange}
             >
               <option value="">Select a Category</option>
               {categories.map((category) => (
-                <option key={category.name} value={category.name}>
+                <option key={category._id} value={category._id}>
                   {category.name}
                 </option>
               ))}
@@ -286,7 +286,7 @@ function UpdateBlog({ params }) {
             {isLoading ? 'Updating...' : 'Update blog'}
           </button>
         </form>
-      )}
+    
     </div>
   );
 }

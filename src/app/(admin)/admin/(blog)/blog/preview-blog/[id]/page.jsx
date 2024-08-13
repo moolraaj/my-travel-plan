@@ -46,7 +46,7 @@ function PreviewBlog({params}) {
         {error && <p>{error}</p>}
         {!loading && !error && (
           <>
-            <h2><strong>Blog Name:</strong> {blogs.title}</h2>
+            <p><strong>Blog Name:</strong> {blogs.title}</p>
             <p><strong>Description:</strong> {blogs.description}</p>
             <div className="preview-continent-images">
               {blogs.images.length > 0 ? (

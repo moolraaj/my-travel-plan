@@ -31,6 +31,7 @@ export async function GET(req, { params }) {
         // Prepare the formatted result with checks for null values
         const formattedResult = {
             _id: result._id,
+            city_id: result.city_id,
             title: result.title,
             images:result.images,
             icon:result.icon,
