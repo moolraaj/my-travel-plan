@@ -14,3 +14,9 @@ package = "@netlify/plugin-nextjs"
   to = "https://mieland.com.my"
   status = 302
   conditions = { Country = ["MY"] }
+
+  [[redirects]]
+  from = "/*"
+  to = "https://www.eligocs.com"
+  status = 302
+  conditions = { Country = ["US"] }

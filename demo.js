@@ -1,6 +1,8 @@
 // // src/app/[...slug]/page.jsx
 'use client';
 
+
+
 import { useEffect, useState } from "react";
 import Topbanner from "../_common/layout/topbanner";
 import Countrycard from "../(countries)/Components/country_cards";
