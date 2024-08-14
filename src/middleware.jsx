@@ -15,7 +15,7 @@ export default async function middleware(request) {
         // Redirect to the Malaysia-specific domain
         const malaysianUrl = new URL(url);
         malaysianUrl.hostname = 'mieland.com.my';
-        return NextResponse.redirect(malaysianUrl);
+        return NextResponse.redirect(malaysianUrl.toString());
     }
 
     // Get token from request
