@@ -427,6 +427,42 @@ export const EXPORT_ALL_APIS = () => {
         return data;
     };
 
+    const loadAllPackagesActivities = async () => {
+        
+        const key = `${storageKeyPrefix}packageCategories`;
+        const storedData = localStorage.getItem(key);
+        if (storedData) {
+            return JSON.parse(storedData);
+        }
+
+        const data = await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/package-categories/get`);
+            let data = await resp.json();
+            localStorage.setItem(key, JSON.stringify(data));
+            return data;
+        });
+
+        return data;
+    };
+
+    const loadSinglePackagesActivitiy = async (slug) => {
+       
+        const key = `${storageKeyPrefix}packageCategory_${slug}`;
+        const storedData = localStorage.getItem(key);
+        if (storedData) {
+            return JSON.parse(storedData);
+        }
+
+        const data = await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/package-category/getbyslug/${slug}`);
+            let data = await resp.json();
+            localStorage.setItem(key, JSON.stringify(data));
+            return data;
+        });
+
+        return data;
+    };
+
     const sendQueryContactUs = async (formData) => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/sendquery/query/send`, {
@@ -491,6 +527,8 @@ export const EXPORT_ALL_APIS = () => {
         loadSinglePackage,
         loadSingleActivity,
         loadAllActivities,
+        loadAllPackagesActivities,
+        loadSinglePackagesActivitiy,
         sendQueryContactUs,
         registerUser,
         loadAllRegisteredUsers,

@@ -102,6 +102,7 @@ export default function Home() {
     let [continent, setContinent] = useState([]);
     let [country, setCountry] = useState([]);
     let [city, setCity] = useState([]);
+    let [packagescat, setPackagescat] =useState([]);
     let [packages, setPackages] = useState([]);
     let [blogs, setBlogs] = useState([]);
 
@@ -154,6 +155,15 @@ export default function Home() {
                 localStorage.setItem(`${localStorageKeyPrefix}blogs`, JSON.stringify(data));
             }
 
+            const storedActivities = localStorage.getItem(`${localStorageKeyPrefix}activities`);
+            if (storedBlogs) {
+              setPackagescat(JSON.parse(storedActivities));
+            } else {
+                const data = await api.loadAllPackagesActivities();
+                setPackagescat(data);
+                localStorage.setItem(`${localStorageKeyPrefix}activities`, JSON.stringify(data));
+            }
+
             setLoading(false);
         } catch (error) {
             console.error("Error fetching data: ", error);
@@ -174,7 +184,8 @@ export default function Home() {
                     country={country} 
                     city={city} 
                     packages={packages} 
-                    blogs={blogs} 
+                    blogs={blogs}
+                    packagescat={packagescat}
                 />
             </Layout>
         </>
