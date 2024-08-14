@@ -2,6 +2,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import Link from 'next/link';
 
 
 const FooterLinks = () => {
@@ -10,9 +11,9 @@ const FooterLinks = () => {
       <div className="other-links">
         <h3 className="footer-title">Other Links</h3>
         <ul className="footer-list">
-          <li className="footer-item">Privacy Policy</li>
-          <li className="footer-item">Terms of Service</li>
-          <li className="footer-item">Disclaimer</li>
+          <li className="footer-item"><Link href={`/privacy-policy`}>Privacy Policy</Link></li>
+          <li className="footer-item"><Link href={`/terms&conditions`}>Terms of Service</Link></li>
+          <li className="footer-item"><Link href={`/disclaimer`}>Disclaimer</Link></li>
         </ul>
       </div>
       <div className="follow-us">
