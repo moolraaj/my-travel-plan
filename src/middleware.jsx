@@ -2,56 +2,55 @@ import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export default async function middleware(request) {
-    const url = new URL(request.url);
-    const pathname = url.pathname;
+  const url = new URL(request.url);
+  const pathname = url.pathname;
 
-    // Access Netlify's geolocation headers
-    const geoCountry = request.headers.get('x-nf-geo-country');
+  // Get token from request
+  const token = await getToken({ req: request });
+  const user = token?.user;
 
-    // Check if the user is located in Malaysia
-    if (geoCountry === 'MY') {
-        // Redirect to the Malaysia-specific domain
-        const malaysianUrl = new URL(url);
-        malaysianUrl.hostname = 'mieland.com.my';
-        return NextResponse.redirect(malaysianUrl.toString());
-    }
+  // Define public routes
+  const adminPublicRoutes = ['/admin/login'];
+  const userPublicRoutes = ['/login'];
 
-    // The rest of your existing logic...
-    const token = await getToken({ req: request });
-    const user = token?.user;
+  // Define private routes
+  const adminPrivateRoutes = ['/admin/dashboard'];
+  const userPrivateRoutes = ['/dashboard'];
 
-    const adminPublicRoutes = ['/admin/login'];
-    const userPublicRoutes = ['/login'];
-    const adminPrivateRoutes = ['/admin/dashboard'];
-    const userPrivateRoutes = ['/dashboard'];
+  // Redirect admin users who are trying to access user public routes
+  if (token && user.role === 'admin' && userPublicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+  }
 
-    if (token && user.role === 'admin' && userPublicRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-    }
+  // Redirect regular users who are trying to access user public routes
+  if (token && user.role === 'user' && userPublicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL(request.headers.get('referer') || '/dashboard', request.url));
 
-    if (token && user.role === 'user' && userPublicRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL(request.headers.get('referer') || '/dashboard', request.url));
-    }
+  }
 
-    if (token && user.role === 'user' && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // Redirect users with role 'user' who are trying to access admin routes, except '/admin/login'
+  if (token && user.role === 'user' && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
-    if (!token && userPrivateRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // Redirect unauthenticated users trying to access private user routes
+  if (!token && userPrivateRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
-    if (!token && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
+  // Redirect unauthenticated users trying to access admin routes
+  if (!token && pathname.startsWith('/admin') && !adminPublicRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/admin/login', request.url));
+  }
 
-    return NextResponse.next();
+  // Proceed with request if no redirects
+  return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        '/admin/:path*',
-        '/dashboard',
-        '/login',
-    ],
+  matcher: [
+    '/admin/:path*',
+    '/dashboard',
+    '/login',
+  ],
 };
