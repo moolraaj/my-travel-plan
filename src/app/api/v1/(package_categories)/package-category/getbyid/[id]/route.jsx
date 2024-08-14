@@ -26,7 +26,7 @@ export async function GET(req, { params }) {
 
         // Find the packages associated with this category, select only the required fields
         const packages = await PackagesModel.find({ package_categories_id: category._id })
-            .select('images title description package_price') // Only select the needed fields
+            .select('images title description package_price package_discounted_price package_days package_nights') // Only select the needed fields
             .lean() // Convert to plain JavaScript objects
             .exec();
 
@@ -36,7 +36,10 @@ export async function GET(req, { params }) {
             images: pkg.images,
             title: pkg.title,
             description: pkg.description,
-            package_price: pkg.package_price
+            package_price: pkg.package_price,
+            package_discounted_price:pkg.package_discounted_price,
+            package_days: pkg.package_days,
+            package_nights: pkg.package_nights,
         }));
 
         return NextResponse.json({
