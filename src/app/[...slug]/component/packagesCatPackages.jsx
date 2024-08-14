@@ -44,7 +44,7 @@ function PackagesCatPackages({ slug }) {
                 <div className='card_discount'>
                   <div className="packages">
                     {item === undefined || item === null ? (
-                      <EmptyPackageComponent />
+                       'no result found'
                     ) : (
                       item.packages.map(pkg =>
                         <div key={pkg._id} className="package">
