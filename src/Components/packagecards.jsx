@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react'; 
 import BookingForm from './(bookings)/bookings/bookingForm';
 import LoginPopup from './loginPopup/Components/popup';
-import SignupPopup from './signupPopup/Components/popup';
 
 const BestSellingPackages = ({ packages, loading }) => {
   const [userVerified, setUserVerified] = useState(false);
@@ -50,8 +49,7 @@ const BestSellingPackages = ({ packages, loading }) => {
   return (
     <>
       {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
-      {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup} />}
-      {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin} />}
 
       <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
         <div className="container card_main_section">
