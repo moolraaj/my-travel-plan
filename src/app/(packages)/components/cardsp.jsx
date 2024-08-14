@@ -1,9 +1,12 @@
 'use client'
+import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
+import LoginPopup from '@/Components/loginPopup/Components/popup';
+import SignupPopup from '@/Components/signupPopup/Components/popup';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
+import { getSession } from 'next-auth/react'; 
 
 
 const Allpackages = () => {
@@ -11,14 +14,42 @@ const Allpackages = () => {
   let api = EXPORT_ALL_APIS()
 
   let [data, setData] = useState([])
+  const [userVerified, setUserVerified] = useState(false);
+  const [isopenForm, setIsopenForm] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+  const [selectedPackageId, setSelectedPackageId] = useState(null);
 
   let fetchAllPackages = async () => {
     let resp = await api.loadAllPackages()
     setData(resp)
   }
 
+  const checkUserVerification = async () => {
+    try {
+      const session = await getSession();
+      if (session && session.user) {
+        setUserVerified(session.user.role === 'user');
+      } else {
+        setUserVerified(false);
+      }
+    } catch (error) {
+      console.error('Error checking verification:', error);
+    }
+  };
+
+  const bookingAndLogin = (pkgId) => {
+    if (!userVerified) {
+      setIsLogin(true);
+    } else {
+      setSelectedPackageId(pkgId);
+      setIsopenForm(true);
+    }
+  };
+
   useEffect(() => {
     fetchAllPackages()
+    checkUserVerification();
   }, [])
 
   let result = data ? data.result : []
@@ -26,6 +57,11 @@ const Allpackages = () => {
 
 
   return (
+    <>
+    {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup} />}
+      {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup} />}
+
     <div className="container card_main_section">
       <div className="card_discount">
         <div className="packages">
@@ -51,7 +87,7 @@ const Allpackages = () => {
                   <Link href={`/packages/${pkg.slug}`}>
                     <button className="details-btn">View Details</button>
                   </Link>
-                  <button className="enquiry-btn">Book Now</button>
+                  <button className="enquiry-btn" onClick={() => bookingAndLogin(pkg._id)}>Book Now</button>
                 </div>
               </div>
             </div>
@@ -59,7 +95,7 @@ const Allpackages = () => {
         </div>
       </div>
     </div>
-
+    </>
   );
 };
 

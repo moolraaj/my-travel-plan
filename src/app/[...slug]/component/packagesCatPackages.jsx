@@ -7,10 +7,19 @@ import React, { useEffect, useState } from 'react';
 import explorebg from '../../../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../../../app/assets/empty.jpg';
 import Image from 'next/image';
+import { getSession } from 'next-auth/react'; 
+import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
+import LoginPopup from '@/Components/loginPopup/Components/popup';
+import SignupPopup from '@/Components/signupPopup/Components/popup';
 
 function PackagesCatPackages({ slug }) {
   const api = EXPORT_ALL_APIS();
   const [data, setData] = useState([]);
+  const [userVerified, setUserVerified] = useState(false);
+  const [isopenForm, setIsopenForm] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+  const [selectedPackageId, setSelectedPackageId] = useState(null);
 
   const fetchSinglePackage = async () => {
     try {
@@ -24,9 +33,31 @@ function PackagesCatPackages({ slug }) {
       console.error('Error fetching single package:', error);
     }
   };
+  const checkUserVerification = async () => {
+    try {
+      const session = await getSession();
+      if (session && session.user) {
+        setUserVerified(session.user.role === 'user');
+      } else {
+        setUserVerified(false);
+      }
+    } catch (error) {
+      console.error('Error checking verification:', error);
+    }
+  };
+
+  const bookingAndLogin = (pkgId) => {
+    if (!userVerified) {
+      setIsLogin(true);
+    } else {
+      setSelectedPackageId(pkgId);
+      setIsopenForm(true);
+    }
+  };
 
   useEffect(() => {
     fetchSinglePackage();
+    checkUserVerification();
   }, [slug]);
 
   console.log('single activity data:', data);
@@ -35,6 +66,9 @@ function PackagesCatPackages({ slug }) {
 
   return (
     <div>
+       {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup} />}
+      {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup} />}
        <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
        <div className="container card_main_section">
      
@@ -75,7 +109,7 @@ function PackagesCatPackages({ slug }) {
                             <p className="price">From ₹ {pkg.package_price || 0}</p>
                             <div className="buttons">
                             <Link href={`/packages/${pkg.title.trim().toLowerCase().replace(/\s+/g, '-')}`}><button className="details-btn">View Details</button></Link>
-                              <button className="enquiry-btn" onClick={() => bookingAndLogin(pkg._id)}>Book Now</button>
+                            <button className="enquiry-btn" onClick={() => bookingAndLogin(pkg._id)}>Book Now</button>
                             </div>
                           </div>
                         </div>
