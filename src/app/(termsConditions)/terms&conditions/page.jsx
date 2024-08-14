@@ -15,13 +15,13 @@ function TermsCondition() {
 
         <h2>2. Definitions</h2>
         <p>
-          <strong>2.1. "User":</strong> Any individual or entity using or intending to use our services.
+          <strong>2.1. User:</strong> Any individual or entity using or intending to use our services.
         </p>
         <p>
-          <strong>2.2. "Service":</strong> The travel package booking and blog content services provided by MyTravPlan.
+          <strong>2.2. Service:</strong> The travel package booking and blog content services provided by MyTravPlan.
         </p>
         <p>
-          <strong>2.3. "Package":</strong> A travel package offered by MyTravPlan, categorized by continent, country, and city.
+          <strong>2.3. Package:</strong> A travel package offered by MyTravPlan, categorized by continent, country, and city.
         </p>
 
         <h2>3. Use of Services</h2>

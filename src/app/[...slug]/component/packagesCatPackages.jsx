@@ -28,8 +28,7 @@
 import { EXPORT_ALL_APIS } from '@/utils/apis/api'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import discountc from '../../../app/assets/home_images/discountcards.png';
-import explorebg from '../../../app/assets/home_images/explore-package-bg.png';
+ import explorebg from '../../../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../../../app/assets/empty.jpg';
 import Image from 'next/image';
 
@@ -69,7 +68,7 @@ function PackagesCatPackages({ slug }) {
                 <div className='card_discount'>
                   <div className="packages">
                     {item === undefined || item === null ? (
-                      <EmptyPackageComponent />
+                       'no result found'
                     ) : (
                       item.packages.map(pkg =>
                         <div key={pkg._id} className="package">

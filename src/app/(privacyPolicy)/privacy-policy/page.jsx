@@ -77,7 +77,7 @@ function PrivacyPolicy() {
           Our website may contain links to third-party websites. We are not responsible for the privacy practices of these websites. We encourage you to read the privacy policies of any linked websites you visit.
         </p>
 
-        <h2>10. Children's Privacy</h2>
+        <h2>10. Children Privacy</h2>
         <p>
           Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children under 18. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.
         </p>
