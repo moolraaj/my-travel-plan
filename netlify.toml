@@ -1,8 +1,12 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  publish = "dist"
 
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-NF-Geo = "*"
+[dev]
+  publish = "dist"
+  command = "npm run dev"
+
+[[redirects]]
+  from = "/*"
+  to = "https://mieland.com.my"
+  status = 302
+  conditions = { Country = ["MY"] }
