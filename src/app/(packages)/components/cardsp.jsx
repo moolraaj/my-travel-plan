@@ -1,7 +1,6 @@
 'use client'
 import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
 import LoginPopup from '@/Components/loginPopup/Components/popup';
-import SignupPopup from '@/Components/signupPopup/Components/popup';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,7 +16,6 @@ const Allpackages = () => {
   const [userVerified, setUserVerified] = useState(false);
   const [isopenForm, setIsopenForm] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isSignup, setIsSignup] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
 
   let fetchAllPackages = async () => {
@@ -59,8 +57,7 @@ const Allpackages = () => {
   return (
     <>
     {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
-      {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup} />}
-      {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin} />}
 
     <div className="container card_main_section">
       <div className="card_discount">

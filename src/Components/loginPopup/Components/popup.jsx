@@ -3,9 +3,10 @@ import popupbg from '../../../../public/images/popup-bg.png';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { signIn } from 'next-auth/react';
+import popupImage from '../../../../public/images/popup-img.png'
 
 
-const LoginPopup = ({ setIsLogin, setIsSignup }) => {
+const LoginPopup = ({ setIsLogin }) => {
    
     const [otp, setOtp] = useState('');
     const [info, setInfo] = useState({
@@ -22,7 +23,6 @@ const LoginPopup = ({ setIsLogin, setIsSignup }) => {
 
     const closeLogin = () => {
         setIsLogin(false);
-        setIsSignup(false);
     };
 
     const changeHandler = (value, e) => {
@@ -107,10 +107,6 @@ const LoginPopup = ({ setIsLogin, setIsSignup }) => {
         }
     };
 
-    const openSignUp=()=>{
-        setIsSignup(true);
-        setIsLogin(false);
-    }
 
     return (
         <div className="login_popup_outer">
@@ -119,7 +115,7 @@ const LoginPopup = ({ setIsLogin, setIsSignup }) => {
                     <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
                         <button className="close-button" onClick={closeLogin}>×</button>
                         <div className="image-section">
-                            <img src="/images/popup-img.png" alt="Travel" />
+                            <img src={popupImage.src} alt="Travel" />
                         </div>
                         <div className="form-section">
                             <h2>{verifyOtp ? 'Enter OTP to Verify Your Phone Number' : 'Enter Mobile Number To Personalize Your Trip'}</h2>
@@ -150,7 +146,6 @@ const LoginPopup = ({ setIsLogin, setIsSignup }) => {
                                 <button type="submit">
                                     {verifyOtp ? 'Verify OTP' : 'Get OTP'}
                                 </button>
-                                <p>Do not have an account <span onClick={openSignUp}>Signup</span></p>
                             </form>
                         </div>
                     </div>

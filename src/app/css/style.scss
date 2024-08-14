@@ -1951,7 +1951,7 @@ a.card_outer {
 	height: 100%;
 	width: 100%;
 	background-color: #00000064;
-	z-index: 99999;
+	z-index: 99999999999999;
 	top: 0;
 	left: 0;
 	display: flex;
@@ -1959,16 +1959,6 @@ a.card_outer {
 	align-items: center;
 }
 
-.login_popup_outer p,
-.signup_popup_outer p {
-	text-align: center;
-	margin-top: 12px;
-}
-.login_popup_outer span,
-.signup_popup_outer span {
-	color: $primaryblue;
-	cursor: pointer;
-}
 /* login and signup popup form  end*/
 
 

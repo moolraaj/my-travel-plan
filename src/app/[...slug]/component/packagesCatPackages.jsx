@@ -10,7 +10,6 @@ import Image from 'next/image';
 import { getSession } from 'next-auth/react'; 
 import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
 import LoginPopup from '@/Components/loginPopup/Components/popup';
-import SignupPopup from '@/Components/signupPopup/Components/popup';
 
 function PackagesCatPackages({ slug }) {
   const api = EXPORT_ALL_APIS();
@@ -18,7 +17,6 @@ function PackagesCatPackages({ slug }) {
   const [userVerified, setUserVerified] = useState(false);
   const [isopenForm, setIsopenForm] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isSignup, setIsSignup] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
 
   const fetchSinglePackage = async () => {
@@ -67,8 +65,7 @@ function PackagesCatPackages({ slug }) {
   return (
     <div>
        {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
-      {isLogin && <LoginPopup setIsLogin={setIsLogin} setIsSignup={setIsSignup} />}
-      {isSignup && <SignupPopup setIsLogin={setIsSignup} setIsSignup={setIsSignup} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin}  />}
        <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
        <div className="container card_main_section">
      
