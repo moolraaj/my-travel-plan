@@ -1,34 +1,9 @@
-// 'use client'
-// import { EXPORT_ALL_APIS } from '@/utils/apis/api'
-// import React, { useEffect, useState } from 'react'
-
-// function PackagesCatPackages({slug}) {
-//     let api=EXPORT_ALL_APIS()
-//     let [data,setData]=useState([])
-//     let fetchSinglePackage=async()=>{
-//         let resp=await api.loadSinglePackagesActivitiy(slug)
-//         setData(resp)
-//     }
-
-//     useEffect(()=>{
-//         fetchSinglePackage()
-//     },[])
-//     console.log('single activity data:',data)
-//   return (
-//     <div>
-//       <h1>{slug}</h1>
-//     </div>
-//   )
-// }
-
-// export default PackagesCatPackages
-
 
 'use client'
+
 import { EXPORT_ALL_APIS } from '@/utils/apis/api'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import discountc from '../../../app/assets/home_images/discountcards.png';
 import explorebg from '../../../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../../../app/assets/empty.jpg';
 import Image from 'next/image';
@@ -99,7 +74,7 @@ function PackagesCatPackages({ slug }) {
 
                             <p className="price">From ₹ {pkg.package_price || 0}</p>
                             <div className="buttons">
-                              <Link href={`/${pkg.slug}`}><button className="details-btn">View Details</button></Link>
+                            <Link href={`/packages/${pkg.title.trim().toLowerCase().replace(/\s+/g, '-')}`}><button className="details-btn">View Details</button></Link>
                               <button className="enquiry-btn" onClick={() => bookingAndLogin(pkg._id)}>Book Now</button>
                             </div>
                           </div>

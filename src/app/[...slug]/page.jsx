@@ -1,3 +1,5 @@
+// /app/[...slug]/page.jsx
+
 import React from 'react'
 import PackagesCatPackages from './component/packagesCatPackages'
 import Topbanner from '../_common/layout/topbanner'
