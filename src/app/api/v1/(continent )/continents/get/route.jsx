@@ -3,21 +3,21 @@ import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import { getPaginationParams } from '@/helpers/paginations';
 import continentModel from '@/model/continentModel';
 import { NextResponse } from 'next/server';
-import cache from 'memory-cache';
+// import cache from 'memory-cache';
 
 // Ensure database connection is established
 DbConnect();
 
 export async function GET(req) {
-  const cacheKey = 'continentModel';  
-  const cacheTTL = 10 * 60 * 1000;  
+  // const cacheKey = 'continentModel';  
+  // const cacheTTL = 10 * 60 * 1000;  
   
   // Check if data is cached
-  const cachedData = cache.get(cacheKey);
-  if (cachedData) {
+  // const cachedData = cache.get(cacheKey);
+  // if (cachedData) {
   
-    return NextResponse.json(cachedData);
-  }
+  //   return NextResponse.json(cachedData);
+  // }
 
   // Fetch and process data if not cached
   return handelAsyncErrors(async () => {
@@ -66,7 +66,7 @@ export async function GET(req) {
     }));
 
     // Cache the result
-    cache.put(cacheKey, { status: 200, success: true, totalResults, result, page, limit }, cacheTTL);
+    // cache.put(cacheKey, { status: 200, success: true, totalResults, result, page, limit }, cacheTTL);
 
     // Return the response
     return NextResponse.json({

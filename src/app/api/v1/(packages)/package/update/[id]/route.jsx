@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { DbConnect } from "@/database/database";
 import { HandleFileUpload } from "@/helpers/uploadFiles";
@@ -30,6 +29,7 @@ export async function PUT(req, { params }) {
         const packageItinerary = payload.has('package_itinerary') ? JSON.parse(payload.get('package_itinerary')) : null;
         const packagesInclude = payload.has('packages_include') ? JSON.parse(payload.get('packages_include')) : null;
         const packagesExclude = payload.has('packages_exclude') ? JSON.parse(payload.get('packages_exclude')) : null;
+        const package_categories_id = payload.has('package_categories_id') ? JSON.parse(payload.get('package_categories_id')) : null;
 
         // Check if package exists
         let existingPackage = await PackagesModel.findById(id);
@@ -67,6 +67,7 @@ export async function PUT(req, { params }) {
         if (packagesInclude) existingPackage.packages_include = packagesInclude;
         if (packagesExclude) existingPackage.packages_exclude = packagesExclude;
         if (city_id) existingPackage.city_id = city_id;
+        if (package_categories_id) existingPackage.package_categories_id = package_categories_id;
 
         // Upload new image if provided
         if (file) {
@@ -99,5 +100,4 @@ export async function PUT(req, { params }) {
 
         return NextResponse.json({ success: true, message: 'Package updated successfully', result });
     })
-
 }

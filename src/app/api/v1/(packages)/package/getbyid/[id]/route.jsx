@@ -1,5 +1,3 @@
-// /app/api/v1/(packages)/package/getbyid/[id]/route.jsx
-
 import { DbConnect } from "@/database/database";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import PackagesModel from "@/model/packagesModel";
@@ -16,10 +14,10 @@ export async function GET(req, { params }) {
             return NextResponse.json({ status: 400, success: false, message: 'Package ID is required' });
         }
 
-        console.log('Fetching package with ID:', id); // Debugging line
+         
 
         try {
-            // Fetch the package by ID and populate necessary fields
+   
             const result = await PackagesModel.findById(id)
                 .populate({
                     path: 'city_id',
@@ -30,18 +28,20 @@ export async function GET(req, { params }) {
                         }
                     }
                 })
+                .populate({
+                    path: 'package_categories_id',
+                    model: 'packages_categories',  
+                    select: '_id name slug'  
+                })
                 .lean(); // Convert to plain JavaScript objects
 
-            console.log('Fetched package result:', result); // Debugging line
+           
 
             if (!result) {
                 return NextResponse.json({ status: 404, success: false, message: 'Package not found' });
             }
 
-            console.log(`result`)
-            console.log(result)
-
-            // Prepare the formatted result with checks for null values
+           
             const formattedResult = {
                 _id: result._id,
                 title: result.title,
@@ -72,10 +72,15 @@ export async function GET(req, { params }) {
                     _id: result.city_id._id.toString(),
                     title: result.city_id.title,
                     slug: result.city_id.slug
-                } : null
+                } : null,
+                package_under_categories: result.package_categories_id?.map(category => ({
+                    _id: category._id.toString(),
+                    name: category.name,
+                    slug: category.slug
+                })) || null
             };
 
-            return NextResponse.json({ status: 200, success: true, result: formattedResult });
+            return NextResponse.json({ status: 200, success: true, result: [formattedResult] });
         } catch (error) {
             console.error('Error fetching package by ID:', error);
             return NextResponse.json({ status: 500, success: false, message: 'Internal Server Error' });
