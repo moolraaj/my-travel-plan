@@ -13,7 +13,7 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
         let userMailOptions;
         let adminMailOptions;
 
-        if (formType === 'contact') {
+        if (formType === 'booking') {
             userMailOptions = {
                 from: process.env.GMAIL_AUTH_EMAIL_ID,
                 to: email,
@@ -28,15 +28,39 @@ export const SendEmail = async ({ name, email, phone_number, message, formType, 
             adminMailOptions = {
                 from: process.env.GMAIL_AUTH_EMAIL_ID,
                 to: "raaj73906@gmail.com",
-                subject: 'New Contact Form Submission',
-                html: `<p>New contact form submission received:</p>
+                subject: 'New Booking Form Submission',
+                html: `<p>New Booking submission received:</p>
                        <p><strong>Name:</strong> ${name}</p>
                        <p><strong>Email:</strong> ${email}</p>
                        <p><strong>Phone Number:</strong> ${phone_number}</p>
                        <p><strong>Message:</strong> ${message}</p>
                        ${packageDetails ? `<p><strong>Package:</strong> ${packageDetails.title} (Slug: ${packageDetails.slug})</p>` : ''}`
             };
-        } else if (formType === 'flights') {
+        }else if (formType === 'contact') {
+            userMailOptions = {
+                from: process.env.GMAIL_AUTH_EMAIL_ID,
+                to: email,
+                subject: 'Thank you for contacting us',
+                html: `<p>Dear ${name},</p>
+                       <p>Thank you for reaching out to us. We have received your message:</p>
+                       <p>${message}</p>
+                       ${packageDetails ? `<p><strong>Package:</strong> ${packageDetails.title} (Slug: ${packageDetails.slug})</p>` : ''}
+                       <p>We will get back to you soon.</p>`
+            };
+
+            adminMailOptions = {
+                from: process.env.GMAIL_AUTH_EMAIL_ID,
+                to: "raaj73906@gmail.com",
+                subject: 'New contact Form Submission',
+                html: `<p>New contact submission received:</p>
+                       <p><strong>Name:</strong> ${name}</p>
+                       <p><strong>Email:</strong> ${email}</p>
+                       <p><strong>Phone Number:</strong> ${phone_number}</p>
+                       <p><strong>Message:</strong> ${message}</p>
+                       ${packageDetails ? `<p><strong>Package:</strong> ${packageDetails.title} (Slug: ${packageDetails.slug})</p>` : ''}`
+            };
+        }
+         else if (formType === 'flights') {
             userMailOptions = {
                 from: process.env.GMAIL_AUTH_EMAIL_ID,
                 to: email,

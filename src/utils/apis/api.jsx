@@ -138,6 +138,17 @@ export const EXPORT_ALL_APIS = () => {
         });
     };
 
+    const sendQueryBookings = async (formData) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/booking/sendquery`,{
+                method:'POST',
+                body:formData
+            }) 
+            let data = await resp.json();
+            return data;
+        });
+    };
+
     const registerUser=async(phoneNumber,name)=>{
         let resp=await fetch(`/api/v1/otpuser/register`,{
             method:'POST',
@@ -156,8 +167,8 @@ export const EXPORT_ALL_APIS = () => {
         return result
     }
  
-    
-    const sendQueryBookings = async (formData) => {
+
+    const sendQueryFlights = async (formData) => {
         return await handelAsyncErrors(async () => {
             let resp = await fetch(`/api/v1/flight/query/send`,{
                 method:'POST',
