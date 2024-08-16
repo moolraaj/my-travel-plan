@@ -15,7 +15,7 @@ export default async function middleware(request) {
 
   // Define private routes
   const adminPrivateRoutes = ['/admin/dashboard'];
-  const userPrivateRoutes = ['/dashboard'];
+  const userPrivateRoutes = ['/my-orders'];
 
   // Redirect admin users who are trying to access user public routes
   if (token && user.role === 'admin' && userPublicRoutes.includes(pathname)) {
@@ -50,7 +50,7 @@ export default async function middleware(request) {
 export const config = {
   matcher: [
     '/admin/:path*',
-    '/dashboard',
+    '/my-orders',
     '/login',
   ],
 };
