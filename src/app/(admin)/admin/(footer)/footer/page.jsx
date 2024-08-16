@@ -71,6 +71,12 @@ function FooterPage() {
       const result = await response.json();
       if (response.ok) {
         console.log(result);
+        setFooterData({
+            phoneNumbers: [''],
+            emailAddresses: [''],
+            address: '',
+            socialIcons: [{ name: '', url: '', iconUrl: '' }],
+        })
         // Handle success (e.g., show a message or redirect)
         alert('Content added successfully');
       } else {

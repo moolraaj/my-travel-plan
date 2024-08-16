@@ -47,7 +47,7 @@ function Destinations({country,loading}) {
                 className="trending"
               >
                 <img src={trending.src}></img>
-                TREADING
+                TRENDING
               </span>
               <div className="info">
                 <h3>{country.title}</h3>

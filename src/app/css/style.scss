@@ -211,6 +211,13 @@ body::-webkit-scrollbar {
 	color: white;
 }
 
+.card_main_section .package img {
+    height: 189px;
+    object-fit: cover;
+    max-width: 236px;
+}
+
+
 
 .exploration-item img {
 	width: 100%;
@@ -317,6 +324,17 @@ p.description {
 	justify-content: space-between;
 }
 
+.info {
+    width: 100%;
+}
+
+
+h2.same_heading {
+    font-size: 25px;
+    margin: 0px;
+    font-weight: 500;
+}
+
 .link_heading a {
 	color: #CA1E2A;
 	text-decoration: unset;
@@ -341,18 +359,28 @@ p.description {
 	font-weight: 600;
 }
 
+.info p {
+    color: #000;
+    text-align: left;
+    font-weight: 500;
+    margin: 0px;
+    padding-bottom: 5px;
+}
+
+
 .card_main_section .buttons button {
 	padding: 7px 15px;
-	margin-right: 10px;
-	border-color: #1802A0;
-	border-radius: 4px;
-	border-width: 1px;
-	font-size: 16px;
-	font-family: jost;
-	border: 1px solid #1802A0;
-	background: white;
-	font-weight: 500;
-	cursor: pointer;
+    margin-right: 10px;
+    border-color: #000;
+    border-radius: 4px;
+    border-width: 1px;
+    font-size: 16px;
+    font-family: jost;
+    border: 1px solid #1802A0;
+    background: #cf0c2a;
+    font-weight: 500;
+    cursor: pointer;
+    color: white;
 }
 
 
@@ -1909,10 +1937,15 @@ a.card_outer {
 }
 
 .world-country .label {
-	font-size: 16px;
+	font-size: 12px;
 	font-weight: 600;
 }
 
+
+.outer_section a .label img {
+      top: 27px;
+  
+}
 
 //  akash css start
 .contact_breadcrumbs {
@@ -3240,6 +3273,12 @@ img.carimage {
 		grid-template-columns: 1fr;
 	}
 
+
+	.main_slider_inner .slider img {
+		object-fit: contain;
+		object-position: top;
+	}
+
 	.main_slider_inner .slider {
 		width: 100%;
 		height: 384px;
@@ -3422,6 +3461,61 @@ img.carimage {
 		display: block;
 	}
 
+	h2.same_heading {
+		font-size: 23px;
+		margin: 0px;
+		font-weight: 500;
+	}
+
+	img.image-travel-expert {
+		width: 100%;
+		object-fit: cover;
+		border-radius: 8px;
+		filter: brightness(0.7);
+		height: 203px;
+	}
+
+	.destination span.trending {
+		position: absolute;
+		right: 0px;
+		top: 23px;
+		padding: 6px 25px;
+		color: white;
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
+		font-weight: 500;
+		font-size: 10px;
+	}
+
+
+
+	.outer_section a.card_outer img:nth-child(2) {
+		height: 167px !important;
+		object-fit: cover;
+	}
+
+	.grid-container{
+		display: grid !important;
+		grid-template-columns: 1fr 1fr !important;
+	}
+
+	.outer_section .text {
+			font-size: 19px;
+		
+	}
+
+	a.card_outer .card:before {
+		content: "";
+		width: 100%;
+		height: 167px;
+		background: rgba(0, 0, 0, 0.2784313725);
+		position: absolute;
+		z-index: 99;
+		border-radius: 10px;
+	}
+	
+
 	.explorations-grid {
 		grid-template-columns: 1fr;
 	}
@@ -3477,10 +3571,61 @@ img.carimage {
 	}
 
 	.world-country .grid-container,
-	.destinations.expert-travel,
+	.destinations.expert-travel
+ {
+		grid-template-columns: 1fr 1fr;
+		display: grid;
+	}
+
+
+	.destinations-grid a:nth-child(2) {
+		grid-column: auto;
+	}
 	.destinations-grid {
-		grid-template-columns: 1fr;
-		display: block;
+        display: grid;
+    }
+
+	.destination-card .destination-image {
+        height: 180px;
+    }
+	.destinations-grid {
+				row-gap: 10px;
+		
+	}
+
+	.destination-card .destination-image {
+		width: 100%;
+		height: 100%;
+		min-height: 180px;
+		max-height: 390px;
+		object-fit: cover;
+		filter: brightness(0.5);
+		border-radius: 5px;
+	}
+
+	.destination-card h3 {
+        font-size: 18px;
+	}
+
+	.destination-card:hover:after {
+		content: "";
+		width: 90%;
+		height: 86%;
+		border: 1px solid #ffffff;
+		position: absolute;
+		top: 47%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		border-radius: 5px;
+	}
+
+	.header_best_selling {
+		margin-top: 45px;
+	}
+	.card_main_section .package img {
+		height: 169px;
+		object-fit: cover;
+		max-width: 236px;
 	}
 
 	.card_main_section .package {
