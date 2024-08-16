@@ -29,10 +29,8 @@ async function MyOrders() {
 
     useEffect(() => {
         fetchAllBookings();
-    }, [user_id]);
+    }, []);
 
-    console.log('booking');
-    console.log(booking);
 
     let bookings = booking ? booking.bookings : []
 
