@@ -34,7 +34,10 @@ const ContactUs = () => {
             {!session ? (
               <Link href={`/login`} className="dropdown-item">Login</Link>
             ) : (
+              <>
+              <Link href={`/my-orders`} className="dropdown-item">My Orders</Link>
               <LogoutPage/>
+              </>
             )}
           </div>
         )}
