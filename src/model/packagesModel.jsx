@@ -42,7 +42,12 @@ const PackagesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'cities',
         required: true
-    }
+    },
+    package_categories_id:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'packages_categories',
+        required: true
+    }]
 });
 
 // Create the package model

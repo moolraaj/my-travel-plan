@@ -38,6 +38,9 @@ export async function GET(req, { params }) {
                 return NextResponse.json({ status: 404, success: false, message: 'Package not found' });
             }
 
+            console.log(`result`)
+            console.log(result)
+
             // Prepare the formatted result with checks for null values
             const formattedResult = {
                 _id: result._id,
