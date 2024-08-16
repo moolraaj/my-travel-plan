@@ -2,7 +2,7 @@
 
 
 import Image from 'next/image';
-import loader from '../../public/uploads/airplane.gif';
+import loader from '../../public/uploads/giphy.gif';
 
 function Loading() {
 
@@ -12,8 +12,8 @@ function Loading() {
       <div className="loading_wrapper">
 
         <Image src={loader.src}
-          width={180}
-          height={180}
+          width={250}
+          height={250}
 
         />
 

@@ -1041,7 +1041,8 @@ g.recharts-layer.recharts-pie:focus{
   background-color: #218838;
 }
 
-.category-management .message {
+.category-management .message,
+.package-category-management .message{
   margin-top: 10px;
   color: green;
 }

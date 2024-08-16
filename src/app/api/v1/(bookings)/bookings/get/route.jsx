@@ -7,7 +7,9 @@ export async function GET(req) {
     return handelAsyncErrors(async () => {
         let { page, limit, skip } = getPaginationParams(req);
 
-       
+         // Count total documents
+    const totalResults = await BookingModel.countDocuments();
+
         let result = await BookingModel.find()
             .populate({
                 path: 'user_id', 
@@ -20,6 +22,7 @@ export async function GET(req) {
         return NextResponse.json({
             status: 200,
             success: true,
+            totalResults,
             result,
             page,
             limit

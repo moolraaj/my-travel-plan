@@ -2,12 +2,13 @@
 
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FaTrashAlt, FaEye } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import Breadcrumb from '@/app/(admin)/_common/Breadcrumb';
+import { format } from 'date-fns';
 
 
 function BookingPage() {
@@ -101,13 +102,16 @@ function BookingPage() {
                 <td colSpan="6" className="no-data">No Bookings Available</td>
               </tr>
             ) : (
-              bookings.map(booking => (
-                <tr key={booking._id}>
+              bookings.map(booking =>{
+                const formattedDate = format(new Date(booking.createdAt), 'dd MMM yyyy');
+                return(
+                  <>
+                  <tr key={booking._id}>
                   <td data-label="Booking ID">{booking._id}</td>
                   <td data-label="Name">{booking.name}</td>
                   <td data-label="Email">{booking.email}</td>
                   <td data-label="Phone Number">{booking.phone_number}</td>
-                  <td data-label="Date">{booking.date}</td>
+                  <td data-label="Date">{formattedDate}</td>
                   <td data-label="Message">{booking.message}</td>
                   <td data-label="Actions">
                     <span className="actions">
@@ -119,7 +123,9 @@ function BookingPage() {
                     </span>
                   </td>
                 </tr>
-              ))
+                  </>
+                )
+              })
             )}
           </tbody>
         </table>

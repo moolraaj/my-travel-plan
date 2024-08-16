@@ -16,9 +16,10 @@ async function page() {
     <div className="dashboard-page">
  
       <Overview />
+      <RecentBookings />
       <Stats />
       <DataPercentage/>
-      <RecentBookings />
+      
     </div>
   )
 }

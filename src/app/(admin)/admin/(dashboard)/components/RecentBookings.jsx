@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 import { FaEye } from 'react-icons/fa';
+import { format } from 'date-fns';
 
 function RecentBookings() {
   const [bookings, setBookings] = useState([]);
@@ -24,8 +25,8 @@ function RecentBookings() {
         }
         setLoading(false);
       })
-        
-      
+
+
     };
 
     fetchBookings();
@@ -50,15 +51,20 @@ function RecentBookings() {
               <td colSpan="9" className='loading'>Loading...</td>
             </tr>
           ) : bookings.length > 0 ? (
-            bookings.map((booking) => (
-              <tr key={booking._id}>
-                <td>{booking._id}</td>
-                <td>{booking.name}</td>
-                <td>{booking.email}</td>
-                <td>{booking.phone_number}</td>
-                <td>{booking.date}</td>
-              </tr>
-            ))
+            bookings.map((booking) => {
+              const formattedDate = format(new Date(booking.createdAt), 'dd MMM yyyy');
+              return (
+                <>
+                  <tr key={booking._id}>
+                    <td>{booking._id}</td>
+                    <td>{booking.name}</td>
+                    <td>{booking.email}</td>
+                    <td>{booking.phone_number}</td>
+                    <td>{formattedDate}</td>
+                  </tr>
+                </>
+              )
+            })
           ) : (
             <tr>
               <td colSpan="9">No recent bookings found.</td>
@@ -67,9 +73,9 @@ function RecentBookings() {
         </tbody>
       </table>
       <div className='view_recent_bookings'>
-      <button onClick={() => router.push('/admin/bookings')}>
-      <FaEye /> View All
-      </button>
+        <button onClick={() => router.push('/admin/bookings')}>
+          <FaEye /> View All
+        </button>
       </div>
     </div>
   );
