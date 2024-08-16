@@ -9,7 +9,7 @@ export async function DELETE(req, { params }) {
 
     if (!existingFlight) {
       return NextResponse.json(
-        { status: 404, success: false, message: 'Flight not found!' },
+        { status: 404, success: false, message: 'Flight query not found!' },
         { status: 404 }
       );
     }
@@ -17,7 +17,7 @@ export async function DELETE(req, { params }) {
     await FlightModel.deleteOne({ _id: id });
 
     return NextResponse.json(
-      { status: 200, success: true, message: 'Flight deleted successfully' },
+      { status: 200, success: true, message: 'Flight query deleted successfully' },
       { status: 200 }
     );
   });

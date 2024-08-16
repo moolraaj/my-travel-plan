@@ -25,7 +25,7 @@ function BookingPage() {
 
   async function fetchBookings() {
     
-      const response = await fetch(`/api/v1/flight/queries/get?page=${currentPage}&limit=${itemsPerPage}`);
+      const response = await fetch(`/api/v1/bookings/get?page=${currentPage}&limit=${itemsPerPage}`);
       const data = await response.json();
       return handelAsyncErrors(async()=>{
         if (response.ok && data.status === 200) {
@@ -45,15 +45,15 @@ function BookingPage() {
   }, [currentPage, itemsPerPage]);
 
   const confirmDelete = async () => {
-        const response = await fetch(`/api/v1/flight/query/delete/${deleteItem}`, { method: 'DELETE' });
+        const response = await fetch(`/api/v1/booking/delete/${deleteItem}`, { method: 'DELETE' });
         const data = await response.json();
         return handelAsyncErrors(async()=>{
-          if (response.ok && data.status === 200 && data.success) {
+          if (response.ok && data.status === 200) {
             fetchBookings();
-            toast.success(data.message);
+            toast.success(data.message || 'booking query deleted successfully');
             setIsOpen(false)
           } else {
-            toast.error(data.message || 'Failed to delete booking');
+            toast.error(data.message || 'Failed to delete booking query');
           }
         })
   };
@@ -87,10 +87,6 @@ function BookingPage() {
               <th>Email</th>
               <th>Phone Number</th>
               <th>Date</th>
-              <th>Origin</th>
-              <th>Destination</th>
-              <th>Traveler</th>
-              <th>Children</th>
               <th>Message</th>
               <th>Actions</th>
             </tr>
@@ -112,10 +108,6 @@ function BookingPage() {
                   <td data-label="Email">{booking.email}</td>
                   <td data-label="Phone Number">{booking.phone_number}</td>
                   <td data-label="Date">{booking.date}</td>
-                  <td data-label="Origin">{booking.origin}</td>
-                  <td data-label="Destination">{booking.destination}</td>
-                  <td data-label="Traveler">{booking.traveler}</td>
-                  <td data-label="Children">{booking.children}</td>
                   <td data-label="Message">{booking.message}</td>
                   <td data-label="Actions">
                     <span className="actions">
