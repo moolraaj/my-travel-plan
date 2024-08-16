@@ -1,6 +1,6 @@
  
 import Topbanner from '@/app/_common/layout/topbanner'
- 
+import Layout from '@/app/_common/layout/layout'
 import React from 'react'
 import ActivityBloggallery from './component/activitySlugPage'
 import Layout from '@/app/_common/layout/layout'
