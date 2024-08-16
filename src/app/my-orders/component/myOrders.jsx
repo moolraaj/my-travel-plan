@@ -1,15 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
- 
 import { format } from 'date-fns';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import Topbanner from '@/app/_common/layout/topbanner';
 import Layout from '@/app/_common/layout/layout';
- 
 
 async function MyOrders() {
-
     const { data: session } = useSession();
     const user_id = session?.user?._id ? session?.user?._id : null;
     console.log(`user_id`)
@@ -42,19 +39,24 @@ async function MyOrders() {
     return (
         <>
             <Layout>
-                <Topbanner slug="my-orders"/>
-                {bookings === null || bookings === undefined ? ('no bookings found') : (
-
-                    bookings?.map((ele) => {
-                        const date = format(new Date(ele.createdAt), 'dd MMM yyyy');
-                        return <div key={ele._id}>
-                            <p>booking id {ele.booking_id}</p>
-                            <p>description {ele.description}</p>
-                            <p>package id{ele._id}</p>
-                            <p> data {date}</p>
-                        </div>
-                    })
-                )}
+                <Topbanner slug="my-orders" />
+                <div className="my-orders-container">
+                    {bookings === null || bookings === undefined ? (
+                        <p className="no-bookings">No bookings found</p>
+                    ) : (
+                        bookings.map((ele) => {
+                            const date = format(new Date(ele.createdAt), 'dd MMM yyyy');
+                            return (
+                                <div key={ele._id} className="booking-card">
+                                    <p className="booking-id">Booking ID: {ele.booking_id}</p>
+                                    <p className="booking-description">Description: {ele.description}</p>
+                                    <p className="booking-package-id">Package ID: {ele._id}</p>
+                                    <p className="booking-date">Date: {date}</p>
+                                </div>
+                            )
+                        })
+                    )}
+                </div>
             </Layout>
         </>
     )
