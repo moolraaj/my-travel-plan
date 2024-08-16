@@ -1,10 +1,11 @@
 
 'use client';
- 
+
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import logo from '@/app/assets/home_images/logo.png';
+import LoadingOverlay from '../../../(dashboard)/components/LoadingOverlay';
 
 function AdminLoginPage() {
     const [data, setData] = useState({
@@ -13,14 +14,15 @@ function AdminLoginPage() {
         rememberMe: false,
     });
     let [erros, setErrors] = useState({})
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const onChangeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        setErrors({...erros,[e.target.name]:''})
+        setErrors({ ...erros, [e.target.name]: '' })
     };
 
-    
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -30,20 +32,21 @@ function AdminLoginPage() {
         let { email, password } = data
         let valid = true
         let errorFields = {}
-        if(!email){
-            valid =false
-            errorFields.email ='email is required'
+        if (!email) {
+            valid = false
+            errorFields.email = 'email is required'
         }
-        if(!password){
-            valid =false
-            errorFields.password ='password is required'
+        if (!password) {
+            valid = false
+            errorFields.password = 'password is required'
         }
         setErrors(errorFields)
         return valid
     }
 
     const logedInAdmin = async () => {
-        if(excuteErrors()){
+        setLoading(true);
+        if (excuteErrors()) {
             try {
                 let resp = await fetch('/api/v1/admin/login', {
                     method: 'POST',
@@ -57,19 +60,20 @@ function AdminLoginPage() {
                         callbackUrl: '/admin/dashboard',
                         redirect: true
                     });
-    
+
                 } else {
                     console.log('error')
                 }
             } catch (err) {
-                 console.log('error')
+                console.log('error')
             }
         }
-       
+
     };
 
     return (
         <>
+            {loading && <LoadingOverlay />}
             <div className="admin_login_logo">
                 <img src={logo.src} alt="admin_login_logo" />
             </div>
@@ -101,10 +105,10 @@ function AdminLoginPage() {
                 </div>
             </div>
             {erros.password && <span className='admin_login_error'>{erros.password}</span>}
-           
-            
+
+
             <button onClick={logedInAdmin}>Login</button>
-             
+
         </>
     );
 }

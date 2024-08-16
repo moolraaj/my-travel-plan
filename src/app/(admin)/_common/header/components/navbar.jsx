@@ -7,23 +7,29 @@ import './navbar.css'; // Import the global CSS
 import logo from '../../../../assets/home_images/logo.png';
 import Link from 'next/link';
 import LogoutPage from '@/app/_common/_logout/logoutPage';
- 
- function AdminNavbar({toggleSidebar}) {
- 
+import { useSession } from 'next-auth/react';
+
+function AdminNavbar({ toggleSidebar }) {
+
+  const { data: session } = useSession();
+
   const [popupVisible, setPopupVisible] = useState(false);
 
   const togglePopup = () => {
     setPopupVisible(!popupVisible);
   };
 
+  // Get the first letter of the admin's name
+  const firstLetter = session?.user?.email ? session.user.email.charAt(0).toUpperCase() : '';
+
   return (
     <div>
-     
+
       <div className="navbar">
         <div className="navbar_inner">
           <div className="navbar-left">
-            
-          <button className="toggle-button" onClick={toggleSidebar}>
+
+            <button className="toggle-button" onClick={toggleSidebar}>
               <FaBars />
             </button>
             <div className="logo">
@@ -49,19 +55,24 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
             </div>
             <FaGlobe className="icon" />
             <div className="profile-container">
-               
-              <img
-                src="https://via.placeholder.com/40" // Placeholder profile photo
-                alt="Profile"
-                className="profile-photo"
-                onClick={togglePopup}
-              />
+              
+              {session ? (<div className="icon-container profile-photo" onClick={togglePopup}>
+                <h2>{firstLetter}</h2>
+              </div>) : (
+                <img
+                  src="https://via.placeholder.com/40" // Placeholder profile photo
+                  alt="Profile"
+                  className="profile-photo"
+                  onClick={togglePopup}
+                />
+              )}
+
               {popupVisible && (
                 <div className="profile-popup">
                   <ul>
                     <li><Link href="/admin/profile">View Profile</Link></li>
                     <li><Link href="/admin/settings">Settings</Link></li>
-                    <li> <LogoutPage role='admin'/> </li>
+                    <li> <LogoutPage role='admin' /> </li>
                   </ul>
                 </div>
               )}
@@ -69,7 +80,7 @@ import LogoutPage from '@/app/_common/_logout/logoutPage';
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 }
