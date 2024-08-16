@@ -7,6 +7,8 @@ import herosliderthree from '../app/assets/home_images/hero-sliderthree.png';
 import europeone from "../../public/images/europeone.jpg";
 import europetwo from "../../public/images/europeteo.jpg";
 import europethree from '../../public/images/europethree.jpg';
+import europefour from '../../public/images/europefour.jpg';
+
 import explore from '../app/assets/home_images/explore.png';
 import desti from '../app/assets/home_images/search-destination.png';
 
@@ -17,7 +19,7 @@ const Slider = () => {
     { src: europeone, alt: 'Hero Image' },
     { src: europetwo, alt: 'Hero Image' },
     { src: europethree, alt: 'Hero Image' },
-    { src: herosliderthree, alt: 'Hero Image' },
+    { src: europefour, alt: 'Hero Image' },
     // Add more images if needed
   ];
 

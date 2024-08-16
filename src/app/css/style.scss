@@ -2201,6 +2201,60 @@ form.form.flight-form h3 {
 	background-position: left;
 }
 
+/* MyOrders.css */
+
+.my-orders-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.no-bookings {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.booking-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.booking-card:hover{
+	background-color: #edeaea;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.142);
+}
+
+.booking-id,
+.booking-description,
+.booking-package-id,
+.booking-date {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.booking-id {
+    font-weight: bold;
+}
+
+.booking-description {
+    color: #555;
+}
+
+.booking-package-id {
+    color: #777;
+}
+
+.booking-date {
+    font-style: italic;
+    color: #999;
+}
+
+
 // Naveen Css Packages Innerpage
 .gallery.packages-innerpage {
 	padding-top: 50px;
