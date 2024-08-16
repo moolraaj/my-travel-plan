@@ -1,9 +1,10 @@
 import { DbConnect } from "@/database/database";
 import { SendEmail } from "@/helpers/sendMail";
 import { ErrorReporter } from "@/helpers/vinevalidations/errorreporter";
-import { contactSchema, QUERY_FORM_UNTI_TAG } from "@/helpers/vinevalidations/validators";
+import { BOOKINGS_FORM_UNTI_TAG, bookingSchema } from "@/helpers/vinevalidations/validators";
+import BookingModel from "@/model/bookingModel";
+
 import PackagesModel from "@/model/packagesModel";
-import ContactModel from "@/model/userModel";
 import vine, { errors } from "@vinejs/vine";
 import { NextResponse } from "next/server";
 
@@ -17,28 +18,33 @@ export async function POST(req) {
         let email = payload.get('email');
         let phone_number = payload.get('phone_number');
         let message = payload.get('message');
+        let package_id = payload.get('package_id');
         let form_unit_tag = payload.get('form_unit_tag');
 
         // Check form_unit_tag
-        if (form_unit_tag !== QUERY_FORM_UNTI_TAG) {
+        if (form_unit_tag !== BOOKINGS_FORM_UNTI_TAG) {
             return NextResponse.json({ status: 404, success: false, errors: { message: 'please provide valid form unit tag' } });
         }
 
         // Validate data
-        let data = { name, email, phone_number, message, form_unit_tag };
-        const validator = vine.compile(contactSchema);
+        let data = { name, email, phone_number, message, package_id, form_unit_tag };
+        const validator = vine.compile(bookingSchema);
         validator.errorReporter = () => new ErrorReporter();
         const output = await validator.validate(data);
 
-      
-        
+        // Fetch package details
+        let packageDetails = null;
+        if (package_id) {
+            packageDetails = await PackagesModel.findById(package_id).select('_id title slug');
+        }
 
         // Create new contact document
-        let result = new ContactModel({
+        let result = new BookingModel({
             name: output.name,
             email: output.email,
             phone_number: output.phone_number,
             message: output.message,
+            package_id: output.package_id
         });
 
         // Save document to database
@@ -53,8 +59,8 @@ export async function POST(req) {
         try {
             await SendEmail({
                 ...output,
-                formType: 'contact',
-            
+                formType: 'booking',
+                packageDetails  
             });
         } catch (emailError) {
             console.error('Error sending email:', emailError.message);
@@ -64,8 +70,9 @@ export async function POST(req) {
         // Return response with package details if available
         return NextResponse.json({
             success: true,
-            message: `Dear ${output.name} your query sent successfully`
-                
+            message: packageDetails 
+                ? `Dear ${output.name}, your query for the package '${packageDetails.title}' was sent successfully!` 
+                : `Dear ${output.name}, your query was sent successfully!`
         });
 
     } catch (error) {

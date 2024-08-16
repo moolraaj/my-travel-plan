@@ -41,12 +41,12 @@ const BookingForm = ({ setIsopenForm,packageId }) => {
         formData.append('phone_number', Number(user.phone_number));
         formData.append('message', user.message);
         formData.append('package_id', user.package_id);
-        formData.append('form_unit_tag', 'query_unit_tag_9630');
+        formData.append('form_unit_tag', 'booking_unit_tag_7410');
 
         try {
             setLoading(true); // Start loading state
 
-            const resp = await api.sendQueryContactUs(formData);
+            const resp = await api.sendQueryBookings(formData);
 
             if (resp.success) {
                 toast.success(resp.message);
