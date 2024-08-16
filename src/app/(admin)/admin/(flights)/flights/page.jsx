@@ -2,7 +2,7 @@
 
 'use client';
 import React, { useEffect, useState } from 'react';
-import { FaTrashAlt, FaEye } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ModalWrapper from '@/app/(admin)/_common/modal/modal';
