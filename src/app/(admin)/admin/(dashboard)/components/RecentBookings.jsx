@@ -12,7 +12,7 @@ function RecentBookings() {
   useEffect(() => {
     const fetchBookings = async () => {
       return handelAsyncErrors(async () => {
-        const response = await fetch('/api/v1/flight/queries/get');
+        const response = await fetch('/api/v1/bookings/get');
         const data = await response.json();
         if (data.status === 200) {
           // Sort bookings by date in descending order
@@ -42,8 +42,6 @@ function RecentBookings() {
             <th>Email</th>
             <th>Phone Number</th>
             <th>Date</th>
-            <th>Origin</th>
-            <th>Destination</th>
           </tr>
         </thead>
         <tbody>
@@ -59,8 +57,6 @@ function RecentBookings() {
                 <td>{booking.email}</td>
                 <td>{booking.phone_number}</td>
                 <td>{booking.date}</td>
-                <td>{booking.origin}</td>
-                <td>{booking.destination}</td>
               </tr>
             ))
           ) : (

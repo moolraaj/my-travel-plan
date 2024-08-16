@@ -30,7 +30,7 @@ const Overview = () => {
   const endpoints = [
     '/api/v1/otpuser/getallusers',
     '/api/v1/sendquery/queries/get',
-    '/api/v1/flight/queries/get',
+    '/api/v1/bookings/get',
     '/api/v1/continents/get',
     '/api/v1/countries/get',
     '/api/v1/cities/get',
