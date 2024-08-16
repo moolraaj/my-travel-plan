@@ -134,6 +134,11 @@ function PreviewPackage({ params }) {
               <p>No images available</p>
             )}
           </div>
+          <div className="packages_under">
+            <p><strong>Package under Cotinent:</strong>  {pkgs.package_under_continent ? pkgs.package_under_continent.title : "N/A"}</p>
+            <p><strong>Package under Country:</strong>  {pkgs.package_under_country ? pkgs.package_under_country.title : "N/A"}</p>
+            <p><strong>Package under City:</strong>  {pkgs.package_under_city ? pkgs.package_under_city.title : "N/A"}</p>
+          </div>
         </>
       )}
     </div>

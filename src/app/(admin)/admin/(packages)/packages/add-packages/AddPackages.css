@@ -1,3 +1,9 @@
+
+.package_category_outer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
 .add-package-container {
     max-width: 800px;
     margin: 0 auto;
