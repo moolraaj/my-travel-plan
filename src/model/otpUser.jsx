@@ -1,5 +1,7 @@
+
 import mongoose from 'mongoose';
-import BookingModel from './bookingModel';
+import BookingModel from './bookingModel'; 
+
 const UserSchema = new mongoose.Schema({
   registerusername: {
     type: String,
@@ -21,11 +23,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'user',
   }
-  
-},
- 
-);
+});
 
+ 
+UserSchema.virtual('bookings', {
+  ref: 'bookings',
+  localField: '_id',
+  foreignField: 'user_id',
+});
+
+ 
+UserSchema.set('toJSON', { virtuals: true });
 
 const OtpUserModel = mongoose.models.admin_users || mongoose.model('admin_users', UserSchema);
 export default OtpUserModel;

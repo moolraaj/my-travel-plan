@@ -124,6 +124,13 @@ export const EXPORT_ALL_APIS = () => {
             return data;
         });
     };
+    const loadSingleUserbookingsdetails= async (user_id) => {
+        return await handelAsyncErrors(async () => {
+            let resp = await fetch(`/api/v1/otpuser/getbyid/${user_id}`);
+            let data = await resp.json();
+            return data;
+        });
+    };
 
 
     /////////////////////////********************************************
@@ -197,6 +204,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllActivities,
         loadAllPackagesActivities,
         loadSinglePackagesActivitiy,
+        loadSingleUserbookingsdetails,
         sendQueryContactUs,
         registerUser,
         loadAllRegisteredUsers,

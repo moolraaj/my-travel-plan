@@ -1,19 +1,26 @@
 'use client'
 
 import FormLoader from '@/app/_common/loader/loader';
+import { useSession } from 'next-auth/react';
 
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+
 const BookingForm = ({ setIsopenForm,packageId }) => {
+    const { data: session } = useSession();
+    const user_id = session?.user?._id ? session?.user?._id : null;
+    console.log(`user_id`)
+    console.log(user_id)
     let api = EXPORT_ALL_APIS();
     const [user, setUser] = useState({
         name: '',
         email: '',
         phone_number: '',
         message: '',
-        package_id:packageId
+        package_id:packageId,
+        user_id:user_id
     });
 
     const [error, setError] = useState({});
@@ -41,6 +48,7 @@ const BookingForm = ({ setIsopenForm,packageId }) => {
         formData.append('phone_number', Number(user.phone_number));
         formData.append('message', user.message);
         formData.append('package_id', user.package_id);
+        formData.append('user_id', user.user_id);
         formData.append('form_unit_tag', 'booking_unit_tag_7410');
 
         try {

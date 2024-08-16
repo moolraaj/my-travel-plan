@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
- 
+
 let contactUsSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -15,10 +15,7 @@ let contactUsSchema=new mongoose.Schema({
     },
     message:{
         type:String,
-    },
-    
-
-    
+    }
 })
 
 let ContactModel=mongoose.models.users||mongoose.model('users',contactUsSchema)
