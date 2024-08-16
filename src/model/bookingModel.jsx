@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import PackagesModel from './packagesModel' 
+import OtpUserModel from './otpUser'
 let bookingSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -21,6 +22,15 @@ let bookingSchema=new mongoose.Schema({
         ref: 'packages',
         required: [true, 'Package ID is required'], 
     },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admin_users', 
+        required: [true, 'User ID is required'],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    }
 
     
 })

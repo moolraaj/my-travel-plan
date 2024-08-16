@@ -19,6 +19,7 @@ export async function POST(req) {
         let phone_number = payload.get('phone_number');
         let message = payload.get('message');
         let package_id = payload.get('package_id');
+        let user_id = payload.get('user_id');
         let form_unit_tag = payload.get('form_unit_tag');
 
         // Check form_unit_tag
@@ -44,7 +45,8 @@ export async function POST(req) {
             email: output.email,
             phone_number: output.phone_number,
             message: output.message,
-            package_id: output.package_id
+            package_id: output.package_id,
+            user_id:user_id
         });
 
         // Save document to database

@@ -36,6 +36,10 @@ let flightSchema=new mongoose.Schema({
     message:{
         type:String,
         required:[true,'at least write 10 character message']
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
  
 })
