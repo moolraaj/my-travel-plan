@@ -5,7 +5,7 @@
 import React from 'react';
 import './sidebar.css'; // Import the global CSS
 import Link from 'next/link';
-import { FaBars, FaTachometerAlt, FaGlobe, FaFlag, FaCity, FaTag, FaUsers, FaCog, FaFileAlt, FaCalendarCheck, FaAddressBook, FaPenAlt, FaHiking, FaPlane } from 'react-icons/fa';
+import { FaBars, FaTachometerAlt, FaGlobe, FaFlag, FaCity, FaTag, FaUsers, FaCog, FaFileAlt, FaCalendarCheck, FaAddressBook, FaPenAlt, FaHiking, FaPlane, FaStickyNote } from 'react-icons/fa';
 
 const sidebarItems = [
   { href: '/admin/dashboard', icon: FaTachometerAlt, label: 'Dashboard' },
@@ -21,7 +21,7 @@ const sidebarItems = [
   { href: '/admin/flights', icon: FaPlane, label: 'Flights' },
   { href: '/admin/settings', icon: FaCog, label: 'Settings' },
   { href: '/admin/reports', icon: FaFileAlt, label: 'Reports' },
-  
+  { href: '/admin/footer', icon: FaStickyNote, label: 'Footer' },
  
 ];
 
