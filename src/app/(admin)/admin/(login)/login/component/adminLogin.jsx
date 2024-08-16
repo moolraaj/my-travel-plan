@@ -34,14 +34,17 @@ function AdminLoginPage() {
         let errorFields = {}
         if (!email) {
             valid = false
-            errorFields.email = 'email is required'
+            errorFields.email = 'email is required';
+            setLoading(false);
         }
         if (!password) {
             valid = false
-            errorFields.password = 'password is required'
+            errorFields.password = 'password is required';
+            setLoading(false);
         }
-        setErrors(errorFields)
-        return valid
+        setErrors(errorFields);
+        return valid;
+       
     }
 
     const logedInAdmin = async () => {
