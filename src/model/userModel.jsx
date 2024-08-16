@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import PackagesModel from './packagesModel'
+ 
 let contactUsSchema=new mongoose.Schema({
     name:{
         type:String,

@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import heroimage from '../app/assets/home_images/heroimage.png';
 import herosliderthree from '../app/assets/home_images/hero-sliderthree.png';
-import kullutour from '../app/assets/home_images/kullu_tour.jpg';
-import conttwo from '../app/assets/home_images/conttwo.png';
+import europeone from "../../public/images/europeone.jpg";
+import europetwo from "../../public/images/europeteo.jpg";
+import europethree from '../../public/images/europethree.jpg';
 import explore from '../app/assets/home_images/explore.png';
 import desti from '../app/assets/home_images/search-destination.png';
 
@@ -13,9 +14,9 @@ const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
-    { src: kullutour, alt: 'Hero Image' },
-    { src: conttwo, alt: 'Hero Image' },
-    { src: heroimage, alt: 'Hero Image' },
+    { src: europeone, alt: 'Hero Image' },
+    { src: europetwo, alt: 'Hero Image' },
+    { src: europethree, alt: 'Hero Image' },
     { src: herosliderthree, alt: 'Hero Image' },
     // Add more images if needed
   ];
