@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import logo from '@/app/assets/home_images/logo.png';
 import LoadingOverlay from '../../../(dashboard)/components/LoadingOverlay';
+import { toast } from 'react-toastify';
 
 function AdminLoginPage() {
     const [data, setData] = useState({
@@ -16,6 +17,7 @@ function AdminLoginPage() {
     let [erros, setErrors] = useState({})
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [err, setErr] = useState('');
 
     const onChangeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
@@ -44,8 +46,10 @@ function AdminLoginPage() {
         }
         setErrors(errorFields);
         return valid;
-       
+
     }
+
+    
 
     const logedInAdmin = async () => {
         setLoading(true);
@@ -56,7 +60,7 @@ function AdminLoginPage() {
                     body: JSON.stringify(data),
                 });
                 let result = await resp.json();
-                if (result) {
+                if (result.success === true) {
                     await signIn('credentials', {
                         email: data.email,
                         password: data.password,
@@ -64,8 +68,9 @@ function AdminLoginPage() {
                         redirect: true
                     });
 
-                } else {
-                    console.log('error')
+                } else if (result.success === false) {
+                    setErr(result.message)
+                    return;
                 }
             } catch (err) {
                 console.log('error')
@@ -76,7 +81,16 @@ function AdminLoginPage() {
 
     return (
         <>
-            {loading && <LoadingOverlay />}
+            {/* {loading && <LoadingOverlay />} */}
+           
+            {err&&(<> 
+            <div className="error_wrapper">
+
+            <h1 className='errors'>{err}</h1>
+            <button onClick={()=>setErr('')}>X</button>
+            </div>
+            </>
+            )}
             <div className="admin_login_logo">
                 <img src={logo.src} alt="admin_login_logo" />
             </div>
