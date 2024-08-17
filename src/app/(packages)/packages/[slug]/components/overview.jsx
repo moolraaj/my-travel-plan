@@ -83,7 +83,7 @@ const Itinerary = ({result}) => {
       <div className='iten_inner'>
           <h2 className='heading_inner_page'>Itinerary</h2>
           <div className='day_content'>
-            {ele.package_itinerary.map((item) => (
+            {ele.package_itinerary===null||ele.package_itinerary===undefined?('no result found'):(ele.package_itinerary.map((item) => (
               <div key={item._id} className="day">
                 <div className="dayHeader" onClick={() => toggleDay(item.day)}>
                
@@ -96,7 +96,7 @@ const Itinerary = ({result}) => {
                   </div>
                 )}
               </div>
-            ))}
+            )))}
       </div>
       </div>
       

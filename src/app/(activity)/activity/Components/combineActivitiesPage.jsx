@@ -38,7 +38,6 @@ function CombineActivitiesPage() {
      <>
       <div className='outer_section_abanner'>
       <Topbanner/>
-    
      </div> 
       <TopActivities result={result}/>
       <TopDiscountedActivities result={result}/>

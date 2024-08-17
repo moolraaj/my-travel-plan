@@ -144,8 +144,8 @@ export default function Home() {
                     const session = await getSession();
                     if (session && session.user) {
                         setUserVerified(session.user.role === 'user');
-                        setIsopenForm(true);  // Show BookingForm
-                        setIsLogin(false);    // Ensure LoginPopup is not shown
+                        setIsopenForm(true);   
+                        setIsLogin(false);     
                     } else {
                         setUserVerified(false);
                         setIsLogin(true);     // Show LoginPopup

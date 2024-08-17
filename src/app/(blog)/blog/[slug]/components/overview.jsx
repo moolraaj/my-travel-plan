@@ -3,13 +3,7 @@
 
 const Bloggallery = ({ data }) => {
     
-
     let result=data?data.result:[]
-
-    
-
-
-
     return (
         <>
         {result===undefined||result===null?('no result found'):(result.map((ele)=>{
