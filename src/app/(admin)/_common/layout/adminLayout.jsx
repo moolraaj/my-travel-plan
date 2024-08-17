@@ -23,7 +23,7 @@ function AdminLayout({children}) {
       <div className='admin_contexts'>
       <AdminNavbar  toggleSidebar={toggleSidebar}/>
       <div className='admin_layout'>
-        <ToastContainer/>
+      <ToastContainer style={{zIndex: '9999999999999999'}}/>
       {children}
       </div>
       <Adminfooter/>
