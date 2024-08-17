@@ -9,7 +9,7 @@ function BlogCard ({result})  {
        {result===null||result===undefined?('loading....'):(
         result.map((ele)=>{
             const formattedDate = format(new Date(ele.createdAt), 'dd MMM yyyy');
-            return <div className="blogpagecard">
+            return <div className="blogpagecard" key={ele._id}>
        
             {ele.images?.map((e) => (
               <img
