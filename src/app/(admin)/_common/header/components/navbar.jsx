@@ -1,4 +1,4 @@
-// /app/(admin)/_common/header/components/navbar.jsx  
+// /app/(admin)/_common/header/components/admin_navbar.jsx  
 
 'use client';
 import React, { useState } from 'react';
@@ -23,11 +23,10 @@ function AdminNavbar({ toggleSidebar }) {
   const firstLetter = session?.user?.email ? session.user.email.charAt(0).toUpperCase() : '';
 
   return (
-    <div>
 
-      <div className="navbar">
-        <div className="navbar_inner">
-          <div className="navbar-left">
+      <div className="admin_navbar">
+        <div className="admin_navbar_inner">
+          <div className="admin_navbar-left">
 
             <button className="toggle-button" onClick={toggleSidebar}>
               <FaBars />
@@ -38,7 +37,7 @@ function AdminNavbar({ toggleSidebar }) {
               </Link>
             </div>
           </div>
-          <div className="navbar-center">
+          <div className="admin_navbar-center">
             <FaSearch className="icon" />
             <input
               type="text"
@@ -46,7 +45,7 @@ function AdminNavbar({ toggleSidebar }) {
               className="search-bar"
             />
           </div>
-          <div className="navbar-right">
+          <div className="admin_navbar-right">
             <div className="notification-button">
               <Link href={`/admin/notifications`}>
                 <FaBell className="icon" />
@@ -80,8 +79,6 @@ function AdminNavbar({ toggleSidebar }) {
           </div>
         </div>
       </div>
-
-    </div>
   );
 }
 

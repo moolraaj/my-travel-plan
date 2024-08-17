@@ -208,7 +208,7 @@ cursor: pointer;
 
 
 
-.navbar {
+.admin_navbar {
   background-color: #fff;
   padding: 10px 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -1164,6 +1164,10 @@ g.recharts-layer.recharts-pie:focus{
 }
 
 @media (max-width:1024px) {
+  .admin_contexts {
+    width: 100%;
+    padding: 0px 20px;
+}
   .sidebar.shrink{
     display: none;
   }

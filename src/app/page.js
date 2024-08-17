@@ -88,9 +88,6 @@
 // }
 
 
-
-
-
 'use client';
 import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 import Layout from './_common/layout/layout';
@@ -113,6 +110,7 @@ export default function Home() {
     const [isopenForm, setIsopenForm] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [userVerified, setUserVerified] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false); // Add state for admin check
 
     useEffect(() => {
         // Function to fetch all necessary data
@@ -144,11 +142,15 @@ export default function Home() {
                     const session = await getSession();
                     if (session && session.user) {
                         setUserVerified(session.user.role === 'user');
-                        setIsopenForm(true);   
-                        setIsLogin(false);     
+                        setIsAdmin(session.user.role === 'admin'); // Set admin status
+
+                        // Show BookingForm only if user is verified and not an admin
+                        setIsopenForm(session.user.role === 'user' && !isAdmin);
+                        setIsLogin(session.user.role !== 'user'); // Show LoginPopup if not a user
                     } else {
                         setUserVerified(false);
-                        setIsLogin(true);     // Show LoginPopup
+                        setIsAdmin(false); // Ensure admin status is false if not logged in
+                        setIsLogin(true); // Show LoginPopup if no session
                         setIsopenForm(false); // Ensure BookingForm is not shown
                     }
 

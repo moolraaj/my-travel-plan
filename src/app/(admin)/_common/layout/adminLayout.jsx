@@ -25,8 +25,9 @@ function AdminLayout({children}) {
       <div className='admin_layout'>
       <ToastContainer style={{zIndex: '9999999999999999'}}/>
       {children}
-      </div>
       <Adminfooter/>
+      </div>
+      
       </div>
     </div>
   );
