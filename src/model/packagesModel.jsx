@@ -27,7 +27,7 @@ const PackagesSchema = new mongoose.Schema({
     images: [imageSchema],
     title: { type: String, required: true },
     description: { type: String, required: true },
-    slug: { type: String, required: true },
+    slug: { type: String, required: true, },
     package_price: { type: String, required: true },
     package_discounted_price: { type: String, required: true },
     package_days: { type: String, required: true, default: 1 },

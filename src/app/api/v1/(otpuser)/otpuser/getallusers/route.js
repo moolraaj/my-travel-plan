@@ -31,10 +31,7 @@ export async function GET(req) {
             ...user.toObject(),
         }));
 
-        console.log('users');
-        console.log(users);
 
-        // Count total users
         let totalResult = await OtpUserModel.countDocuments();
 
         return NextResponse.json({

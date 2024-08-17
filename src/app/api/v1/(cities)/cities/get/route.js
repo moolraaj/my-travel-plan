@@ -3,6 +3,7 @@ import CitiesModel from "@/model/citiesModel";
 import { NextResponse } from "next/server";
 import { getPaginationParams } from "@/helpers/paginations";
 import { handelAsyncErrors } from "@/helpers/asyncErrors";
+
 DbConnect();
 
 export async function GET(req) {
@@ -12,6 +13,7 @@ export async function GET(req) {
             .populate('all_packages')
             .skip(skip)
             .limit(limit)
+            .lean()
             .exec();
         const result = data.map(e => ({
             _id: e._id,

@@ -1,25 +1,18 @@
 
 import React from 'react'
-import Topbanner from "@/app/_common/layout/topbanner";
-import Layout from "@/app/_common/layout/layout";
-import Bloggallery from './components/overview';
-import { EXPORT_ALL_APIS } from '@/utils/apis/api';
+import BlogInnerPageSlug from './components/blogInnerPage';
 
-export default async  function page({params}) {
-    let {slug}=params
-    let api=EXPORT_ALL_APIS()
-    let data=await api.loadSingleBlog(slug)
 
-    
- 
- 
+export default async function page({ params }) {
+  let { slug } = params
+
+
+
+
+
   return (
-    <div>
-      <Layout>
-          <Topbanner slug={slug}/>  
-          <Bloggallery data={data}/>
-       
-      </Layout>
-    </div>
+    <>
+      <BlogInnerPageSlug slug={slug} />
+    </>
   );
 }
