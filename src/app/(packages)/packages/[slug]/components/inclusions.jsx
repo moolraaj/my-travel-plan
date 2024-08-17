@@ -15,10 +15,7 @@ function Inclusions({ packagesInclude, packagesExclude }) {
                     })
                 )}
 
-
-
                 <h4>Exclusion</h4>
-
 
                 {packagesExclude === null || packagesExclude === undefined ? ('no result found') : (
                     packagesExclude.map((ele) => {

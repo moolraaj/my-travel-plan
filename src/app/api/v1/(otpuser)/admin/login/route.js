@@ -9,33 +9,29 @@ DbConnect();
 export async function POST(req) {
   return handelAsyncErrors(async () => {
     let payload = await req.json();
-    let { name, email, password } = payload;
+    let { email, password } = payload;
 
-    // Check if the admin exists
-    let isEmail = await OtpUserModel.findOne({ email });
-    if (isEmail) {
-      // Verify password
-      const isMatch = await bcryptjs.compare(password, isEmail.password);
-      if (isMatch) {
-        return NextResponse.json({ status: 200, message: 'Admin logged in successfully', result: isEmail });
-      } else {
-        return NextResponse.json({ status: 401, message: 'Invalid credentials' });
-      }
+
+    if (!email && !password) {
+      return NextResponse.json({ status: 200, message: 'email is required' })
     }
 
-    // Register new admin
-    let salt = await bcryptjs.genSalt(12);
-    let hashPassword = await bcryptjs.hash(password, salt);
+    let user = await OtpUserModel.findOne({ email: email })
+    if (!user) {
+      return NextResponse.json({ status: 200, message: 'provide valid email' })
+    }
 
-    let newAdmin = new OtpUserModel({
-      name: name,
-      email: email,
-      password: hashPassword,
-      role: 'admin'
-    });
 
-    await newAdmin.save();
+    const isMatch = await bcryptjs.compare(password, user.password);
 
-    return NextResponse.json({ status: 201, message: 'Admin registered successfully', result: newAdmin });
+    if (!isMatch) {
+      return NextResponse.json({ status: 200, message: 'please provide valid credentials' })
+    }
+
+    user = user.toObject()
+    delete user.password
+
+    return NextResponse.json({ status: 200, message: 'logged in successfully', user })
+
   });
 }
