@@ -25,8 +25,9 @@ function AdminLayout({children}) {
       <div className='admin_layout'>
         <ToastContainer/>
       {children}
-      </div>
       <Adminfooter/>
+      </div>
+      
       </div>
     </div>
   );

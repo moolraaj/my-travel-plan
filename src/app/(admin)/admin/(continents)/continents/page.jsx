@@ -14,7 +14,7 @@ function ContinentPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
-  const [itemsPerPage] = useState(4); // Number of items per page
+  const [itemsPerPage] = useState(8); // Number of items per page
   const totalPages = Math.ceil(totalResults / itemsPerPage); // Calculate total pages
   const router = useRouter();
 
