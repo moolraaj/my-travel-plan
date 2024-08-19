@@ -9,6 +9,8 @@ const ExploreDestinations = ({ packagescat }) => {
 
   let result = packagescat ? packagescat.result : []
 
+  let reversedPackagesCat=Array.isArray(result)?[...result].reverse():[]
+
 
   return (
     <div className='explore-theme-destination' style={{ backgroundImage: `url(${exploretheme.src})` }}>
@@ -16,7 +18,7 @@ const ExploreDestinations = ({ packagescat }) => {
         <h2 className='same_heading'>Explore Destinations By Theme</h2>
         <p>Unlimited Choices | Best Prices | Happy Memories | Hot Deals</p>
         <div className="destinations-container-countries">
-          {result === null || result === undefined ? ('no result found') : (result.slice(0, 6).map((destination, index) => (
+          {reversedPackagesCat === null || reversedPackagesCat === undefined ? ('no result found') : (reversedPackagesCat.slice(0, 6).map((destination, index) => (
             <div key={index} className="destination">
               <Link href={`/${destination.slug}`}>
 
