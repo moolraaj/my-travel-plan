@@ -1,3 +1,4 @@
+
 // /app/(admin)/admin/(packages)/package-category/PackageCategories.jsx
 
 'use client';
@@ -12,6 +13,7 @@ function PackageCategories() {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [message, setMessage] = useState('');
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingButton, setLoadingButton] = useState({ add: false, update: false, delete: false });
   const [visibleCount, setVisibleCount] = useState(6);
@@ -65,13 +67,14 @@ function PackageCategories() {
       });
       const result = await response.json();
       setMessage(result.message);
+      setIsErrorMessage(false);
       if (result.success) {
         setCategories(prev => [...prev, result.result]);
         setNewCategory({ name: '', slug: '', image: null });
         setShowAddCategory(false);
         setTimeout(() => {
           setMessage('');
-        }, 4000);
+        }, 3000);
       }
       setLoadingButton(prev => ({ ...prev, add: false }));
     });
@@ -93,13 +96,14 @@ function PackageCategories() {
       });
       const result = await response.json();
       setMessage(result.message);
+      setIsErrorMessage(false);
       if (result.success) {
         setCategories(prev => prev.map(cat => cat._id === editCategory.id ? result.result : cat));
         setEditCategory({ id: '', name: '', slug: '', image: null });
         setShowEditCategory(false);
         setTimeout(() => {
           setMessage('');
-        }, 4000);
+        }, 3000);
       }
       setLoadingButton(prev => ({ ...prev, update: false }));
     });
@@ -114,11 +118,12 @@ function PackageCategories() {
       });
       const result = await response.json();
       setMessage(result.message);
+      setIsErrorMessage(result.message.includes('Category cannot be deleted'));
       if (result.success) {
         setCategories(prev => prev.filter(cat => cat._id !== id));
         setTimeout(() => {
           setMessage('');
-        }, 4000);
+        }, 3000);
       }
       setLoadingButton(prev => ({ ...prev, delete: false }));
     });
@@ -141,8 +146,8 @@ function PackageCategories() {
           ) : (
             categories.slice(0, visibleCount).map(category => (
               <li key={category._id}>
-                <div className="category-details" style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
-                  <img src={`/uploads/${category.image[0]?.name}`} alt={category.name} style={{width: '40px', height: '40px',borderRadius: '50px',objectFit: 'cover'}} />
+                <div className="category-details" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <img src={`/uploads/${category.image[0]?.name}`} alt={category.name} style={{ width: '40px', height: '40px', borderRadius: '50px', objectFit: 'cover' }} />
                   <span>{category.name} ({category.slug})</span>
                 </div>
                 <div className="category-actions">
@@ -217,11 +222,16 @@ function PackageCategories() {
             <button type="submit" className="btn" disabled={loadingButton.update}>
               {loadingButton.update ? 'Updating...' : 'Update Category'}
             </button>
-            <FaTimes className="close-icon" onClick={() => setShowEditCategory(false)} />
           </div>
         </form>
       )}
-      {message && <p className="message">{message}</p>}
+
+      {message && (
+        <div className={`message ${isErrorMessage ? 'red_message' : ''}`}>
+          <span>{message}</span>
+          <FaTimes className="close-icon" onClick={() => setMessage('')} />
+        </div>
+      )}
     </div>
   );
 }

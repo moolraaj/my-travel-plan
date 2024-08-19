@@ -39,14 +39,14 @@ const UpdatePackage = ({ params }) => {
       try {
         const res = await fetch(`/api/v1/package/getbyid/${id}`);
         const data = await res.json();
-        console.log('Fetched package data:', data); // Debugging line
+        const packageData = data.result[0];
         if (data.success) {
           setFormData((prevData) => ({
             ...prevData,
-            ...data.result,
-            packageItinerary: data.result.packageItinerary || [{ day: '', location: '', tourname: '', itinerary_description: '' }],
-            packagesInclude: data.result.packagesInclude || [{ description: '' }],
-            packagesExclude: data.result.packagesExclude || [{ description: '' }],
+            ...packageData,
+            packageItinerary: packageData.packageItinerary || [{ day: '', location: '', tourname: '', itinerary_description: '' }],
+            packagesInclude: packageData.packagesInclude || [{ description: '' }],
+            packagesExclude: packageData.packagesExclude || [{ description: '' }],
           }));
         } else {
           toast.error(data.message ||'Failed to fetch package data');
