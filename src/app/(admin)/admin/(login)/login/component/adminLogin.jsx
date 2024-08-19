@@ -51,7 +51,8 @@ function AdminLoginPage() {
 
     
 
-    const logedInAdmin = async () => {
+    const logedInAdmin = async (e) => {
+        e.preventDefault();
         setLoading(true);
         if (excuteErrors()) {
             try {
@@ -86,6 +87,9 @@ function AdminLoginPage() {
                 <img src={logo.src} alt="admin_login_logo" />
             </div>
             <h1>Admin Login</h1>
+            <form onSubmit={logedInAdmin}>
+
+            
             <div className="input-group">
                 <label htmlFor="email">Email*</label>
                 <input
@@ -115,8 +119,8 @@ function AdminLoginPage() {
             {erros.password && <span className='admin_login_error'>{erros.password}</span>}
 
 
-            <button onClick={logedInAdmin}>Login</button>
-
+            <button type='submit'>Login</button>
+            </form>
         </>
     );
 }
