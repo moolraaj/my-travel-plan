@@ -25,7 +25,7 @@ const AddPackages = () => {
     packagesInclude: [{ description: '' }],
     packagesExclude: [{ description: '' }],
     file: null,
-    gallery_files: [],
+    packages_galleries: [],
     city_id: '',
     package_price: '',
     package_discounted_price: '',
@@ -119,7 +119,7 @@ const AddPackages = () => {
       packagesInclude,
       packagesExclude,
       file,
-      gallery_files,
+      packages_galleries,
       city_id,
       package_price,
       package_discounted_price,
@@ -151,8 +151,8 @@ const AddPackages = () => {
       submissionData.append('file', file);
       submissionData.append('city_id', city_id);  // Include city_id
       submissionData.append('package_categories_id', JSON.stringify(package_categories_id)); // Include categories
-      gallery_files.forEach((file) => {
-        submissionData.append('gallery_files', file);
+      packages_galleries.forEach((file) => {
+        submissionData.append('packages_galleries', file);
       });
 
       const res = await fetch('/api/v1/package/add', {
@@ -397,17 +397,17 @@ const AddPackages = () => {
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="gallery_files">Gallery Images</label>
+              <label htmlFor="packages_galleries">Gallery Images</label>
               <input
                 type="file"
-                id="gallery_files"
-                name="gallery_files"
+                id="packages_galleries"
+                name="packages_galleries"
                 multiple
-                onChange={(e) => setFormData((prevData) => ({ ...prevData, gallery_files: [...e.target.files] }))}
+                onChange={(e) => setFormData((prevData) => ({ ...prevData, packages_galleries: [...e.target.files] }))}
               />
-              {formData.gallery_files.length > 0 && (
+              {formData.packages_galleries.length > 0 && (
                 <div className="gallery-preview">
-                  {Array.from(formData.gallery_files).map((file, index) => (
+                  {Array.from(formData.packages_galleries).map((file, index) => (
                     <img key={index} src={URL.createObjectURL(file)} alt={`Preview ${index + 1}`} />
                   ))}
                 </div>

@@ -104,9 +104,9 @@ ul.destinations-list li {
 	grid-template-columns: 1fr 350px;
 }
 
-.gallery .images img {
-	width: 100%;
-}
+// .gallery .images img {
+// 	width: 100%;
+// }
 
 
 
@@ -122,13 +122,24 @@ ul.destinations-list li {
 }
 
 
-.gallery .images {
-	display: grid;
-	grid-template-columns: 1fr 500px;
-	gap: 20px;
+// .gallery .images {
+// 	display: grid;
+// 	grid-template-columns: 1fr 500px;
+// 	gap: 20px;
+// }
+
+.image-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+	flex-wrap: wrap;
 }
-
-
+.image-container img{
+    max-width: 300px;
+	width: 100%;
+	min-height: 300px;
+	object-fit: cover;
+}
 
 
 .gallery,
@@ -2421,7 +2432,7 @@ h2.heading_inner_page {
 	border-radius: 10px;
 	padding: 20px;
 	border: 1px solid rgba(201, 201, 201, 0.431372549);
-	margin-top: 50px;
+	margin: 50px auto;
 }
 
 .sidebar-gallery h2 {
@@ -2429,10 +2440,16 @@ h2.heading_inner_page {
 	margin-top: 5px;
 }
 
+// .galleryGrid {
+// 	display: grid;
+// 	grid-template-columns: 1fr 1fr;
+// 	gap: 10px;
+// }
+
 .galleryGrid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .iten_inner {
@@ -3089,14 +3106,14 @@ img.carimage {
 		grid-template-columns: 1fr 1fr;
 	}
 
-	.galleryGrid {
-		display: flex;
-		flex-wrap: wrap;
-	}
+	// .galleryGrid {
+	// 	display: flex;
+	// 	flex-wrap: wrap;
+	// }
 
-	.gallery .images {
-		grid-template-columns: 1fr 1fr;
-	}
+	// .gallery .images {
+	// 	grid-template-columns: 1fr 1fr;
+	// }
 
 	.itinerary_inner {
 		grid-template-columns: 1fr;
