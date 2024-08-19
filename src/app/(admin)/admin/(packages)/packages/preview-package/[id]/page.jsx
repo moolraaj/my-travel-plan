@@ -17,7 +17,7 @@ function PreviewPackage({ params }) {
     packages_galleries: [],
     packagesInclude: [],
     packagesExclude: [],
-
+    images: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -29,13 +29,13 @@ function PreviewPackage({ params }) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      if (data.success) {
-        setPkgs(data.result);
+      if (data.success && Array.isArray(data.result) && data.result.length > 0) {
+        setPkgs(data.result[0]);  // Set the first item from the result array
       } else {
-        setError(data.message);
+        setError(data.message || 'No package found');
       }
       setLoading(false);
-    })
+    });
   }
 
   useEffect(() => {
@@ -48,30 +48,30 @@ function PreviewPackage({ params }) {
       {error && <p>{error}</p>}
       {!loading && !error && (
         <>
-         <h2><strong>Package ID:</strong> {pkgs._id}</h2>
-            <h2><strong>Package Name:</strong> {pkgs.title}</h2>
-            <div className="package_image">
-            {pkgs.images.length > 0 ? (
+          <h2><strong>Package ID:</strong> {pkgs._id}</h2>
+          <h2><strong>Package Name:</strong> {pkgs.title}</h2>
+          <div className="package_image">
+            {!pkgs.images || pkgs.images.length === 0 ? (
+              <p>No images available</p>
+            ) : (
               pkgs.images.map((image, index) => (
                 <img
                   key={index}
                   src={`/uploads/${image.name}`}
                   alt={image.name}
                   className="preview-continent-image"
-                  style={{maxWidth: '200px',width:'100%',height:'200px'}}
+                  style={{ maxWidth: '200px', width: '100%', height: '200px' }}
                 />
               ))
-            ) : (
-              <p>No images available</p>
             )}
-            </div>
+          </div>
           <p><strong>Package Description:</strong> {pkgs.description}</p>
           <p><strong>Slug:</strong> {pkgs.slug}</p>
           <p><strong>Overview:</strong> {pkgs.packageOverview}</p>
           <p><strong>Top Summary:</strong> {pkgs.packageTopSummary}</p>
           <h3>Itinerary:</h3>
           <ul>
-            {pkgs.packageItinerary.map((itinerary, index) => (
+            {pkgs.packageItinerary?.map((itinerary, index) => (
               <li key={index}>
                 <p><strong>Day:</strong> {itinerary.day}</p>
                 <p><strong>Location:</strong> {itinerary.location}</p>
@@ -89,55 +89,53 @@ function PreviewPackage({ params }) {
             </thead>
             <tbody>
               <tr>
-                <td> {pkgs.packagesInclude.map((include, index) => (
-              <p key={index}>{include.description}</p>
-            ))}</td>
-                <td> {pkgs.packagesExclude.map((exclude, index) => (
-              <p key={index}>{exclude.description}</p>
-            ))}</td>
+                <td>{pkgs.packagesInclude?.map((include, index) => (
+                  <p key={index}>{include.description}</p>
+                ))}</td>
+                <td>{pkgs.packagesExclude?.map((exclude, index) => (
+                  <p key={index}>{exclude.description}</p>
+                ))}</td>
               </tr>
             </tbody>
           </table>
-
           <table className="packages-table">
             <thead>
               <tr>
-                <th>package_price</th>
-                <th>package_discounted_price</th>
-                <th>package_days</th>
-                <th>package_nights</th>
+                <th>Package Price</th>
+                <th>Discounted Price</th>
+                <th>Days</th>
+                <th>Nights</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>₹{pkgs.package_price || 0}</td>
-                <td> ₹{pkgs.package_discounted_price || 0}</td>
+                <td>₹{pkgs.package_discounted_price || 0}</td>
                 <td>{pkgs.package_days}</td>
-                <td> {pkgs.package_nights}</td>
+                <td>{pkgs.package_nights}</td>
               </tr>
             </tbody>
           </table>
-         
           <h3>Gallery:</h3>
-          <div className="preview-continent-images" style={{display: 'flex',gap: '20px', flexWrap: 'wrap'}}>
-            {pkgs.packages_galleries.length > 0 ? (
+          <div className="preview-continent-images" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            {!pkgs.packages_galleries || pkgs.packages_galleries.length === 0 ? (
+              <p>No images available</p>
+            ) : (
               pkgs.packages_galleries.map((image, index) => (
                 <img
                   key={index}
                   src={`/uploads/${image.name}`}
                   alt={image.name}
                   className="preview-continent-image"
-                  style={{width: '200px',height: '200px'}}
+                  style={{ width: '200px', height: '200px' }}
                 />
               ))
-            ) : (
-              <p>No images available</p>
             )}
           </div>
           <div className="packages_under">
-            <p><strong>Package under Cotinent:</strong>  {pkgs.package_under_continent ? pkgs.package_under_continent.title : "N/A"}</p>
-            <p><strong>Package under Country:</strong>  {pkgs.package_under_country ? pkgs.package_under_country.title : "N/A"}</p>
-            <p><strong>Package under City:</strong>  {pkgs.package_under_city ? pkgs.package_under_city.title : "N/A"}</p>
+            <p><strong>Package under Continent:</strong> {pkgs.package_under_continent ? pkgs.package_under_continent.title : 'N/A'}</p>
+            <p><strong>Package under Country:</strong> {pkgs.package_under_country ? pkgs.package_under_country.title : 'N/A'}</p>
+            <p><strong>Package under City:</strong> {pkgs.package_under_city ? pkgs.package_under_city.title : 'N/A'}</p>
           </div>
         </>
       )}
@@ -146,5 +144,3 @@ function PreviewPackage({ params }) {
 }
 
 export default PreviewPackage;
-
-

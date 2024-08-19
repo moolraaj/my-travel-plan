@@ -29,9 +29,11 @@ const UpdatePackage = ({ params }) => {
     package_price: '',
     package_discounted_price: '',
     package_days: '1',
-    package_nights: '1'
+    package_nights: '1',
+    package_categories_id: []
   });
   const [cities, setCities] = useState([]);
+  const [cats, setCats] = useState([])
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchPackageData = async () => {
@@ -47,6 +49,7 @@ const UpdatePackage = ({ params }) => {
             packageItinerary: packageData.packageItinerary || [{ day: '', location: '', tourname: '', itinerary_description: '' }],
             packagesInclude: packageData.packagesInclude || [{ description: '' }],
             packagesExclude: packageData.packagesExclude || [{ description: '' }],
+            package_categories_id: packageData.package_under_categories?.map(cat => cat._id) || [],
           }));
         } else {
           toast.error(data.message ||'Failed to fetch package data');
@@ -77,10 +80,26 @@ const UpdatePackage = ({ params }) => {
     });
   };
 
+  const fetchCategories = async () => {
+    return handelAsyncErrors(async () => {
+      const res = await fetch(`/api/v1/package-categories/get?page=1&limit=1000`, {
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCats(data.result);
+      } else {
+        toast.error(data.message || 'Failed to fetch cities');
+      }
+    })
+  };
   useEffect(() => {
     if (id) {
       fetchCities();
       fetchPackageData();
+      fetchCategories();
     }
   }, [id]);
 
@@ -135,7 +154,8 @@ const UpdatePackage = ({ params }) => {
       package_price,
       package_discounted_price,
       package_days,
-      package_nights
+      package_nights,
+      package_categories_id
     } = formData;
 
     if (!title || !description || !slug || !file || !city_id) {
@@ -160,6 +180,7 @@ const UpdatePackage = ({ params }) => {
       submissionData.append('packages_exclude', JSON.stringify(packagesExclude));
       submissionData.append('file', file);
       submissionData.append('city_id', city_id);
+      submissionData.append('package_categories_id', JSON.stringify(package_categories_id)); // Include categories
       gallery_files.forEach((file) => {
         submissionData.append('gallery_files', file);
       });
@@ -286,6 +307,25 @@ const UpdatePackage = ({ params }) => {
             placeholder="Enter top summary"
           />
         </div>
+        <div className="form-group">
+              <label htmlFor="package_categories_id">Categories</label>
+              <select
+                id="package_categories_id"
+                name="package_categories_id"
+                value={formData.package_categories_id}
+                onChange={(e) => setFormData(prevData => ({
+                  ...prevData,
+                  package_categories_id: Array.from(e.target.selectedOptions, option => option.value)
+                }))}
+                multiple
+              >
+                {cats.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
         {/* Handle dynamic fields for itinerary, include, exclude */}
         <div className="form-group">
           <label htmlFor="packageItinerary">Package Itinerary</label>
