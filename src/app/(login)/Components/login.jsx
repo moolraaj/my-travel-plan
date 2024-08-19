@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import popupbg from '../../../../public/images/popup-bg.png';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useRouter } from 'next/navigation';
@@ -7,13 +8,21 @@ import { signIn } from 'next-auth/react';
 const Login = () => {
     const router = useRouter();
 
+    const [info, setInfo] = useState({
+        orderId: '',
+        phoneNumber: '',
+        registerusername: ''
+    });
+
+    const [otp, setOtp] = useState('');
     const [user, setUser] = useState({
         phoneNumber: '',
         registerusername: '',
+        channel: 'SMS',
+        otpLength: 6,
+        expiry: 86400,
     });
-    const [otp, setOtp] = useState('');
     const [verifyOtp, setVerifyOtp] = useState(false);
-    const [nameRequired, setNameRequired] = useState(false);
 
     const closeLogin = () => {
         router.push(`/`);
@@ -40,27 +49,12 @@ const Login = () => {
 
             const result = await resp.json();
             if (result) {
-                setVerifyOtp(true);
-
-                const loginResp = await fetch('/api/v1/otpuser/login', {
-                    method: 'POST',
-                    body: JSON.stringify({ phoneNumber: user.phoneNumber }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                setInfo({
+                    orderId: result.orderId,
+                    phoneNumber: user.phoneNumber,
+                    registerusername: user.registerusername
                 });
-
-                const loginResult = await loginResp.json();
-
-                if (loginResult.success) {
-                    setNameRequired(!loginResult.nameExists);
-
-                    if (loginResult.nameExists) {
-                        setUser({ ...user, registerusername: loginResult.registerusername });
-                    }
-                } else {
-                    alert(loginResult.error || 'OTP verification failed');
-                }
+                setVerifyOtp(true);
             } else {
                 alert(result.error || 'Error sending OTP');
             }
@@ -71,27 +65,59 @@ const Login = () => {
 
     const verifyOtpHandler = async (e) => {
         e.preventDefault();
-        if (nameRequired && !user.registerusername) {
-            alert('Please enter your name.');
-            return;
-        }
-
         try {
-            await signIn('credentials', {
-                phoneNumber: user.phoneNumber,
-                registerusername: user.registerusername,
-                callbackUrl: '/',
-                redirect: true,
+            const resp = await fetch('/api/v1/verify-otp', {
+                method: 'POST',
+                body: JSON.stringify({ orderId: info.orderId, otp, phoneNumber: info.phoneNumber }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
+
+            const result = await resp.json();
+            if (result.isOTPVerified) {
+                await saveUser(info.phoneNumber, user.registerusername);  
+                await signIn('credentials', {
+                    phoneNumber: info.phoneNumber,
+                    registerusername: user.registerusername,  
+                    callbackUrl: '/',
+                    redirect: true,
+                });
+            } else {
+                alert(result.error || 'OTP verification failed');
+            }
         } catch (error) {
             console.error('Internal server issue:', error);
         }
     };
 
+    const saveUser = async (phoneNumber, registerusername) => {
+        try {
+            const resp = await fetch('/api/v1/otpuser/login', {
+                method: 'POST',
+                body: JSON.stringify({ phoneNumber, registerusername }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await resp.json();
+            if (result) {
+                console.log('User saved:', result);
+            } else {
+                console.log('Error:', result.message);
+            }
+        } catch (error) {
+            console.error('Error saving user:', error);
+        }
+    };
+
     return (
         <div className="login-wrapper">
-            <div className="login-modal">
+            <div className="login-modal" style={{ backgroundImage: `url(${popupbg.src})` }}>
                 <button className="close-button" onClick={closeLogin}>×</button>
+                <div className="image-section">
+                    <img src="/images/popup-img.png" alt="Travel" />
+                </div>
                 <div className="form-section">
                     <h2>{verifyOtp ? 'Enter OTP to Verify Your Phone Number' : 'Enter Mobile Number To Personalize Your Trip'}</h2>
                     <form onSubmit={verifyOtp ? verifyOtpHandler : handleSendOtp}>
@@ -104,28 +130,28 @@ const Login = () => {
                                     placeholder="Enter OTP"
                                     onChange={(e) => setOtp(e.target.value)}
                                 />
-                                {nameRequired && (
-                                    <div className="input-group">
-                                        <input
-                                            id="registerusername"
-                                            name="registerusername"
-                                            value={user.registerusername}
-                                            onChange={(e) => changeHandler(null, e)}
-                                            placeholder="Enter Your Name"
-                                        />
-                                    </div>
-                                )}
                             </div>
                         ) : (
-                            <div className="input-group">
-                                <PhoneInput
-                                    id="phone-number"
-                                    defaultCountry="IN"
-                                    value={user.phoneNumber}
-                                    onChange={(value) => changeHandler(value)}
-                                    placeholder="Enter Your Phone Number"
-                                />
-                            </div>
+                            <>
+                                <div className="input-group">
+                                    <input
+                                        id="registerusername"
+                                        name="registerusername"
+                                        value={user.registerusername}
+                                        onChange={(e) => changeHandler(null, e)}
+                                        placeholder="Enter Your Name"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <PhoneInput
+                                        id="phone-number"
+                                        defaultCountry="IN"
+                                        value={user.phoneNumber}
+                                        onChange={(value) => changeHandler(value)}
+                                        placeholder="Enter Your Phone Number"
+                                    />
+                                </div>
+                            </>
                         )}
                         <button type="submit">
                             {verifyOtp ? 'Verify OTP' : 'Get OTP'}
