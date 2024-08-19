@@ -33,16 +33,17 @@ async function MyOrders() {
 
 
     let bookings = booking ? booking.bookings : []
+    let reversedBookings=Array.isArray(bookings)?[...bookings].reverse():[]
 
     return (
         <>
             <Layout>
                 <Topbanner slug="my-orders" />
                 <div className="my-orders-container">
-                    {bookings === null || bookings === undefined ? (
+                    {reversedBookings === null || reversedBookings === undefined ? (
                         <p className="no-bookings">No bookings found</p>
                     ) : (
-                        bookings.map((ele) => {
+                        reversedBookings.map((ele) => {
                             const date = format(new Date(ele.createdAt), 'dd MMM yyyy');
                             return (
                                 <div key={ele._id} className="booking-card">

@@ -51,6 +51,7 @@ const Allpackages = () => {
   }, [])
 
   let result = data ? data.result : []
+  let reversedpackages=Array.isArray(result)?[...result].reverse():[]
 
 
 
@@ -62,7 +63,7 @@ const Allpackages = () => {
     <div className="container card_main_section">
       <div className="card_discount">
         <div className="packages">
-          {result===undefined||result===null?('fetching results......'): (result.map((pkg, index) => (
+          {reversedpackages===undefined||reversedpackages===null?('fetching results......'): (reversedpackages.map((pkg, index) => (
             <div key={index} className="package">
               {pkg.images ? pkg.images.map((e) => (
                 <Image
