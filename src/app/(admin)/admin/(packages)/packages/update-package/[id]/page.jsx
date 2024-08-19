@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaMinus } from 'react-icons/fa';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import { handelAsyncErrors } from '@/helpers/asyncErrors';
 
 const generateOptions = (start, end) => {
@@ -52,7 +52,7 @@ const UpdatePackage = ({ params }) => {
             package_categories_id: packageData.package_under_categories?.map(cat => cat._id) || [],
           }));
         } else {
-          toast.error(data.message ||'Failed to fetch package data');
+          toast.error(data.message || 'Failed to fetch package data');
         }
       } catch (error) {
         toast.error('An error occurred while fetching package data.');
@@ -70,7 +70,7 @@ const UpdatePackage = ({ params }) => {
         });
         const data = await res.json();
         if (data.success) {
-          setCities(data.result); 
+          setCities(data.result);
         } else {
           toast.error(data.message || 'Failed to fetch cities');
         }
@@ -308,24 +308,27 @@ const UpdatePackage = ({ params }) => {
           />
         </div>
         <div className="form-group">
-              <label htmlFor="package_categories_id">Categories</label>
-              <select
-                id="package_categories_id"
-                name="package_categories_id"
-                value={formData.package_categories_id}
-                onChange={(e) => setFormData(prevData => ({
-                  ...prevData,
-                  package_categories_id: Array.from(e.target.selectedOptions, option => option.value)
-                }))}
-                multiple
-              >
-                {cats.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <label htmlFor="package_categories_id">Categories</label>
+          <select
+            id="package_categories_id"
+            name="package_categories_id"
+            value={formData.package_categories_id}
+            onChange={(e) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                package_categories_id: Array.from(e.target.selectedOptions, (option) => option.value),
+              }))
+            }
+            multiple
+          >
+            {cats.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Handle dynamic fields for itinerary, include, exclude */}
         <div className="form-group">
           <label htmlFor="packageItinerary">Package Itinerary</label>
