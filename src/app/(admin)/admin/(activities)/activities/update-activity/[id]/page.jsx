@@ -1,4 +1,4 @@
-// // /app/(admin)/admin/(activities)/activities/update-activity/[id]/page.jsx
+// // // /app/(admin)/admin/(activities)/activities/update-activity/[id]/page.jsx
 
 'use client';
 import React, { useState, useEffect } from 'react';
@@ -16,11 +16,10 @@ const UpdateActivity = ({ params }) => {
     images: [],
     file: null,
     imagePreviewUrl: '',
-    icon: null,
+    icon: [],
     iconfile: null,
     iconPreviewUrl: '',
     gallery_files: [],
-    galleryFiles: null,
     galleryPreviewUrls: [],
     city_id: '',
     activity_price: '',
@@ -36,9 +35,7 @@ const UpdateActivity = ({ params }) => {
   const fetchCities = async () => {
     return handelAsyncErrors(async () => {
       const res = await fetch('/api/v1/cities/get?page=1&limit=1000', {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
+        headers: { 'Cache-Control': 'no-cache' },
       });
       const data = await res.json();
       if (data.success) {
@@ -55,13 +52,22 @@ const UpdateActivity = ({ params }) => {
       const res = await fetch(`/api/v1/activity/getbyid/${id}`);
       const data = await res.json();
       if (data.success) {
+        const { result } = data;
         setActivity({
-          ...data.result,
+          title: result.title || '',
+          description: result.description || '',
+          slug: result.slug || '',
+          activity_overview: result.activity_overview || '',
+          activity_top_summary: result.activity_top_summary || '',
+          images: result.images || [],
           file: null,
           iconfile: null,
+          iconPreviewUrl: result.icon.length ? `/uploads/${result.icon[0].name}` : '',
           gallery_files: [],
-          galleryPreviewUrls: [], // Reset gallery previews
-          city_id: data.result.city_id._id, // Retrieve city_id
+          galleryPreviewUrls: result.activity_galleries.map((file) => `/uploads/${file.name}`) || [],
+          city_id: result.city_id ? result.city_id._id : '',
+          activity_price: result.activity_price || '',
+          activity_discounted_price: result.activity_discounted_price || '',
         });
         setIsLoading(false);
       } else {
@@ -89,9 +95,7 @@ const UpdateActivity = ({ params }) => {
           imagePreviewUrl: reader.result,
         }));
       };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
+      if (file) reader.readAsDataURL(file);
     } else if (name === 'icon') {
       const file = files[0];
       const reader = new FileReader();
@@ -102,9 +106,7 @@ const UpdateActivity = ({ params }) => {
           iconPreviewUrl: reader.result,
         }));
       };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
+      if (file) reader.readAsDataURL(file);
     } else if (name === 'gallery_files') {
       const galleryFiles = Array.from(files);
       const galleryPreviews = galleryFiles.map(file => URL.createObjectURL(file)); // Create previews
@@ -163,9 +165,7 @@ const UpdateActivity = ({ params }) => {
     formData.append('activity_top_summary', activity_top_summary);
     if (file) formData.append('file', file);
     if (iconfile) formData.append('icon', iconfile);
-    gallery_files.forEach((file) => {
-      formData.append('activity_galleries', file);
-    });
+    gallery_files.forEach((file) => formData.append('activity_galleries', file));
     formData.append('city_id', city_id);
     formData.append('activity_price', activity_price);
     formData.append('activity_discounted_price', activity_discounted_price);
@@ -187,192 +187,186 @@ const UpdateActivity = ({ params }) => {
     });
   };
 
+  if (isLoading) return <p>Loading...</p>;
+
   return (
     <div className="update-activity-container">
       <h2>Update Activity</h2>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Title:
-            <input
-              type="text"
-              name="title"
-              value={activity.title}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Description:
-            <textarea
-              name="description"
-              value={activity.description}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Slug:
-            <input
-              type="text"
-              name="slug"
-              value={activity.slug}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Activity Overview:
-            <textarea
-              name="activity_overview"
-              value={activity.activity_overview}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Activity Top Summary:
-            <textarea
-              name="activity_top_summary"
-              value={activity.activity_top_summary}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label className="update-packages-label">
-            Image:
-            <input
-              type="file"
-              name="file"
-              onChange={handleChange}
-              className="update-packages-file-input"
-            />
-            <div className="update-packages-image-preview">
-              {activity.imagePreviewUrl ? (
+      <form onSubmit={handleSubmit}>
+        <label>
+          Title:
+          <input
+            type="text"
+            name="title"
+            value={activity.title}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Description:
+          <textarea
+            name="description"
+            value={activity.description}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Slug:
+          <input
+            type="text"
+            name="slug"
+            value={activity.slug}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Activity Overview:
+          <textarea
+            name="activity_overview"
+            value={activity.activity_overview}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Activity Top Summary:
+          <textarea
+            name="activity_top_summary"
+            value={activity.activity_top_summary}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label className="update-packages-label">
+          Image:
+          <input
+            type="file"
+            name="file"
+            onChange={handleChange}
+            className="update-packages-file-input"
+          />
+          <div className="update-packages-image-preview">
+            {activity.imagePreviewUrl ? (
+              <img
+                src={activity.imagePreviewUrl}
+                alt="New"
+                className="update-packages-image"
+                style={{width: '100px', height: '100px'}}
+              />
+            ) : activity.images.length > 0 ? (
+              activity.images.map((image, index) => (
                 <img
-                  src={activity.imagePreviewUrl}
-                  alt="New"
+                  key={index}
+                  src={`/uploads/${image.name}`}
+                  alt={`Current ${image.name}`}
                   className="update-packages-image"
-                  style={{width: '100px',height:'100px'}}
+                  style={{width: '100px', height: '100px'}}
                 />
-              ) : (
-                activity.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={`/uploads/${image.name}`}
-                    alt={`Current ${image.name}`}
-                    className="update-packages-image"
-                    style={{width: '100px',height:'100px'}}
-                  />
-                ))
-              )}
-            </div>
-          </label>
-          <label className="update-packages-label">
-            Icon:
-            <input
-              type="file"
-              name="icon"
-              onChange={handleChange}
-              className="update-packages-file-input"
-            />
-            <div className="update-packages-icon-preview">
-              {activity.iconPreviewUrl ? (
+              ))
+            ) : (
+              <p>No images available</p>
+            )}
+          </div>
+        </label>
+        <label className="update-packages-label">
+          Icon:
+          <input
+            type="file"
+            name="icon"
+            onChange={handleChange}
+            className="update-packages-file-input"
+          />
+          <div className="update-packages-icon-preview">
+            {activity.iconPreviewUrl ? (
+              <img
+                src={activity.iconPreviewUrl}
+                alt="Icon Preview"
+                className="update-packages-icon"
+                style={{width: '100px', height: '100px'}}
+              />
+            ) : activity.icon=== null && activity.icon=== undefined ? (
+              activity.icon.map((i, index) => (
                 <img
-                  src={activity.iconPreviewUrl}
-                  alt="Icon Preview"
+                  src={`/uploads/${i.name}`}
+                  key={index}
+                  alt="Current Icon"
                   className="update-packages-icon"
-                  style={{width: '100px',height:'100px'}}
+                  style={{width: '100px', height: '100px'}}
                 />
-              ) : (
-                activity.icon.map((i, index) => (
-                  <img
-                    src={`/uploads/${i.name}`}
-                    key={index}
-                    alt="Current Icon"
-                    className="update-packages-icon"
-                    style={{width: '100px',height:'100px'}}
-                  />
-                ))
-              )}
-            </div>
-          </label>
-          <label className="update-packages-label">
-            Gallery Images:
-            <input
-              type="file"
-              name="gallery_files"
-              onChange={handleChange}
-              multiple
-              className="update-packages-file-input"
-            />
-            <div className="update-packages-gallery-preview">
-              {activity.galleryPreviewUrls.length > 0 ? (
-                activity.galleryPreviewUrls.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`Gallery Preview ${index}`}
-                    className="update-packages-gallery-image"
-                    style={{width: '100px',height:'100px'}}
-                  />
-                ))
-              ) : (
-                activity.activity_galleries.map((file, index) => (
-                  <img
-                    key={index}
-                    src={`/uploads/${file.name}`}
-                    alt={`Gallery Image ${index}`}
-                    className="update-packages-gallery-image"
-                    style={{width: '100px',height:'100px'}}
-                  />
-                ))
-              )}
-            </div>
-          </label>
-          <label>
-            City:
-            <select
-              name="city_id"
-              value={activity.city_id}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select City</option>
-              {cities.map((city) => (
-                <option key={city._id} value={city._id}>
-                  {city.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Activity Price:
-            <input
-              type="number"
-              name="activity_price"
-              value={activity.activity_price}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Activity Discounted Price:
-            <input
-              type="number"
-              name="activity_discounted_price"
-              value={activity.activity_discounted_price}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Updating...' : 'Update Activity'}
-          </button>
-        </form>
-      )}
+              ))
+            ) : (
+              <p>No icon available</p>
+            )}
+          </div>
+        </label>
+        <label className="update-packages-label">
+          Gallery:
+          <input
+            type="file"
+            name="gallery_files"
+            multiple
+            onChange={handleChange}
+            className="update-packages-file-input"
+          />
+          <div className="update-packages-gallery-preview">
+            {activity.galleryPreviewUrls.length > 0 ? (
+              activity.galleryPreviewUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Gallery ${index}`}
+                  className="update-packages-gallery-image"
+                  style={{width: '100px', height: '100px'}}
+                />
+              ))
+            ) : (
+              <p>No gallery images available</p>
+            )}
+          </div>
+        </label>
+        <label>
+          City:
+          <select
+            name="city_id"
+            value={activity.city_id}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city._id} value={city._id}>
+                {city.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Price:
+          <input
+            type="number"
+            name="activity_price"
+            value={activity.activity_price}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Discounted Price:
+          <input
+            type="number"
+            name="activity_discounted_price"
+            value={activity.activity_discounted_price}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Updating...' : 'Update Activity'}
+        </button>
+      </form>
     </div>
   );
 };
