@@ -94,8 +94,8 @@ import Layout from './_common/layout/layout';
 import Homepage from './_homepage/homepage';
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
-import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
 import LoginPopup from '@/Components/loginPopup/Components/popup';
+import QueryForm from '@/Components/autoloadPopup/QueryForm';
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
@@ -168,7 +168,7 @@ export default function Home() {
     return (
         <>
             {/* Pop-ups for login and booking form */}
-            {isopenForm && <BookingForm setIsopenForm={setIsopenForm} />}
+            {isopenForm && <QueryForm setIsopenForm={setIsopenForm} />}
             {isLogin && <LoginPopup setIsLogin={setIsLogin} />}
 
             <Layout>

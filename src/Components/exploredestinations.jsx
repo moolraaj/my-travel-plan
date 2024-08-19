@@ -29,6 +29,12 @@ const ExploreDestinations = ({ packagescat }) => {
                       width={100}
                       height={100}
                       className="destination-image"
+                      srcset={` ${`/uploads/${e.name}`} 480w, 
+                             ${`/uploads/${e.name}`} 800w, 
+                            ${`/uploads/${e.name}`} 1200w`}
+                            sizes="(max-width: 600px) 480px, 
+                           (max-width: 1200px) 800px, 
+                           1200px"
                     />
                   ))
                 ) : (
