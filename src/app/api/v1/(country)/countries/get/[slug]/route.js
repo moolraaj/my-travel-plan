@@ -1,87 +1,49 @@
 import { DbConnect } from "@/database/database";
-import countriestModel from "@/model/countryModel";
 import { NextResponse } from "next/server";
 import { getPaginationParams } from "@/helpers/paginations";
+import countriesModel from "@/model/countryModel";
+import { handelAsyncErrors } from "@/helpers/asyncErrors";
 
 DbConnect();
 
 export async function GET(req, { params }) {
-    let { slug } = params;
-    let { page, limit, skip } = getPaginationParams(req);
-
-    try {
-        // Aggregation pipeline
-        const pipeline = [
-            // Match the country by slug
-            { $match: { slug } },
-
-            // Lookup to join with cities
-            { $lookup: {
-                from: 'cities', // The collection where 'all_cities' are stored
-                localField: 'all_cities',
-                foreignField: '_id',
-                as: 'cities'
-            }},
-            { $unwind: '$cities' }, // Unwind cities array
-
-            // Lookup to join cities with their packages
-            { $lookup: {
-                from: 'packages', // The collection where 'all_packages' are stored
-                localField: 'cities.all_packages',
-                foreignField: '_id',
-                as: 'cities.all_packages'
-            }},
-
-            // Project fields and count packages
-            { $project: {
-                _id: 1,
-                'cities._id': 1,
-                'cities.images': 1,
-                'cities.title': 1,
-                'cities.description': 1,
-                'cities.slug': 1,
-                'cities.all_packages_count': { $size: '$cities.all_packages' }
-            }},
-
-            // Pagination
-            { $skip: skip },
-            { $limit: limit }
-        ];
-
-        const country = await countriestModel.aggregate(pipeline).exec();
-
-        if (country.length === 0) {
-            return NextResponse.json({ success: false, message: 'Country not found' });
+    return handelAsyncErrors(async()=>{
+        let { slug } = params;
+        let { page, limit, skip } = getPaginationParams(req);
+    
+        // Fetch the country by slug and populate all cities and their packages
+        const country = await countriesModel.findOne({ slug: slug }).populate({
+            path: 'all_cities',
+            populate: {
+                path: 'all_packages',
+            },
+        }).exec();
+    
+        if (!country) {
+            return NextResponse.json({ status: 404, success: false, message: 'Country not found! Please provide a valid slug.' });
         }
-
-        // Count total results
-        const totalResults = await countriestModel.aggregate([
+    
+        // Get the total count of cities within the country
+        const totalResults = await countriesModel.aggregate([
             { $match: { slug } },
-            { $lookup: {
-                from: 'cities',
-                localField: 'all_cities',
-                foreignField: '_id',
-                as: 'cities'
-            }},
-            { $unwind: '$cities' },
-            { $count: 'total' }
-        ]).exec();
-
-        const total = totalResults.length ? totalResults[0].total : 0;
-
-        // Set caching headers
-        const headers = new Headers();
-        headers.set('Cache-Control', 'max-age=60'); // Cache for 60 seconds
-
-        return NextResponse.json({
-            success: true,
-            result: country,  
-            totalResults: total,
-            page,
-            limit,
-        }, { headers });
-    } catch (error) {
-        console.error('Error in GET handler:', error);
-        return NextResponse.json({ success: false, message: 'Failed to fetch country and cities', error: error.message });
-    }
+            { $unwind: '$all_cities' },
+            { $group: { _id: '$slug', total: { $sum: 1 } } }
+        ]).then(results => results[0]?.total || 0);
+    
+        // Get the paginated cities
+        const paginatedCities = country.all_cities.slice(skip, skip + limit);
+    
+        // Map the result to include details of cities and packages
+        const result = paginatedCities.map(city => ({
+            _id: city._id,
+            title: city.title,
+            images: city.images,
+            description: city.description,
+            city_packages_count: city.all_packages.length,
+        }));
+    
+        // Return the cities array directly in the response
+        return NextResponse.json({ status: 200, success: true, totalResults, page, limit, result });
+    })
+    
 }
