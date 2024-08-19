@@ -30,9 +30,11 @@ const AddPackages = () => {
     package_price: '',
     package_discounted_price: '',
     package_days: '1',
-    package_nights: '1'
+    package_nights: '1',
+    package_categories_id: []
   });
   const [cities, setCities] = useState([]);
+  const [cats, setCats] = useState([])
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -51,8 +53,24 @@ const AddPackages = () => {
       }
     })
   };
+  const fetchCategories = async () => {
+    return handelAsyncErrors(async () => {
+      const res = await fetch(`/api/v1/package-categories/get?page=1&limit=1000`, {
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCats(data.result);
+      } else {
+        toast.error(data.message || 'Failed to fetch cities');
+      }
+    })
+  };
   useEffect(() => {
     fetchCities();
+    fetchCategories();
   }, []);
 
   const handleChange = (e) => {
@@ -106,7 +124,8 @@ const AddPackages = () => {
       package_price,
       package_discounted_price,
       package_days,
-      package_nights
+      package_nights,
+      package_categories_id
     } = formData;
 
     if (!title || !description || !slug || !file || !city_id) {
@@ -131,6 +150,7 @@ const AddPackages = () => {
       submissionData.append('packages_exclude', JSON.stringify(packagesExclude));
       submissionData.append('file', file);
       submissionData.append('city_id', city_id);  // Include city_id
+      submissionData.append('package_categories_id', JSON.stringify(package_categories_id)); // Include categories
       gallery_files.forEach((file) => {
         submissionData.append('gallery_files', file);
       });
@@ -259,6 +279,26 @@ const AddPackages = () => {
                 placeholder="Enter package top summary"
               />
             </div>
+            <div className="form-group">
+              <label htmlFor="package_categories_id">Categories</label>
+              <select
+                id="package_categories_id"
+                name="package_categories_id"
+                value={formData.package_categories_id}
+                onChange={(e) => setFormData(prevData => ({
+                  ...prevData,
+                  package_categories_id: Array.from(e.target.selectedOptions, option => option.value)
+                }))}
+                multiple
+              >
+                {cats.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="form-group">
               <label htmlFor="city_id">City</label>
               <select
