@@ -21,8 +21,10 @@ const CountryCitiesExplorations = ({ slug_one }) => {
 
     let result = data ? data.result : []
 
-    console.log(`result`)
+    console.log(`result sdkjfhasjkdfhaskjdfhadfjhasdkfjhasdfjk`)
+    console.log(`slug_one`)
     console.log(data)
+    console.log(slug_one)
    
 
     return (

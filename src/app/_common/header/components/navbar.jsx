@@ -64,7 +64,7 @@ const Navbar = () => {
             <img src={car.src} alt="Transfers" />
             Transfers
           </Link>
-          <button className="contact-button mobile-button"><a href='/contact-us'>Contact Us</a></button>
+          <button className="contact-buttondfsadf mobile-button"><Link href='/contact-us' >Contact Us</Link></button>
           
         
         </div>

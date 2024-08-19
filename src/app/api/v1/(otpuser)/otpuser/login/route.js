@@ -8,7 +8,7 @@ DbConnect();
 
 export async function POST(req) {
     return handelAsyncErrors(async () => {
-        let payload = await req.json();
+        let payload = await req.formData();
         let phoneNumber = payload.phoneNumber;
         let registerusername = payload.registerusername;
         let existingUser = await OtpUserModel.findOne({ phoneNumber });
