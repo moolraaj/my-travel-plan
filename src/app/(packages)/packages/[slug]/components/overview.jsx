@@ -25,7 +25,7 @@ const Itinerary = ({ result }) => {
   ];
 
 
- 
+
 
   const hotelActivitiesContent = (
     <div>
@@ -102,9 +102,8 @@ const Itinerary = ({ result }) => {
                     } packagesInclude={ele.packagesInclude} /> : 'no result found'}
                 </div>
                 <button className=" book-now-btn"><a href='/contact-us'>Book Now </a></button>
-
               </div>
-
+              
               <div className='right_query'>
                 <div className='card_contact'>
                   <span>Package Code: 128391823</span>
@@ -117,28 +116,27 @@ const Itinerary = ({ result }) => {
                     </div>
                   </div>
                 </div>
-
-
-
-                <div className='gallery_inner_page'>
-                  <div className="sidebar-gallery">
-                    <h2>Gallery</h2>
-                    <div className="galleryGrid">
-
-                      {ele.packages_galleries === null || ele.packages_galleries.length === 0 ? ('no result found') : (ele.packages_galleries.slice(0, 3).map((e, index) => {
-                        return <img src={`/uploads/${e.name}`} alt="Image 1" key={index} />
-
-                      }))}
+                {ele.packages_galleries === null || ele.packages_galleries.length === 0 ? (
+                  ''
+                ) : (
+                  <div className='gallery_inner_page'>
+                    <div className="sidebar-gallery">
+                      <h2>Gallery</h2>
+                      <div className="galleryGrid">
+                        {ele.packages_galleries.slice(0, 3).map((e, index) => (
+                          <img
+                            src={`/uploads/${e.name}`}
+                            alt={`Image ${index + 1}`}
+                            key={index}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
-
-                </div>
+                )}
               </div>
-
-
             </div>
           </div>
-
         </div>
       }))
 

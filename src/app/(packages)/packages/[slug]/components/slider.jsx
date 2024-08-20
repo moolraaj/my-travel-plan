@@ -17,7 +17,7 @@ const TravelGallery = ({ result }) => {
               {ele.packages_galleries === null ||
               ele.packages_galleries === undefined ||
               ele.packages_galleries.length === 0 ? (
-                'No result found'
+                ''
               ) : (
                 <>
                   <div className="leftImage">
