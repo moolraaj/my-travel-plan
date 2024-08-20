@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import explorebg from '../../../app/assets/home_images/explore-package-bg.png';
 import emptyImage from '../../../app/assets/empty.jpg';
 import Image from 'next/image';
-import { getSession } from 'next-auth/react'; 
+import { getSession } from 'next-auth/react';
 import BookingForm from '@/Components/(bookings)/bookings/bookingForm';
 import LoginPopup from '@/Components/loginPopup/Components/popup';
 
@@ -64,63 +64,63 @@ function PackagesCatPackages({ slug }) {
 
   return (
     <div>
-       {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
-      {isLogin && <LoginPopup setIsLogin={setIsLogin}  />}
-       <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
-       <div className="container card_main_section">
-     
-        {data.map((item, index) => (
-          <div key={index} className='card_category_section'>
+      {isopenForm && <BookingForm setIsopenForm={setIsopenForm} packageId={selectedPackageId} />}
+      {isLogin && <LoginPopup setIsLogin={setIsLogin} />}
+      <div className="explore-packages" style={{ backgroundImage: `url(${explorebg.src})` }}>
+        <div className="container card_main_section">
 
-                <div className='card_discount'>
-                  <div className="packages">
-                    {item === undefined || item === null ? (
-                       'no result found'
-                    ) : (
-                      item.packages.map(pkg =>
-                        <div key={pkg._id} className="package">
-                          {pkg.images && pkg.images.length > 0 ? (
-                            pkg.images.map((image) => (
-                              <Image
-                                key={image._id}
-                                src={`/uploads/${image.name}`}
-                                alt={pkg.name || "loading..."}
-                                width={333}
-                                height={380}
-                                className="image"
-                              />
-                            ))
-                          ) : (
+          {data.map((item, index) => (
+            <div key={index} className='card_category_section'>
+
+              <div className='card_discount'>
+                <div className="packages">
+                  {item === undefined || item === null ? (
+                    'no result found'
+                  ) : (
+                    item.packages.map(pkg =>
+                      <div key={pkg._id} className="package">
+                        {pkg.images && pkg.images.length > 0 ? (
+                          pkg.images.map((image) => (
                             <Image
-                              src={emptyImage.src}
-                              alt="No Image Available"
+                              key={image._id}
+                              src={`/uploads/${image.name}`}
+                              alt={pkg.name || "loading..."}
                               width={333}
                               height={380}
                               className="image"
                             />
-                          )}
-                          <div className="info">
-                            <h3>{pkg.title}</h3>
-                            <p>{pkg.package_nights} nights / {pkg.package_days} days</p>
+                          ))
+                        ) : (
+                          <Image
+                            src={emptyImage.src}
+                            alt="No Image Available"
+                            width={333}
+                            height={380}
+                            className="image"
+                          />
+                        )}
+                        <div className="info">
+                          <h3>{pkg.title}</h3>
+                          <p>{pkg.package_nights} nights / {pkg.package_days} days</p>
 
-                            <p className="price">From ₹ {pkg.package_price || 0}</p>
-                            <div className="buttons">
-                            <Link href={`/packages/${pkg.title.trim().toLowerCase().replace(/\s+/g, '-')}`}><button className="details-btn">View Details</button></Link>
+                          <p className="price">From ₹ {pkg.package_price || 0}</p>
+                          <div className="buttons">
+                            <Link href={`/packages/${pkg.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/-+/g, '-')}`}>
+                              <button className="details-btn">View Details</button>
+                            </Link>
                             <button className="enquiry-btn" onClick={() => bookingAndLogin(pkg._id)}>Book Now</button>
-                            </div>
                           </div>
                         </div>
-                       )
-                    )}
-                  </div>
+                      </div>
+                    )
+                  )}
                 </div>
-              
-           
-          </div>
-        ))}
-      
+              </div>
+            </div>
+          ))}
+
+        </div>
       </div>
-       </div>
     </div>
   )
 }
