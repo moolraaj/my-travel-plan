@@ -1166,13 +1166,23 @@ g.recharts-layer.recharts-pie:focus{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
+  width: 100%;
+  padding: 20px;
 }
 .social_data_outer {
   display: flex;
   align-items: center;
   gap: 40px;
 }
-
+.update_footer_data{
+  width: 100%;
+  padding: 20px;
+}
+.update_footer_data textarea{
+  max-width: 80%;
+  width: 100%;
+  padding: 10px;
+}
 
 
 @media (max-width:1024px) {

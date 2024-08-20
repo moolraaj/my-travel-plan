@@ -72,18 +72,18 @@
     justify-content: flex-end;
   }
   
-  .social-icons {
+  .admin_social-icons {
     display: flex;
     gap: 15px;
   }
   
-  .social-icon {
+  .admin_social-icon {
     color: #fff;
     font-size: 20px;
     transition: color 0.3s ease;
   }
   
-  .social-icon:hover {
+  .admin_social-icon:hover {
     color: #007bff;
   }
   

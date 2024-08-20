@@ -26,11 +26,11 @@ function AdminFooter() {
           </ul>
         </div>
         <div className="footer-right">
-          <div className="social-icons">
-            <Link href="https://facebook.com" className="social-icon" target="_blank" rel="noopener noreferrer"><FaFacebookF /></Link>
-            <Link href="https://twitter.com" className="social-icon" target="_blank" rel="noopener noreferrer"><FaTwitter /></Link>
-            <Link href="https://linkedin.com" className="social-icon" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></Link>
-            <Link href="https://instagram.com" className="social-icon" target="_blank" rel="noopener noreferrer"><FaInstagram /></Link>
+          <div className="admin_social-icons">
+            <Link href="https://facebook.com" className="admin_social-icon" target="_blank" rel="noopener noreferrer"><FaFacebookF /></Link>
+            <Link href="https://twitter.com" className="admin_social-icon" target="_blank" rel="noopener noreferrer"><FaTwitter /></Link>
+            <Link href="https://linkedin.com" className="admin_social-icon" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></Link>
+            <Link href="https://instagram.com" className="admin_social-icon" target="_blank" rel="noopener noreferrer"><FaInstagram /></Link>
           </div>
         </div>
       </div>

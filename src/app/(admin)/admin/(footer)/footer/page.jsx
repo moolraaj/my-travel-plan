@@ -131,6 +131,7 @@ function FooterPage() {
 
 
   const cancelUpdate = () => {
+    fetchFooterData();
     setIsEditing(false);
   }
 
