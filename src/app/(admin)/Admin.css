@@ -1157,6 +1157,20 @@ g.recharts-layer.recharts-pie:focus{
   align-items: center;
   gap: 30px;
 }
+
+
+
+
+/* footer styles */
+.footer_content_wrapper{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+
+
+
 @media (max-width:1024px) {
   .admin_contexts {
     width: 100%;

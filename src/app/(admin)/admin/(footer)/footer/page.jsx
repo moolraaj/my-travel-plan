@@ -1,15 +1,46 @@
 // /app/(admin)/admin/(footer)/footer/page.jsx
 
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaPlus,FaMinus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 function FooterPage() {
   const [footerData, setFooterData] = useState({
-    phoneNumbers: [''],
-    emailAddresses: [''],
+    phoneNumbers: [],
+    emailAddresses: [],
     address: '',
-    socialIcons: [{ name: '', url: '', iconUrl: '' }],
+    socialIcons: [],
   });
+
+  const [footerId, setFooterId] = useState('');
+  const [isEditing, setIsEditing] = useState(false); // State to handle form visibility
+
+  // Fetch the footer data when the component mounts
+  const fetchFooterData = async () => {
+    try {
+      const response = await fetch('/api/v1/footer-details/get');
+      const data = await response.json();
+      if (response.ok) {
+        const result = data.result[0][0];
+        setFooterData({
+          phoneNumbers: result.phoneNumbers,
+          emailAddresses: result.emailAddresses,
+          address: result.address,
+          socialIcons: result.socialIcons,
+        });
+        setFooterId(result._id); // Set the ID for updating
+      } else {
+        console.error('Error fetching footer data:', data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFooterData();
+  }, []);
 
   // Handle input change for fields
   const handleInputChange = (e, index, field, type) => {
@@ -55,131 +86,165 @@ function FooterPage() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const formData = new FormData();
-      formData.append("address", footerData.address);
-      formData.append("phoneNumbers", JSON.stringify(footerData.phoneNumbers));
-      formData.append("emailAddresses", JSON.stringify(footerData.emailAddresses));
-      formData.append("socialIcons", JSON.stringify(footerData.socialIcons));
-
-      const response = await fetch('/api/v1/footer-details/add', {
-        method: 'POST',
-        body: formData,
+      const response = await fetch(`/api/v1/footer-details/update/${footerId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          address: footerData.address,
+          phoneNumbers: footerData.phoneNumbers,
+          emailAddresses: footerData.emailAddresses,
+          socialIcons: footerData.socialIcons,
+        }),
       });
-
+  
       const result = await response.json();
       if (response.ok) {
         console.log(result);
-        setFooterData({
-            phoneNumbers: [''],
-            emailAddresses: [''],
-            address: '',
-            socialIcons: [{ name: '', url: '', iconUrl: '' }],
-        })
-        // Handle success (e.g., show a message or redirect)
-        alert('Content added successfully');
+        toast.success(result.message); // Set success state
+        setIsEditing(false); // Hide form after successful update
+        
+        fetchFooterData();
       } else {
-        console.error(result.message);
-        // Handle error (e.g., show an error message)
-        alert('Error: ' + result.message);
+        toast.error(result.message); 
       }
     } catch (error) {
-      console.error('Error:', error);
-      // Handle error (e.g., show an error message)
-      alert('An unexpected error occurred');
+      toast.error('Error:', error); 
     }
   };
+  
 
   return (
-    <div>
-      <h1>Footer Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Address:</label>
-          <input
-            type="text"
-            name="address"
-            value={footerData.address}
-            onChange={(e) => handleInputChange(e, null, 'address')}
-          />
+    <div className='footer_data'>
+
+      <div className="footer_content_wrapper">
+        <div className="display_footer_data">
+        <h1>Footer Page</h1>
+          <div>
+            <strong>Address:</strong>
+            <p>{footerData.address}</p>
+          </div>
+
+          <div>
+            <h3>Phone Numbers:</h3>
+            <ul>
+              {footerData.phoneNumbers.map((phone, index) => (
+                <li key={index}>{phone}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3>Email Addresses:</h3>
+            <ul>
+              {footerData.emailAddresses.map((email, index) => (
+                <li key={index}>{email}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3>Social Icons:</h3>
+            <ul>
+              {footerData.socialIcons.map((icon, index) => (
+                <li key={index}>
+                  <a href={icon.url} target="_blank" rel="noopener noreferrer">
+                    <img src={icon.iconUrl} alt={icon.name} style={{ width: 24, height: 24, marginRight: 8 }} />
+                    {icon.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Update Content Button */}
+          {!isEditing && <button onClick={() => setIsEditing(true)}>Update Content</button>}
         </div>
 
-        <div>
-          <h2>Phone Numbers:</h2>
-          {footerData.phoneNumbers.map((phone, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => handleInputChange(e, index, 'phoneNumbers', 'array')}
-              />
-              <button type="button" onClick={() => removeField('phoneNumbers', index, 'array')}>
-                Remove
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={() => addField('phoneNumbers', 'array')}>
-            Add Phone Number
-          </button>
-        </div>
+        {/* Update Content Form */}
+        {isEditing && (
+          <div className="update_footer_data">
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label>Address:</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={footerData.address}
+                  onChange={(e) => handleInputChange(e, null, 'address')}
+                />
+              </div>
 
-        <div>
-          <h2>Email Addresses:</h2>
-          {footerData.emailAddresses.map((email, index) => (
-            <div key={index}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => handleInputChange(e, index, 'emailAddresses', 'array')}
-              />
-              <button type="button" onClick={() => removeField('emailAddresses', index, 'array')}>
-                Remove
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={() => addField('emailAddresses', 'array')}>
-            Add Email Address
-          </button>
-        </div>
+              <div>
+                <h2>Phone Numbers:</h2>
+                {footerData.phoneNumbers.map((phone, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      value={phone}
+                      onChange={(e) => handleInputChange(e, index, 'phoneNumbers', 'array')}
+                    />
+                    <FaMinus className="toggle-icon"  onClick={() => removeField('phoneNumbers', index, 'array')}/>
+                  </div>
+                ))}
+                <FaPlus className="toggle-icon" onClick={() => addField('phoneNumbers', 'array')}/>
+              </div>
 
-        <div>
-          <h2>Social Icons:</h2>
-          {footerData.socialIcons.map((icon, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Icon Name"
-                value={icon.name}
-                onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
-              />
-              <input
-                type="text"
-                name="url"
-                placeholder="Link URL"
-                value={icon.url}
-                onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
-              />
-              <input
-                type="text"
-                name="iconUrl"
-                placeholder="Icon Image URL"
-                value={icon.iconUrl}
-                onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
-              />
-              <button type="button" onClick={() => removeField('socialIcons', index, 'object')}>
-                Remove
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={() => addField('socialIcons', 'object')}>
-            Add Social Icon
-          </button>
-        </div>
+              <div>
+                <h2>Email Addresses:</h2>
+                {footerData.emailAddresses.map((email, index) => (
+                  <div key={index}>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => handleInputChange(e, index, 'emailAddresses', 'array')}
+                    />
+                    <FaMinus className="toggle-icon"  onClick={() => removeField('emailAddresses', index, 'array')}/>
+                  </div>
+                ))}
+                <FaPlus className="toggle-icon" onClick={() => addField('emailAddresses', 'array')}/>
+              </div>
 
-        <button type="submit">Submit</button>
-      </form>
+              <div>
+                <h2>Social Icons:</h2>
+                {footerData.socialIcons.map((icon, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Icon Name"
+                      value={icon.name}
+                      onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
+                    />
+                    <input
+                      type="text"
+                      name="url"
+                      placeholder="Link URL"
+                      value={icon.url}
+                      onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
+                    />
+                    <input
+                      type="text"
+                      name="iconUrl"
+                      placeholder="Icon Image URL"
+                      value={icon.iconUrl}
+                      onChange={(e) => handleInputChange(e, index, 'socialIcons', 'object')}
+                    />
+                    <FaMinus className="toggle-icon"  onClick={() => removeField('socialIcons', index, 'object')}/>
+                  </div>
+                ))}
+                <FaPlus className="toggle-icon" onClick={() => addField('socialIcons', 'object')}/>
+              </div>
+
+              <button type="submit">Update Content</button>
+            </form>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
