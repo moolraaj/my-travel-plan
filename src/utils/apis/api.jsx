@@ -260,6 +260,8 @@ export const EXPORT_ALL_APIS = () => {
     const loadAllPackagesActivities = () => fetchApi(`/api/v1/package-categories/get`);
     const loadSinglePackagesActivity = (slug) => fetchApi(`/api/v1/package-category/getbyslug/${slug}`);
     const loadSinglePackagesActivitiy= async (slug) =>fetchApi(`/api/v1/package-category/getbyslug/${slug}`);
+
+    const loadFooterDeatails = () => fetchApi(`/api/v1/footer-details/get`);
     
     const loadSingleUserbookingsdetails = (user_id) => fetchApi(`/api/v1/otpuser/getbyid/${user_id}`);
     
@@ -294,6 +296,7 @@ export const EXPORT_ALL_APIS = () => {
         loadAllPackagesActivities,
         loadSinglePackagesActivity,
         loadSinglePackagesActivitiy,
+        loadFooterDeatails,
         loadSingleUserbookingsdetails,
         sendQueryContactUs,
         sendQueryBookings,

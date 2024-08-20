@@ -1,27 +1,55 @@
 // components/contactLinks.js
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
-
+'use client';
+import React, { useEffect, useState } from 'react';
+import { EXPORT_ALL_APIS } from '@/utils/apis/api';
 
 const ContactLinks = () => {
+  const [footerData, setFooterData] = useState(null);
+ 
+  const fetchFooterData = async () => {
+    const api = EXPORT_ALL_APIS();
+    const data = await api.loadFooterDeatails();
+    setFooterData(data.result[0][0]);
+  };
+
+  useEffect(() => {
+    fetchFooterData();
+  }, []);
+
+  if (!footerData) return <p>No footer data available</p>;
+
   return (
-    <div className="contact-links-container">
+    <>
+    {footerData===null && footerData===undefined ? (
+      ''
+    ):(
+      <div className="contact-links-container">
       <div className="other-links">
         <h3 className="contact-title">Contact Us</h3>
         <ul className="contact-list">
-          <li className="contact-item"><a href="tel:8627814388">+918627814388</a></li>
-          <li className="contact-item"><a href="maito:booking@streetromeo.com ">booking@streetromeo.com </a></li>
+          {footerData.phoneNumbers===null && footerData.phoneNumbers===undefined ?(''):(footerData.phoneNumbers.map((phone, index) => (
+            <li className="contact-item" key={index}>
+              <a href={`tel:${phone}`}>{phone}</a>
+            </li>
+          )))}
+          {footerData.emailAddresses===null && footerData.emailAddresses===undefined ?(''):(footerData.emailAddresses.map((email, index) => (
+            <li className="contact-item" key={index}>
+              <a href={`mailto:${email}`}>{email}</a>
+            </li>
+          )))}
         </ul>
       </div>
       <div className="address-us">
-        <h3 className="contact-title">Address Us :</h3>
+        <h3 className="contact-title">Address Us:</h3>
         <div className="address-description">
-         <p>Corporate Office: 401, Time Shoppers, Opp. Deepkamal Mall, Sarthana Jakatnaka, Surat | Gujarat</p>
+          <p>{footerData.address || ''}</p>
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 };
+
 
 export default ContactLinks;

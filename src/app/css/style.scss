@@ -326,10 +326,6 @@ p.description {
 }
 
 
-.social-icons svg {
-	color: $primrywhite;
-}
-
 .footer_section a {
 	color: white;
 }
@@ -676,13 +672,15 @@ p.description {
 	align-items: center;
 	column-gap: 20px;
 }
-
-.social-icons svg {
-	font-size: 20px;
-	background: #E8E4FF;
+.social-icon{
 	padding: 7px;
-	border-radius: 34px;
-	color: #1802A0;
+	background-color: $primrywhite;
+	border-radius: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.social-icons img {
 	width: 22px;
 	height: 22px;
 }

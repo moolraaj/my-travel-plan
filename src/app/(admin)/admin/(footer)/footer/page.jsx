@@ -1,6 +1,7 @@
 // /app/(admin)/admin/(footer)/footer/page.jsx
 
 'use client';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { FaPlus,FaMinus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -115,6 +116,11 @@ function FooterPage() {
       toast.error('Error:', error); 
     }
   };
+
+
+  const cancelUpdate =()=>{
+    setIsEditing(false); 
+  }
   
 
   return (
@@ -151,10 +157,10 @@ function FooterPage() {
             <ul>
               {footerData.socialIcons.map((icon, index) => (
                 <li key={index}>
-                  <a href={icon.url} target="_blank" rel="noopener noreferrer">
+                  <Link href={icon.url} target="_blank" rel="noopener noreferrer">
                     <img src={icon.iconUrl} alt={icon.name} style={{ width: 24, height: 24, marginRight: 8 }} />
                     {icon.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -169,9 +175,9 @@ function FooterPage() {
           <div className="update_footer_data">
             <form onSubmit={handleSubmit}>
               <div>
-                <label>Address:</label>
+                <h2>Address:</h2>
                 <input
-                  type="text"
+                  type="textarea"
                   name="address"
                   value={footerData.address}
                   onChange={(e) => handleInputChange(e, null, 'address')}
@@ -240,6 +246,7 @@ function FooterPage() {
               </div>
 
               <button type="submit">Update Content</button>
+              <button className='cancel_update' onClick={cancelUpdate}>Cancel</button>
             </form>
           </div>
         )}
