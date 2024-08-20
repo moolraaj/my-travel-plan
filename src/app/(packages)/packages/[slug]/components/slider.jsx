@@ -1,14 +1,18 @@
 'use client'
 
 const TravelGallery = ({ result }) => {
+  console.log('awerwrwerwerwreewr',result)
   return (
     <div className="gallery">
-      <h2>Passionate Paris With Disney 4N-5D</h2>
-      <div className="images">
+      
+      
         {result === undefined || result === null ? (
           'No result found'
         ) : (
           result.map((ele, index) => (
+            <>
+            <h2>{ele.title}</h2>
+            <div className="images">
             <div className="imageContainer" key={index}>
               {ele.packages_galleries === null ||
               ele.packages_galleries === undefined ||
@@ -36,9 +40,11 @@ const TravelGallery = ({ result }) => {
                 </>
               )}
             </div>
+            </div>
+            </>
+            
           ))
         )}
-      </div>
     </div>
   );
 };
