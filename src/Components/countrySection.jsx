@@ -14,7 +14,7 @@ function ExplorationsFarAway({loading,city}) {
 
   
 
-  let reversedFilterCities = Array.isArray(result) ? [...result].reverse() : [];
+  let reversedFilterCities = result ? [...result].reverse() : [];
 
   return (
     <div className='explore-section' style={{ backgroundImage: `url(${exploresection.src})` }}>
