@@ -1167,7 +1167,11 @@ g.recharts-layer.recharts-pie:focus{
   grid-template-columns: 1fr 1fr;
   gap: 30px;
 }
-
+.social_data_outer {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
 
 
 
