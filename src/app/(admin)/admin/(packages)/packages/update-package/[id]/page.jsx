@@ -49,6 +49,7 @@ const UpdatePackage = ({ params }) => {
             packageItinerary: packageData.packageItinerary || [{ day: '', location: '', tourname: '', itinerary_description: '' }],
             packagesInclude: packageData.packagesInclude || [{ description: '' }],
             packagesExclude: packageData.packagesExclude || [{ description: '' }],
+            city_id: packageData.city_id?._id || '',
             package_categories_id: packageData.package_under_categories?.map(cat => cat._id) || [],
           }));
         } else {
@@ -158,11 +159,10 @@ const UpdatePackage = ({ params }) => {
       package_categories_id
     } = formData;
 
-    if (!title || !description || !slug || !file || !city_id) {
-      toast.error('Please fill in all required fields and upload an image.');
+    
       setIsLoading(false);
-      return;
-    }
+    
+    
 
     return handelAsyncErrors(async () => {
       const submissionData = new FormData();
@@ -412,30 +412,44 @@ const UpdatePackage = ({ params }) => {
             value={formData.city_id}
             onChange={handleChange}
           >
+            <option value="">Select City</option>
             {cities.map((city) => (
-              <option key={city._id} value={city._id}>{city.title}</option>
+              <option key={city._id} value={city._id}>
+                {city.title}
+              </option>
             ))}
           </select>
         </div>
+
         <div className="form-group">
-          <label htmlFor="file">Package Image</label>
+          <label htmlFor="file">Main Image</label>
           <input
             type="file"
             id="file"
             name="file"
+            accept="image/*"
             onChange={handleChange}
           />
         </div>
+
         <div className="form-group">
-          <label htmlFor="gallery_files">Gallery Images</label>
+          <label htmlFor="gallery_files">Package Images</label>
           <input
             type="file"
             id="gallery_files"
             name="gallery_files"
+            accept="image/*"
             multiple
-            onChange={handleChange}
+            onChange={(e) => {
+              const files = Array.from(e.target.files);
+              setFormData((prevData) => ({
+                ...prevData,
+                gallery_files: files,
+              }));
+            }}
           />
         </div>
+
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Updating...' : 'Update Package'}
         </button>

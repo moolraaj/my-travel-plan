@@ -18,6 +18,7 @@ function PreviewPackage({ params }) {
     packagesInclude: [],
     packagesExclude: [],
     images: [],
+    package_under_categories: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -130,6 +131,27 @@ function PreviewPackage({ params }) {
                   style={{ width: '200px', height: '200px' }}
                 />
               ))
+            )}
+          </div>
+          <div className="packages_under_categories">
+          <h2> package_under_categories</h2>
+            {pkgs.package_under_categories===null && pkgs.package_under_categories===undefined ? (
+              <p>no categories</p>
+            ):(
+              pkgs.package_under_categories.map((cat,index)=>{
+                return(
+                  <>
+                  <ul key={index} className={`pkg_cat_${index + 1}`}>
+                    <li> {index + 1}
+                      <ul>
+                    <li><strong>category Name:</strong> {cat.name}</li>
+                      </ul>
+                    </li>
+                    
+                  </ul>
+                  </>
+                )
+              })
             )}
           </div>
           <div className="packages_under">

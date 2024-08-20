@@ -9,13 +9,13 @@ DbConnect();
 
 export async function PUT(req, { params }) {
     return handelAsyncErrors(async () => {
-
         let { id } = params;
         const host = req.headers.get('host');
 
         // Extract data from formdata
         const payload = await req.formData();
         const file = payload.get('file');
+        const galleryFiles = payload.getAll('gallery_files');
         const title = payload.get('title');
         const description = payload.get('description');
         const slug = payload.get('slug');
@@ -70,7 +70,7 @@ export async function PUT(req, { params }) {
         if (package_categories_id) existingPackage.package_categories_id = package_categories_id;
 
         // Upload new image if provided
-        if (file) {
+        if (file && file.size > 0) {
             const uploadedFile = await HandleFileUpload(file, host);
             const imageObject = {
                 name: uploadedFile.name,
@@ -81,8 +81,7 @@ export async function PUT(req, { params }) {
         }
 
         // Handle multiple gallery images if provided
-        const galleryFiles = payload.getAll('gallery_files');
-        if (galleryFiles.length > 0) {
+        if (galleryFiles.length > 0 && galleryFiles[0].size > 0) {
             const galleryImages = [];
             for (const galleryFile of galleryFiles) {
                 const uploadedGalleryFile = await HandleFileUpload(galleryFile, host);
@@ -99,5 +98,5 @@ export async function PUT(req, { params }) {
         const result = await existingPackage.save();
 
         return NextResponse.json({ success: true, message: 'Package updated successfully', result });
-    })
+    });
 }

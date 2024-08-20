@@ -3,20 +3,11 @@ import { handelAsyncErrors } from "@/helpers/asyncErrors";
 import { getPaginationParams } from "@/helpers/paginations";
 import PackagesModel from "@/model/packagesModel";
 import { NextResponse } from "next/server";
-import cache from 'memory-cache';
 
 DbConnect();
 
 export async function GET(req) {
     return handelAsyncErrors(async () => {
-        const cacheKey = 'PackagesModel';
-        const cacheTTL = 10 * 60 * 1000;
-
-        // Check if data is cached
-        const cachedData = cache.get(cacheKey);
-        if (cachedData) {
-            return NextResponse.json(cachedData);
-        }
 
         let { page, limit, skip } = getPaginationParams(req);
 
@@ -62,7 +53,6 @@ export async function GET(req) {
         }));
 
         let totalResults = await PackagesModel.countDocuments();
-        cache.put(cacheKey, {status: 200, success: true, totalResults, result, page, limit}, cacheTTL);
 
         return NextResponse.json({status: 200, success: true, totalResults, result, page, limit});
     });

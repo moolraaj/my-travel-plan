@@ -58,6 +58,7 @@ export async function GET(req, { params }) {
                 packages_galleries: result.packages_galleries,
                 packagesInclude: result.packages_include,
                 packagesExclude: result.packages_exclude,
+                city_id:result.city_id,
                 package_under_continent: result.city_id?.country_id?.continent_id ? {
                     _id: result.city_id.country_id.continent_id._id.toString(),
                     title: result.city_id.country_id.continent_id.title,
