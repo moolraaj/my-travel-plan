@@ -21,7 +21,7 @@ function PackagesCatPackages({ slug }) {
 
   const fetchSinglePackage = async () => {
     try {
-      const resp = await api.loadSinglePackagesActivitiy(slug);
+      const resp = await api.loadSinglePackagesActivity(slug);
       if (resp && resp.result) {
         setData(resp.result);
       } else {

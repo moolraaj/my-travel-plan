@@ -33,7 +33,7 @@ const Countrycard = ({slug}) => {
             <div className="destinations expert-travel">
                 { result===null || result===undefined ? ('No destinations found') : (result.map((country, index) => (
                     <div key={index} className="destination">
-                        <Link href={`/continent/${country.slug}`}>
+                        <Link href={`/continent/${country.slug.trim().toLowerCase().replace(/\s+/g, '-')}`}>
                             {country.images ? country.images.map((e) => (
                                 <Image
                                     key={e._id}

@@ -259,7 +259,6 @@ export const EXPORT_ALL_APIS = () => {
     
     const loadAllPackagesActivities = () => fetchApi(`/api/v1/package-categories/get`);
     const loadSinglePackagesActivity = (slug) => fetchApi(`/api/v1/package-category/getbyslug/${slug}`);
-    const loadSinglePackagesActivitiy= async (slug) =>fetchApi(`/api/v1/package-category/getbyslug/${slug}`);
 
     const loadFooterDeatails = () => fetchApi(`/api/v1/footer-details/get`);
     
@@ -295,7 +294,6 @@ export const EXPORT_ALL_APIS = () => {
         loadSingleActivity,
         loadAllPackagesActivities,
         loadSinglePackagesActivity,
-        loadSinglePackagesActivitiy,
         loadFooterDeatails,
         loadSingleUserbookingsdetails,
         sendQueryContactUs,
