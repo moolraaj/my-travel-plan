@@ -111,37 +111,54 @@ ul.destinations-list li {
 
 
 
-.image-container:nth-child(2) {
-	grid-row-start: 1;
-	grid-row-end: 3;
-}
-
-.image-container:nth-child(2) img {
-	height: 100%;
-	object-fit: cover;
-}
-
-
 // .gallery .images {
 // 	display: grid;
 // 	grid-template-columns: 1fr 500px;
 // 	gap: 20px;
 // }
 
-.image-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-	flex-wrap: wrap;
-}
-.image-container img{
-    max-width: 300px;
+
+.images {
+	display: flex;
+  }
+  
+  .imageContainer {
+	display: grid;
+	grid-template-columns: 2fr 1.5fr;
+	gap: 20px;
 	width: 100%;
-	min-height: 300px;
+	margin-bottom: 50px;
+  }
+  
+  .leftImage {
+	width: 100%;
+	height: 500px;
+  }
+  
+  .largeImage {
+	border-radius: 5px;
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
-}
+  }
+  
+  .rightImages {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+  }
+  
+  .smallImage {
+	border-radius: 5px;
+	width: 100%;
+	height: 240px;
+	object-fit: cover;
+  }
+  
+  
 
-
+  
 .gallery,
 .overview {
 	@include main_container;
@@ -3481,6 +3498,12 @@ img.carimage {
 }
 
 @media(max-width:467px) {
+	.imageContainer{
+		grid-template-columns: 1fr;
+	}
+	.rightImages{
+		gap: 20px;
+	}
 	.car-inner-box .car-text-container {
 		display: block;
 	}
