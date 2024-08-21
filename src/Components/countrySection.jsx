@@ -6,9 +6,9 @@ import emptyImage from '../app/assets/empty.jpg';
 import exploresection from '../app/assets/home_images/explore-bg.png';
 
 function ExplorationsFarAway({ loading, city }) {
-  let result = city ? city.result : [];
+  let data = city ? city.result : [];
 
-  let reversedFilterCities = result ? [...result].reverse() : [];
+  let reversedFilterCities = data ? [...data].reverse() : [];
 
   return (
     <div
