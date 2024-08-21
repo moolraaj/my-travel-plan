@@ -122,7 +122,7 @@ export default function Home() {
             setContinent(data);
             data = await api.loadAllCountries();
             setCountry(data);
-            data = await api.loadAllCitiesWithLowestPrices();
+            data = await api.loadAllCities();
             setCity(data);
             data = await api.loadAllPackages();
             setPackages(data);

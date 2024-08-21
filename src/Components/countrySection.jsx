@@ -10,6 +10,8 @@ function ExplorationsFarAway({ loading, city }) {
 
   let reversedFilterCities = data ? [...data].reverse() : [];
 
+  console.log('werwerwerwere',reversedFilterCities)
+
   return (
     <div
       className="explore-section"
@@ -28,8 +30,10 @@ function ExplorationsFarAway({ loading, city }) {
           {reversedFilterCities===null && reversedFilterCities===undefined ? (
             ''
           ) : (
-            reversedFilterCities.slice(0, 6).map((destination) => (
-              <Link href={`/city/${destination.slug}`} key={destination._id}>
+            reversedFilterCities.slice(0, 6).map((destination) =>{
+              return(
+                <>
+                <Link href={`/city/${destination.slug}`} key={destination._id}>
                 <div className="destination-card">
                   {destination.images && destination.images.length > 0 ? (
                     <Image
@@ -60,7 +64,9 @@ function ExplorationsFarAway({ loading, city }) {
                   </div>
                 </div>
               </Link>
-            ))
+                </>
+              )
+            })
           )}
         </div>
       </div>
