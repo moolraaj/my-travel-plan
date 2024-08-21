@@ -25,8 +25,8 @@ function ExplorationsFarAway({ loading, city }) {
         </div>
 
         <div className="destinations-grid">
-          {reversedFilterCities.length === 0 ? (
-            <EmptyExplorationComponent />
+          {reversedFilterCities===null && reversedFilterCities===undefined ? (
+            ''
           ) : (
             reversedFilterCities.slice(0, 6).map((destination) => (
               <Link href={`/city/${destination.slug}`} key={destination._id}>
